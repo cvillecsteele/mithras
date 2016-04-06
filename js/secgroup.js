@@ -1,0 +1,96 @@
+(function (root, factory){
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = factory();
+    }
+})(this, function() {
+    
+    var sprintf = require("sprintf.js").sprintf;
+
+    var handler = {
+	moduleName: "secgroup"
+	findInCatalog: function(catalog, vpcId, groupName) {
+	    return _.find(catalog.securityGroups, function(s) { 
+		return (s.GroupName === groupName && s.VpcId == vpcId);
+	    });
+	}
+	handle: function(catalog, resources, resource) {
+	    if (resource.module != handler.moduleName) {
+		return [null, false];
+	    }
+
+	    // Sanity
+	    if (!resource.params.secgroup) {
+		console.log("Invalid secgroup params")
+		os.exit(1);
+	    }
+
+	    var ensure = resource.params.ensure;
+	    var params = resource.params;
+	    var sg = resource._target;
+
+	    switch(ensure) {
+	    case "absent":
+		if (!sg) {
+		    break;
+		}
+		aws.securityGroups.delete(params.region, sg.GroupId);
+		catalog.securityGroups = _.reject(catalog.securityGroups,
+						  function(s) { 
+						      return s.GroupId == sg.GroupId;
+						  });
+		break;
+	    case "present":
+		if (sg) {
+		    break;
+		}
+		// create sg
+		var sg = aws.securityGroups.create(params.region, params.secgroup);
+
+		// do authorizations
+		if (params.ingress) {
+		    params.ingress.GroupId = sg.GroupId;
+		    aws.securityGroups.authorizeIngress(params.region, params.ingress);
+		}
+		if (params.egress) {
+		    params.egress.GroupId = sg.GroupId;
+		    aws.securityGroups.authorizeEgress(params.region, params.egress);
+		}
+		
+		// Tag it
+		if (params.tags) {
+		    aws.tags.create(params.region, sg.GroupId, params.tags);
+		}
+		
+		// Reload it to get tags
+		var sg = aws.securityGroups.describe(params.region, sg.GroupId);
+		
+		// add to catalog
+		catalog.securityGroups.push(sg);
+		
+		// return it
+		return [sg, true];
+	    }
+	    return [null, true];
+	}
+	preflight: function(catalog, resource) {
+	    if (resource.module != handler.moduleName) {
+		return [null, false];
+	    }
+	    var params = resource.params;
+	    var sg = params.secgroup;
+	    var s = handler.findInCatalog(catalog, sg.VpcId, sg.GroupName);
+	    if (s) {
+		return [s, true];
+	    }
+	    return [null, true];
+	}
+    };
+    
+    handler.init = function () {
+	mithras.modules.preflight.register(handler.moduleName, handler.preflight);
+	mithras.modules.handlers.register(handler.moduleName, handler.handle);
+	return handler;
+    };
+    
+    return handler;
+});
