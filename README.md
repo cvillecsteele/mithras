@@ -1,17 +1,62 @@
+WHAT IS MITHRAS?
+###############################################################################
+
+Use Mithras to deploy and configure full-stack applications in AWS,
+with agentless setup and the flexibility and power of a Javascript
+configuration language.
+
+Mithras focuses on AWS, making design choices that make simple AWS
+tasks easy, including features like explicit dependency declaration
+and idempotent operations.
+
+Mithras presents a simplified interface, reducing the surface area of
+the AWS SDK to a digestible and easily managed size.
+
+Using brittle data languages such as YAML make customizing your
+configuration unecessarily convoluted.  Mithras chooses a well-known
+and powerful language for descriving your AWS configurations:
+Javascript.  You won't have to twist an unsuitable language to do
+what's needed for your configuration.
+
+Moreover, standing on the shoulders of giants, (Google's GO
+programming language, Javascript, and Robert Krimen's
+[Otto](https://github.com/robertkrimen/otto) interpreter), Mithras
+provides a powerful and flexible server-side Javascript environment
+without callback hell.  (We're looking at you, Node.)
+
+Here are some uses cases for Mithras:
+
+* Provisioning
+* Configuration Management
+* App Deployment
+* Continuous Delivery
+* Orchestration
+
+Sounds pretty nifty, eh?  But it's not perfect.  If you need hardcore
+configuration management, Mithras isn't a good choice.  (Not yet,
+anyway.)  If you have the need to manage hosts and resources outside
+AWS, Mithras probably isn't a good choice.  If you love YAML, don't
+bother with Mithras.
+
+Finally, Mithras is *new*.  It's currently alpha quality software,
+with bugs and design choices still being shaken out.  Proceed with
+caution.
+
 DESIGN
 ###############################################################################
 
-* AWS first and only
-* javascript DSL
-* simple (abstract) aws interface - not a port of the aws sdk to js
+* AWS first
+* Javascript DSL
+* Simple (abstract) aws interface - not a port of the aws sdk to js
+* Agentless 
 
 BUILDING FROM SOURCE
 ###############################################################################
 
-1. Setup standard Go 1.6 environment http://golang.org/doc/code.html and ensure that $GOPATH environment variable properly set.
+1. Set up a standard Go 1.6 environment http://golang.org/doc/code.html and ensure that $GOPATH environment variable properly set.
 2. `go get github.com/cvillecsteele/mithras`.
 3. `cd $GOPATH/src/github.com/cvillecsteele/mithras`
-4. `go install` to get binary
+4. `go install` to build the mithras binary
 5. Make sure $GOPATH/bin is in your $PATH.
 
 RUNNING
@@ -42,7 +87,6 @@ TODO
 * select for writes
 * repl should have mithras env loaded
 * copy - localFile so we don't read it into memory??
-* config for 'mithras build'  
 * test base config in nginx
 * ssh pipelines
 * versioned js modules

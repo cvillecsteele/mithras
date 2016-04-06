@@ -1,3 +1,6 @@
+//
+// # RESOURDCE HANDLER: SHELL
+// 
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
 	module.exports = factory();

@@ -1,19 +1,6 @@
 function run() {
 
-    chan.make("test", 0);
-    var thing = function(x) {
-	console.log("go routine about to send");
-	chan.snd("test", x);
-	console.log("go routine bye");
-    }
-    go.run(function() { thing("hello"); });
-    console.log("main about to sleep");
-    time.sleep(3);
-    console.log("main about to rcv");
-    console.log(chan.rcv("test"));
-    os.exit(1);
-
-    // Caching
+    // Set up caching
     var Cache = (new (require("cache").Cache)).init();
 
     // Filter regions
@@ -88,30 +75,10 @@ function run() {
     	}
     };
 
-    var rSubnetB = {
-    	name: "subnetB"
-    	module: "subnet"
-	dependsOn: [rVpc.name]
-    	params: {
-	    region: defaultRegion
-    	    ensure: ensure
-
-	    subnet: {
-		CidrBlock:        "172.33.2.0/24"
-		VpcId:            mithras.watch("VPC._target.VpcId")
-		AvailabilityZone: altZone
-	    }
-	    tags: {
-    		Name: "secondary-subnet"
-	    }
-	    routes: [
-		{
-		    DestinationCidrBlock: "0.0.0.0/0"
-		    GatewayId:            mithras.watch("VPC._target.VpcId", mithras.findGWByVpcId)
-		}
-	    ]
-    	}
-    };
+    var rSubnetB = _.extend({}, rSubnetA, {
+	name: "subnetB"
+    });
+    rSubnetB.params.subnet.CidrBlock = "172.33.2.0/24";
 
     var rwsSG = {
     	name: "webserverSG"
@@ -285,7 +252,7 @@ function run() {
     	module: "elb"
 	dependsOn: [rVpc.name, rSubnetA.name, rSubnetB.name, rwsSG.name]
 	on_delete: function(elb) { 
-	    // Sometimes aws take a bit to delete an elb, and we can't
+	    // Sometimes aws takes a bit to delete an elb, and we can't
 	    // proceed with deleting until it's GONE.
 	    this.delay = 30; 
 	    return true;
@@ -556,15 +523,6 @@ function run() {
 	}
     };
 
-    var rTest = {
-	name: "test"
-    	module: "handler"
-    	params: {
-	    ensure: ensure
-	    foo: "bar"
-	}
-    };
-
     var rS3Bucket = {
 	name: "s3bucket"
 	module: "s3"
@@ -607,9 +565,9 @@ function run() {
 	    rELBMembership, 
 	    rBootstrap,
 	    rUpdatePkgs,
-	    // rGitPkg, 
-	    // nginx, 
-	    // rRepo, rFile
+	    rGitPkg, 
+	    nginx, 
+	    rRepo, rFile
 	]
     }
 
@@ -632,7 +590,7 @@ function run() {
     		      rWSTier,
     		      // rRdsA,
     		      // rCache,
-    		      // rS3
+    		      rS3
     		  ], 
     		  reverse);
 

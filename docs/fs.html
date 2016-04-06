@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>fs.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="cli.html">
+                  cli.go
+                </a>
+              
+                
+                <a class="source" href="become.html">
+                  become.js
+                </a>
+              
+                
+                <a class="source" href="cache.html">
+                  cache.js
+                </a>
+              
+                
+                <a class="source" href="copy.html">
+                  copy.js
+                </a>
+              
+                
+                <a class="source" href="dep_graph.html">
+                  dep_graph.js
+                </a>
+              
+                
+                <a class="source" href="elasticache.html">
+                  elasticache.js
+                </a>
+              
+                
+                <a class="source" href="elb.html">
+                  elb.js
+                </a>
+              
+                
+                <a class="source" href="file.html">
+                  file.js
+                </a>
+              
+                
+                <a class="source" href="git.html">
+                  git.js
+                </a>
+              
+                
+                <a class="source" href="iam.html">
+                  iam.js
+                </a>
+              
+                
+                <a class="source" href="instance.html">
+                  instance.js
+                </a>
+              
+                
+                <a class="source" href="mithras.html">
+                  mithras.js
+                </a>
+              
+                
+                <a class="source" href="network.html">
+                  network.js
+                </a>
+              
+                
+                <a class="source" href="object_path.html">
+                  object_path.js
+                </a>
+              
+                
+                <a class="source" href="packager.html">
+                  packager.js
+                </a>
+              
+                
+                <a class="source" href="rds.html">
+                  rds.js
+                </a>
+              
+                
+                <a class="source" href="route53.html">
+                  route53.js
+                </a>
+              
+                
+                <a class="source" href="s3.html">
+                  s3.js
+                </a>
+              
+                
+                <a class="source" href="scp.html">
+                  scp.js
+                </a>
+              
+                
+                <a class="source" href="secgroup.html">
+                  secgroup.js
+                </a>
+              
+                
+                <a class="source" href="service.html">
+                  service.js
+                </a>
+              
+                
+                <a class="source" href="shell.html">
+                  shell.js
+                </a>
+              
+                
+                <a class="source" href="sprintf.html">
+                  sprintf.js
+                </a>
+              
+                
+                <a class="source" href="subnet.html">
+                  subnet.js
+                </a>
+              
+                
+                <a class="source" href="traverse.html">
+                  traverse.js
+                </a>
+              
+                
+                <a class="source" href="vpc.html">
+                  vpc.js
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.go
+                </a>
+              
+                
+                <a class="source" href="build.html">
+                  build.go
+                </a>
+              
+                
+                <a class="source" href="channels.html">
+                  channels.go
+                </a>
+              
+                
+                <a class="source" href="core.html">
+                  core.go
+                </a>
+              
+                
+                <a class="source" href="elasticache.html">
+                  elasticache.go
+                </a>
+              
+                
+                <a class="source" href="elb.html">
+                  elb.go
+                </a>
+              
+                
+                <a class="source" href="exec.html">
+                  exec.go
+                </a>
+              
+                
+                <a class="source" href="filepath.html">
+                  filepath.go
+                </a>
+              
+                
+                <a class="source" href="fs.html">
+                  fs.go
+                </a>
+              
+                
+                <a class="source" href="goroutines.html">
+                  goroutines.go
+                </a>
+              
+                
+                <a class="source" href="iam.html">
+                  iam.go
+                </a>
+              
+                
+                <a class="source" href="instance.html">
+                  instance.go
+                </a>
+              
+                
+                <a class="source" href="log.html">
+                  log.go
+                </a>
+              
+                
+                <a class="source" href="network.html">
+                  network.go
+                </a>
+              
+                
+                <a class="source" href="os.html">
+                  os.go
+                </a>
+              
+                
+                <a class="source" href="peek.html">
+                  peek.go
+                </a>
+              
+                
+                <a class="source" href="rds.html">
+                  rds.go
+                </a>
+              
+                
+                <a class="source" href="region.html">
+                  region.go
+                </a>
+              
+                
+                <a class="source" href="remote.html">
+                  remote.go
+                </a>
+              
+                
+                <a class="source" href="require.html">
+                  require.go
+                </a>
+              
+                
+                <a class="source" href="route53.html">
+                  route53.go
+                </a>
+              
+                
+                <a class="source" href="routetables.html">
+                  routetables.go
+                </a>
+              
+                
+                <a class="source" href="s3.html">
+                  s3.go
+                </a>
+              
+                
+                <a class="source" href="secgroup.html">
+                  secgroup.go
+                </a>
+              
+                
+                <a class="source" href="service.html">
+                  service.go
+                </a>
+              
+                
+                <a class="source" href="subnet.html">
+                  subnet.go
+                </a>
+              
+                
+                <a class="source" href="tag.html">
+                  tag.go
+                </a>
+              
+                
+                <a class="source" href="time.html">
+                  time.go
+                </a>
+              
+                
+                <a class="source" href="user.html">
+                  user.go
+                </a>
+              
+                
+                <a class="source" href="vpc.html">
+                  vpc.go
+                </a>
+              
+                
+                <a class="source" href="web.html">
+                  web.go
+                </a>
+              
+                
+                <a class="source" href="wrapper.html">
+                  wrapper.go
+                </a>
+              
+                
+                <a class="source" href="script.html">
+                  script.go
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>fs.go</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">package</span> fs
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"io"</span>
+	<span class="hljs-string">"io/ioutil"</span>
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"os"</span>
+	<span class="hljs-string">"time"</span>
+
+	<span class="hljs-string">"github.com/robertkrimen/otto"</span>
+
+	mcore <span class="hljs-string">"github.com/cvillecsteele/mithras/modules/core"</span>
+)
+
+<span class="hljs-keyword">var</span> Version = <span class="hljs-string">"1.0.0"</span>
+<span class="hljs-keyword">var</span> ModuleName = <span class="hljs-string">"fs"</span>
+
+<span class="hljs-keyword">func</span> dir(src <span class="hljs-keyword">string</span>) (names []<span class="hljs-keyword">string</span>, err error) {
+	f, err := os.Open(src)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> []<span class="hljs-keyword">string</span>{}, err
+	}
+	<span class="hljs-keyword">defer</span> f.Close()
+	<span class="hljs-keyword">return</span> f.Readdirnames(<span class="hljs-number">0</span>)
+}
+
+<span class="hljs-keyword">func</span> read(fileName <span class="hljs-keyword">string</span>) (<span class="hljs-keyword">string</span>, error) {
+	content, err := ioutil.ReadFile(fileName)
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">string</span>(content), err
+}
+
+<span class="hljs-keyword">func</span> write(fileName, data <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) error {
+	<span class="hljs-keyword">return</span> ioutil.WriteFile(fileName, []<span class="hljs-keyword">byte</span>(data), os.FileMode(perm))
+}
+
+<span class="hljs-keyword">func</span> <span class="hljs-built_in">copy</span>(src, dst <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) error {
+	s, err := os.Open(src)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> err
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>no need to check errors on read only file, we already got everything
+we need from the filesystem, so nothing can go wrong now.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">defer</span> s.Close()
+	d, err := os.Create(dst)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> err
+	}
+	<span class="hljs-keyword">if</span> _, err := io.Copy(d, s); err != <span class="hljs-literal">nil</span> {
+		d.Close()
+		<span class="hljs-keyword">return</span> err
+	}
+	<span class="hljs-keyword">if</span> err = d.Close(); err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> err
+	}
+
+	<span class="hljs-keyword">return</span> os.Chmod(dst, os.FileMode(perm))
+}
+
+<span class="hljs-keyword">func</span> chdir(dir <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.Chdir(dir)
+}
+
+<span class="hljs-keyword">func</span> getwd() (<span class="hljs-keyword">string</span>, error) {
+	<span class="hljs-keyword">return</span> os.Getwd()
+}
+
+<span class="hljs-keyword">func</span> mkdir(dir <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) error {
+	<span class="hljs-keyword">return</span> os.Mkdir(dir, os.FileMode(perm))
+}
+
+<span class="hljs-keyword">func</span> mkdirAll(path <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) error {
+	<span class="hljs-keyword">return</span> os.MkdirAll(path, os.FileMode(perm))
+}
+
+<span class="hljs-keyword">func</span> remove(name <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.Remove(name)
+}
+
+<span class="hljs-keyword">func</span> removeAll(name <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.RemoveAll(name)
+}
+
+<span class="hljs-keyword">func</span> rename(old, <span class="hljs-built_in">new</span> <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.Rename(old, <span class="hljs-built_in">new</span>)
+}
+
+<span class="hljs-keyword">func</span> chown(name <span class="hljs-keyword">string</span>, uid <span class="hljs-keyword">int</span>, gid <span class="hljs-keyword">int</span>) error {
+	<span class="hljs-keyword">return</span> os.Chown(name, uid, gid)
+}
+
+<span class="hljs-keyword">func</span> lChown(name <span class="hljs-keyword">string</span>, uid <span class="hljs-keyword">int</span>, gid <span class="hljs-keyword">int</span>) error {
+	<span class="hljs-keyword">return</span> os.Lchown(name, uid, gid)
+}
+
+<span class="hljs-keyword">func</span> chmod(name <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) error {
+	<span class="hljs-keyword">return</span> os.Chmod(name, os.FileMode(perm))
+}
+
+<span class="hljs-keyword">func</span> stat(rt *otto.Otto, name <span class="hljs-keyword">string</span>) otto.Value {
+	s, err := os.Stat(name)
+	<span class="hljs-keyword">type</span> r <span class="hljs-keyword">struct</span> {
+		Name       <span class="hljs-keyword">string</span>
+		Size       <span class="hljs-keyword">int64</span>
+		Mode       os.FileMode
+		ModeString <span class="hljs-keyword">string</span>
+		ModTime    time.Time
+		IsDir      <span class="hljs-keyword">bool</span>
+		IsRegular  <span class="hljs-keyword">bool</span>
+		Perm       os.FileMode
+		Error      error
+	}
+	<span class="hljs-keyword">if</span> err == <span class="hljs-literal">nil</span> {
+		result := r{
+			Error:      err,
+			Name:       s.Name(),
+			Size:       s.Size(),
+			Mode:       s.Mode(),
+			ModeString: s.Mode().String(),
+			ModTime:    s.ModTime(),
+			IsDir:      s.IsDir(),
+			IsRegular:  s.Mode().IsRegular(),
+			Perm:       s.Mode().Perm(),
+		}
+		<span class="hljs-keyword">return</span> mcore.Sanitize(rt, result)
+	} <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">return</span> mcore.Sanitize(rt, err)
+	}
+
+}
+
+<span class="hljs-keyword">func</span> create(path <span class="hljs-keyword">string</span>) (*os.File, error) {
+	<span class="hljs-keyword">return</span> os.Create(path)
+}
+
+<span class="hljs-keyword">func</span> <span class="hljs-built_in">close</span>(f *os.File) error {
+	<span class="hljs-keyword">return</span> f.Close()
+}
+
+<span class="hljs-keyword">func</span> symlink(oldname, newname <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.Symlink(oldname, newname)
+}
+
+<span class="hljs-keyword">func</span> link(oldname, newname <span class="hljs-keyword">string</span>) error {
+	<span class="hljs-keyword">return</span> os.Link(oldname, newname)
+}
+
+<span class="hljs-keyword">func</span> chtimes(name <span class="hljs-keyword">string</span>) error {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>get current timestamp</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	currenttime := time.Now().Local()
+	<span class="hljs-keyword">return</span> os.Chtimes(name, currenttime, currenttime)
+}
+
+<span class="hljs-keyword">func</span> init() {
+	mcore.RegisterInit(<span class="hljs-keyword">func</span>(rt *otto.Otto) {
+		fsObj, _ := rt.Object(<span class="hljs-string">`fs = {}`</span>)
+		fsObj.Set(<span class="hljs-string">"chtimes"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			result := chtimes(call.Argument(<span class="hljs-number">0</span>).String())
+			<span class="hljs-keyword">return</span> mcore.Sanitize(rt, result)
+		})
+		fsObj.Set(<span class="hljs-string">"link"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			result := link(call.Argument(<span class="hljs-number">0</span>).String(), call.Argument(<span class="hljs-number">1</span>).String())
+			<span class="hljs-keyword">return</span> mcore.Sanitize(rt, result)
+		})
+		fsObj.Set(<span class="hljs-string">"symlink"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			result := symlink(call.Argument(<span class="hljs-number">0</span>).String(), call.Argument(<span class="hljs-number">1</span>).String())
+			<span class="hljs-keyword">return</span> mcore.Sanitize(rt, result)
+		})
+		fsObj.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(path <span class="hljs-keyword">string</span>) (otto.Value, otto.Value) {
+			f := mcore.Sanitizer(rt)
+			x, err := create(path)
+			val, err := rt.ToValue(x)
+			<span class="hljs-keyword">return</span> val, f(err)
+		})
+		fsObj.Set(<span class="hljs-string">"close"</span>, <span class="hljs-keyword">func</span>(f *os.File) otto.Value {
+			x := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> x(<span class="hljs-built_in">close</span>(f))
+		})
+		fsObj.Set(<span class="hljs-string">"read"</span>, <span class="hljs-keyword">func</span>(fileName <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(read(fileName))
+		})
+		fsObj.Set(<span class="hljs-string">"write"</span>, <span class="hljs-keyword">func</span>(fileName, data <span class="hljs-keyword">string</span>, perm <span class="hljs-keyword">uint64</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(write(fileName, data, perm))
+		})
+		fsObj.Set(<span class="hljs-string">"copy"</span>, <span class="hljs-built_in">copy</span>)
+		fsObj.Set(<span class="hljs-string">"chdir"</span>, chdir)
+		fsObj.Set(<span class="hljs-string">"getwd"</span>, getwd)
+		fsObj.Set(<span class="hljs-string">"mkdir"</span>, mkdir)
+		fsObj.Set(<span class="hljs-string">"mkdirAll"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			mode, err := call.Argument(<span class="hljs-number">1</span>).ToInteger()
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Invalid argument to 'mkdirAll': %s"</span>, err)
+			}
+			result := mkdirAll(call.Argument(<span class="hljs-number">0</span>).String(), <span class="hljs-keyword">uint64</span>(mode))
+			<span class="hljs-keyword">return</span> mcore.Sanitize(rt, result)
+		})
+		fsObj.Set(<span class="hljs-string">"remove"</span>, remove)
+		fsObj.Set(<span class="hljs-string">"removeAll"</span>, <span class="hljs-keyword">func</span>(path <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(removeAll(path))
+		})
+		fsObj.Set(<span class="hljs-string">"rename"</span>, rename)
+		fsObj.Set(<span class="hljs-string">"chown"</span>, chown)
+		fsObj.Set(<span class="hljs-string">"lChown"</span>, lChown)
+		fsObj.Set(<span class="hljs-string">"chmod"</span>, chmod)
+		fsObj.Set(<span class="hljs-string">"dir"</span>, dir)
+		fsObj.Set(<span class="hljs-string">"stat"</span>, <span class="hljs-keyword">func</span>(name <span class="hljs-keyword">string</span>) otto.Value {
+			<span class="hljs-keyword">return</span> stat(rt, name)
+		})
+	})
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

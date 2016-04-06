@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>CORE FUNCTIONS: REMOTE</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+      <ul id="jump_to">
+        <li>
+          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
+          <a class="small" href="javascript:void(0);">+</a>
+          <div id="jump_wrapper">
+          <div id="jump_page_wrapper">
+            <div id="jump_page">
+              
+                
+                <a class="source" href="cli.html">
+                  cli.go
+                </a>
+              
+                
+                <a class="source" href="become.html">
+                  become.js
+                </a>
+              
+                
+                <a class="source" href="cache.html">
+                  cache.js
+                </a>
+              
+                
+                <a class="source" href="copy.html">
+                  copy.js
+                </a>
+              
+                
+                <a class="source" href="dep_graph.html">
+                  dep_graph.js
+                </a>
+              
+                
+                <a class="source" href="elasticache.html">
+                  elasticache.js
+                </a>
+              
+                
+                <a class="source" href="elb.html">
+                  elb.js
+                </a>
+              
+                
+                <a class="source" href="file.html">
+                  file.js
+                </a>
+              
+                
+                <a class="source" href="git.html">
+                  git.js
+                </a>
+              
+                
+                <a class="source" href="iam.html">
+                  iam.js
+                </a>
+              
+                
+                <a class="source" href="instance.html">
+                  instance.js
+                </a>
+              
+                
+                <a class="source" href="mithras.html">
+                  mithras.js
+                </a>
+              
+                
+                <a class="source" href="network.html">
+                  network.js
+                </a>
+              
+                
+                <a class="source" href="object_path.html">
+                  object_path.js
+                </a>
+              
+                
+                <a class="source" href="packager.html">
+                  packager.js
+                </a>
+              
+                
+                <a class="source" href="rds.html">
+                  rds.js
+                </a>
+              
+                
+                <a class="source" href="route53.html">
+                  route53.js
+                </a>
+              
+                
+                <a class="source" href="s3.html">
+                  s3.js
+                </a>
+              
+                
+                <a class="source" href="scp.html">
+                  scp.js
+                </a>
+              
+                
+                <a class="source" href="secgroup.html">
+                  secgroup.js
+                </a>
+              
+                
+                <a class="source" href="service.html">
+                  service.js
+                </a>
+              
+                
+                <a class="source" href="shell.html">
+                  shell.js
+                </a>
+              
+                
+                <a class="source" href="sprintf.html">
+                  sprintf.js
+                </a>
+              
+                
+                <a class="source" href="subnet.html">
+                  subnet.js
+                </a>
+              
+                
+                <a class="source" href="traverse.html">
+                  traverse.js
+                </a>
+              
+                
+                <a class="source" href="vpc.html">
+                  vpc.js
+                </a>
+              
+                
+                <a class="source" href="main.html">
+                  main.go
+                </a>
+              
+                
+                <a class="source" href="build.html">
+                  build.go
+                </a>
+              
+                
+                <a class="source" href="channels.html">
+                  channels.go
+                </a>
+              
+                
+                <a class="source" href="core.html">
+                  core.go
+                </a>
+              
+                
+                <a class="source" href="elasticache.html">
+                  elasticache.go
+                </a>
+              
+                
+                <a class="source" href="elb.html">
+                  elb.go
+                </a>
+              
+                
+                <a class="source" href="exec.html">
+                  exec.go
+                </a>
+              
+                
+                <a class="source" href="filepath.html">
+                  filepath.go
+                </a>
+              
+                
+                <a class="source" href="fs.html">
+                  fs.go
+                </a>
+              
+                
+                <a class="source" href="goroutines.html">
+                  goroutines.go
+                </a>
+              
+                
+                <a class="source" href="iam.html">
+                  iam.go
+                </a>
+              
+                
+                <a class="source" href="instance.html">
+                  instance.go
+                </a>
+              
+                
+                <a class="source" href="log.html">
+                  log.go
+                </a>
+              
+                
+                <a class="source" href="network.html">
+                  network.go
+                </a>
+              
+                
+                <a class="source" href="os.html">
+                  os.go
+                </a>
+              
+                
+                <a class="source" href="peek.html">
+                  peek.go
+                </a>
+              
+                
+                <a class="source" href="rds.html">
+                  rds.go
+                </a>
+              
+                
+                <a class="source" href="region.html">
+                  region.go
+                </a>
+              
+                
+                <a class="source" href="remote.html">
+                  remote.go
+                </a>
+              
+                
+                <a class="source" href="require.html">
+                  require.go
+                </a>
+              
+                
+                <a class="source" href="route53.html">
+                  route53.go
+                </a>
+              
+                
+                <a class="source" href="routetables.html">
+                  routetables.go
+                </a>
+              
+                
+                <a class="source" href="s3.html">
+                  s3.go
+                </a>
+              
+                
+                <a class="source" href="secgroup.html">
+                  secgroup.go
+                </a>
+              
+                
+                <a class="source" href="service.html">
+                  service.go
+                </a>
+              
+                
+                <a class="source" href="subnet.html">
+                  subnet.go
+                </a>
+              
+                
+                <a class="source" href="tag.html">
+                  tag.go
+                </a>
+              
+                
+                <a class="source" href="time.html">
+                  time.go
+                </a>
+              
+                
+                <a class="source" href="user.html">
+                  user.go
+                </a>
+              
+                
+                <a class="source" href="vpc.html">
+                  vpc.go
+                </a>
+              
+                
+                <a class="source" href="web.html">
+                  web.go
+                </a>
+              
+                
+                <a class="source" href="wrapper.html">
+                  wrapper.go
+                </a>
+              
+                
+                <a class="source" href="script.html">
+                  script.go
+                </a>
+              
+            </div>
+          </div>
+        </li>
+      </ul>
+    
+    <ul class="sections">
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="core-functions-remote">CORE FUNCTIONS: REMOTE</h1>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>
+<span class="hljs-keyword">package</span> remote
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"bufio"</span>
+	<span class="hljs-string">"bytes"</span>
+	<span class="hljs-string">"encoding/json"</span>
+	<span class="hljs-string">"fmt"</span>
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"os/exec"</span>
+	<span class="hljs-string">"strings"</span>
+	<span class="hljs-string">"syscall"</span>
+
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/service/ec2"</span>
+	<span class="hljs-string">"github.com/robertkrimen/otto"</span>
+
+	mcore <span class="hljs-string">"github.com/cvillecsteele/mithras/modules/core"</span>
+)
+
+<span class="hljs-keyword">type</span> Results <span class="hljs-keyword">struct</span> {
+	Out     <span class="hljs-keyword">string</span>
+	Err     <span class="hljs-keyword">string</span>
+	Success <span class="hljs-keyword">bool</span>
+	Status  <span class="hljs-keyword">int</span>
+}
+
+<span class="hljs-keyword">type</span> JobSpec <span class="hljs-keyword">struct</span> {
+	Cmd []<span class="hljs-keyword">string</span>
+	Env <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>
+}
+
+<span class="hljs-keyword">func</span> doBecome(cmd <span class="hljs-keyword">string</span>, become <span class="hljs-keyword">bool</span>, becomeUser <span class="hljs-keyword">string</span>, becomeMethod <span class="hljs-keyword">string</span>) <span class="hljs-keyword">string</span> {
+	<span class="hljs-keyword">if</span> become {
+		<span class="hljs-keyword">if</span> becomeUser != <span class="hljs-string">""</span> {
+			cmd = becomeMethod + <span class="hljs-string">" -u "</span> + becomeUser + <span class="hljs-string">" "</span> + cmd
+		} <span class="hljs-keyword">else</span> {
+			cmd = becomeMethod + <span class="hljs-string">" "</span> + cmd
+		}
+	}
+	<span class="hljs-keyword">return</span> cmd
+}
+
+<span class="hljs-keyword">func</span> RemoteMithras(inst *ec2.Instance, user <span class="hljs-keyword">string</span>, keypath <span class="hljs-keyword">string</span>, js <span class="hljs-keyword">string</span>, become <span class="hljs-keyword">bool</span>, becomeUser <span class="hljs-keyword">string</span>, becomeMethod <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) (*<span class="hljs-keyword">string</span>, *<span class="hljs-keyword">string</span>, <span class="hljs-keyword">bool</span>, <span class="hljs-keyword">int</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Copy caller’s file to remote temporary file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	o, e, success, status := RemoteShell(*inst.PublicIpAddress,
+		user,
+		keypath,
+		&amp;js,
+		<span class="hljs-string">`export foo=$(mktemp ./.mithras/scripts/runXXXXXX); dd of=$foo oflag=append conv=notrunc &gt;/dev/null 2&gt;&amp;1 &gt; /dev/null; echo $foo`</span>,
+		<span class="hljs-literal">nil</span>)
+	<span class="hljs-keyword">if</span> !success {
+		log.Fatalf(<span class="hljs-string">"Error moving script to remote system '%s': success: %t; %s %s"</span>,
+			*inst.PublicIpAddress, status, *o, *e)
+	}
+	remoteFile := strings.TrimSpace(*o)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>run it via ssh</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	cmd := doBecome(<span class="hljs-string">"./.mithras/bin/runner -m .mithras run -f "</span>+remoteFile, become, becomeUser, becomeMethod)
+	o, e, success, status = RemoteWrapper(inst, user, keypath, strings.Fields(cmd), <span class="hljs-literal">nil</span>, verbose)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Dump the temporary file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span>() {
+		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, <span class="hljs-literal">nil</span>, fmt.Sprintf(<span class="hljs-string">`rm %s`</span>, remoteFile), <span class="hljs-literal">nil</span>)
+		<span class="hljs-keyword">if</span> !success {
+			log.Fatalf(<span class="hljs-string">"Error removing script on remote system '%s': success: %t; %s %s"</span>,
+				*inst.PublicIpAddress, status, *o, *e)
+		}
+	}()
+
+	<span class="hljs-keyword">return</span> o, e, success, status
+}
+
+<span class="hljs-keyword">func</span> RemoteWrapper(inst *ec2.Instance, user <span class="hljs-keyword">string</span>, keypath <span class="hljs-keyword">string</span>, cmd []<span class="hljs-keyword">string</span>, env *<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) (*<span class="hljs-keyword">string</span>, *<span class="hljs-keyword">string</span>, <span class="hljs-keyword">bool</span>, <span class="hljs-keyword">int</span>) {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Create spec</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	spec := JobSpec{
+		Cmd: cmd,
+	}
+	<span class="hljs-keyword">if</span> env != <span class="hljs-literal">nil</span> {
+		spec.Env = *env
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Render to JSON</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	j, err := json.Marshal(spec)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"RemoteWrapper marshal error %s:"</span>, err)
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-7">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Copy JSON to remote temporary file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	specJSON := <span class="hljs-keyword">string</span>(j)
+	o, e, success, status := RemoteShell(*inst.PublicIpAddress,
+		user,
+		keypath,
+		&amp;specJSON,
+		<span class="hljs-string">`export foo=$(mktemp ./.mithras/scripts/wrapperXXXXXX); dd of=$foo oflag=append conv=notrunc &gt;/dev/null 2&gt;&amp;1 &gt; /dev/null; echo $foo`</span>,
+		<span class="hljs-literal">nil</span>)
+	<span class="hljs-keyword">if</span> !success {
+		log.Fatalf(<span class="hljs-string">"Error moving script to remote system '%s': success: %t; %s %s"</span>,
+			*inst.PublicIpAddress, status, *o, *e)
+	}
+	remoteFile := strings.TrimSpace(*o)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-8">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <p>run it via ssh</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, <span class="hljs-literal">nil</span>, <span class="hljs-string">".mithras/bin/wrapper &lt; "</span>+remoteFile, <span class="hljs-literal">nil</span>)
+	<span class="hljs-keyword">if</span> !success {
+		log.Fatalf(<span class="hljs-string">"Error running wrapper '%s' on remote system '%s': success: %t; %s %s"</span>,
+			cmd, *inst.PublicIpAddress, status, *o, *e)
+	}
+	remoteOut := strings.TrimSpace(*o)
+
+	<span class="hljs-keyword">var</span> results Results
+	<span class="hljs-keyword">if</span> err := json.Unmarshal([]<span class="hljs-keyword">byte</span>(remoteOut), &amp;results); err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"Can't unmarshall remote run output: %s (%s)"</span>, err, remoteOut)
+	}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-9">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>Dump the temporary file</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">defer</span> <span class="hljs-keyword">func</span>() {
+		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, <span class="hljs-literal">nil</span>, fmt.Sprintf(<span class="hljs-string">`rm %s`</span>, remoteFile), <span class="hljs-literal">nil</span>)
+		<span class="hljs-keyword">if</span> !success {
+			log.Fatalf(<span class="hljs-string">"Error removing script on remote system '%s': success: %t; %s %s"</span>,
+				*inst.PublicIpAddress, status, *o, *e)
+		}
+	}()
+
+	<span class="hljs-keyword">return</span> &amp;results.Out, &amp;results.Err, results.Success, results.Status
+}
+
+<span class="hljs-keyword">func</span> CopyToRemote(ip <span class="hljs-keyword">string</span>, user <span class="hljs-keyword">string</span>, keypath <span class="hljs-keyword">string</span>, src <span class="hljs-keyword">string</span>, dest <span class="hljs-keyword">string</span>) (*<span class="hljs-keyword">string</span>, *<span class="hljs-keyword">string</span>, <span class="hljs-keyword">bool</span>, <span class="hljs-keyword">int</span>) {
+
+	args := []<span class="hljs-keyword">string</span>{
+		<span class="hljs-string">"-p"</span>, <span class="hljs-comment">// preserve</span>
+		<span class="hljs-string">"-r"</span>, <span class="hljs-comment">// recursive</span>
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"IdentityFile="</span> + keypath,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"KbdInteractiveAuthentication=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"StrictHostKeyChecking=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"PasswordAuthentication=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"User="</span> + user,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"ConnectTimeout=10"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey"</span>,
+		src,
+		ip + <span class="hljs-string">":"</span> + dest}
+
+	<span class="hljs-keyword">return</span> Exec(<span class="hljs-string">"scp"</span>, args, <span class="hljs-literal">nil</span>, <span class="hljs-literal">nil</span>)
+}
+
+<span class="hljs-keyword">func</span> RemoteShell(ip <span class="hljs-keyword">string</span>, user <span class="hljs-keyword">string</span>, keypath <span class="hljs-keyword">string</span>, input *<span class="hljs-keyword">string</span>, cmd <span class="hljs-keyword">string</span>, env *<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>) (*<span class="hljs-keyword">string</span>, *<span class="hljs-keyword">string</span>, <span class="hljs-keyword">bool</span>, <span class="hljs-keyword">int</span>) {
+	args := []<span class="hljs-keyword">string</span>{
+		<span class="hljs-string">"ssh"</span>,
+		<span class="hljs-string">"-C"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"ForwardAgent=yes"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"IdentityFile="</span> + keypath,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"KbdInteractiveAuthentication=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"StrictHostKeyChecking=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"PasswordAuthentication=no"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"User="</span> + user,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"ConnectTimeout=10"</span>,
+		<span class="hljs-string">"-o"</span>, <span class="hljs-string">"PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey"</span>}
+	<span class="hljs-keyword">if</span> input == <span class="hljs-literal">nil</span> {
+		args = <span class="hljs-built_in">append</span>(args, <span class="hljs-string">"-tt"</span>)
+	}
+	args = <span class="hljs-built_in">append</span>(args, ip)
+	args = <span class="hljs-built_in">append</span>(args, cmd)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-10">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>fmt.Println(“ssh-agent “ + strings.Join(args, “ “))</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">return</span> Exec(<span class="hljs-string">"ssh-agent"</span>, args, input, env)
+}
+
+<span class="hljs-keyword">func</span> Exec(cmd <span class="hljs-keyword">string</span>, args []<span class="hljs-keyword">string</span>, input *<span class="hljs-keyword">string</span>, env *<span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>) (*<span class="hljs-keyword">string</span>, *<span class="hljs-keyword">string</span>, <span class="hljs-keyword">bool</span>, <span class="hljs-keyword">int</span>) {
+	c := exec.Command(cmd, args...)
+
+	<span class="hljs-keyword">var</span> out bytes.Buffer
+	<span class="hljs-keyword">var</span> err bytes.Buffer
+	c.Stdout = &amp;out
+	c.Stderr = &amp;err
+	<span class="hljs-keyword">if</span> input != <span class="hljs-literal">nil</span> {
+		c.Stdin = bufio.NewReader(bytes.NewBufferString(*input))
+	}
+
+	<span class="hljs-keyword">if</span> env != <span class="hljs-literal">nil</span> {
+		newEnv := []<span class="hljs-keyword">string</span>{}
+		<span class="hljs-keyword">for</span> k, v := <span class="hljs-keyword">range</span> *env {
+			newEnv = <span class="hljs-built_in">append</span>(newEnv, fmt.Sprintf(<span class="hljs-string">"%s=%s"</span>, k, v))
+		}
+		c.Env = newEnv
+	}
+
+	e := c.Run()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-11">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>ssh exits with the exit status of the remote command or with 255 if an error occurred</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">var</span> status <span class="hljs-keyword">int</span>
+	<span class="hljs-keyword">if</span> e1, ok := e.(*exec.ExitError); ok {
+		status = e1.Sys().(syscall.WaitStatus).ExitStatus()
+	}
+
+	resultErr := err.String()
+	resultOut := out.String()
+	ok := <span class="hljs-literal">true</span>
+	<span class="hljs-keyword">if</span> e != <span class="hljs-literal">nil</span> || !c.ProcessState.Success() || (status == <span class="hljs-number">255</span>) {
+		ok = <span class="hljs-literal">false</span>
+	}
+
+	<span class="hljs-keyword">return</span> &amp;resultOut, &amp;resultErr, ok, status
+}
+
+<span class="hljs-keyword">func</span> init() {
+	mcore.RegisterInit(<span class="hljs-keyword">func</span>(rt *otto.Otto) {
+		<span class="hljs-keyword">var</span> o1 *otto.Object
+		<span class="hljs-keyword">if</span> a, err := rt.Get(<span class="hljs-string">"mithras"</span>); err != <span class="hljs-literal">nil</span> || a.IsUndefined() {
+			rt.Object(<span class="hljs-string">`mithras = {}`</span>)
+		} <span class="hljs-keyword">else</span> {
+			<span class="hljs-keyword">if</span> b, err := a.Object().Get(<span class="hljs-string">"remote"</span>); err != <span class="hljs-literal">nil</span> || b.IsUndefined() {
+				o1, _ = rt.Object(<span class="hljs-string">`mithras.remote = {}`</span>)
+			} <span class="hljs-keyword">else</span> {
+				o1 = b.Object()
+			}
+		}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-12">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Expose CopyToRemote</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		o1.Set(<span class="hljs-string">"scp"</span>, <span class="hljs-keyword">func</span>(ip <span class="hljs-keyword">string</span>, user <span class="hljs-keyword">string</span>, keypath <span class="hljs-keyword">string</span>, src <span class="hljs-keyword">string</span>, dest <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(CopyToRemote(ip, user, keypath, src, dest))
+		})</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Expose RemoteMithras</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		f := <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			verbose := mcore.IsVerbose(rt)
+
+			<span class="hljs-keyword">var</span> instance ec2.Instance
+			<span class="hljs-keyword">var</span> export <span class="hljs-keyword">interface</span>{}
+			export, err := call.Argument(<span class="hljs-number">0</span>).Export()
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't export first arg to remote: %s"</span>, err)
+			}
+			marshalled, err := json.Marshal(export)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't marshal first arg to remote: %s"</span>, err)
+			}
+			<span class="hljs-keyword">if</span> err = json.Unmarshal(marshalled, &amp;instance); err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall remote run instance: %s"</span>, err)
+			}
+
+			user := call.Argument(<span class="hljs-number">1</span>).String()
+			key := call.Argument(<span class="hljs-number">2</span>).String()
+			js := call.Argument(<span class="hljs-number">3</span>).String()
+			become := <span class="hljs-literal">false</span>
+			<span class="hljs-keyword">var</span> becomeUser, becomeMethod <span class="hljs-keyword">string</span>
+			<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(call.ArgumentList) &gt; <span class="hljs-number">4</span> {
+				become, err = call.Argument(<span class="hljs-number">4</span>).ToBoolean()
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Error remote run become arg: %s"</span>, err)
+				}
+			}
+			<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(call.ArgumentList) &gt; <span class="hljs-number">5</span> {
+				becomeUser = call.Argument(<span class="hljs-number">5</span>).String()
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Error remote run become arg: %s"</span>, err)
+				}
+			}
+			<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(call.ArgumentList) &gt; <span class="hljs-number">6</span> {
+				becomeMethod = call.Argument(<span class="hljs-number">6</span>).String()
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Error remote run become arg: %s"</span>, err)
+				}
+			}
+
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(RemoteMithras(&amp;instance, user, key, js, become, becomeUser, becomeMethod, verbose))
+		}
+		o1.Set(<span class="hljs-string">"mithras"</span>, f)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-14">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Expose RemoteWrapper</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		f = <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			verbose := mcore.IsVerbose(rt)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-15">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Translate first arg into instance</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> instance ec2.Instance
+			<span class="hljs-keyword">var</span> export <span class="hljs-keyword">interface</span>{}
+			export, err := call.Argument(<span class="hljs-number">0</span>).Export()
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't export first arg to remote: %s"</span>, err)
+			}
+			marshalled, err := json.Marshal(export)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't marshal first arg to remote: %s"</span>, err)
+			}
+			<span class="hljs-keyword">if</span> err = json.Unmarshal(marshalled, &amp;instance); err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall remote wrapper instance: %s"</span>, err)
+			}
+
+			user := call.Argument(<span class="hljs-number">1</span>).String()
+			key := call.Argument(<span class="hljs-number">2</span>).String()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-16">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>We need a slice of strings for this arg</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> cmd []<span class="hljs-keyword">string</span>
+			<span class="hljs-keyword">if</span> call.Argument(<span class="hljs-number">3</span>).Class() != <span class="hljs-string">"Array"</span> {
+				log.Fatalf(<span class="hljs-string">"Remote wrapper command arg must be an array."</span>)
+			}
+			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">3</span>))
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't create json for remote wrapper: %s"</span>, err)
+			}
+			err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;cmd)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall remote wrapper json: %s"</span>, err)
+			}</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-17">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>The env is a map of string -&gt; string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> env <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>
+			<span class="hljs-keyword">if</span> call.Argument(<span class="hljs-number">4</span>).Class() != <span class="hljs-string">"Object"</span> &amp;&amp;
+				!call.Argument(<span class="hljs-number">4</span>).IsUndefined() &amp;&amp;
+				!call.Argument(<span class="hljs-number">4</span>).IsNull() {
+				log.Fatalf(<span class="hljs-string">"Remote wrapper env arg must be an object."</span>)
+			}
+			<span class="hljs-keyword">if</span> !call.Argument(<span class="hljs-number">4</span>).IsUndefined() &amp;&amp; !call.Argument(<span class="hljs-number">4</span>).IsNull() {
+				js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+				s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">4</span>))
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Can't create json for remote wrapper: %s"</span>, err)
+				}
+				err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;env)
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Can't unmarshall remote wrapper json: %s"</span>, err)
+				}
+			}
+
+			verbose = mcore.IsVerbose(rt)
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(RemoteWrapper(&amp;instance, user, key, cmd, &amp;env, verbose))
+		}
+		o1.Set(<span class="hljs-string">"wrapper"</span>, f)</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-18">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Expose RemoteShell</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>		f = <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-19">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Translate args</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			ip := call.Argument(<span class="hljs-number">0</span>).String()
+			user := call.Argument(<span class="hljs-number">1</span>).String()
+			key := call.Argument(<span class="hljs-number">2</span>).String()
+			<span class="hljs-keyword">var</span> input *<span class="hljs-keyword">string</span>
+			<span class="hljs-keyword">if</span> call.Argument(<span class="hljs-number">3</span>).IsUndefined() || call.Argument(<span class="hljs-number">3</span>).IsNull() {
+				input = <span class="hljs-literal">nil</span>
+			} <span class="hljs-keyword">else</span> {
+				s := call.Argument(<span class="hljs-number">3</span>).String()
+				input = &amp;s
+			}
+			cmd := call.Argument(<span class="hljs-number">4</span>).String()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-20">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <p>The env is a map of string -&gt; string</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> env <span class="hljs-keyword">map</span>[<span class="hljs-keyword">string</span>]<span class="hljs-keyword">string</span>
+			<span class="hljs-keyword">if</span> call.Argument(<span class="hljs-number">5</span>).Class() != <span class="hljs-string">"Object"</span> &amp;&amp;
+				!call.Argument(<span class="hljs-number">5</span>).IsUndefined() &amp;&amp;
+				!call.Argument(<span class="hljs-number">5</span>).IsNull() {
+				log.Fatalf(<span class="hljs-string">"Remote wrapper env arg must be an object."</span>)
+			}
+			<span class="hljs-keyword">if</span> !call.Argument(<span class="hljs-number">5</span>).IsUndefined() &amp;&amp; !call.Argument(<span class="hljs-number">5</span>).IsNull() {
+				js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+				s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">5</span>))
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Can't create json for remote wrapper: %s"</span>, err)
+				}
+				err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;env)
+				<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+					log.Fatalf(<span class="hljs-string">"Can't unmarshall remote wrapper json: %s"</span>, err)
+				}
+			}
+
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(RemoteShell(ip, user, key, input, cmd, &amp;env))
+		}
+		o1.Set(<span class="hljs-string">"shell"</span>, f)
+
+	})
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>
