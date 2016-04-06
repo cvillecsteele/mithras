@@ -13,11 +13,12 @@ import (
 )
 
 func buildIt(c *cli.Context) {
-	arch := c.String("arch")
-	op := c.String("os")
-
 	build.CachePath = filepath.Join(c.GlobalString("home"), "cache")
-	build.BuildFor(op, arch)
+	for _, arch := range c.StringSlice("arch") {
+		for _, os := range c.StringSlice("os") {
+			build.BuildFor(os, arch)
+		}
+	}
 }
 
 func runRepl(c *cli.Context) {
@@ -65,6 +66,9 @@ func run(c *cli.Context, versions []ModuleVersion) {
 func Run(versions []ModuleVersion) {
 	cli.VersionFlag.Name = "version, V"
 
+	linux := cli.StringSlice{"linux"}
+	arch := cli.StringSlice{"386"}
+
 	app := cli.NewApp()
 	app.Name = "mithras"
 	app.Usage = "Manage resources in AWS"
@@ -110,33 +114,14 @@ func Run(versions []ModuleVersion) {
 			Usage:   "Build helpers",
 			Action:  buildIt,
 			Flags: []cli.Flag{
-				cli.StringFlag{
+				cli.StringSliceFlag{
 					Name:  "os, o",
-					Value: "linux",
+					Value: &linux,
 					Usage: "Set GOOS to this value for build",
 				},
-				cli.StringFlag{
+				cli.StringSliceFlag{
 					Name:  "arch, a",
-					Value: "386",
-					Usage: "Set GOARCH to this value for build",
-				},
-			},
-		},
-		// build
-		{
-			Name:    "build",
-			Aliases: []string{"b"},
-			Usage:   "Build helpers",
-			Action:  buildIt,
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:  "os, o",
-					Value: "linux",
-					Usage: "Set GOOS to this value for build",
-				},
-				cli.StringFlag{
-					Name:  "arch, a",
-					Value: "386",
+					Value: &arch,
 					Usage: "Set GOARCH to this value for build",
 				},
 			},
@@ -144,10 +129,9 @@ func Run(versions []ModuleVersion) {
 
 		// repl
 		{
-			Name:    "repl",
-			Aliases: []string{"r"},
-			Usage:   "Run JS repl",
-			Action:  runRepl,
+			Name:   "repl",
+			Usage:  "Run JS repl",
+			Action: runRepl,
 		},
 	}
 

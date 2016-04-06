@@ -1,10 +1,16 @@
 function run() {
 
+    chan.make("test", 0);
     var thing = function(x) {
-	console.log(x);
+	console.log("go routine about to send");
+	chan.snd("test", x);
+	console.log("go routine bye");
     }
-    go.run(function() { thing(72); });
-    time.sleep(10);
+    go.run(function() { thing("hello"); });
+    console.log("main about to sleep");
+    time.sleep(3);
+    console.log("main about to rcv");
+    console.log(chan.rcv("test"));
     os.exit(1);
 
     // Caching

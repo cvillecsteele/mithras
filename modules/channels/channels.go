@@ -1,7 +1,7 @@
 package channels
 
 import (
-	// "log"
+	"log"
 	"reflect"
 
 	"github.com/robertkrimen/otto"
@@ -37,6 +37,7 @@ func init() {
 		o1.Set("rcv", func(name string) otto.Value {
 			val, ok := <-Channels[name]
 			f := mcore.Sanitizer(rt)
+			log.Println(val, ok)
 			return f(val, ok)
 		})
 		o1.Set("range", func(call otto.FunctionCall) otto.Value {

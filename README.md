@@ -38,10 +38,11 @@ TODO
 
 * DOCUMENTATION
 
-* goroutines
-* write select
+* test goroutines interaction with otto runtime
+* select for writes
 * repl should have mithras env loaded
 * copy - localFile so we don't read it into memory??
+* config for 'mithras build'  
 * test base config in nginx
 * ssh pipelines
 * versioned js modules
