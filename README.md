@@ -82,6 +82,31 @@ TODO
 ###############################################################################
 
 * DOCUMENTATION
+ * elb
+ * exec
+ * filepath
+ * fs
+ * goroutines
+ * iam
+ * instance
+ * log
+ * network
+ * os
+ * peek
+ * rds
+ * region
+ * remote
+ * require
+ * route53
+ * routetables
+ * s3
+ * service
+ * subnet
+ * tag
+ * time
+ * user
+ * web
+ * wrapper
 
 * test goroutines interaction with otto runtime
 * select for writes

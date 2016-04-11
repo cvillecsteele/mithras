@@ -4,383 +4,472 @@
 <head>
   <title>dep_graph.js</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
 </head>
 <body>
-  <div id="container">
-    <div id="background"></div>
-    
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page_wrapper">
-            <div id="jump_page">
-              
-                
-                <a class="source" href="cli.html">
-                  cli.go
-                </a>
-              
-                
-                <a class="source" href="become.html">
-                  become.js
-                </a>
-              
-                
-                <a class="source" href="cache.html">
-                  cache.js
-                </a>
-              
-                
-                <a class="source" href="copy.html">
-                  copy.js
-                </a>
-              
-                
-                <a class="source" href="dep_graph.html">
-                  dep_graph.js
-                </a>
-              
-                
-                <a class="source" href="elasticache.html">
-                  elasticache.js
-                </a>
-              
-                
-                <a class="source" href="elb.html">
-                  elb.js
-                </a>
-              
-                
-                <a class="source" href="file.html">
-                  file.js
-                </a>
-              
-                
-                <a class="source" href="git.html">
-                  git.js
-                </a>
-              
-                
-                <a class="source" href="iam.html">
-                  iam.js
-                </a>
-              
-                
-                <a class="source" href="instance.html">
-                  instance.js
-                </a>
-              
-                
-                <a class="source" href="mithras.html">
-                  mithras.js
-                </a>
-              
-                
-                <a class="source" href="network.html">
-                  network.js
-                </a>
-              
-                
-                <a class="source" href="object_path.html">
-                  object_path.js
-                </a>
-              
-                
-                <a class="source" href="packager.html">
-                  packager.js
-                </a>
-              
-                
-                <a class="source" href="rds.html">
-                  rds.js
-                </a>
-              
-                
-                <a class="source" href="route53.html">
-                  route53.js
-                </a>
-              
-                
-                <a class="source" href="s3.html">
-                  s3.js
-                </a>
-              
-                
-                <a class="source" href="scp.html">
-                  scp.js
-                </a>
-              
-                
-                <a class="source" href="secgroup.html">
-                  secgroup.js
-                </a>
-              
-                
-                <a class="source" href="service.html">
-                  service.js
-                </a>
-              
-                
-                <a class="source" href="shell.html">
-                  shell.js
-                </a>
-              
-                
-                <a class="source" href="sprintf.html">
-                  sprintf.js
-                </a>
-              
-                
-                <a class="source" href="subnet.html">
-                  subnet.js
-                </a>
-              
-                
-                <a class="source" href="traverse.html">
-                  traverse.js
-                </a>
-              
-                
-                <a class="source" href="vpc.html">
-                  vpc.js
-                </a>
-              
-                
-                <a class="source" href="main.html">
-                  main.go
-                </a>
-              
-                
-                <a class="source" href="build.html">
-                  build.go
-                </a>
-              
-                
-                <a class="source" href="channels.html">
-                  channels.go
-                </a>
-              
-                
-                <a class="source" href="core.html">
-                  core.go
-                </a>
-              
-                
-                <a class="source" href="elasticache.html">
-                  elasticache.go
-                </a>
-              
-                
-                <a class="source" href="elb.html">
-                  elb.go
-                </a>
-              
-                
-                <a class="source" href="exec.html">
-                  exec.go
-                </a>
-              
-                
-                <a class="source" href="filepath.html">
-                  filepath.go
-                </a>
-              
-                
-                <a class="source" href="fs.html">
-                  fs.go
-                </a>
-              
-                
-                <a class="source" href="goroutines.html">
-                  goroutines.go
-                </a>
-              
-                
-                <a class="source" href="iam.html">
-                  iam.go
-                </a>
-              
-                
-                <a class="source" href="instance.html">
-                  instance.go
-                </a>
-              
-                
-                <a class="source" href="log.html">
-                  log.go
-                </a>
-              
-                
-                <a class="source" href="network.html">
-                  network.go
-                </a>
-              
-                
-                <a class="source" href="os.html">
-                  os.go
-                </a>
-              
-                
-                <a class="source" href="peek.html">
-                  peek.go
-                </a>
-              
-                
-                <a class="source" href="rds.html">
-                  rds.go
-                </a>
-              
-                
-                <a class="source" href="region.html">
-                  region.go
-                </a>
-              
-                
-                <a class="source" href="remote.html">
-                  remote.go
-                </a>
-              
-                
-                <a class="source" href="require.html">
-                  require.go
-                </a>
-              
-                
-                <a class="source" href="route53.html">
-                  route53.go
-                </a>
-              
-                
-                <a class="source" href="routetables.html">
-                  routetables.go
-                </a>
-              
-                
-                <a class="source" href="s3.html">
-                  s3.go
-                </a>
-              
-                
-                <a class="source" href="secgroup.html">
-                  secgroup.go
-                </a>
-              
-                
-                <a class="source" href="service.html">
-                  service.go
-                </a>
-              
-                
-                <a class="source" href="subnet.html">
-                  subnet.go
-                </a>
-              
-                
-                <a class="source" href="tag.html">
-                  tag.go
-                </a>
-              
-                
-                <a class="source" href="time.html">
-                  time.go
-                </a>
-              
-                
-                <a class="source" href="user.html">
-                  user.go
-                </a>
-              
-                
-                <a class="source" href="vpc.html">
-                  vpc.go
-                </a>
-              
-                
-                <a class="source" href="web.html">
-                  web.go
-                </a>
-              
-                
-                <a class="source" href="wrapper.html">
-                  wrapper.go
-                </a>
-              
-                
-                <a class="source" href="script.html">
-                  script.go
-                </a>
-              
-            </div>
-          </div>
-        </li>
-      </ul>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>dep_graph.js</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              <p>Copyright (C) 2013-2015 by Jim Riecken</p>
+  <div class="container">
+    <div class="page">
 
-            </div>
-            
-        </li>
+      <div class="header">
         
+          <h1>dep_graph.js</h1>
         
-        <li id="section-2">
-            <div class="annotation">
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
               
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>Permission is hereby granted, free of charge, to any person obtaining a copy
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>Copyright (C) 2013-2015 by Jim Riecken</p>
+
+        
+      
+        
+        <p>Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the “Software”), to deal
     in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:</p>
 
-            </div>
-            
-        </li>
         
+      
         
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>The above copyright notice and this permission notice shall be included in
+        <p>The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.</p>
 
-            </div>
-            
-        </li>
         
+      
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
@@ -388,9 +477,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>
+        
+          <div class='highlight'><pre>
 (<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">window</span>) </span>{
 <span class="hljs-meta">    'use strict'</span>
 
@@ -568,44 +656,28 @@ THE SOFTWARE.</p>
 	    <span class="hljs-keyword">var</span> keys = <span class="hljs-built_in">Object</span>.keys(<span class="hljs-keyword">this</span>.nodes);
 	    <span class="hljs-keyword">if</span> (keys.length === <span class="hljs-number">0</span>) {
 		<span class="hljs-keyword">return</span> result; <span class="hljs-comment">// Empty graph</span>
-	    } <span class="hljs-keyword">else</span> {</pre></div></div>
-            
-        </li>
+	    } <span class="hljs-keyword">else</span> {</pre></div>
         
+      
         
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>Look for cycles - we run the DFS starting at all the nodes in case there
+        <p>Look for cycles - we run the DFS starting at all the nodes in case there
 are several disconnected subgraphs inside this dependency graph.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		<span class="hljs-keyword">var</span> CycleDFS = createDFS(<span class="hljs-keyword">this</span>.outgoingEdges, <span class="hljs-literal">false</span>, []);
+        
+          <div class='highlight'><pre>		<span class="hljs-keyword">var</span> CycleDFS = createDFS(<span class="hljs-keyword">this</span>.outgoingEdges, <span class="hljs-literal">false</span>, []);
 		keys.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">n</span>) </span>{
 		    CycleDFS(n);
 		});
 
-		<span class="hljs-keyword">var</span> DFS = createDFS(<span class="hljs-keyword">this</span>.outgoingEdges, leavesOnly, result);</pre></div></div>
-            
-        </li>
+		<span class="hljs-keyword">var</span> DFS = createDFS(<span class="hljs-keyword">this</span>.outgoingEdges, leavesOnly, result);</pre></div>
         
+      
         
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Find all potential starting points (nodes with nothing depending on them) an
+        <p>Find all potential starting points (nodes with nothing depending on them) an
 run a DFS starting at these points to get the order</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		keys.filter(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node</span>) </span>{
+        
+          <div class='highlight'><pre>		keys.filter(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">node</span>) </span>{
 		    <span class="hljs-keyword">return</span> self.incomingEdges[node].length === <span class="hljs-number">0</span>;
 		}).forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">n</span>) </span>{
 		    DFS(n);
@@ -615,29 +687,21 @@ run a DFS starting at these points to get the order</p>
 	    }
 	},
 
-    };</pre></div></div>
-            
-        </li>
+    };</pre></div>
         
+      
         
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>export</p>
+        <p>export</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports !== <span class="hljs-string">'undefined'</span>) {
+        
+          <div class='highlight'><pre>    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> exports !== <span class="hljs-string">'undefined'</span>) {
 	exports.DepGraph = DepGraph;
     }
-})(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> === <span class="hljs-string">'undefined'</span> ? <span class="hljs-keyword">this</span> : <span class="hljs-built_in">window</span>);</pre></div></div>
-            
-        </li>
+})(<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">window</span> === <span class="hljs-string">'undefined'</span> ? <span class="hljs-keyword">this</span> : <span class="hljs-built_in">window</span>);</pre></div>
         
-    </ul>
+      
+      <div class="fleur">h</div>
+    </div>
   </div>
 </body>
 </html>

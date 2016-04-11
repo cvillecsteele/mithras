@@ -35,6 +35,67 @@
 	resourceMap: resourceMap
 	become: become
 
+	modules: {
+	    handlers: {
+		funcs: {}
+		register: function(name, cb) {
+		    mithras.modules.handlers.funcs[name] = cb;
+		}
+		run: function(catalog, resources, targetResource, dict) {
+		    var name = targetResource.name;
+		    var handled = false;
+		    _.each(mithras.modules.handlers.funcs, function(f, fname) {
+			var result = f(catalog, resources, targetResource);
+			var target = result[0];
+			if (!handled) {
+			    handled = result[1];
+			    if (handled && target) {
+				var r = _.find(resources, function(r){ 
+				    return r.name === name; 
+				});
+				r._target = target;
+			    }
+			}
+		    });
+		    if (!handled && targetResource.module) {
+			log0(sprintf("Resource '%s': module '%s' not handled.", 
+				     targetResource.name,
+				     targetResource.module));
+			os.exit(1);
+		    }
+		}
+	    }
+	    preflight: {
+		funcs: []
+		register: function(name, cb) {
+		    mithras.modules.preflight.funcs.push(cb);
+		}
+		run: function(catalog, resources, order) {
+		    var dict = resourceMap(resources);
+		    _.each(order, function(name) {
+			log0(sprintf("PREFLIGHT: %s", name));
+			var updated = mithras.updateResource(dict[name], 
+							     catalog, 
+							     resources, 
+							     name);
+			dict[name] = updated;
+			_.each(mithras.modules.preflight.funcs, function(f) {
+			    var result = f(catalog, updated);
+			    var target = result[0];
+			    var handled = result[1];
+			    if (handled && target) {
+				var r = _.find(resources, function(r){ 
+				    return r.name === name; 
+				});
+				r.params = updated.params;
+				r._target = target;
+			    }
+			});
+		    });
+		}
+	    }
+	}
+
 	// Example template supplied by caller:
 	// { 
 	//   dependsOn: ["webserver"]
@@ -256,7 +317,7 @@
 		}
 	    });
 	    
-	    // Get foward and reverse order
+	    // Get forward and reverse order
 	    var fwdOrder = fwdDeps.overallOrder();
 	    var revOrder = revDeps.overallOrder();
 	    
@@ -464,66 +525,7 @@
 
     }); // extend
 
-    _.extend(mithras.modules, {
-	handlers: {
-	    funcs: {}
-	    register: function(name, cb) {
-		mithras.modules.handlers.funcs[name] = cb;
-	    }
-	    run: function(catalog, resources, targetResource, dict) {
-		var name = targetResource.name;
-		var handled = false;
-		_.each(mithras.modules.handlers.funcs, function(f, fname) {
-		    var result = f(catalog, resources, targetResource);
-		    var target = result[0];
-		    if (!handled) {
-			handled = result[1];
-			if (handled && target) {
-			    var r = _.find(resources, function(r){ 
-				return r.name === name; 
-			    });
-			    r._target = target;
-			}
-		    }
-		});
-		if (!handled && targetResource.module) {
-		    log0(sprintf("Resource '%s': module '%s' not handled.", 
-				 targetResource.name,
-				 targetResource.module));
-		    os.exit(1);
-		}
-	    }
-	}
-	preflight: {
-	    funcs: []
-	    register: function(name, cb) {
-		mithras.modules.preflight.funcs.push(cb);
-	    }
-	    run: function(catalog, resources, order) {
-		var dict = resourceMap(resources);
-		_.each(order, function(name) {
-		    log0(sprintf("PREFLIGHT: %s", name));
-		    var updated = mithras.updateResource(dict[name], 
-							 catalog, 
-							 resources, 
-							 name);
-		    dict[name] = updated;
-		    _.each(mithras.modules.preflight.funcs, function(f) {
-			var result = f(catalog, updated);
-			var target = result[0];
-			var handled = result[1];
-			if (handled && target) {
-			    var r = _.find(resources, function(r){ 
-				return r.name === name; 
-			    });
-			    r.params = updated.params;
-			    r._target = target;
-			}
-		    });
-		});
-	    }
-	}
-    });
+
 
     // Load handlers
     var copy = require("copy").init();

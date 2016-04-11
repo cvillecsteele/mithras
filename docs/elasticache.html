@@ -2,344 +2,553 @@
 
 <html>
 <head>
-  <title>elasticache.go</title>
+  <title>CORE FUNCTIONS: ELASTICACHE</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
 </head>
 <body>
-  <div id="container">
-    <div id="background"></div>
-    
-      <ul id="jump_to">
-        <li>
-          <a class="large" href="javascript:void(0);">Jump To &hellip;</a>
-          <a class="small" href="javascript:void(0);">+</a>
-          <div id="jump_wrapper">
-          <div id="jump_page_wrapper">
-            <div id="jump_page">
-              
-                
-                <a class="source" href="cli.html">
-                  cli.go
-                </a>
-              
-                
-                <a class="source" href="become.html">
-                  become.js
-                </a>
-              
-                
-                <a class="source" href="cache.html">
-                  cache.js
-                </a>
-              
-                
-                <a class="source" href="copy.html">
-                  copy.js
-                </a>
-              
-                
-                <a class="source" href="dep_graph.html">
-                  dep_graph.js
-                </a>
-              
-                
-                <a class="source" href="elasticache.html">
-                  elasticache.js
-                </a>
-              
-                
-                <a class="source" href="elb.html">
-                  elb.js
-                </a>
-              
-                
-                <a class="source" href="file.html">
-                  file.js
-                </a>
-              
-                
-                <a class="source" href="git.html">
-                  git.js
-                </a>
-              
-                
-                <a class="source" href="iam.html">
-                  iam.js
-                </a>
-              
-                
-                <a class="source" href="instance.html">
-                  instance.js
-                </a>
-              
-                
-                <a class="source" href="mithras.html">
-                  mithras.js
-                </a>
-              
-                
-                <a class="source" href="network.html">
-                  network.js
-                </a>
-              
-                
-                <a class="source" href="object_path.html">
-                  object_path.js
-                </a>
-              
-                
-                <a class="source" href="packager.html">
-                  packager.js
-                </a>
-              
-                
-                <a class="source" href="rds.html">
-                  rds.js
-                </a>
-              
-                
-                <a class="source" href="route53.html">
-                  route53.js
-                </a>
-              
-                
-                <a class="source" href="s3.html">
-                  s3.js
-                </a>
-              
-                
-                <a class="source" href="scp.html">
-                  scp.js
-                </a>
-              
-                
-                <a class="source" href="secgroup.html">
-                  secgroup.js
-                </a>
-              
-                
-                <a class="source" href="service.html">
-                  service.js
-                </a>
-              
-                
-                <a class="source" href="shell.html">
-                  shell.js
-                </a>
-              
-                
-                <a class="source" href="sprintf.html">
-                  sprintf.js
-                </a>
-              
-                
-                <a class="source" href="subnet.html">
-                  subnet.js
-                </a>
-              
-                
-                <a class="source" href="traverse.html">
-                  traverse.js
-                </a>
-              
-                
-                <a class="source" href="vpc.html">
-                  vpc.js
-                </a>
-              
-                
-                <a class="source" href="main.html">
-                  main.go
-                </a>
-              
-                
-                <a class="source" href="build.html">
-                  build.go
-                </a>
-              
-                
-                <a class="source" href="channels.html">
-                  channels.go
-                </a>
-              
-                
-                <a class="source" href="core.html">
-                  core.go
-                </a>
-              
-                
-                <a class="source" href="elasticache.html">
-                  elasticache.go
-                </a>
-              
-                
-                <a class="source" href="elb.html">
-                  elb.go
-                </a>
-              
-                
-                <a class="source" href="exec.html">
-                  exec.go
-                </a>
-              
-                
-                <a class="source" href="filepath.html">
-                  filepath.go
-                </a>
-              
-                
-                <a class="source" href="fs.html">
-                  fs.go
-                </a>
-              
-                
-                <a class="source" href="goroutines.html">
-                  goroutines.go
-                </a>
-              
-                
-                <a class="source" href="iam.html">
-                  iam.go
-                </a>
-              
-                
-                <a class="source" href="instance.html">
-                  instance.go
-                </a>
-              
-                
-                <a class="source" href="log.html">
-                  log.go
-                </a>
-              
-                
-                <a class="source" href="network.html">
-                  network.go
-                </a>
-              
-                
-                <a class="source" href="os.html">
-                  os.go
-                </a>
-              
-                
-                <a class="source" href="peek.html">
-                  peek.go
-                </a>
-              
-                
-                <a class="source" href="rds.html">
-                  rds.go
-                </a>
-              
-                
-                <a class="source" href="region.html">
-                  region.go
-                </a>
-              
-                
-                <a class="source" href="remote.html">
-                  remote.go
-                </a>
-              
-                
-                <a class="source" href="require.html">
-                  require.go
-                </a>
-              
-                
-                <a class="source" href="route53.html">
-                  route53.go
-                </a>
-              
-                
-                <a class="source" href="routetables.html">
-                  routetables.go
-                </a>
-              
-                
-                <a class="source" href="s3.html">
-                  s3.go
-                </a>
-              
-                
-                <a class="source" href="secgroup.html">
-                  secgroup.go
-                </a>
-              
-                
-                <a class="source" href="service.html">
-                  service.go
-                </a>
-              
-                
-                <a class="source" href="subnet.html">
-                  subnet.go
-                </a>
-              
-                
-                <a class="source" href="tag.html">
-                  tag.go
-                </a>
-              
-                
-                <a class="source" href="time.html">
-                  time.go
-                </a>
-              
-                
-                <a class="source" href="user.html">
-                  user.go
-                </a>
-              
-                
-                <a class="source" href="vpc.html">
-                  vpc.go
-                </a>
-              
-                
-                <a class="source" href="web.html">
-                  web.go
-                </a>
-              
-                
-                <a class="source" href="wrapper.html">
-                  wrapper.go
-                </a>
-              
-                
-                <a class="source" href="script.html">
-                  script.go
-                </a>
-              
-            </div>
-          </div>
-        </li>
-      </ul>
-    
-    <ul class="sections">
-        
-          <li id="title">
-              <div class="annotation">
-                  <h1>elasticache.go</h1>
-              </div>
-          </li>
-        
-        
-        
-        <li id="section-1">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-1">&#182;</a>
-              </div>
-              
-            </div>
-            
-            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">package</span> elasticache
+  <div class="container">
+    <div class="page">
 
+      <div class="header">
+        
+          
+          <h1 id="core-functions-elasticache">CORE FUNCTIONS: ELASTICACHE</h1>
+
+          
+            <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> elasticache</pre></div>
+          
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>This package exports several entry points into the JS environment,
+including:</p>
+<blockquote>
+<ul>
+<li><a href="#create">aws.elasticache.create</a></li>
+<li><a href="#delete">aws.elasticache.delete</a></li>
+<li><a href="#describe">aws.elasticache.describe</a></li>
+<li><a href="#scan">aws.elasticache.scan</a></li>
+<li><a href="#sgcreate">aws.elasticache.subnetGroups.create</a></li>
+<li><a href="#sgdelete">aws.elasticache.subnetGroups.delete</a></li>
+<li><a href="#sgdescribe">aws.elasticache.subnetGroups.describe</a></li>
+</ul>
+</blockquote>
+<p>This API allows exposes functions to manage AWS cache clusters and
+their associated subnet groups.</p>
+<h2 id="aws-elasticache-create">AWS.ELASTICACHE.CREATE</h2>
+<p><a name="create"></a>
+<code>aws.elasticache.create(region, config);</code></p>
+<p>Create a cache cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> cache = aws.elasticache.create(<span class="hljs-string">"us-east-1"</span>, {
+    CacheClusterId:          <span class="hljs-string">"test-redis"</span>
+    AutoMinorVersionUpgrade: <span class="hljs-literal">true</span>
+    CacheNodeType:           <span class="hljs-string">"cache.t2.small"</span>
+    CacheSubnetGroupName:    <span class="hljs-string">"redis-subnet-group"</span>
+    Engine:                  <span class="hljs-string">"redis"</span>
+    NumCacheNodes:           <span class="hljs-number">1</span>
+    SecurityGroupIds:        []
+    Tags: [
+        {
+           Key:   <span class="hljs-string">"Name"</span>
+           Value: <span class="hljs-string">"test-cluster"</span>
+        },
+    ]
+});
+</code></pre><h2 id="aws-elasticache-delete">AWS.ELASTICACHE.DELETE</h2>
+<p><a name="delete"></a>
+<code>aws.elasticache.delete(region, cache_id);</code></p>
+<p>Delete a cache cluster.</p>
+<p>Example:</p>
+<pre><code>
+ aws.elasticache.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"test-redis"</span>);
+</code></pre><h2 id="aws-elasticache-describe">AWS.ELASTICACHE.DESCRIBE</h2>
+<p><a name="describe"></a>
+<code>aws.elasticache.describe(region, cache_id);</code></p>
+<p>Get information about a cache cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> cache = aws.elasticache.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"test-redis"</span>);
+</code></pre><h2 id="aws-elasticache-scan">AWS.ELASTICACHE.SCAN</h2>
+<p><a name="scan"></a>
+<code>aws.elasticache.scan(region, cache_id);</code></p>
+<p>Get information about all cache clusters.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> caches = aws.elasticache.scan(<span class="hljs-string">"us-east-1"</span>);
+</code></pre><h2 id="aws-elasticache-subnetgroups-create">AWS.ELASTICACHE.SUBNETGROUPS.CREATE</h2>
+<p><a name="sgcreate"></a>
+<code>aws.elasticache.subnetGroups.create(region, config);</code></p>
+<p>Create an elasticache subnet group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> cache = aws.elasticache.create(<span class="hljs-string">"us-east-1"</span>, {
+    CacheClusterId:          <span class="hljs-string">"test-redis"</span>
+    AutoMinorVersionUpgrade: <span class="hljs-literal">true</span>
+    CacheNodeType:           <span class="hljs-string">"cache.t2.small"</span>
+    CacheSubnetGroupName:    <span class="hljs-string">"redis-subnet-group"</span>
+    Engine:                  <span class="hljs-string">"redis"</span>
+    NumCacheNodes:           <span class="hljs-number">1</span>
+    SecurityGroupIds:        []
+    Tags: [
+        {
+           Key:   <span class="hljs-string">"Name"</span>
+           Value: <span class="hljs-string">"test-cluster"</span>
+        },
+    ]
+});
+</code></pre><h2 id="aws-elasticache-subnetgroups-delete">AWS.ELASTICACHE.SUBNETGROUPS.DELETE</h2>
+<p><a name="sgdelete"></a>
+<code>aws.elasticache.subnetGroups.delete(region, cache_id);</code></p>
+<p>Delete a cache subnet group.</p>
+<p>Example:</p>
+<pre><code>
+ aws.elasticache.subnetGroups.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"redis-subnet-group"</span>);
+</code></pre><h2 id="aws-elasticache-subnetgroups-describe">AWS.ELASTICACHE.SUBNETGROUPS.DESCRIBE</h2>
+<p><a name="sgdescribe"></a>
+<code>aws.elasticache.subnetGroups.describe(region, cache_id);</code></p>
+<p>Get information about a cache cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> group = aws.elasticache.subnetGroups.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"redis-subnet-group"</span>);
+</code></pre>
+        
+          <div class='highlight'><pre>
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"encoding/json"</span>
 	<span class="hljs-string">"log"</span>
@@ -417,22 +626,14 @@
 		log.Fatalf(<span class="hljs-string">"Error creating Cache Subnet Group '%s': %s"</span>,
 			*params.CacheSubnetGroupName,
 			err)
-	}</pre></div></div>
-            
-        </li>
+	}</pre></div>
         
+      
         
-        <li id="section-2">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-2">&#182;</a>
-              </div>
-              <p>Wait for it.</p>
+        <p>Wait for it.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	avail := <span class="hljs-literal">false</span>
+        
+          <div class='highlight'><pre>	avail := <span class="hljs-literal">false</span>
 	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ {
 		target := describeSubnetGroup(region, *params.CacheSubnetGroupName)
 		<span class="hljs-keyword">if</span> target != <span class="hljs-literal">nil</span> &amp;&amp; *target.CacheSubnetGroupName == *params.CacheSubnetGroupName {
@@ -462,22 +663,14 @@
 	cache := *resp.CacheCluster
 	id := *cache.CacheClusterId
 
-	<span class="hljs-keyword">if</span> wait {</pre></div></div>
-            
-        </li>
+	<span class="hljs-keyword">if</span> wait {</pre></div>
         
+      
         
-        <li id="section-3">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-3">&#182;</a>
-              </div>
-              <p>Wait for it.</p>
+        <p>Wait for it.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>		avail := <span class="hljs-literal">false</span>
+        
+          <div class='highlight'><pre>		avail := <span class="hljs-literal">false</span>
 		<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++ {
 			target := describe(region, id)
 			<span class="hljs-keyword">if</span> target != <span class="hljs-literal">nil</span> &amp;&amp; *target.CacheClusterId == id &amp;&amp;
@@ -491,22 +684,14 @@
 		<span class="hljs-keyword">if</span> !avail {
 			log.Fatalf(<span class="hljs-string">"Error creating Cache Instance '%s'"</span>, id)
 		}
-	}</pre></div></div>
-            
-        </li>
+	}</pre></div>
         
+      
         
-        <li id="section-4">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-4">&#182;</a>
-              </div>
-              <p>Describe it.</p>
+        <p>Describe it.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	target := describe(region, id)
+        
+          <div class='highlight'><pre>	target := describe(region, id)
 
 	<span class="hljs-keyword">return</span> target
 }
@@ -522,22 +707,14 @@
 
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"Error deleting subnet group: %s"</span>, err)
-	}</pre></div></div>
-            
-        </li>
+	}</pre></div>
         
+      
         
-        <li id="section-5">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-5">&#182;</a>
-              </div>
-              <p>TODO: Wait for it.</p>
+        <p>TODO: Wait for it.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>}
+        
+          <div class='highlight'><pre>}
 
 <span class="hljs-keyword">func</span> <span class="hljs-built_in">delete</span>(region <span class="hljs-keyword">string</span>, params *elasticache.DeleteCacheClusterInput, verbose <span class="hljs-keyword">bool</span>) {
 	svc := elasticache.New(session.New(),
@@ -547,22 +724,14 @@
 
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatal(<span class="hljs-string">"Error deleting cache: %s"</span>, err)
-	}</pre></div></div>
-            
-        </li>
+	}</pre></div>
         
+      
         
-        <li id="section-6">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-6">&#182;</a>
-              </div>
-              <p>Wait for it.</p>
+        <p>Wait for it.</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	avail := <span class="hljs-literal">true</span>
+        
+          <div class='highlight'><pre>	avail := <span class="hljs-literal">true</span>
 	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++ {
 		target := describe(region, *params.CacheClusterId)
 		<span class="hljs-keyword">if</span> target == <span class="hljs-literal">nil</span> {
@@ -589,22 +758,14 @@
 		<span class="hljs-built_in">panic</span>(err)
 	}
 
-	caches := []elasticache.CacheCluster{}</pre></div></div>
-            
-        </li>
+	caches := []elasticache.CacheCluster{}</pre></div>
         
+      
         
-        <li id="section-7">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-7">&#182;</a>
-              </div>
-              <p>shove instances into jsland</p>
+        <p>shove instances into jsland</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>	<span class="hljs-keyword">for</span> _, i := <span class="hljs-keyword">range</span> resp.CacheClusters {
+        
+          <div class='highlight'><pre>	<span class="hljs-keyword">for</span> _, i := <span class="hljs-keyword">range</span> resp.CacheClusters {
 		caches = <span class="hljs-built_in">append</span>(caches, *i)
 	}
 	<span class="hljs-keyword">return</span> mcore.Sanitize(rt, caches)
@@ -639,22 +800,14 @@
 			f := mcore.Sanitizer(rt)
 			<span class="hljs-keyword">return</span> f(describe(region, id))
 		})
-		o1.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div></div>
-            
-        </li>
+		o1.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
         
+      
         
-        <li id="section-8">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-8">&#182;</a>
-              </div>
-              <p>Translate params input into a struct</p>
+        <p>Translate params input into a struct</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.CreateCacheClusterInput
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.CreateCacheClusterInput
 			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
 			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
 			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
@@ -675,22 +828,14 @@
 			f := mcore.Sanitizer(rt)
 			<span class="hljs-keyword">return</span> f(create(region, &amp;input, wait, verbose))
 		})
-		o1.Set(<span class="hljs-string">"delete"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div></div>
-            
-        </li>
+		o1.Set(<span class="hljs-string">"delete"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
         
+      
         
-        <li id="section-9">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-9">&#182;</a>
-              </div>
-              <p>Translate params input into a struct</p>
+        <p>Translate params input into a struct</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.DeleteCacheClusterInput
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.DeleteCacheClusterInput
 			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
 			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
 			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
@@ -714,22 +859,14 @@
 			f := mcore.Sanitizer(rt)
 			<span class="hljs-keyword">return</span> f(describeSubnetGroup(region, id))
 		})
-		o2.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div></div>
-            
-        </li>
+		o2.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
         
+      
         
-        <li id="section-10">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-10">&#182;</a>
-              </div>
-              <p>Translate params input into a struct</p>
+        <p>Translate params input into a struct</p>
 
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.CreateCacheSubnetGroupInput
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input elasticache.CreateCacheSubnetGroupInput
 			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
 			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
 			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
@@ -754,11 +891,11 @@
 			<span class="hljs-keyword">return</span> otto.Value{}
 		})
 	})
-}</pre></div></div>
-            
-        </li>
+}</pre></div>
         
-    </ul>
+      
+      <div class="fleur">h</div>
+    </div>
   </div>
 </body>
 </html>

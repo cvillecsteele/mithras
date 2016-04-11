@@ -1,8 +1,101 @@
-// # CORE FUNCTIONS: REMOTE
 //
+// # CORE FUNCTIONS: REMOTE
 //
 
 package remote
+
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [mithras.remote.scp](#scp)
+// > * [mithras.remote.shell](#shell)
+// > * [mithras.remote.wrapper](#wrapper)
+// > * [mithras.remote.mithras](#mithras)
+//
+// This API allows resource handlers to execute tasks on remote hosts
+// in a variety of ways.
+//
+// ## MITHRAS.REMOTE.SCP
+// <a name="scp"></a>
+// `mithras.remote.scp(ip, user, keypath, src, dest);`
+//
+// Copy a file to a remote host.
+//
+// Example:
+//
+// ```
+//
+//   mithras.remote.scp("52.90.244.101",
+//                      "ec2-user",
+//                      "/home/user/.ssh/key.pem",
+//                      "/tmp/sourcefile",
+//                      "/etc/hosts");
+// ```
+//
+// ## MITHRAS.REMOTE.SHELL
+// <a name="shell"></a>
+// `mithras.remote.shell(ip, user, keypath, input, cmd, env);`
+//
+// Execute command(s) in a shell on a remote system.  The arg `env`
+// specifies an object mapping environment variables to values for the
+// *local* execution of the ssh command.  If the `input` arg is a
+// string, the stdin of the locally-executed ssh command will be set
+// to the contents of the argument and the locally executed ssh
+// command will not use the `-tt` command line option for setting a
+// tty.
+//
+// Example:
+//
+// ```
+//
+//   mithras.remote.shell("52.90.244.101",
+//                        "ec2-user",
+//                        "/home/user/.ssh/key.pem",
+//                        "hello, world!\n",
+//                        "cat > /tmp/foo",
+//                        {"envVar": "value"});
+//
+// ```
+//
+// ## MITHRAS.REMOTE.WRAPPER
+// <a name="wrapper"></a>
+// `mithras.remote.wrapper(ip, user, keypath, args, env);`
+//
+// Execute a single command in a shell on a remote system.  The arg `env`
+// specifies an object mapping environment variables to values for the
+// *remote* execution of the caller-supplied command.
+//
+// Example:
+//
+// ```
+//
+//   mithras.remote.wrapper("52.90.244.101",
+//                          "ec2-user",
+//                          "/home/user/.ssh/key.pem",
+//                          ["ls", "-l"],
+//                          {"envVar": "value"});
+//
+// ```
+// ## MITHRAS.REMOTE.MITHRAS
+//
+// <a name="mithras"></a>
+// `mithras.remote.mithras(instance, user, keypath, js, become, becomeUser, becomeMethod);`
+//
+//
+// Example:
+//
+// ```
+//
+//   mithras.remote.wrapper(<ec2 instance object>
+//                          "ec2-user",
+//                          "/home/user/.ssh/key.pem",
+//                          "(function run() { console.log('hi'); })"
+//                          true,
+//                          "root"
+//                          "sudo");
+//
+// ```
+//
 
 import (
 	"bufio"
@@ -20,6 +113,7 @@ import (
 	mcore "github.com/cvillecsteele/mithras/modules/core"
 )
 
+// Wrapper runs programs and captures the results in this structure.
 type Results struct {
 	Out     string
 	Err     string
@@ -27,11 +121,14 @@ type Results struct {
 	Status  int
 }
 
+// JobSpec is used to tell wrapper what to run
 type JobSpec struct {
 	Cmd []string
 	Env map[string]string
 }
 
+// Called to add the appropriate "su" preable for remote tasks that
+// require privilege escalation.
 func doBecome(cmd string, become bool, becomeUser string, becomeMethod string) string {
 	if become {
 		if becomeUser != "" {
@@ -43,6 +140,9 @@ func doBecome(cmd string, become bool, becomeUser string, becomeMethod string) s
 	return cmd
 }
 
+// Run mithras on a remote system, perhaps with escalated privileges,
+// using the supplied javascript as the file mithras will read in and
+// call the `run()` function on.
 func RemoteMithras(inst *ec2.Instance, user string, keypath string, js string, become bool, becomeUser string, becomeMethod string, verbose bool) (*string, *string, bool, int) {
 
 	// Copy caller's file to remote temporary file
@@ -58,7 +158,7 @@ func RemoteMithras(inst *ec2.Instance, user string, keypath string, js string, b
 	}
 	remoteFile := strings.TrimSpace(*o)
 
-	// run it via ssh
+	// Run it via ssh
 	cmd := doBecome("./.mithras/bin/runner -m .mithras run -f "+remoteFile, become, becomeUser, becomeMethod)
 	o, e, success, status = RemoteWrapper(inst, user, keypath, strings.Fields(cmd), nil, verbose)
 
@@ -74,6 +174,9 @@ func RemoteMithras(inst *ec2.Instance, user string, keypath string, js string, b
 	return o, e, success, status
 }
 
+// Callers use `RemoteWrapper` to run a single program on a remote
+// system, supplying a set of args and an environment, capturing the
+// results in a consistent way.
 func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string, env *map[string]string, verbose bool) (*string, *string, bool, int) {
 
 	// Create spec
@@ -104,7 +207,7 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 	}
 	remoteFile := strings.TrimSpace(*o)
 
-	// run it via ssh
+	// Run it via ssh
 	o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, ".mithras/bin/wrapper < "+remoteFile, nil)
 	if !success {
 		log.Fatalf("Error running wrapper '%s' on remote system '%s': success: %t; %s %s",
@@ -112,6 +215,7 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 	}
 	remoteOut := strings.TrimSpace(*o)
 
+	// Read in results
 	var results Results
 	if err := json.Unmarshal([]byte(remoteOut), &results); err != nil {
 		log.Fatalf("Can't unmarshall remote run output: %s (%s)", err, remoteOut)
@@ -129,6 +233,8 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 	return &results.Out, &results.Err, results.Success, results.Status
 }
 
+// This function copies a file from the local machine to a remote
+// host, and captures the output in a sturctured format.
 func CopyToRemote(ip string, user string, keypath string, src string, dest string) (*string, *string, bool, int) {
 
 	args := []string{
@@ -147,6 +253,12 @@ func CopyToRemote(ip string, user string, keypath string, src string, dest strin
 	return Exec("scp", args, nil, nil)
 }
 
+// `RemoteShell` provides the facility to execute command in a shell
+// on a remote system.  The caller provides an ip address (or
+// hostname) in string form, the appropriate remote user and a path to
+// the SSH key, a shell command and an environment.
+//
+// `RemoteShell` runs the local `ssh` command under `ssh-agent`.
 func RemoteShell(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) (*string, *string, bool, int) {
 	args := []string{
 		"ssh",
@@ -165,10 +277,11 @@ func RemoteShell(ip string, user string, keypath string, input *string, cmd stri
 	args = append(args, ip)
 	args = append(args, cmd)
 
-	// fmt.Println("ssh-agent " + strings.Join(args, " "))
 	return Exec("ssh-agent", args, input, env)
 }
 
+// Exec gives the caller a way to run a program locally by forking and
+// exec'ing it.
 func Exec(cmd string, args []string, input *string, env *map[string]string) (*string, *string, bool, int) {
 	c := exec.Command(cmd, args...)
 
@@ -180,6 +293,7 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 		c.Stdin = bufio.NewReader(bytes.NewBufferString(*input))
 	}
 
+	// Create an environment
 	if env != nil {
 		newEnv := []string{}
 		for k, v := range *env {
@@ -190,7 +304,7 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 
 	e := c.Run()
 
-	// ssh exits with the exit status of the remote command or with 255 if an error occurred
+	// Ssh exits with the exit status of the remote command or with 255 if an error occurred
 	var status int
 	if e1, ok := e.(*exec.ExitError); ok {
 		status = e1.Sys().(syscall.WaitStatus).ExitStatus()
@@ -206,6 +320,8 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 	return &resultOut, &resultErr, ok, status
 }
 
+// We hook the Go language facility to register an initilization
+// handler, which exposes our core functions to JS-land.
 func init() {
 	mcore.RegisterInit(func(rt *otto.Otto) {
 		var o1 *otto.Object

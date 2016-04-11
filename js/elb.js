@@ -129,6 +129,7 @@
 		    break;
 		case "present":
 		    if (inInput.length > 0) {
+			console.log(JSON.stringify(inInput, null, 2));
 			aws.elbs.register(params.region, 
 					  params.membership.LoadBalancerName, 
 					  inInput);
