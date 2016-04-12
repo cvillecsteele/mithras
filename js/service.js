@@ -53,22 +53,26 @@
 	    cmd = become(p.become, p.becomeUser, p.becomeMethod, cmd);
 	    var result = mithras.remote.shell(inst.PublicIpAddress, user, key, null, cmd, null);
 	    
-	    var out = result[0];
-	    var err = result[1];
+	    var out = result[0].trim();
+	    var err = result[1].trim();
 	    var ok = result[2];
 	    var status = result[3];
 	    if (ok && status == 0) {
 		if (mithras.verbose) {
-		    log(sprintf("Service '%s': %s", p.name, out.trim()));
+		    log(sprintf("Service '%s': %s", p.name, out));
 		}
 		return true;
 	    } else if (status == 255) {
 		log(sprintf("SSH error communicating with remote system '%s', service '%s': %s %s",
-			    inst.PublicIpAddress, p.name, err.trim(), out.trim()));
+			    inst.PublicIpAddress, p.name, err, out));
 		os.exit(2);
 	    } else if (status == 1) {
-		if (mithras.verbose) {
-		    log(sprintf("Service '%s' error: %s\n%s", p.name, err, out.trim()));
+		if (action === 'stop') {
+		    if (out === sprintf("%s: unrecognized service", p.name)) {
+			return true;
+		    }
+		} else if (mithras.verbose) {
+		    log(sprintf("Service '%s' error: %s\n%s", p.name, err, out));
 		}
 		os.exit(3);
 	    } else {

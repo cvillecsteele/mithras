@@ -50,14 +50,26 @@
 		    }
 		    
 		    // create 
+		    if (mithras.verbose) {
+			log(sprintf("Creating elb '%s'", 
+				    params.elb.LoadBalancerName));
+		    }
 		    created = aws.elbs.create(params.region, params.elb);
 		    
 		    // Set health
+		    if (mithras.verbose) {
+			log(sprintf("Setting health for elb '%s'", 
+				    params.elb.LoadBalancerName));
+		    }
 		    aws.elbs.setHealth(params.region, 
 				       params.elb.LoadBalancerName, 
 				       params.health);
 		    
 		    // Set attrs
+		    if (mithras.verbose) {
+			log(sprintf("Setting attributes for elb '%s'", 
+				    params.elb.LoadBalancerName));
+		    }
 		    aws.elbs.setAttrs(params.region, 
 				      params.elb.LoadBalancerName, 
 				      params.attributes);
@@ -118,6 +130,10 @@
 		switch(ensure) {
 		case "absent":
 		    if (inInput.length > 0) {
+			if (mithras.verbose) {
+			    log(sprintf("Deregistering %d instances", 
+					inInput.length));
+			}
 			aws.elbs.deRegister(params.region, 
 					    params.membership.LoadBalancerName, 
 					    inInput);
@@ -129,7 +145,10 @@
 		    break;
 		case "present":
 		    if (inInput.length > 0) {
-			console.log(JSON.stringify(inInput, null, 2));
+			if (mithras.verbose) {
+			    log(sprintf("Registering %d instances", 
+					inInput.length));
+			}
 			aws.elbs.register(params.region, 
 					  params.membership.LoadBalancerName, 
 					  inInput);
@@ -141,11 +160,19 @@
 		    break;
 		case "converge":
 		    if (inInput.length > 0) {
+			if (mithras.verbose) {
+			    log(sprintf("Registering %d instances", 
+					inInput.length));
+			}
 			aws.elbs.register(params.region, 
 					  params.membership.LoadBalancerName, 
 					  inInput);
 		    }
 		    if (inLB.length > 0) {
+			if (mithras.verbose) {
+			    log(sprintf("Deregistering %d instances", 
+					inLB.length));
+			}
 			aws.elbs.deRegister(params.region, 
 					    params.membership.LoadBalancerName, 
 					    inLB);

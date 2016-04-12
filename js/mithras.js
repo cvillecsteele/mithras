@@ -237,6 +237,10 @@
 		skip: skipper
 		src: mithras.watch("mithrasWrapper._currentHost", 
 				   function(catalog, resources, inst) {
+				       var u = objectPath.get(resources, "mithrasUname._target");
+				       if (!u || !u[ip] || typeof(u[ip]) != "string") {
+					   return;
+				       }
 				       var result = osAndArchForInstance(catalog, resources, inst);
 				       if (!result) {
 					   return;
@@ -259,6 +263,10 @@
 		skip: skipper
 		src: mithras.watch("mithrasWrapper._currentHost", 
 				   function(catalog, resources, inst) {
+				       var u = objectPath.get(resources, "mithrasUname._target");
+				       if (!u || !u[ip] || typeof(u[ip]) != "string") {
+					   return;
+				       }
 				       var result = osAndArchForInstance(catalog, resources, inst);
 				       if (!result) {
 					   return;

@@ -17,7 +17,7 @@
 		
 	    var p = resource.params;
 	    var ensure = p.ensure;
-		    
+
 	    // Sanity
 	    if (!p || !p.src || !p.dest) {
 		console.log(sprintf("Invalid scp resource params: %s", 
@@ -38,7 +38,7 @@
 
 		var key = mithras.sshKeyPathForInstance(resource, host);
 		var user = mithras.sshUserForInstance(resource, host);
-		
+
 		// update for by-host variance
 		_.find(resources, function(r) {
 		    return r.name === resource.name;
@@ -52,7 +52,9 @@
 
 		if (updatedParams.skip) {
 		    log("Skipped.");
-		} else {
+		} else if (updatedParams.ensure === 'absent') {
+		    log("Ensure: absent; skipping.")
+		} else if (updatedParams.ensure === 'present') {
 		    var result = mithras.remote.scp(host.PublicIpAddress, 
 						    user, 
 						    key, 

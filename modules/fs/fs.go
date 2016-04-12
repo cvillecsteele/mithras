@@ -1,5 +1,95 @@
+//
+// # CORE FUNCTIONS: FS
+//
+
 package fs
 
+// This package exports entry points into the JS environment:
+//
+// > * [fs.chtimes](#chtimes)
+// > * [fs.link](#link)
+// > * [fs.symlink](#symlink)
+// > * [fs.create](#create)
+// > * [fs.close](#close)
+// > * [fs.read](#read)
+// > * [fs.write](#write)
+// > * [fs.copy](#copy)
+// > * [fs.chdir](#chdir)
+// > * [fs.getwd](#getwd)
+// > * [fs.mkdirAll](#mkdirAll)
+// > * [fs.remove](#remove)
+// > * [fs.removeAll](#removeAll)
+// > * [fs.rename](#rename)
+// > * [fs.chown](#chown)
+// > * [fs.lChown](#lchown)
+// > * [fs.chmod](#chmod)
+// > * [fs.dir](#dir)
+// > * [fs.stat](#stat)
+//
+// This API allows the caller to work with files.
+//
+// ## FS.CHTIMES
+// <a name="chtimes"></a>
+// `filepath.chtimes(path);`
+//
+// Sets the file at `path` to have current atime and mtime.  TODO: rename this to `touch`.
+//
+// Example:
+//
+// ```
+//
+//  var err = fs.chtimes("/tmp/foo");
+//
+// ```
+//
+// ## FS.LINK
+// <a name="link"></a>
+// `filepath.link(old, new);`
+//
+// Link creates newname as a hard link to the oldname file. If there
+// is an error, it will be of type LinkError.
+//
+// Example:
+//
+// ```
+//
+//  var err = fs.link("/tmp/old" "/tmp/new");
+//
+// ```
+//
+// ## FS.SYMLINK
+// <a name="symlink"></a>
+// `filepath.symlink(old, new);`
+//
+// Symlink creates newname as a symbolic link to oldname. If there is
+// an error, it will be of type LinkError.
+//
+// Example:
+//
+// ```
+//
+//  var err = fs.symlink("/tmp/old" "/tmp/new");
+//
+// ```
+//
+// ## FS.CREATE
+// <a name="create"></a>
+// `filepath.create();`
+//
+// Create creates the named file with mode 0666 (before umask),
+// truncating it if it already exists. If successful, methods on the
+// returned File can be used for I/O; the associated file descriptor
+// has mode O_RDWR. If there is an error, it will be of type
+// PathError.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.create("/tmp/foo");
+//
+// ```
+//
 import (
 	"io"
 	"io/ioutil"

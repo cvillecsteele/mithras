@@ -171,10 +171,6 @@ func authorizeIngress(region string, params *ec2.AuthorizeSecurityGroupIngressIn
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating security group authorization for ingress")
-	}
-
 	_, err := svc.AuthorizeSecurityGroupIngress(params)
 
 	if err != nil {
@@ -186,10 +182,6 @@ func authorizeEgress(region string, params *ec2.AuthorizeSecurityGroupEgressInpu
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating security group authorization for egress")
-	}
-
 	_, err := svc.AuthorizeSecurityGroupEgress(params)
 
 	if err != nil {
@@ -200,10 +192,6 @@ func authorizeEgress(region string, params *ec2.AuthorizeSecurityGroupEgressInpu
 func create(region string, params *ec2.CreateSecurityGroupInput, verbose bool) *ec2.SecurityGroup {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Creating security group '%s'", *params.GroupName)
-	}
 
 	resp, err := svc.CreateSecurityGroup(params)
 	if err != nil {

@@ -51,6 +51,9 @@
 		    }
 
 		    // delete vpc
+		    if (mithras.verbose) {
+			log(sprintf("Deleting VPC '%s'\n", vpcId));
+		    }
 		    aws.vpcs.delete(params.region, vpcId)
 
 		    // remove both from catalog
@@ -64,11 +67,20 @@
 						function(v) { 
 						    return v.VpcId == vpcId;
 						});
+		} else {
+		    log(sprintf("VPC not found, no action taken."));
 		}
 		break;
 	    case "present":
-		if (!vpc) {
+		if (vpc) {
+		    log(sprintf("VPC found, no action taken."));
+		} else {
 		    // create vpc & gw
+		    if (mithras.verbose) {
+			log(sprintf("Creating VPC with cidr '%s'\n", 
+				    params.vpc.CidrBlock));
+		    }
+
 		    var result = aws.vpcs.create(params.region,
 						 params.vpc, 
 						 params.gateway);

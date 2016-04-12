@@ -22,10 +22,6 @@ func createProfile(region string, name string, verbose bool) *iam.InstanceProfil
 		InstanceProfileName: aws.String(name),
 	}
 
-	if verbose {
-		log.Printf("  ### Creating IAM instance profile '%s'", name)
-	}
-
 	resp, err := svc.CreateInstanceProfile(params)
 	if err != nil {
 		log.Fatalf("Error creating iam instance profile: %s", err)
@@ -46,10 +42,6 @@ func createProfile(region string, name string, verbose bool) *iam.InstanceProfil
 
 func deleteProfile(region string, id string, verbose bool) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting IAM profile '%s'\n", id)
-	}
 
 	params := &iam.DeleteInstanceProfileInput{
 		InstanceProfileName: aws.String(id),
@@ -99,10 +91,6 @@ func createRole(region string, name string, trustPolicy string, verbose bool) *i
 		// Path:                     aws.String("pathType"),
 	}
 
-	if verbose {
-		log.Printf("  ### Creating IAM role '%s'", name)
-	}
-
 	resp, err := svc.CreateRole(params)
 	if err != nil {
 		log.Fatalf("Error creating IAM role: %s", err)
@@ -123,10 +111,6 @@ func createRole(region string, name string, trustPolicy string, verbose bool) *i
 
 func deleteRole(region string, id string, verbose bool) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting IAM role '%s'\n", id)
-	}
 
 	params := &iam.DeleteRoleInput{
 		RoleName: aws.String(id),
@@ -183,6 +167,21 @@ func putRolePolicy(region string, roleName string, policyName string, policy str
 
 }
 
+func deleteRolePolicy(region string, roleName string, policyName string) {
+	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	params := &iam.DeleteRolePolicyInput{
+		PolicyName: aws.String(policyName),
+		RoleName:   aws.String(roleName),
+	}
+	_, err := svc.DeleteRolePolicy(params)
+
+	if err != nil {
+		panic(err)
+	}
+
+}
+
 func addRoleToProfile(region string, profileName string, roleName string) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
@@ -191,6 +190,20 @@ func addRoleToProfile(region string, profileName string, roleName string) {
 		RoleName:            aws.String(roleName),
 	}
 	_, err := svc.AddRoleToInstanceProfile(params)
+
+	if err != nil {
+		panic(err)
+	}
+}
+
+func removeRoleFromProfile(region string, profileName string, roleName string) {
+	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	params := &iam.RemoveRoleFromInstanceProfileInput{
+		InstanceProfileName: aws.String(profileName),
+		RoleName:            aws.String(roleName),
+	}
+	_, err := svc.RemoveRoleFromInstanceProfile(params)
 
 	if err != nil {
 		panic(err)
@@ -267,8 +280,16 @@ func init() {
 			putRolePolicy(region, roleName, policyName, policy)
 			return otto.Value{}
 		})
+		o3.Set("deleteRolePolicy", func(region, roleName string, policyName string) otto.Value {
+			deleteRolePolicy(region, roleName, policyName)
+			return otto.Value{}
+		})
 		o3.Set("addRoleToProfile", func(region, profileName string, roleName string) otto.Value {
 			addRoleToProfile(region, profileName, roleName)
+			return otto.Value{}
+		})
+		o3.Set("removeRoleFromProfile", func(region, profileName string, roleName string) otto.Value {
+			removeRoleFromProfile(region, profileName, roleName)
 			return otto.Value{}
 		})
 		o3.Set("ec2TrustPolicy", `{

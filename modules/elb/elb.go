@@ -438,10 +438,6 @@ func setHealth(region string, lbName string, input elb.ConfigureHealthCheckInput
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Modifying health check for elb '%s'\n", lbName)
-	}
-
 	_, err := svc.ConfigureHealthCheck(&input)
 	if err != nil {
 		log.Fatalf("Can't configure elb health check: %s", err)
@@ -451,10 +447,6 @@ func setHealth(region string, lbName string, input elb.ConfigureHealthCheckInput
 func setAttrs(region string, lbName string, input elb.ModifyLoadBalancerAttributesInput, verbose bool) {
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Modifying attributes for elb '%s'\n", lbName)
-	}
 
 	_, err := svc.ModifyLoadBalancerAttributes(&input)
 	if err != nil {
@@ -489,10 +481,6 @@ func create(region string, params *elb.CreateLoadBalancerInput, verbose bool) *e
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating ELB '%s'\n", *params.LoadBalancerName)
-	}
-
 	_, err := svc.CreateLoadBalancer(params)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -515,10 +503,6 @@ func create(region string, params *elb.CreateLoadBalancerInput, verbose bool) *e
 func delete(region string, id string, verbose bool) {
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting ELB '%s'\n", id)
-	}
 
 	i := &elb.DeleteLoadBalancerInput{
 		LoadBalancerName: aws.String(id),
@@ -550,10 +534,6 @@ func register(region string, lbName string, instances []*elb.Instance, verbose b
 		LoadBalancerName: aws.String(lbName),
 	}
 
-	if verbose {
-		log.Printf("  ### Adding %d instances to elb '%s'\n", len(instances), lbName)
-	}
-
 	if _, err := svc.RegisterInstancesWithLoadBalancer(params); err != nil {
 		log.Fatalf("Error adding instances to elb '%s': %s", lbName, err)
 	}
@@ -566,10 +546,6 @@ func deRegister(region string, lbName string, instances []*elb.Instance, verbose
 	params := &elb.DeregisterInstancesFromLoadBalancerInput{
 		Instances:        instances,
 		LoadBalancerName: aws.String(lbName),
-	}
-
-	if verbose {
-		log.Printf("  ### Removing %d instances from elb '%s'\n", len(instances), lbName)
 	}
 
 	if _, err := svc.DeregisterInstancesFromLoadBalancer(params); err != nil {

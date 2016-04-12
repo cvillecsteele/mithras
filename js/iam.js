@@ -40,8 +40,52 @@
 		switch(ensure) {
 		case "absent":
 		    if (!p) {
-			log(sprintf("IAM Profile not found, no action taken."));
+			if (mithras.verbose) {
+			    log(sprintf("IAM Profile not found, no action taken."));
+			}
 			break;
+		    }
+		    
+		    // Role?
+		    var roleName = params.role.RoleName;
+		    var role = aws.iam.roles.describe(params.region, 
+						      roleName);
+		    if (role) {
+			var profileName = params.profile.InstanceProfileName;
+
+			// Remove from profile first
+			if (mithras.verbose) {
+			    log("Removing role from profile");
+			}
+			aws.iam.roles.removeRoleFromProfile(params.region,
+							    profileName,
+							    roleName);
+
+			// delete policies from role
+			var roleName = params.role.RoleName;
+			_.each(params.policies, function(policy, name) {
+			    if (mithras.verbose) {
+				log("Deleting role policies");
+			    }
+			    aws.iam.roles.deleteRolePolicy(params.region,
+							   roleName,
+							   name)
+			});
+
+			// nuke it
+			if (mithras.verbose) {
+			    log(sprintf("Deleting role '%s'", roleName));
+			}
+			aws.iam.roles.delete(params.region, roleName);
+
+			// nix from catalog
+			catalog.iamRoles = _.reject(catalog.iamRoles, 
+						    function(x) { 
+							return x.RoleName == roleName;
+						    });
+
+		    } else {
+			log("No role to delete.")
 		    }
 		    
 		    // Remove it
@@ -55,22 +99,6 @@
 				     return x.InstanceProfileName == profileName;
 				 });
 		    
-		    // Role?
-		    var roleName = params.role.RoleName;
-		    var role = aws.iam.roles.describe(params.region, 
-						      roleName);
-		    if (role) {
-			// nuke it
-			aws.iam.roles.delete(params.region, roleName);
-
-			// nix from catalog
-			catalog.iamRoles = _.reject(catalog.iamRoles, 
-						    function(x) { 
-							return x.RoleName == roleName;
-						    });
-
-		    }
-		    
 		    break;
 		case "present":
 		    if (p) {
@@ -80,6 +108,10 @@
 		    
 		    // create 
 		    var profileName = params.profile.InstanceProfileName;
+		    if (mithras.verbose) {
+			log(sprintf("Creating IAM instance profile '%s'", 
+				    profileName));
+		    }
 		    created = aws.iam.profiles.create(params.region, profileName);
 		    
 		    // create role

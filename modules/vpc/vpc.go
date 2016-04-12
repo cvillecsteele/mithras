@@ -168,10 +168,6 @@ func createVPC(params *ec2.CreateVpcInput, region string, gateway bool, verbose 
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating VPC with cidr '%s'\n", *params.CidrBlock)
-	}
-
 	resp, err := svc.CreateVpc(params)
 	if err != nil {
 		log.Fatalf("Error creating vpc: %s", err)
@@ -200,9 +196,6 @@ func createVPC(params *ec2.CreateVpcInput, region string, gateway bool, verbose 
 	// Create gateway
 	var gw ec2.InternetGateway
 	if gateway {
-		if verbose {
-			log.Printf("  ### Creating internet gateway for VPC  '%s'\n", *params.CidrBlock)
-		}
 		gw = createGateway(region)
 		// Now attach it.
 		params := &ec2.AttachInternetGatewayInput{
@@ -221,10 +214,6 @@ func createVPC(params *ec2.CreateVpcInput, region string, gateway bool, verbose 
 func deleteVPC(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting VPC '%s'\n", id)
-	}
 
 	_, err := svc.DeleteVpc(&ec2.DeleteVpcInput{VpcId: aws.String(id)})
 

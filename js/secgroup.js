@@ -31,6 +31,9 @@
 	    switch(ensure) {
 	    case "absent":
 		if (!sg) {
+		    if (mithras.verbose) {
+			log(sprintf("Security group not found, no action taken."));
+		    }
 		    break;
 		}
 		aws.securityGroups.delete(params.region, sg.GroupId);
@@ -41,18 +44,31 @@
 		break;
 	    case "present":
 		if (sg) {
+		    if (mithras.verbose) {
+			log(sprintf("Security group found, no action taken."));
+		    }
 		    break;
 		}
 		// create sg
+		if (mithras.verbose) {
+		    log(sprintf("Creating security group '%s'", 
+				params.secgroup.GroupName));
+		}
 		var sg = aws.securityGroups.create(params.region, params.secgroup);
 
 		// do authorizations
 		if (params.ingress) {
 		    params.ingress.GroupId = sg.GroupId;
+		    if (mithras.verbose) {
+			log(sprintf("Creating security group ingress authorization"));
+		    }
 		    aws.securityGroups.authorizeIngress(params.region, params.ingress);
 		}
 		if (params.egress) {
 		    params.egress.GroupId = sg.GroupId;
+		    if (mithras.verbose) {
+			log(sprintf("Creating security group egress authorization"));
+		    }
 		    aws.securityGroups.authorizeEgress(params.region, params.egress);
 		}
 		

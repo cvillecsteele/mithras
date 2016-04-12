@@ -56,11 +56,19 @@
                     // Delete its associations
                     for (var i in t.Associations) {
                         var a = t.Associations[i];
+			if (mithras.verbose) {
+			    log(sprintf("Deleting route table association '%s'",
+					a.RouteTableAssociationId));
+			}
                         aws.routeTables.disassociate(params.region, 
                                                      a.RouteTableAssociationId);
                     }
 
 		    // Delete table
+		    if (mithras.verbose) {
+			log(sprintf("Deleting route table '%s'",
+				    t.RouteTableId));
+		    }
                     aws.routeTables.delete(params.region, t.RouteTableId);
                     
                     // Remove table from catalog
@@ -72,6 +80,9 @@
                 }
                 
                 // Throw away subnet
+		if (mithras.verbose) {
+		    log(sprintf("Deleting subnet '%s'", subnet.SubnetId));
+		}
                 aws.subnets.delete(params.region, subnet.SubnetId);
                 catalog.subnets = _.reject(catalog.subnets,
                                            function(s) { 
@@ -86,6 +97,9 @@
                     break;
                 }
                 // create subnet
+		if (mithras.verbose) {
+		    log(sprintf("Creating subnet with cidr '%s'", params.subnet.CidrBlock));
+		}
                 var subnet = aws.subnets.create(params.region, params.subnet);
                 
                 // Tag it
@@ -95,13 +109,26 @@
                 var subnet = aws.subnets.describe(params.region, subnet.SubnetId);
                 
                 // create route table and associate subnet with it
+		if (mithras.verbose) {
+		    log(sprintf("Creating route table for subnet '%s'",
+			       subnet.SubnetId));
+		}
                 var rt = aws.routeTables.create(params.region, params.subnet.VpcId);
-                aws.routeTables.associate(params.region, subnet.SubnetId, rt.RouteTableId);
+		if (mithras.verbose) {
+		    log(sprintf("Associating route table with subnet '%s'",
+			       subnet.SubnetId));
+		}
+                aws.routeTables.associate(params.region, 
+					  subnet.SubnetId, 
+					  rt.RouteTableId);
                 
                 // for each route in params, create route using routetableid
                 for (var idx in params.routes) {
                     var r = params.routes[idx];
                     r.RouteTableId = rt.RouteTableId;
+		    if (mithras.verbose) {
+			log(sprintf("Creating route."));
+		    }
                     aws.subnets.routes.create(params.region, r);
                 }
                 

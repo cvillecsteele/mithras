@@ -148,9 +148,6 @@ func createSubnet(region string, params *ec2.CreateSubnetInput, verbose bool) *e
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating subnet\n")
-	}
 	resp, err := svc.CreateSubnet(params)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -174,9 +171,6 @@ func createRoute(region string, input ec2.CreateRouteInput, verbose bool) *ec2.C
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating route\n")
-	}
 	output, err := svc.CreateRoute(&input)
 	if err != nil {
 		log.Fatalf("AWS error creating route: %s", err)
@@ -187,10 +181,6 @@ func createRoute(region string, input ec2.CreateRouteInput, verbose bool) *ec2.C
 func deleteRoute(region string, cidr string, routeTableId string, verbose bool) *ec2.DeleteRouteOutput {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting route\n")
-	}
 
 	params := &ec2.DeleteRouteInput{
 		DestinationCidrBlock: aws.String(cidr),
@@ -207,10 +197,6 @@ func deleteRoute(region string, cidr string, routeTableId string, verbose bool) 
 func deleteSubnet(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting subnet '%s'\n", id)
-	}
 
 	i := &ec2.DeleteSubnetInput{
 		SubnetId: aws.String(id),

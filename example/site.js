@@ -78,7 +78,13 @@ function run() {
     var rSubnetB = _.extend({}, rSubnetA, {
 	name: "subnetB"
     });
-    rSubnetB.params.subnet.CidrBlock = "172.33.2.0/24";
+    rSubnetB.params = _.extend({}, rSubnetA.params, {
+	subnet: {
+	    CidrBlock: "172.33.2.0/24"
+	    VpcId:            mithras.watch("VPC._target.VpcId")
+	    AvailabilityZone: altZone
+	}
+    });
 
     var rwsSG = {
     	name: "webserverSG"
@@ -434,6 +440,7 @@ function run() {
 	name: "bootstrap"
 	dependsOn: [rWebServer.name]
 	params: {
+	    ensure: ensure
 	    become: true
 	    becomeMethod: "sudo"
 	    becomeUser: "root"
@@ -587,10 +594,10 @@ function run() {
     mithras.apply(catalog, 
     		  [
     		      rStack,
-    		      rWSTier,
+    		      // rWSTier,
     		      // rRdsA,
     		      // rCache,
-    		      rS3
+    		      // rS3
     		  ], 
     		  reverse);
 
