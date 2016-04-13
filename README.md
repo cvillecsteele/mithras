@@ -81,10 +81,8 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* make sure no handlers are interacting with AWS outside the catalog...
 * DOCUMENTATION
- * elb
- * exec
- * filepath
  * fs
  * goroutines
  * iam

@@ -52,7 +52,7 @@
 
 		    // delete vpc
 		    if (mithras.verbose) {
-			log(sprintf("Deleting VPC '%s'\n", vpcId));
+			log(sprintf("Deleting VPC '%s'", vpcId));
 		    }
 		    aws.vpcs.delete(params.region, vpcId)
 
@@ -77,7 +77,7 @@
 		} else {
 		    // create vpc & gw
 		    if (mithras.verbose) {
-			log(sprintf("Creating VPC with cidr '%s'\n", 
+			log(sprintf("Creating VPC with cidr '%s'", 
 				    params.vpc.CidrBlock));
 		    }
 
@@ -94,7 +94,15 @@
 
 		    // Reload it to get tags, associations
 		    var newVPC = aws.vpcs.describe(params.region, newVPC.VpcId);
-		    var newGW = aws.vpcs.gateways.describe(params.region, newGW.InternetGatewayId);
+		    newGW = aws.vpcs.gateways.describe(params.region, 
+						       newGW.InternetGatewayId);
+		    do {
+			newGW = aws.vpcs.gateways.describe(params.region, 
+							   newGW.InternetGatewayId);
+			time.sleep(10);
+		    } while ((newGW.InternetGatewayId == null) ||
+			     (newGW.Attachments == null));
+		    
 
 		    // add both to catalog
 		    catalog.vpcs.push(newVPC);

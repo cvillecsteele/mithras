@@ -54,7 +54,7 @@
 		    break;
 		}
 		if (mithras.verbose) {
-		    log(sprintf("Deleting DNS entry '%s'.", params.resource.Name));
+		    log(sprintf("Deleting DNS entry '%s'", params.resource.Name));
 		}
 		var zone = handler.zoneForDomain(catalog, params.domain);
 		if (!zone) {

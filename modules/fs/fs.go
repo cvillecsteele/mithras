@@ -74,7 +74,7 @@ package fs
 //
 // ## FS.CREATE
 // <a name="create"></a>
-// `filepath.create();`
+// `filepath.create(path);`
 //
 // Create creates the named file with mode 0666 (before umask),
 // truncating it if it already exists. If successful, methods on the
@@ -87,6 +87,45 @@ package fs
 // ```
 //
 //  var results = fs.create("/tmp/foo");
+//  var file = results[0];
+//  var error = results[1];
+//
+// ```
+//
+// ## FS.CLOSE
+// <a name="close"></a>
+// `filepath.close(file);`
+//
+// Close closes the File, rendering it unusable for I/O. It returns an
+// error, if any.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.create("/tmp/foo");
+//  var file = results[0];
+//  var error = results[1];
+//  if (error) {
+//   ...
+//  }
+//  var error = fs.close(file);
+//
+// ```
+//
+// ## FS.READ
+// <a name="read"></a>
+// `filepath.read(path);`
+//
+// Read the contents of the file at `path`.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.read("/tmp/foo");
+//  var contents = results[0];
+//  var error = results[1];
 //
 // ```
 //

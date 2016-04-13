@@ -218,10 +218,6 @@ func delete(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Deleting security group '%s'", id)
-	}
-
 	i := &ec2.DeleteSecurityGroupInput{
 		GroupId: aws.String(id),
 	}

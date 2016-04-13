@@ -135,14 +135,16 @@
 		return sprintf("sh -c 'if test -d %s; then echo exists; else mkdir %s && echo created; fi'", dir, dir);
 	    }
 
-	    var skipper = mithras.watch("mithrasBinDir._target",
-					function(catalog, resources, binDirResults) {
-					    var path = "mithrasWrapper._currentHost.PublicIpAddress";
-					    var ip = objectPath.get(resources, path);
-					    if (ip) {
-						return (binDirResults[ip].trim() === "exists");
-					    }
-					});
+	    var skipper = function(resourceName) {
+		var path = resourceName + "._currentHost.PublicIpAddress";
+		return mithras.watch("mithrasBinDir._target",
+				     function(catalog, resources, binDirResults) {
+					 var ip = objectPath.get(resources, path);
+					 if (ip) {
+					     return (binDirResults[ip].trim() === "exists");
+					 }
+				     });
+	    };
 	    
 	    var cmd = mkdirCmd(".mithras");
 	    dir.dependsOn = (dir.dependsOn || []).concat([ssh.name]);
@@ -177,13 +179,12 @@
 					 });
 
 	    var jsDir = _.extend({}, template, {
-		skip: skipper
 		name: "mithrasJsDir"
     		module: "scp"
 	    });
 	    jsDir.dependsOn = (jsDir.dependsOn || []).concat([binDir.name, dir.name]);
 	    jsDir.params = _.extend({}, template.params, {
-		skip: skipper
+		skip: skipper("mithrasJsDir")
 		src: "js"
 		dest: ".mithras/js"
 	    });
@@ -234,10 +235,11 @@
 	    wrapper.dependsOn = (wrapper.dependsOn || []).concat([uname.name, binDir.name]);
 	    wrapper.params = _.extend({}, template.params, {
 		dest: ".mithras/bin/wrapper"
-		skip: skipper
+		skip: skipper("mithrasWrapper")
 		src: mithras.watch("mithrasWrapper._currentHost", 
 				   function(catalog, resources, inst) {
 				       var u = objectPath.get(resources, "mithrasUname._target");
+				       var ip = inst.PublicIpAddress;
 				       if (!u || !u[ip] || typeof(u[ip]) != "string") {
 					   return;
 				       }
@@ -260,10 +262,11 @@
 	    runner.dependsOn = (runner.dependsOn || []).concat([uname.name, binDir.name]);
 	    runner.params = _.extend({}, template.params, {
 		dest: ".mithras/bin/runner"
-		skip: skipper
+		skip: skipper("mithrasRunner")
 		src: mithras.watch("mithrasWrapper._currentHost", 
 				   function(catalog, resources, inst) {
 				       var u = objectPath.get(resources, "mithrasUname._target");
+				       var ip = inst.PublicIpAddress;
 				       if (!u || !u[ip] || typeof(u[ip]) != "string") {
 					   return;
 				       }

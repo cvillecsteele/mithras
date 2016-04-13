@@ -44,6 +44,9 @@
 		    log(sprintf("No action taken."));
 		    break;
 		}
+		if (mithras.verbose) {
+		    log(sprintf("Deleting %d instances", found.length));
+		}
 		for (var idx in found) {
 		    var inst = found[idx];
 		    aws.instances.delete(params.region, 
@@ -59,6 +62,9 @@
 		// Too many?
 		if (matchingCount > params.instance.MaxCount) {
 		    var numToDelete = matchingCount - params.instance.MaxCount;
+		    if (mithras.verbose) {
+			log(sprintf("Deleting %d instances", numToDelete));
+		    }
 		    for (var idx in _.range(numToDelete)) {
 			var inst = found[idx];
 			aws.instances.delete(params.region, 
@@ -74,6 +80,9 @@
 		    
 		    // create 
 		    params.instance.MaxCount = numToAdd;
+		    if (mithras.verbose) {
+			log(sprintf("Launching %d instances", numToAdd));
+		    }
 		    created = aws.instances.create(params.region, params.instance);
 		    
 		    // Set tags

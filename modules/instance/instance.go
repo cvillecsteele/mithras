@@ -40,10 +40,6 @@ func create(region string, params *ec2.RunInstancesInput, verbose bool) []*ec2.I
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Creating instances\n")
-	}
-
 	resp, err := svc.RunInstances(params)
 	if err != nil {
 		log.Fatalf("Error running instances: %s", err)
@@ -75,10 +71,6 @@ func create(region string, params *ec2.RunInstancesInput, verbose bool) []*ec2.I
 func delete(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
-
-	if verbose {
-		log.Printf("  ### Deleting instance '%s'", id)
-	}
 
 	params := &ec2.TerminateInstancesInput{
 		InstanceIds: []*string{

@@ -129,6 +129,11 @@
 		    if (mithras.verbose) {
 			log(sprintf("Creating route."));
 		    }
+		    if (typeof(r.GatewayId) != 'string') {
+			console.log(JSON.stringify(resource, null, 2));
+			console.log(JSON.stringify(catalog.gateways, null, 2));
+			os.exit(1);
+		    }
                     aws.subnets.routes.create(params.region, r);
                 }
                 

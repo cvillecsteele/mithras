@@ -40,12 +40,17 @@
 		    }
 		    
 		    // Remove it
+		    if (mithras.verbose) {
+			log(sprintf("Deleting ELB '%s'", 
+				    params.elb.LoadBalancerName));
+		    }
 		    aws.elbs.delete(params.region, params.elb.LoadBalancerName);
 
 		    break;
 		case "present":
 		    if (elb) {
 			log(sprintf("ELB found, no action taken."));
+			return [elb, true];
 			break;
 		    }
 		    

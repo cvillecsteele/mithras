@@ -594,7 +594,7 @@ function run() {
     mithras.apply(catalog, 
     		  [
     		      rStack,
-    		      // rWSTier,
+    		      rWSTier,
     		      // rRdsA,
     		      // rCache,
     		      // rS3

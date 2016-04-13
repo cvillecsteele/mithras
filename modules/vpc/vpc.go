@@ -228,10 +228,6 @@ func deleteGW(region string, vpcId string, gwId string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Deleting GW '%s'\n", gwId)
-	}
-
 	_, err := svc.DetachInternetGateway(&ec2.DetachInternetGatewayInput{
 		InternetGatewayId: aws.String(gwId),
 		VpcId:             aws.String(vpcId),

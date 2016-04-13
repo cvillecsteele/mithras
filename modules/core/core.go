@@ -66,10 +66,6 @@ func Tag(rt *otto.Otto, tags otto.Object, id string, region string, verbose bool
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Tagging '%s'\n", id)
-	}
-
 	params := &ec2.CreateTagsInput{
 		Resources: []*string{aws.String(id)},
 		Tags:      []*ec2.Tag{},

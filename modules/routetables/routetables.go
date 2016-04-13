@@ -21,9 +21,6 @@ func associate(region string, routeTableId string, subnetId string, verbose bool
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
 	// Associate the subnet with the route table
-	if verbose {
-		log.Printf("  ### Associating subnet '%s' with route table '%s'\n", subnetId, routeTableId)
-	}
 	_, err := svc.AssociateRouteTable(&ec2.AssociateRouteTableInput{
 		RouteTableId: aws.String(routeTableId),
 		SubnetId:     aws.String(subnetId),
@@ -50,9 +47,6 @@ func deleteRouteTable(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Deleting route table '%s'", id)
-	}
 	_, err := svc.DeleteRouteTable(&ec2.DeleteRouteTableInput{
 		RouteTableId: aws.String(id),
 	})
@@ -143,9 +137,6 @@ func deleteAssociation(region string, id string, verbose bool) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	if verbose {
-		log.Printf("  ### Deleting route table subnet association '%s'", id)
-	}
 	_, err := svc.DisassociateRouteTable(&ec2.DisassociateRouteTableInput{
 		AssociationId: aws.String(id),
 	})
@@ -160,9 +151,6 @@ func CreateRouteTable(region string, vpcId string, verbose bool) *ec2.RouteTable
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
 	// Create a route table
-	if verbose {
-		log.Printf("  ### Creating route table for vpc '%s'\n", vpcId)
-	}
 	rtResp, err := svc.CreateRouteTable(&ec2.CreateRouteTableInput{
 		VpcId: aws.String(vpcId),
 	})

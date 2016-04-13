@@ -28,7 +28,7 @@
 		    log(sprintf("Service '%s' status '%s'",
 				p.name,
 				out));
-		    return [null, true];
+		    return true;
 		}
 	    } else if (status == 255) {
 		log(sprintf("Error communicating with remote system '%s', svc '%s': %s",
@@ -43,7 +43,7 @@
 		log(sprintf("Service '%s': status %d; out %s", 
 			    p.name, status, out));
 	    }
-	    return [null, false];
+	    return false;
 	}
 	
 	startStop: function(resource, inst, user, key, action) {
@@ -125,7 +125,6 @@
 		var ensure = params.ensure;
 		
 		var running = handler.running(updated, host, user, key);
-		
 		switch(ensure) {
 		case "absent":
 		    if (running) {

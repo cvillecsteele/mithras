@@ -117,12 +117,21 @@
 		    // create role
 		    var roleName = params.role.RoleName;
 		    var trust = params.role.AssumeRolePolicyDocument;
+		    if (mithras.verbose) {
+			log(sprintf("Creating IAM role '%s'", 
+				    roleName));
+		    }
 		    role = aws.iam.roles.create(params.region, 
 						roleName,
 						trust);
 		    
 		    // add policy to role
 		    _.each(params.policies, function(policy, name) {
+			if (mithras.verbose) {
+			    log(sprintf("Putting policy '%s' to IAM role '%s'", 
+					name,
+					roleName));
+			}
 			aws.iam.roles.putRolePolicy(params.region,
 						    roleName,
 						    name,
@@ -130,18 +139,34 @@
 		    });
 
 		    // stick the role to the profile
+		    if (mithras.verbose) {
+			log(sprintf("Adding role '%s' to IAM profile '%s'", 
+				    roleName,
+				    profileName));
+		    }
 		    aws.iam.roles.addRoleToProfile(params.region,
 						   profileName,
 						   roleName);
-		    
+
+		    // Wait for association between profile and role
+		    var profile = aws.iam.profiles.describe(params.region, profileName);
+		    do {
+			time.sleep(10);
+			profile = aws.iam.profiles.describe(params.region, profileName);
+		    } while (!profile || !profile.Roles || 
+			     (profile.Roles.length == 0) || 
+			     (profile.Roles[0].RoleName != roleName))
+
+		    // Debugging
+		    console.log(JSON.stringify(profile, null, 2));
+
 		    // add to catalog
-		    catalog.iamProfiles.push(aws.iam.profiles.describe(params.region, 
-								       profileName));
+		    catalog.iamProfiles.push(profile);
 		    catalog.iamRoles.push(aws.iam.roles.describe(params.region, 
 								 roleName));
 
 		    // return profile
-		    return [created, true];
+		    return [profile, true];
 		}
 		return [null, true];
 		break;

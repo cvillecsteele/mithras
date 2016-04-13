@@ -74,6 +74,9 @@
 		
 		// Tag it
 		if (params.tags) {
+		    if (mithras.verbose) {
+			log(sprintf("Tagging security group."));
+		    }
 		    aws.tags.create(params.region, sg.GroupId, params.tags);
 		}
 		

@@ -50,7 +50,7 @@
 						     resource.name);
 		var updatedParams = updated.params;
 
-		if (updatedParams.skip) {
+		if (updatedParams.skip == true) {
 		    log("Skipped.");
 		} else if (updatedParams.ensure === 'absent') {
 		    log("Ensure: absent; skipping.")
