@@ -1,10 +1,10 @@
 function run() {
 
-    // Set up caching
-    var Cache = (new (require("cache").Cache)).init();
-
     // Filter regions
     mithras.activeRegions = function (catalog) { return ["us-east-1"]; };
+
+    // Set up caching
+    var Cache = (new (require("cache").Cache)).init();
 
     // Look for cached catalog and if none found get one.
     var catalog = Cache.get("catalog");
@@ -15,7 +15,10 @@ function run() {
     }
   
 
-    // Setup, variables, etc.
+    ///////////////////////////////////////////////////////////////////////////
+    // Variables
+    ///////////////////////////////////////////////////////////////////////////
+
     var ensure = "present";
     var reverse = false;
     if (mithras.ARGS[0] === "down") { 
@@ -31,8 +34,11 @@ function run() {
     var iamProfileName = "test-webserver"
     var iamRoleName = "test-webserver-iam-role"
     var keyName = "mithras";
+    var webserverTagName = "webserver";
 
+    ///////////////////////////////////////////////////////////////////////////
     // Resource Definitions
+    ///////////////////////////////////////////////////////////////////////////
 
     var rVpc = {
     	name: "VPC"
@@ -402,12 +408,13 @@ function run() {
 		    if (i.State.Name != "running") {
 			return false;
 		    }
-		    return (_.where(i.Tags, {"Key": "Name", "Value": "webserver"}).length > 0);
+		    return (_.where(i.Tags, {"Key": "Name", 
+					     "Value": webserverTagName}).length > 0);
 		});
 		return matches;
 	    }
 	    tags: {
-		Name: "webserver"
+		Name: webserverTagName
 	    }
 	    instance: {
 		ImageId:        "ami-60b6c60a"
@@ -438,20 +445,6 @@ function run() {
 	} // params
     };
 
-    var rELBMembership = {
-    	name: "elbmembership"
-    	module: "elbMembership"
-	dependsOn: [rWebServer.name, rElb.name]
-    	params: {
-	    region: defaultRegion
-    	    ensure: ensure
-	    membership: {
-		LoadBalancerName: lbName
-		Instances: mithras.watch("webserver._target")
-	    }
-	}
-    };
-
     var rBootstrap = new mithras.bootstrap({
 	name: "bootstrap"
 	dependsOn: [rWebServer.name]
@@ -460,14 +453,14 @@ function run() {
 	    become: true
 	    becomeMethod: "sudo"
 	    becomeUser: "root"
-	    hosts: mithras.watch("webserver._target")
+	    hosts: mithras.watch(rWebServer.name+"._target")
 	}
     });
 
     var template = {dependsOn: [rBootstrap.name]
 		    params: {
 			ensure: ensure 
-     			hosts: mithras.watch("webserver._target")
+     			hosts: mithras.watch(rWebServer.name+"._target")
      			become: true
      			becomeMethod: "sudo"
      			becomeUser: "root"
@@ -495,7 +488,7 @@ function run() {
 	    become: true
 	    becomeMethod: "sudo"
 	    becomeUser: "root"
-	    hosts: mithras.watch("webserver._target")
+	    hosts: mithras.watch(rWebServer.name+"._target")
 	}
     };
 
@@ -509,7 +502,7 @@ function run() {
 	    become: true
 	    becomeMethod: "sudo"
 	    becomeUser: "root"
-	    hosts: mithras.watch("webserver._target")
+	    hosts: mithras.watch(rWebServer.name+"._target")
 	}
     };
 
@@ -529,7 +522,7 @@ function run() {
 	    //   owner: "root"
 	    //   group: "wheel"
 	    mode: 0644
-	    hosts: mithras.watch("webserver._target")
+	    hosts: mithras.watch(rWebServer.name+"._target")
 	}
     };
 
@@ -542,7 +535,21 @@ function run() {
 	    repo: "git@github.com:cvillecsteele/mithras.git"
 	    version: apiSHA
 	    dest: "api"
-	    hosts: mithras.watch("webserver._target")
+	    hosts: mithras.watch(rWebServer.name+"._target")
+	}
+    };
+
+    var rELBMembership = {
+    	name: "elbmembership"
+    	module: "elbMembership"
+	dependsOn: [rWebServer.name, rElb.name, rRepo.name]
+    	params: {
+	    region: defaultRegion
+    	    ensure: ensure
+	    membership: {
+		LoadBalancerName: lbName
+		Instances: mithras.watch(rWebServer.name+"._target")
+	    }
 	}
     };
 

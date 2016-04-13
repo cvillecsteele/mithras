@@ -129,6 +129,209 @@ package fs
 //
 // ```
 //
+// ## FS.WRITE
+// <a name="write"></a>
+// `filepath.write(path, contents, perms);`
+//
+// Write the contents of the file at `path`.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.read("/tmp/foo", "contents", 0644);
+//
+// ```
+//
+// ## FS.COPY
+// <a name="copy"></a>
+// `filepath.copy(src, dest, perms);`
+//
+// Copy the file from `src` to `dest`.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.copy("/tmp/foo", "/tmp/bar", 0644);
+//
+// ```
+//
+// ## FS.CHDIR
+// <a name="chdir"></a>
+// `filepath.chdir(dir);`
+//
+// Change working director to `dir`.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.chdir("/tmp");
+//
+// ```
+//
+// ## FS.GETWD
+// <a name="getwd"></a>
+// `filepath.getwd();`
+//
+// Get the current working directory.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.getwd();
+//  var where = results[0];
+//  var err = results[1];
+//
+// ```
+//
+// ## FS.MKDIRALL
+// <a name="mkdirAll"></a>
+// `filepath.mkdirALL(path, perm);`
+//
+// MkdirAll creates a directory named path, along with any necessary
+// parents, and returns nil, or else returns an error. The permission
+// bits perm are used for all directories that MkdirAll creates. If
+// path is already a directory, MkdirAll does nothing and returns nil.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.mkdirAll("/tmp/a/b/c", 0777);
+//
+// ```
+//
+// ## FS.REMOVE
+// <a name="remove"></a>
+// `filepath.remove(path);`
+//
+// Remove the file at `path`.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.remove("/tmp/a/b/c");
+//
+// ```
+//
+// ## FS.REMOVEALL
+// <a name="removeAll"></a>
+// `filepath.removeAll(path);`
+//
+// RemoveAll removes path and any children it contains. It removes
+// everything it can but returns the first error it encounters. If the
+// path does not exist,
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.removeAll("/tmp/a/b/c");
+//
+// ```
+//
+// ## FS.RENAME
+// <a name="rename"></a>
+// `filepath.rename(oldname, newname);`
+//
+// Rename renames (moves) oldpath to newpath. If newpath already
+// exists, Rename replaces it. OS-specific restrictions may apply when
+// oldpath and newpath are in different directories. If there is an
+// error, it will be of type *LinkError.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.rename("/tmp/foo", "/tmp/bar");
+//
+// ```
+//
+// ## FS.CHOWN
+// <a name="chown"></a>
+// `filepath.chown(path, uid, gid);`
+//
+// Chown changes the numeric uid and gid of the named file. If the
+// file is a symbolic link,it changes the uid and gid of the link's
+// target. If there is an error, it will be of type *PathError.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.chown("/tmp/foo", 12, 34);
+//
+// ```
+//
+// ## FS.LCHOWN
+// <a name="lchown"></a>
+// `filepath.lChown(path, uid, gid);`
+//
+// Lchown changes the numeric uid and gid of the named file. If the
+// file is a symbolic link, it changes the uid and gid of the link
+// itself. If there is an error, it will be of type *PathError.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.lchown("/tmp/foo", 12, 34);
+//
+// ```
+//
+// ## FS.CHMOD
+// <a name="chmod"></a>
+// `filepath.chmod(path, mode);`
+//
+// Chmod changes the mode of the named file to mode. If the file is a
+// symbolic link, it changes the mode of the link's target. If there
+// is an error, it will be of type *PathError.
+//
+// Example:
+//
+// ```
+//
+//  var error = fs.chmod("/tmp/foo", 0777);
+//
+// ```
+//
+// ## FS.DIR
+// <a name="dir"></a>
+// `filepath.dir(path);`
+//
+// Return the directory entries from `path`
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.chmod("/tmp");
+//  var entries = results[0];
+//  var error = results[1];
+//
+// ```
+//
+// ## FS.STAT
+// <a name="stat"></a>
+// `filepath.stat(path);`
+//
+// Stat returns the FileInfo structure describing file. If there is an
+// error, it will be of type *PathError.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.stat("/tmp/foo");
+//  var info = results[0];
+//  var error = results[1];
+//
+// ```
+//
 import (
 	"io"
 	"io/ioutil"

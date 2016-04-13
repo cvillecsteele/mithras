@@ -83,7 +83,6 @@ TODO
 
 * make sure no handlers are interacting with AWS outside the catalog...
 * DOCUMENTATION
- * fs
  * goroutines
  * iam
  * instance

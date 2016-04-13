@@ -17,6 +17,7 @@ function run() {
     var defaultZone = "us-east-1d";
     var altZone = "us-east-1b";
     var keyName = "mithras"
+    var ami = "ami-22111148";
 
     // We tag (and find) our instance based on this tag
     var instanceNameTag = "instance"
@@ -62,13 +63,13 @@ function run() {
 		Name: instanceNameTag
 	    }
 	    instance: {
-		ImageId:                           "ami-22111148"
+		ImageId:                           ami
 		MaxCount:                          1
 		MinCount:                          1
 		DisableApiTermination:             false
 		EbsOptimized:                      false
 		InstanceInitiatedShutdownBehavior: "terminate"
-		KeyName:                           "cr"
+		KeyName:                           keyName
 		Monitoring: {
 		    Enabled: false
 		}
