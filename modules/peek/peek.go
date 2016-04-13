@@ -13,8 +13,34 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//
+// # CORE FUNCTIONS: PEEK
+//
+
 package peek
 
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [peek](#peek)
+//
+// This API allows resource handlers to get `uname` data from a remote host.
+//
+// ## PEEK
+// <a name="peek"></a>
+// `peek(ip_or_hostname, callback);`
+//
+// Calls the supplied callback with the results of `uname` on the remote host.
+//
+// Example:
+//
+// ```
+//
+//  peek("189.76.33.2", function (data) { console.log(data) } );
+//
+// ```
+//
 import (
 	"log"
 

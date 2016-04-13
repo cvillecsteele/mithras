@@ -431,7 +431,6 @@ function run() {
 		Monitoring: {
 		    Enabled: true
 		}
-		// SubnetId: mithras.watch("subnetA._target.SubnetId")
 		NetworkInterfaces: [
 		    {
 			AssociatePublicIpAddress: true

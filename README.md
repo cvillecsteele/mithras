@@ -87,11 +87,6 @@ TODO
 
 * make sure no handlers are interacting with AWS outside the catalog...
 * DOCUMENTATION: fix css / toc
- * instance
- * log
- * network
- * os
- * peek
  * rds
  * region
  * remote
