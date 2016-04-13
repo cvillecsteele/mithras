@@ -21,6 +21,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/fs"
 	"github.com/cvillecsteele/mithras/modules/goroutines"
 	"github.com/cvillecsteele/mithras/modules/iam"
+	"github.com/cvillecsteele/mithras/modules/keypairs"
 	"github.com/cvillecsteele/mithras/modules/network"
 	"github.com/cvillecsteele/mithras/modules/os"
 	"github.com/cvillecsteele/mithras/modules/routetables"
@@ -37,6 +38,7 @@ type ModuleVersion struct{ version, module string }
 
 func main() {
 	vers := []ModuleVersion{
+		ModuleVersion{version: keypairs.Version, module: keypairs.ModuleName},
 		ModuleVersion{version: channels.Version, module: channels.ModuleName},
 		ModuleVersion{version: goroutines.Version, module: goroutines.ModuleName},
 		ModuleVersion{version: iam.Version, module: iam.ModuleName},

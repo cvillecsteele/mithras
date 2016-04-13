@@ -16,6 +16,7 @@ function run() {
     var defaultRegion = "us-east-1";
     var defaultZone = "us-east-1d";
     var altZone = "us-east-1b";
+    var keyName = "mithras"
 
     // We tag (and find) our instance based on this tag
     var instanceNameTag = "instance"
@@ -24,10 +25,26 @@ function run() {
     // Resource Definitions
     //////////////////////////////////////////////////////////////////////
 
+    // Create a keypair for the instance
+    var rKey = {
+    	name: "key"
+    	module: "keypairs"
+	skip: (ensure === 'absent') // Don't delete keys
+    	params: {
+	    region: defaultRegion
+    	    ensure: ensure
+	    key: {
+		KeyName: keyName
+	    }
+	    savePath: os.expandEnv("$HOME/.ssh/" + keyName + ".pem")
+	}
+    };
+
     // This will launch an instance into your default (classic) VPC
     var rInstance = {
     	name: "instance"
     	module: "instance"
+	dependsOn: [rKey.name]
     	params: {
 	    region: defaultRegion
     	    ensure: ensure
@@ -51,7 +68,6 @@ function run() {
 		DisableApiTermination:             false
 		EbsOptimized:                      false
 		InstanceInitiatedShutdownBehavior: "terminate"
-		InstanceType:                      "t1.micro"
 		KeyName:                           "cr"
 		Monitoring: {
 		    Enabled: false
@@ -60,7 +76,7 @@ function run() {
 	} // params
     };
 
-    mithras.apply(catalog, [ rInstance ], reverse);
+    mithras.apply(catalog, [ rKey, rInstance ], reverse);
 
     return true;
 }

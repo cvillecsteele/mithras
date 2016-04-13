@@ -30,6 +30,7 @@ function run() {
     var bucketName = "test-9987x"
     var iamProfileName = "test-webserver"
     var iamRoleName = "test-webserver-iam-role"
+    var keyName = "mithras";
 
     // Resource Definitions
 
@@ -374,10 +375,25 @@ function run() {
 	}
     }
     
+    // Create a keypair for instances
+    var rKey = {
+    	name: "key"
+    	module: "keypairs"
+	skip: (ensure === 'absent') // Don't delete keys
+    	params: {
+	    region: defaultRegion
+    	    ensure: ensure
+	    key: {
+		KeyName: keyName
+	    }
+	    savePath: os.expandEnv("$HOME/.ssh/" + keyName + ".pem")
+	}
+    };
+
     var rWebServer = {
     	name: "webserver"
     	module: "instance"
-	dependsOn: [rwsSG.name, rSubnetA.name, rIAM.name]
+	dependsOn: [rwsSG.name, rSubnetA.name, rIAM.name, rKey.name]
     	params: {
 	    region: defaultRegion
     	    ensure: ensure
@@ -404,7 +420,7 @@ function run() {
 		}
 		InstanceInitiatedShutdownBehavior: "terminate"
 		InstanceType:                      "t2.small"
-		KeyName:                           "cr"
+		KeyName:                           keyName
 		Monitoring: {
 		    Enabled: true
 		}
@@ -568,6 +584,7 @@ function run() {
     var rWSTier = {
 	name: "instance"
 	includes: [
+	    rKey,
 	    rWebServer, 
 	    rELBMembership, 
 	    rBootstrap,

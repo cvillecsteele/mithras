@@ -29,5 +29,9 @@ func init() {
 		obj.Set("exit", exit)
 		obj.Set("hostname", hostname)
 		obj.Set("getenv", getenv)
+		obj.Set("expandEnv", func(thing string) otto.Value {
+			f := core.Sanitizer(rt)
+			return f(os.ExpandEnv(thing))
+		})
 	})
 }

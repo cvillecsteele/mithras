@@ -218,7 +218,7 @@
 		var arch = null;
 		switch (instance.Architecture) {
 		case "x86_64":
-		    arch = "386";
+		    arch = "amd64";
 		    break;
 		default:
 		    console.log(sprintf("Unknown architecture '%s'", instance.Architecture));
@@ -470,6 +470,7 @@
 		zones: [],
 		iamProfiles: [],
 		iamRoles: [],
+		keypairs: [],
 		rrs: [],
 		dbs: [],
 		caches: [],
@@ -510,6 +511,7 @@
 		cat.rrs            = cat.rrs.concat(aws.route53.rrs.scan(regions[i]));
 		cat.iamProfiles    = cat.iamProfiles.concat(aws.iam.profiles.scan(regions[i]));
 		cat.iamRoles       = cat.iamRoles.concat(aws.iam.roles.scan(regions[i]));
+		cat.keypairs       = cat.keypairs.concat(aws.keypairs.scan(regions[i]));
 	    }
 
 	    var cnt = cat.instances.length;
@@ -557,5 +559,6 @@
     var iam = require("iam").init();
     var network = require("network").init();
     var scp = require("scp").init();
+    var keypairs = require("keypairs").init();
 
 }());
