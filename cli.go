@@ -83,7 +83,7 @@ func Run(versions []ModuleVersion) {
 	cli.VersionFlag.Name = "version, V"
 
 	linux := cli.StringSlice{"linux"}
-	arch := cli.StringSlice{"386"}
+	arch := cli.StringSlice{"386", "amd64"}
 
 	app := cli.NewApp()
 	app.Name = "mithras"
