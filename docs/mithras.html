@@ -100,6 +100,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -291,6 +298,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
                   </a>
                 </li>
               
@@ -591,14 +605,16 @@
 		<span class="hljs-keyword">return</span> sprintf(<span class="hljs-string">"sh -c 'if test -d %s; then echo exists; else mkdir %s &amp;&amp; echo created; fi'"</span>, dir, dir);
 	    }
 
-	    <span class="hljs-keyword">var</span> skipper = mithras.watch(<span class="hljs-string">"mithrasBinDir._target"</span>,
-					<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, binDirResults</span>) </span>{
-					    <span class="hljs-keyword">var</span> path = <span class="hljs-string">"mithrasWrapper._currentHost.PublicIpAddress"</span>;
-					    <span class="hljs-keyword">var</span> ip = objectPath.get(resources, path);
-					    <span class="hljs-keyword">if</span> (ip) {
-						<span class="hljs-keyword">return</span> (binDirResults[ip].trim() === <span class="hljs-string">"exists"</span>);
-					    }
-					});
+	    <span class="hljs-keyword">var</span> skipper = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">resourceName</span>) </span>{
+		<span class="hljs-keyword">var</span> path = resourceName + <span class="hljs-string">"._currentHost.PublicIpAddress"</span>;
+		<span class="hljs-keyword">return</span> mithras.watch(<span class="hljs-string">"mithrasBinDir._target"</span>,
+				     <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, binDirResults</span>) </span>{
+					 <span class="hljs-keyword">var</span> ip = objectPath.get(resources, path);
+					 <span class="hljs-keyword">if</span> (ip) {
+					     <span class="hljs-keyword">return</span> (binDirResults[ip].trim() === <span class="hljs-string">"exists"</span>);
+					 }
+				     });
+	    };
 	    
 	    <span class="hljs-keyword">var</span> cmd = mkdirCmd(<span class="hljs-string">".mithras"</span>);
 	    dir.dependsOn = (dir.dependsOn || []).concat([ssh.name]);
@@ -633,13 +649,12 @@
 					 });
 
 	    <span class="hljs-keyword">var</span> jsDir = _.extend({}, template, {
-		skip: skipper
 		name: <span class="hljs-string">"mithrasJsDir"</span>
     		<span class="hljs-built_in">module</span>: <span class="hljs-string">"scp"</span>
 	    });
 	    jsDir.dependsOn = (jsDir.dependsOn || []).concat([binDir.name, dir.name]);
 	    jsDir.params = _.extend({}, template.params, {
-		skip: skipper
+		skip: skipper(<span class="hljs-string">"mithrasJsDir"</span>)
 		src: <span class="hljs-string">"js"</span>
 		dest: <span class="hljs-string">".mithras/js"</span>
 	    });
@@ -681,7 +696,7 @@
           <div class='highlight'><pre>		<span class="hljs-keyword">var</span> arch = <span class="hljs-literal">null</span>;
 		<span class="hljs-keyword">switch</span> (instance.Architecture) {
 		<span class="hljs-keyword">case</span> <span class="hljs-string">"x86_64"</span>:
-		    arch = <span class="hljs-string">"386"</span>;
+		    arch = <span class="hljs-string">"amd64"</span>;
 		    <span class="hljs-keyword">break</span>;
 		<span class="hljs-keyword">default</span>:
 		    <span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Unknown architecture '%s'"</span>, instance.Architecture));
@@ -698,9 +713,14 @@
 	    wrapper.dependsOn = (wrapper.dependsOn || []).concat([uname.name, binDir.name]);
 	    wrapper.params = _.extend({}, template.params, {
 		dest: <span class="hljs-string">".mithras/bin/wrapper"</span>
-		skip: skipper
+		skip: skipper(<span class="hljs-string">"mithrasWrapper"</span>)
 		src: mithras.watch(<span class="hljs-string">"mithrasWrapper._currentHost"</span>, 
 				   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, inst</span>) </span>{
+				       <span class="hljs-keyword">var</span> u = objectPath.get(resources, <span class="hljs-string">"mithrasUname._target"</span>);
+				       <span class="hljs-keyword">var</span> ip = inst.PublicIpAddress;
+				       <span class="hljs-keyword">if</span> (!u || !u[ip] || <span class="hljs-keyword">typeof</span>(u[ip]) != <span class="hljs-string">"string"</span>) {
+					   <span class="hljs-keyword">return</span>;
+				       }
 				       <span class="hljs-keyword">var</span> result = osAndArchForInstance(catalog, resources, inst);
 				       <span class="hljs-keyword">if</span> (!result) {
 					   <span class="hljs-keyword">return</span>;
@@ -720,9 +740,14 @@
 	    runner.dependsOn = (runner.dependsOn || []).concat([uname.name, binDir.name]);
 	    runner.params = _.extend({}, template.params, {
 		dest: <span class="hljs-string">".mithras/bin/runner"</span>
-		skip: skipper
+		skip: skipper(<span class="hljs-string">"mithrasRunner"</span>)
 		src: mithras.watch(<span class="hljs-string">"mithrasWrapper._currentHost"</span>, 
 				   <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, inst</span>) </span>{
+				       <span class="hljs-keyword">var</span> u = objectPath.get(resources, <span class="hljs-string">"mithrasUname._target"</span>);
+				       <span class="hljs-keyword">var</span> ip = inst.PublicIpAddress;
+				       <span class="hljs-keyword">if</span> (!u || !u[ip] || <span class="hljs-keyword">typeof</span>(u[ip]) != <span class="hljs-string">"string"</span>) {
+					   <span class="hljs-keyword">return</span>;
+				       }
 				       <span class="hljs-keyword">var</span> result = osAndArchForInstance(catalog, resources, inst);
 				       <span class="hljs-keyword">if</span> (!result) {
 					   <span class="hljs-keyword">return</span>;
@@ -968,6 +993,7 @@
 		zones: [],
 		iamProfiles: [],
 		iamRoles: [],
+		keypairs: [],
 		rrs: [],
 		dbs: [],
 		caches: [],
@@ -1012,6 +1038,7 @@
 		cat.rrs            = cat.rrs.concat(aws.route53.rrs.scan(regions[i]));
 		cat.iamProfiles    = cat.iamProfiles.concat(aws.iam.profiles.scan(regions[i]));
 		cat.iamRoles       = cat.iamRoles.concat(aws.iam.roles.scan(regions[i]));
+		cat.keypairs       = cat.keypairs.concat(aws.keypairs.scan(regions[i]));
 	    }
 
 	    <span class="hljs-keyword">var</span> cnt = cat.instances.length;
@@ -1065,6 +1092,7 @@
     <span class="hljs-keyword">var</span> iam = <span class="hljs-built_in">require</span>(<span class="hljs-string">"iam"</span>).init();
     <span class="hljs-keyword">var</span> network = <span class="hljs-built_in">require</span>(<span class="hljs-string">"network"</span>).init();
     <span class="hljs-keyword">var</span> scp = <span class="hljs-built_in">require</span>(<span class="hljs-string">"scp"</span>).init();
+    <span class="hljs-keyword">var</span> keypairs = <span class="hljs-built_in">require</span>(<span class="hljs-string">"keypairs"</span>).init();
 
 }());</pre></div>
         

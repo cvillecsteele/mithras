@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>RESOURDCE HANDLER: SHELL</title>
+  <title>keypairs.go</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,31 +13,7 @@
 
       <div class="header">
         
-          
-          <h1 id="resourdce-handler-shell">RESOURDCE HANDLER: SHELL</h1>
-
-          
-            <div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root, factory</span>)</span>{
-    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span> === <span class="hljs-string">'object'</span> &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span>.exports === <span class="hljs-string">'object'</span>) {
-	<span class="hljs-built_in">module</span>.exports = factory();
-    }
-})(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
-    
-    <span class="hljs-keyword">var</span> become = <span class="hljs-built_in">require</span>(<span class="hljs-string">"become"</span>).become;
-    <span class="hljs-keyword">var</span> sprintf = <span class="hljs-built_in">require</span>(<span class="hljs-string">"sprintf.js"</span>).sprintf;
-
-    <span class="hljs-keyword">var</span> handler = {
-	moduleNames: [<span class="hljs-string">"shell"</span>]
-	handle: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, resource</span>) </span>{
-	    <span class="hljs-keyword">if</span> (!_.find(handler.moduleNames, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">m</span>) </span>{ 
-		<span class="hljs-keyword">return</span> resource.module === m; 
-	    })) {
-		<span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>];
-	    }
-		
-	    <span class="hljs-keyword">var</span> p = resource.params;
-	    <span class="hljs-keyword">var</span> ensure = p.ensure;</pre></div>
-          
+          <h1>keypairs.go</h1>
         
 
         
@@ -486,103 +462,111 @@
 
       
         
-        <p>Sanity</p>
+        
+        
+          <div class='highlight'><pre><span class="hljs-keyword">package</span> keypairs
 
-        
-          <div class='highlight'><pre>	    <span class="hljs-keyword">if</span> (!p || !p.command) {
-		<span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Invalid shell resource params: %s"</span>, 
-				    <span class="hljs-built_in">JSON</span>.stringify(p)));
-		os.exit(<span class="hljs-number">1</span>);
-	    }</pre></div>
-        
-      
-        
-        <p>Loop over hosts</p>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"log"</span>
 
-        
-          <div class='highlight'><pre>	    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span>(p.hosts) != <span class="hljs-string">"object"</span>) {
-		<span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>];
-	    }
-	    <span class="hljs-keyword">var</span> target = resource._target = {};
-	    _.each(p.hosts, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">host</span>) </span>{
-		<span class="hljs-keyword">if</span> (mithras.verbose) {
-		    log(sprintf(<span class="hljs-string">"Host: '%s' (%s)"</span>, host.PublicIpAddress, 
-				host.InstanceId));
-		}
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/aws"</span>
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/aws/session"</span>
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/service/ec2"</span>
+	<span class="hljs-string">"github.com/robertkrimen/otto"</span>
 
-		<span class="hljs-keyword">var</span> key = mithras.sshKeyPathForInstance(resource, host);
-		<span class="hljs-keyword">var</span> user = mithras.sshUserForInstance(resource, host);</pre></div>
-        
-      
-        
-        <p>update for by-host variance</p>
+	mcore <span class="hljs-string">"github.com/cvillecsteele/mithras/modules/core"</span>
+)
 
-        
-          <div class='highlight'><pre>		_.find(resources, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">r</span>) </span>{
-		    <span class="hljs-keyword">return</span> r.name === resource.name;
-		})._currentHost = host;
-		resource._currentHost = host;
-		<span class="hljs-keyword">var</span> updated = mithras.updateResource(resource, 
-						     catalog, 
-						     resources,
-						     resource.name);
-		<span class="hljs-keyword">var</span> updatedParams = updated.params;
-		
-		<span class="hljs-keyword">var</span> cmd = become(updatedParams.become, 
-				 updatedParams.becomeUser, 
-				 updatedParams.becomeMethod, 
-				 updatedParams.command);
-		<span class="hljs-keyword">var</span> result = mithras.remote.shell(host.PublicIpAddress, 
-						  user, 
-						  key, 
-						  <span class="hljs-literal">null</span>, 
-						  cmd, 
-						  <span class="hljs-literal">null</span>);
-		
-		<span class="hljs-keyword">var</span> out = result[<span class="hljs-number">0</span>];
-		<span class="hljs-keyword">var</span> err = result[<span class="hljs-number">1</span>];
-		<span class="hljs-keyword">var</span> ok = result[<span class="hljs-number">2</span>];
-		<span class="hljs-keyword">var</span> status = result[<span class="hljs-number">3</span>];
-		<span class="hljs-keyword">if</span> (ok &amp;&amp; status == <span class="hljs-number">0</span>) {
-		    target[host.PublicIpAddress] = out;
-		    target[host.InstanceId] = out;
-		    <span class="hljs-keyword">if</span> (mithras.verbose) {
-			log(<span class="hljs-string">"Success."</span>);
-		    }
-		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == <span class="hljs-number">255</span>) {
-		    log(sprintf(<span class="hljs-string">"SSH error remote system '%s', command '%s': %s %s"</span>,
-				host.PublicIpAddress, 
-				updatedParams.command, 
-				err.trim(), 
-				out.trim()));
-		    os.exit(<span class="hljs-number">2</span>);
-		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (status == <span class="hljs-number">1</span>) {
-		    <span class="hljs-keyword">if</span> (mithras.verbose) {
-			log(sprintf(<span class="hljs-string">"Shell '%s' error: %s\n%s"</span>, updatedParams.command, err, out));
-		    }
-		    os.exit(<span class="hljs-number">3</span>);
-		} <span class="hljs-keyword">else</span> {
-		    <span class="hljs-keyword">if</span> (mithras.verbose) {
-			log(sprintf(<span class="hljs-string">"Shell '%s': status %d; out %s"</span>, 
-				    updatedParams.command, 
-				    status, 
-				    out));
-		    }
-		}
+<span class="hljs-keyword">var</span> Version = <span class="hljs-string">"1.0.0"</span>
+<span class="hljs-keyword">var</span> ModuleName = <span class="hljs-string">"keypairs"</span>
 
-	    });
-	    <span class="hljs-keyword">return</span> [target, <span class="hljs-literal">true</span>];
+<span class="hljs-keyword">func</span> describe(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>) *ec2.KeyPairInfo {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;ec2.DescribeKeyPairsInput{
+		KeyNames: []*<span class="hljs-keyword">string</span>{
+			aws.String(id),
+		},
 	}
-    };
-		   
+	resp, err := svc.DescribeKeyPairs(params)
 
-    handler.init = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
-	mithras.modules.handlers.register(handler.moduleNames[<span class="hljs-number">0</span>], handler.handle);
-	<span class="hljs-keyword">return</span> handler;
-    };
-    
-    <span class="hljs-keyword">return</span> handler;
-});</pre></div>
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	}
+	<span class="hljs-keyword">if</span> <span class="hljs-built_in">len</span>(resp.KeyPairs) &gt; <span class="hljs-number">0</span> {
+		<span class="hljs-keyword">return</span> resp.KeyPairs[<span class="hljs-number">0</span>]
+	}
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+}
+
+<span class="hljs-keyword">func</span> create(region <span class="hljs-keyword">string</span>, name <span class="hljs-keyword">string</span>) <span class="hljs-keyword">string</span> {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;ec2.CreateKeyPairInput{
+		KeyName: aws.String(name),
+	}
+	resp, err := svc.CreateKeyPair(params)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"Error creating key: %s"</span>, err)
+	}
+
+	<span class="hljs-keyword">return</span> *resp.KeyMaterial
+}
+
+<span class="hljs-keyword">func</span> <span class="hljs-built_in">delete</span>(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>) {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;ec2.DeleteKeyPairInput{
+		KeyName: aws.String(id),
+	}
+	_, err := svc.DeleteKeyPair(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"Error deleting key: %s"</span>, err)
+	}
+}
+
+<span class="hljs-keyword">func</span> scan(region <span class="hljs-keyword">string</span>) []*ec2.KeyPairInfo {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;ec2.DescribeKeyPairsInput{}
+	resp, err := svc.DescribeKeyPairs(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"Error scanning keys: %s"</span>, err)
+	}
+
+	<span class="hljs-keyword">return</span> resp.KeyPairs
+}
+
+<span class="hljs-keyword">func</span> init() {
+	mcore.RegisterInit(<span class="hljs-keyword">func</span>(rt *otto.Otto) {
+		<span class="hljs-keyword">if</span> a, err := rt.Get(<span class="hljs-string">"aws"</span>); err != <span class="hljs-literal">nil</span> || a.IsUndefined() {
+			rt.Object(<span class="hljs-string">`aws = {}`</span>)
+		}
+		o1, _ := rt.Object(<span class="hljs-string">`aws.keypairs = {}`</span>)
+		o1.Set(<span class="hljs-string">"scan"</span>, <span class="hljs-keyword">func</span>(region <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(scan(region))
+		})
+		o1.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(region, id <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(create(region, id))
+		})
+		o1.Set(<span class="hljs-string">"delete"</span>, <span class="hljs-keyword">func</span>(region, id <span class="hljs-keyword">string</span>) otto.Value {
+			<span class="hljs-built_in">delete</span>(region, id)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
+		o1.Set(<span class="hljs-string">"describe"</span>, <span class="hljs-keyword">func</span>(region, id <span class="hljs-keyword">string</span>) otto.Value {
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(describe(region, id))
+		})
+	})
+}</pre></div>
         
       
       <div class="fleur">h</div>

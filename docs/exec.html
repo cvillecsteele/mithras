@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>exec.go</title>
+  <title>CORE FUNCTIONS: EXEC</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,7 +13,13 @@
 
       <div class="header">
         
-          <h1>exec.go</h1>
+          
+          <h1 id="core-functions-exec">CORE FUNCTIONS: EXEC</h1>
+
+          
+            <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> exec</pre></div>
+          
         
 
         
@@ -95,6 +101,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
                   </a>
                 </li>
               
@@ -296,6 +309,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -448,11 +468,27 @@
 
       
         
+        <p>This package exports one entry point into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#run">exec.run</a></li>
+</ul>
+</blockquote>
+<p>This API allows the caller to exec and run a program, collecting its output.</p>
+<h2 id="exec-run">EXEC.RUN</h2>
+<p><a name="run"></a>
+<code>exec.run(command);</code></p>
+<p>Exec and run a program, collecting its output.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = exec.run(<span class="hljs-string">"pwd"</span>);
+ <span class="hljs-keyword">var</span> out = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> err = results[<span class="hljs-number">1</span>];
+ <span class="hljs-keyword">var</span> ok = results[<span class="hljs-number">2</span>];
+ <span class="hljs-keyword">var</span> status = results[<span class="hljs-number">3</span>];
+</code></pre>
         
-        
-          <div class='highlight'><pre><span class="hljs-keyword">package</span> exec
-
-<span class="hljs-keyword">import</span> (
+          <div class='highlight'><pre><span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"bufio"</span>
 	<span class="hljs-string">"bytes"</span>
 	<span class="hljs-string">"fmt"</span>

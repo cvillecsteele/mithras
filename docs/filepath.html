@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>filepath.go</title>
+  <title>CORE FUNCTIONS: FILEPATH</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,7 +13,13 @@
 
       <div class="header">
         
-          <h1>filepath.go</h1>
+          
+          <h1 id="core-functions-filepath">CORE FUNCTIONS: FILEPATH</h1>
+
+          
+            <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> filepath</pre></div>
+          
         
 
         
@@ -95,6 +101,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
                   </a>
                 </li>
               
@@ -296,6 +309,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -448,11 +468,149 @@
 
       
         
+        <p>This package exports entry points into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#dir">filepath.dir</a></li>
+<li><a href="#base">filepath.base</a></li>
+<li><a href="#ext">filepath.ext</a></li>
+<li><a href="#glob">filepath.glob</a></li>
+<li><a href="#match">filepath.match</a></li>
+<li><a href="#split">filepath.split</a></li>
+<li><a href="#splitlist">filepath.splitList</a></li>
+<li><a href="#rel">filepath.rel</a></li>
+<li><a href="#clean">filepath.clean</a></li>
+<li><a href="#abs">filepath.abs</a></li>
+<li><a href="#join">filepath.join</a></li>
+</ul>
+</blockquote>
+<p>This API allows the caller to work with filesystem paths.</p>
+<h2 id="filepath-dir">FILEPATH.DIR</h2>
+<p><a name="dir"></a>
+<code>filepath.dir(path);</code></p>
+<p>Dir returns all but the last element of path, typically the path’s
+directory. After dropping the final element, the path is Cleaned
+and trailing slashes are removed. If the path is empty, Dir returns
+“.”. If the path consists entirely of separators, Dir returns a
+single separator. The returned path does not end in a separator
+unless it is the root directory.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> dir = filepath.dir(<span class="hljs-string">"/tmp/foo"</span>);
+</code></pre><h2 id="filepath-base">FILEPATH.BASE</h2>
+<p><a name="base"></a>
+<code>filepath.base(path);</code></p>
+<p>Base returns the last element of path. Trailing path separators are
+removed before extracting the last element. If the path is empty,
+Base returns “.”. If the path consists entirely of separators, Base
+returns a single separator.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> base = filepath.base(<span class="hljs-string">"/tmp/foo"</span>);
+</code></pre><h2 id="filepath-ext">FILEPATH.EXT</h2>
+<p><a name="ext"></a>
+<code>filepath.ext(path);</code></p>
+<p>Ext returns the file name extension used by path. The extension is
+the suffix beginning at the final dot in the final element of path;
+it is empty if there is no dot.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> ext = filepath.ext(<span class="hljs-string">"/tmp/foo.jpg"</span>);
+</code></pre><h2 id="filepath-glob">FILEPATH.GLOB</h2>
+<p><a name="glob"></a>
+<code>filepath.glob(pattern);</code></p>
+<p>Glob returns the names of all files matching pattern or nil if
+there is no matching file. The syntax of patterns is the same as in
+Match. The pattern may describe hierarchical names such as
+/usr/*/bin/ed (assuming the Separator is ‘/‘).</p>
+<p>Glob ignores file system errors such as I/O errors reading
+directories. The only possible returned error is ErrBadPattern,
+when pattern is malformed.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = filepath.glob(<span class="hljs-string">"/tmp/*.jpg"</span>);
+ <span class="hljs-keyword">var</span> matches = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="filepath-match">FILEPATH.MATCH</h2>
+<p><a name="match"></a>
+<code>filepath.match(pattern, name);</code></p>
+<p>Match reports whether name matches the shell file name pattern.
+See <a href="https://golang.org/pkg/path/filepath/#Dir">here</a> for syntax.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = filepath.match(<span class="hljs-string">"/tmp/*.jpg"</span>, <span class="hljs-string">"/var/other"</span>);
+ <span class="hljs-keyword">var</span> matched = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="filepath-split">FILEPATH.split</h2>
+<p><a name="split"></a>
+<code>filepath.split(path);</code></p>
+<p>Split splits path immediately following the final Separator,
+separating it into a directory and file name component. If there is
+no Separator in path, Split returns an empty dir and file set to
+path. The returned values have the property that path = dir+file.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = filepath.split(<span class="hljs-string">"/tmp/foo.jpg"</span>);
+ <span class="hljs-keyword">var</span> dir = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> file = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="filepath-splitlist">FILEPATH.splitList</h2>
+<p><a name="splitlist"></a>
+<code>filepath.splitList(path);</code></p>
+<p>SplitList splits a list of paths joined by the OS-specific
+ListSeparator, usually found in PATH or GOPATH environment
+variables. Unlike strings.Split, SplitList returns an empty slice
+when passed an empty string. SplitList does not replace slash
+characters in the returned paths.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> parts = filepath.splitList(<span class="hljs-string">"/tmp/bar/foo.jpg"</span>);
+</code></pre><h2 id="filepath-rel">FILEPATH.rel</h2>
+<p><a name="rel"></a>
+<code>filepath.rel(basePath, targetPath);</code></p>
+<p>Rel returns a relative path that is lexically equivalent to
+targpath when joined to basepath with an intervening
+separator. That is, Join(basepath, Rel(basepath, targpath)) is
+equivalent to targpath itself. On success, the returned path will
+always be relative to basepath, even if basepath and targpath share
+no elements. An error is returned if targpath can’t be made
+relative to basepath or if knowing the current working directory
+would be necessary to compute it.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = filepath.rel(<span class="hljs-string">"/a"</span>, <span class="hljs-string">"/a/b/c"</span>);
+ <span class="hljs-keyword">var</span> path = results[<span class="hljs-number">0</span>];  <span class="hljs-comment">// =&gt; "b/c"</span>
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="filepath-clean">FILEPATH.clean</h2>
+<p><a name="clean"></a>
+<code>filepath.clean(path);</code></p>
+<p>Clean returns the shortest path name equivalent to path by purely lexical processing.
+See <a href="https://golang.org/pkg/path/filepath/#Dir">here</a> for rules.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> squeaky = filepath.clean(<span class="hljs-string">"/a//b"</span>); <span class="hljs-comment">// =&gt; "/a/b"</span>
+</code></pre><h2 id="filepath-abs">FILEPATH.abs</h2>
+<p><a name="abs"></a>
+<code>filepath.abs(path);</code></p>
+<p>Abs returns an absolute representation of path. If the path is not
+absolute it will be joined with the current working directory to
+turn it into an absolute path. The absolute path name for a given
+file is not guaranteed to be unique.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = filepath.abs(<span class="hljs-string">"/a/../b"</span>);
+ <span class="hljs-keyword">var</span> path = results[<span class="hljs-number">0</span>]; <span class="hljs-comment">// =&gt; "/b"</span>
+ <span class="hljs-keyword">var</span> err = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="filepath-join">FILEPATH.join</h2>
+<p><a name="join"></a>
+<code>filepath.join();</code></p>
+<p>Join joins any number of path elements into a single path, adding a
+Separator if necessary. The result is Cleaned.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> joined = filepath.join(<span class="hljs-string">"/a"</span>, <span class="hljs-string">"/b"</span>);
+</code></pre>
         
-        
-          <div class='highlight'><pre><span class="hljs-keyword">package</span> filepath
-
-<span class="hljs-keyword">import</span> (
+          <div class='highlight'><pre><span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"path/filepath"</span>
 
 	<span class="hljs-string">"github.com/robertkrimen/otto"</span>

@@ -100,6 +100,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -296,6 +303,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -477,10 +491,7 @@
         <p>Associate the subnet with the route table</p>
 
         
-          <div class='highlight'><pre>	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Associating subnet '%s' with route table '%s'\n"</span>, subnetId, routeTableId)
-	}
-	_, err := svc.AssociateRouteTable(&amp;ec2.AssociateRouteTableInput{
+          <div class='highlight'><pre>	_, err := svc.AssociateRouteTable(&amp;ec2.AssociateRouteTableInput{
 		RouteTableId: aws.String(routeTableId),
 		SubnetId:     aws.String(subnetId),
 	})
@@ -506,9 +517,6 @@
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting route table '%s'"</span>, id)
-	}
 	_, err := svc.DeleteRouteTable(&amp;ec2.DeleteRouteTableInput{
 		RouteTableId: aws.String(id),
 	})
@@ -615,9 +623,6 @@
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting route table subnet association '%s'"</span>, id)
-	}
 	_, err := svc.DisassociateRouteTable(&amp;ec2.DisassociateRouteTableInput{
 		AssociationId: aws.String(id),
 	})
@@ -636,10 +641,7 @@
         <p>Create a route table</p>
 
         
-          <div class='highlight'><pre>	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating route table for vpc '%s'\n"</span>, vpcId)
-	}
-	rtResp, err := svc.CreateRouteTable(&amp;ec2.CreateRouteTableInput{
+          <div class='highlight'><pre>	rtResp, err := svc.CreateRouteTable(&amp;ec2.CreateRouteTableInput{
 		VpcId: aws.String(vpcId),
 	})
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {

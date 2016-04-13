@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>iam.go</title>
+  <title>CORE FUNCTIONS: IAM</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,7 +13,13 @@
 
       <div class="header">
         
-          <h1>iam.go</h1>
+          
+          <h1 id="core-functions-iam">CORE FUNCTIONS: IAM</h1>
+
+          
+            <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> iam</pre></div>
+          
         
 
         
@@ -95,6 +101,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
                   </a>
                 </li>
               
@@ -296,6 +309,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -448,10 +468,123 @@
 
       
         
+        <p>This package exports entry points into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#scan">aws.iam.profiles.scan</a></li>
+<li><a href="#delete">aws.iam.profiles.delete</a></li>
+<li><a href="#create">aws.iam.profiles.create</a></li>
+<li><p><a href="#describe">aws.iam.profiles.describe</a></p>
+</li>
+<li><p><a href="#scanRole">aws.iam.roles.scan</a></p>
+</li>
+<li><a href="#deleteRole">aws.iam.roles.delete</a></li>
+<li><a href="#createRole">aws.iam.roles.create</a></li>
+<li><a href="#describeRole">aws.iam.roles.describe</a></li>
+<li><a href="#putPolicy">aws.iam.roles.putRolePolicy</a></li>
+<li><a href="#deletePolicy">aws.iam.roles.deleteRolePolicy</a></li>
+<li><a href="#add">aws.iam.roles.addRoleToProfile</a></li>
+<li><a href="#remove">aws.iam.roles.removeRoleFromProfile</a></li>
+</ul>
+</blockquote>
+<p>This API allows the caller to work with IAM profiles.</p>
+<h2 id="aws-iam-profiles-scan">AWS.IAM.PROFILES.SCAN</h2>
+<p><a name="scan"></a>
+<code>aws.iam.profiles.scan(region);</code></p>
+<p>Scan AWS for IAM profiles</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> profiles = aws.iam.profiles.scan(<span class="hljs-string">"us-east-1"</span>);
+</code></pre><h2 id="aws-iam-profiles-delete">AWS.IAM.PROFILES.DELETE</h2>
+<p><a name="delete"></a>
+<code>aws.iam.profiles.delete(region, id);</code></p>
+<p>Delete a profile.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.profiles.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-profile"</span>);
+</code></pre><h2 id="aws-iam-profiles-create">AWS.IAM.PROFILES.CREATE</h2>
+<p><a name="create"></a>
+<code>aws.iam.profiles.create(region, id);</code></p>
+<p>Create a profile.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> profile = aws.iam.profiles.create(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-profile"</span>);
+</code></pre><h2 id="aws-iam-profiles-describe">AWS.IAM.PROFILES.DESCRIBE</h2>
+<p><a name="describe"></a>
+<code>aws.iam.profiles.describe(region, id);</code></p>
+<p>Get info about a profile</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> p = aws.iam.profiles.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-profile"</span>);
+</code></pre><h2 id="aws-iam-roles-scan">AWS.IAM.ROLES.SCAN</h2>
+<p><a name="scanRole"></a>
+<code>aws.iam.roles.scan(region);</code></p>
+<p>Scan AWS for IAM roles</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> roles = aws.iam.roles.scan(<span class="hljs-string">"us-east-1"</span>);
+</code></pre><h2 id="aws-iam-roles-delete">AWS.IAM.ROLES.DELETE</h2>
+<p><a name="deleteRole"></a>
+<code>aws.iam.roles.delete(region, id);</code></p>
+<p>Delete a profile.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.roles.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-role"</span>);
+</code></pre><h2 id="aws-iam-roles-create">AWS.IAM.ROLES.CREATE</h2>
+<p><a name="createRole"></a>
+<code>aws.iam.roles.create(region, id, trust);</code></p>
+<p>Create a role.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> role = aws.iam.roles.create(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-role"</span>, aws.iam.roles.ec2TrustPolicy);
+</code></pre><h2 id="aws-iam-roles-describe">AWS.IAM.ROLES.DESCRIBE</h2>
+<p><a name="describeRole"></a>
+<code>aws.iam.roles.describe(region, id);</code></p>
+<p>Get info about a role</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> p = aws.iam.roles.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-role"</span>);
+</code></pre><h2 id="aws-iam-roles-putrolepolicy">AWS.IAM.ROLES.PUTROLEPOLICY</h2>
+<p><a name="putPolicy"></a>
+<code>aws.iam.roles.putRolePolicy(region, id, policyName, policy);</code></p>
+<p>Attach a policy to a role.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.roles.putRolePolicy(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-role"</span>, <span class="hljs-string">"s3_full_access"</span>,
+  {
+        <span class="hljs-string">"Version"</span>: <span class="hljs-string">"2012-10-17"</span>,
+        <span class="hljs-string">"Statement"</span>: [
+        {
+            <span class="hljs-string">"Effect"</span>: <span class="hljs-string">"Allow"</span>,
+            <span class="hljs-string">"Action"</span>: <span class="hljs-string">"s3:*"</span>,
+            <span class="hljs-string">"Resource"</span>: <span class="hljs-string">"*"</span>
+        }
+        ]
+});
+</code></pre><h2 id="aws-iam-roles-deleterolepolicy">AWS.IAM.ROLES.DELETEROLEPOLICY</h2>
+<p><a name="deletePolicy"></a>
+<code>aws.iam.roles.deleteRolePolicy(region, id, policyName);</code></p>
+<p>Delete a policy from a role.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.roles.deleteRolePolicy(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-role"</span>, <span class="hljs-string">"s3_full_access"</span>);
+</code></pre><h2 id="aws-iam-roles-addroletoprofile">AWS.IAM.ROLES.ADDROLETOPROFILE</h2>
+<p><a name="add"></a>
+<code>aws.iam.roles.addRoleToProfile(region, profileName, roleName);</code></p>
+<p>Add a role to a profile.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.roles.addRoleToProfile(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-profile"</span>, <span class="hljs-string">"my-role"</span>);
+</code></pre><h2 id="aws-iam-roles-removerolefromprofile">AWS.IAM.ROLES.REMOVEROLEFROMPROFILE</h2>
+<p><a name="remove"></a>
+<code>aws.iam.roles.removeRoleFromProfile(region, profileName, roleName);</code></p>
+<p>Remove a role from a profile.</p>
+<p>Example:</p>
+<pre><code>
+ aws.iam.roles.removeRoleFromProfile(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"my-profile"</span>, <span class="hljs-string">"my-role"</span>);
+</code></pre>
         
-        
-          <div class='highlight'><pre><span class="hljs-keyword">package</span> iam
-
+          <div class='highlight'><pre>
 <span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"log"</span>
 	<span class="hljs-string">"time"</span>
@@ -472,10 +605,6 @@
 
 	params := &amp;iam.CreateInstanceProfileInput{
 		InstanceProfileName: aws.String(name),
-	}
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating IAM instance profile '%s'"</span>, name)
 	}
 
 	resp, err := svc.CreateInstanceProfile(params)
@@ -502,10 +631,6 @@
 
 <span class="hljs-keyword">func</span> deleteProfile(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting IAM profile '%s'\n"</span>, id)
-	}
 
 	params := &amp;iam.DeleteInstanceProfileInput{
 		InstanceProfileName: aws.String(id),
@@ -560,10 +685,6 @@
         
           <div class='highlight'><pre>	}
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating IAM role '%s'"</span>, name)
-	}
-
 	resp, err := svc.CreateRole(params)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"Error creating IAM role: %s"</span>, err)
@@ -588,10 +709,6 @@
 
 <span class="hljs-keyword">func</span> deleteRole(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting IAM role '%s'\n"</span>, id)
-	}
 
 	params := &amp;iam.DeleteRoleInput{
 		RoleName: aws.String(id),
@@ -648,6 +765,21 @@
 
 }
 
+<span class="hljs-keyword">func</span> deleteRolePolicy(region <span class="hljs-keyword">string</span>, roleName <span class="hljs-keyword">string</span>, policyName <span class="hljs-keyword">string</span>) {
+	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;iam.DeleteRolePolicyInput{
+		PolicyName: aws.String(policyName),
+		RoleName:   aws.String(roleName),
+	}
+	_, err := svc.DeleteRolePolicy(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}
+
+}
+
 <span class="hljs-keyword">func</span> addRoleToProfile(region <span class="hljs-keyword">string</span>, profileName <span class="hljs-keyword">string</span>, roleName <span class="hljs-keyword">string</span>) {
 	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
@@ -656,6 +788,20 @@
 		RoleName:            aws.String(roleName),
 	}
 	_, err := svc.AddRoleToInstanceProfile(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}
+}
+
+<span class="hljs-keyword">func</span> removeRoleFromProfile(region <span class="hljs-keyword">string</span>, profileName <span class="hljs-keyword">string</span>, roleName <span class="hljs-keyword">string</span>) {
+	svc := iam.New(session.New(), aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;iam.RemoveRoleFromInstanceProfileInput{
+		InstanceProfileName: aws.String(profileName),
+		RoleName:            aws.String(roleName),
+	}
+	_, err := svc.RemoveRoleFromInstanceProfile(params)
 
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		<span class="hljs-built_in">panic</span>(err)
@@ -736,8 +882,16 @@
 			putRolePolicy(region, roleName, policyName, policy)
 			<span class="hljs-keyword">return</span> otto.Value{}
 		})
+		o3.Set(<span class="hljs-string">"deleteRolePolicy"</span>, <span class="hljs-keyword">func</span>(region, roleName <span class="hljs-keyword">string</span>, policyName <span class="hljs-keyword">string</span>) otto.Value {
+			deleteRolePolicy(region, roleName, policyName)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
 		o3.Set(<span class="hljs-string">"addRoleToProfile"</span>, <span class="hljs-keyword">func</span>(region, profileName <span class="hljs-keyword">string</span>, roleName <span class="hljs-keyword">string</span>) otto.Value {
 			addRoleToProfile(region, profileName, roleName)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
+		o3.Set(<span class="hljs-string">"removeRoleFromProfile"</span>, <span class="hljs-keyword">func</span>(region, profileName <span class="hljs-keyword">string</span>, roleName <span class="hljs-keyword">string</span>) otto.Value {
+			removeRoleFromProfile(region, profileName, roleName)
 			<span class="hljs-keyword">return</span> otto.Value{}
 		})
 		o3.Set(<span class="hljs-string">"ec2TrustPolicy"</span>, <span class="hljs-string">`{

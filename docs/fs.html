@@ -2,7 +2,7 @@
 
 <html>
 <head>
-  <title>fs.go</title>
+  <title>CORE FUNCTIONS: FS</title>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
   <link rel="stylesheet" media="all" href="docco.css" />
@@ -13,7 +13,13 @@
 
       <div class="header">
         
-          <h1>fs.go</h1>
+          
+          <h1 id="core-functions-fs">CORE FUNCTIONS: FS</h1>
+
+          
+            <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> fs</pre></div>
+          
         
 
         
@@ -95,6 +101,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
                   </a>
                 </li>
               
@@ -296,6 +309,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -448,11 +468,205 @@
 
       
         
+        <p>This package exports entry points into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#chtimes">fs.chtimes</a></li>
+<li><a href="#link">fs.link</a></li>
+<li><a href="#symlink">fs.symlink</a></li>
+<li><a href="#create">fs.create</a></li>
+<li><a href="#close">fs.close</a></li>
+<li><a href="#read">fs.read</a></li>
+<li><a href="#write">fs.write</a></li>
+<li><a href="#copy">fs.copy</a></li>
+<li><a href="#chdir">fs.chdir</a></li>
+<li><a href="#getwd">fs.getwd</a></li>
+<li><a href="#mkdirAll">fs.mkdirAll</a></li>
+<li><a href="#remove">fs.remove</a></li>
+<li><a href="#removeAll">fs.removeAll</a></li>
+<li><a href="#rename">fs.rename</a></li>
+<li><a href="#chown">fs.chown</a></li>
+<li><a href="#lchown">fs.lChown</a></li>
+<li><a href="#chmod">fs.chmod</a></li>
+<li><a href="#dir">fs.dir</a></li>
+<li><a href="#stat">fs.stat</a></li>
+</ul>
+</blockquote>
+<p>This API allows the caller to work with files.</p>
+<h2 id="fs-chtimes">FS.CHTIMES</h2>
+<p><a name="chtimes"></a>
+<code>filepath.chtimes(path);</code></p>
+<p>Sets the file at <code>path</code> to have current atime and mtime.  TODO: rename this to <code>touch</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> err = fs.chtimes(<span class="hljs-string">"/tmp/foo"</span>);
+</code></pre><h2 id="fs-link">FS.LINK</h2>
+<p><a name="link"></a>
+<code>filepath.link(old, new);</code></p>
+<p>Link creates newname as a hard link to the oldname file. If there
+is an error, it will be of type LinkError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> err = fs.link(<span class="hljs-string">"/tmp/old"</span> <span class="hljs-string">"/tmp/new"</span>);
+</code></pre><h2 id="fs-symlink">FS.SYMLINK</h2>
+<p><a name="symlink"></a>
+<code>filepath.symlink(old, new);</code></p>
+<p>Symlink creates newname as a symbolic link to oldname. If there is
+an error, it will be of type LinkError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> err = fs.symlink(<span class="hljs-string">"/tmp/old"</span> <span class="hljs-string">"/tmp/new"</span>);
+</code></pre><h2 id="fs-create">FS.CREATE</h2>
+<p><a name="create"></a>
+<code>filepath.create(path);</code></p>
+<p>Create creates the named file with mode 0666 (before umask),
+truncating it if it already exists. If successful, methods on the
+returned File can be used for I/O; the associated file descriptor
+has mode O_RDWR. If there is an error, it will be of type
+PathError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.create(<span class="hljs-string">"/tmp/foo"</span>);
+ <span class="hljs-keyword">var</span> file = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="fs-close">FS.CLOSE</h2>
+<p><a name="close"></a>
+<code>filepath.close(file);</code></p>
+<p>Close closes the File, rendering it unusable for I/O. It returns an
+error, if any.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.create(<span class="hljs-string">"/tmp/foo"</span>);
+ <span class="hljs-keyword">var</span> file = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+ <span class="hljs-keyword">if</span> (error) {
+  ...
+ }
+ <span class="hljs-keyword">var</span> error = fs.<span class="hljs-built_in">close</span>(file);
+</code></pre><h2 id="fs-read">FS.READ</h2>
+<p><a name="read"></a>
+<code>filepath.read(path);</code></p>
+<p>Read the contents of the file at <code>path</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.read(<span class="hljs-string">"/tmp/foo"</span>);
+ <span class="hljs-keyword">var</span> contents = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="fs-write">FS.WRITE</h2>
+<p><a name="write"></a>
+<code>filepath.write(path, contents, perms);</code></p>
+<p>Write the contents of the file at <code>path</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.read(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-string">"contents"</span>, <span class="hljs-number">0644</span>);
+</code></pre><h2 id="fs-copy">FS.COPY</h2>
+<p><a name="copy"></a>
+<code>filepath.copy(src, dest, perms);</code></p>
+<p>Copy the file from <code>src</code> to <code>dest</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.<span class="hljs-built_in">copy</span>(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-string">"/tmp/bar"</span>, <span class="hljs-number">0644</span>);
+</code></pre><h2 id="fs-chdir">FS.CHDIR</h2>
+<p><a name="chdir"></a>
+<code>filepath.chdir(dir);</code></p>
+<p>Change working director to <code>dir</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.chdir(<span class="hljs-string">"/tmp"</span>);
+</code></pre><h2 id="fs-getwd">FS.GETWD</h2>
+<p><a name="getwd"></a>
+<code>filepath.getwd();</code></p>
+<p>Get the current working directory.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.getwd();
+ <span class="hljs-keyword">var</span> where = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> err = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="fs-mkdirall">FS.MKDIRALL</h2>
+<p><a name="mkdirAll"></a>
+<code>filepath.mkdirALL(path, perm);</code></p>
+<p>MkdirAll creates a directory named path, along with any necessary
+parents, and returns nil, or else returns an error. The permission
+bits perm are used for all directories that MkdirAll creates. If
+path is already a directory, MkdirAll does nothing and returns nil.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.mkdirAll(<span class="hljs-string">"/tmp/a/b/c"</span>, <span class="hljs-number">0777</span>);
+</code></pre><h2 id="fs-remove">FS.REMOVE</h2>
+<p><a name="remove"></a>
+<code>filepath.remove(path);</code></p>
+<p>Remove the file at <code>path</code>.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.remove(<span class="hljs-string">"/tmp/a/b/c"</span>);
+</code></pre><h2 id="fs-removeall">FS.REMOVEALL</h2>
+<p><a name="removeAll"></a>
+<code>filepath.removeAll(path);</code></p>
+<p>RemoveAll removes path and any children it contains. It removes
+everything it can but returns the first error it encounters. If the
+path does not exist,</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.removeAll(<span class="hljs-string">"/tmp/a/b/c"</span>);
+</code></pre><h2 id="fs-rename">FS.RENAME</h2>
+<p><a name="rename"></a>
+<code>filepath.rename(oldname, newname);</code></p>
+<p>Rename renames (moves) oldpath to newpath. If newpath already
+exists, Rename replaces it. OS-specific restrictions may apply when
+oldpath and newpath are in different directories. If there is an
+error, it will be of type *LinkError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.rename(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-string">"/tmp/bar"</span>);
+</code></pre><h2 id="fs-chown">FS.CHOWN</h2>
+<p><a name="chown"></a>
+<code>filepath.chown(path, uid, gid);</code></p>
+<p>Chown changes the numeric uid and gid of the named file. If the
+file is a symbolic link,it changes the uid and gid of the link’s
+target. If there is an error, it will be of type *PathError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.chown(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-number">12</span>, <span class="hljs-number">34</span>);
+</code></pre><h2 id="fs-lchown">FS.LCHOWN</h2>
+<p><a name="lchown"></a>
+<code>filepath.lChown(path, uid, gid);</code></p>
+<p>Lchown changes the numeric uid and gid of the named file. If the
+file is a symbolic link, it changes the uid and gid of the link
+itself. If there is an error, it will be of type *PathError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.lchown(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-number">12</span>, <span class="hljs-number">34</span>);
+</code></pre><h2 id="fs-chmod">FS.CHMOD</h2>
+<p><a name="chmod"></a>
+<code>filepath.chmod(path, mode);</code></p>
+<p>Chmod changes the mode of the named file to mode. If the file is a
+symbolic link, it changes the mode of the link’s target. If there
+is an error, it will be of type *PathError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> error = fs.chmod(<span class="hljs-string">"/tmp/foo"</span>, <span class="hljs-number">0777</span>);
+</code></pre><h2 id="fs-dir">FS.DIR</h2>
+<p><a name="dir"></a>
+<code>filepath.dir(path);</code></p>
+<p>Return the directory entries from <code>path</code></p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.chmod(<span class="hljs-string">"/tmp"</span>);
+ <span class="hljs-keyword">var</span> entries = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre><h2 id="fs-stat">FS.STAT</h2>
+<p><a name="stat"></a>
+<code>filepath.stat(path);</code></p>
+<p>Stat returns the FileInfo structure describing file. If there is an
+error, it will be of type *PathError.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> results = fs.stat(<span class="hljs-string">"/tmp/foo"</span>);
+ <span class="hljs-keyword">var</span> info = results[<span class="hljs-number">0</span>];
+ <span class="hljs-keyword">var</span> error = results[<span class="hljs-number">1</span>];
+</code></pre>
         
-        
-          <div class='highlight'><pre><span class="hljs-keyword">package</span> fs
-
-<span class="hljs-keyword">import</span> (
+          <div class='highlight'><pre><span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"io"</span>
 	<span class="hljs-string">"io/ioutil"</span>
 	<span class="hljs-string">"log"</span>

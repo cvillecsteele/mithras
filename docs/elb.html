@@ -106,6 +106,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -297,6 +304,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
                   </a>
                 </li>
               
@@ -835,10 +849,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Modifying health check for elb '%s'\n"</span>, lbName)
-	}
-
 	_, err := svc.ConfigureHealthCheck(&amp;input)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"Can't configure elb health check: %s"</span>, err)
@@ -848,10 +858,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 <span class="hljs-keyword">func</span> setAttrs(region <span class="hljs-keyword">string</span>, lbName <span class="hljs-keyword">string</span>, input elb.ModifyLoadBalancerAttributesInput, verbose <span class="hljs-keyword">bool</span>) {
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Modifying attributes for elb '%s'\n"</span>, lbName)
-	}
 
 	_, err := svc.ModifyLoadBalancerAttributes(&amp;input)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
@@ -886,10 +892,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating ELB '%s'\n"</span>, *params.LoadBalancerName)
-	}
-
 	_, err := svc.CreateLoadBalancer(params)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatal(err.Error())
@@ -916,10 +918,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 <span class="hljs-keyword">func</span> <span class="hljs-built_in">delete</span>(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
 	svc := elb.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting ELB '%s'\n"</span>, id)
-	}
 
 	i := &amp;elb.DeleteLoadBalancerInput{
 		LoadBalancerName: aws.String(id),
@@ -955,10 +953,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 		LoadBalancerName: aws.String(lbName),
 	}
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Adding %d instances to elb '%s'\n"</span>, <span class="hljs-built_in">len</span>(instances), lbName)
-	}
-
 	<span class="hljs-keyword">if</span> _, err := svc.RegisterInstancesWithLoadBalancer(params); err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"Error adding instances to elb '%s': %s"</span>, lbName, err)
 	}
@@ -971,10 +965,6 @@ aws.elbs.deregister(<span class="hljs-string">"us-east-1"</span>, <span class="h
 	params := &amp;elb.DeregisterInstancesFromLoadBalancerInput{
 		Instances:        instances,
 		LoadBalancerName: aws.String(lbName),
-	}
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Removing %d instances from elb '%s'\n"</span>, <span class="hljs-built_in">len</span>(instances), lbName)
 	}
 
 	<span class="hljs-keyword">if</span> _, err := svc.DeregisterInstancesFromLoadBalancer(params); err != <span class="hljs-literal">nil</span> {

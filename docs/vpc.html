@@ -106,6 +106,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -297,6 +304,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
                   </a>
                 </li>
               
@@ -565,10 +579,6 @@ including:</p>
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating VPC with cidr '%s'\n"</span>, *params.CidrBlock)
-	}
-
 	resp, err := svc.CreateVpc(params)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"Error creating vpc: %s"</span>, err)
@@ -605,9 +615,6 @@ including:</p>
         
           <div class='highlight'><pre>	<span class="hljs-keyword">var</span> gw ec2.InternetGateway
 	<span class="hljs-keyword">if</span> gateway {
-		<span class="hljs-keyword">if</span> verbose {
-			log.Printf(<span class="hljs-string">"  ### Creating internet gateway for VPC  '%s'\n"</span>, *params.CidrBlock)
-		}
 		gw = createGateway(region)</pre></div>
         
       
@@ -632,10 +639,6 @@ including:</p>
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting VPC '%s'\n"</span>, id)
-	}
-
 	_, err := svc.DeleteVpc(&amp;ec2.DeleteVpcInput{VpcId: aws.String(id)})
 
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
@@ -652,10 +655,6 @@ including:</p>
 <span class="hljs-keyword">func</span> deleteGW(region <span class="hljs-keyword">string</span>, vpcId <span class="hljs-keyword">string</span>, gwId <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting GW '%s'\n"</span>, gwId)
-	}
 
 	_, err := svc.DetachInternetGateway(&amp;ec2.DetachInternetGatewayInput{
 		InternetGatewayId: aws.String(gwId),

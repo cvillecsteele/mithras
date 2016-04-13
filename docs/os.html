@@ -100,6 +100,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -296,6 +303,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -481,6 +495,10 @@
 		obj.Set(<span class="hljs-string">"exit"</span>, exit)
 		obj.Set(<span class="hljs-string">"hostname"</span>, hostname)
 		obj.Set(<span class="hljs-string">"getenv"</span>, getenv)
+		obj.Set(<span class="hljs-string">"expandEnv"</span>, <span class="hljs-keyword">func</span>(thing <span class="hljs-keyword">string</span>) otto.Value {
+			f := core.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(os.ExpandEnv(thing))
+		})
 	})
 }</pre></div>
         

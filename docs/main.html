@@ -100,6 +100,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -296,6 +303,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.go
                   </a>
@@ -473,6 +487,7 @@
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/fs"</span>
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/goroutines"</span>
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/iam"</span>
+	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/keypairs"</span>
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/network"</span>
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/os"</span>
 	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/routetables"</span>
@@ -489,6 +504,7 @@
 
 <span class="hljs-keyword">func</span> main() {
 	vers := []ModuleVersion{
+		ModuleVersion{version: keypairs.Version, module: keypairs.ModuleName},
 		ModuleVersion{version: channels.Version, module: channels.ModuleName},
 		ModuleVersion{version: goroutines.Version, module: goroutines.ModuleName},
 		ModuleVersion{version: iam.Version, module: iam.ModuleName},

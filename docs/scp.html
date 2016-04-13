@@ -100,6 +100,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -291,6 +298,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
                   </a>
                 </li>
               
@@ -514,9 +528,11 @@
 						     resource.name);
 		<span class="hljs-keyword">var</span> updatedParams = updated.params;
 
-		<span class="hljs-keyword">if</span> (updatedParams.skip) {
+		<span class="hljs-keyword">if</span> (updatedParams.skip == <span class="hljs-literal">true</span>) {
 		    log(<span class="hljs-string">"Skipped."</span>);
-		} <span class="hljs-keyword">else</span> {
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (updatedParams.ensure === <span class="hljs-string">'absent'</span>) {
+		    log(<span class="hljs-string">"Ensure: absent; skipping."</span>)
+		} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (updatedParams.ensure === <span class="hljs-string">'present'</span>) {
 		    <span class="hljs-keyword">var</span> result = mithras.remote.scp(host.PublicIpAddress, 
 						    user, 
 						    key, 

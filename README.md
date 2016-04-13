@@ -82,9 +82,7 @@ TODO
 ###############################################################################
 
 * make sure no handlers are interacting with AWS outside the catalog...
-* DOCUMENTATION
- * goroutines
- * iam
+* DOCUMENTATION: fix css / toc
  * instance
  * log
  * network

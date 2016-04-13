@@ -106,6 +106,13 @@
               
                 
                 <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="log.html">
                     log.js
                   </a>
@@ -297,6 +304,13 @@
                 <li>
                   <a class="source" href="instance.html">
                     instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
                   </a>
                 </li>
               
@@ -559,9 +573,6 @@ including:</p>
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating subnet\n"</span>)
-	}
 	resp, err := svc.CreateSubnet(params)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatal(err.Error())
@@ -589,9 +600,6 @@ including:</p>
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
 
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Creating route\n"</span>)
-	}
 	output, err := svc.CreateRoute(&amp;input)
 	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
 		log.Fatalf(<span class="hljs-string">"AWS error creating route: %s"</span>, err)
@@ -602,10 +610,6 @@ including:</p>
 <span class="hljs-keyword">func</span> deleteRoute(region <span class="hljs-keyword">string</span>, cidr <span class="hljs-keyword">string</span>, routeTableId <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) *ec2.DeleteRouteOutput {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting route\n"</span>)
-	}
 
 	params := &amp;ec2.DeleteRouteInput{
 		DestinationCidrBlock: aws.String(cidr),
@@ -622,10 +626,6 @@ including:</p>
 <span class="hljs-keyword">func</span> deleteSubnet(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
 	svc := ec2.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
-
-	<span class="hljs-keyword">if</span> verbose {
-		log.Printf(<span class="hljs-string">"  ### Deleting subnet '%s'\n"</span>, id)
-	}
 
 	i := &amp;ec2.DeleteSubnetInput{
 		SubnetId: aws.String(id),
