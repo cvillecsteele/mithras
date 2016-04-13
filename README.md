@@ -32,11 +32,11 @@ Here are some uses cases for Mithras:
 * Continuous Delivery
 * Orchestration
 
-Sounds pretty nifty, eh?  But it's not perfect.  If you need hardcore
-configuration management, Mithras isn't a good choice.  (Not yet,
-anyway.)  If you have the need to manage hosts and resources outside
-AWS, Mithras probably isn't a good choice.  If you love YAML, don't
-bother with Mithras.
+Sounds pretty nifty, eh?  But it's not perfect.  If you need
+enterprise configuration management features, Mithras isn't a good
+choice.  (Not yet, anyway.)  If you have the need to manage hosts and
+resources outside AWS, Mithras probably isn't a good choice.  If you
+love YAML, don't bother with Mithras.
 
 Finally, Mithras is *new*.  It's currently alpha quality software,
 with bugs and design choices still being shaken out.  Proceed with
@@ -49,6 +49,10 @@ DESIGN
 * Javascript DSL
 * Simple (abstract) aws interface - not a port of the aws sdk to js
 * Agentless 
+* Idempotent  
+* Declarative resources
+* Explicit dependencies
+* Immutable infrastructure
 
 BUILDING FROM SOURCE
 ###############################################################################
@@ -62,7 +66,7 @@ BUILDING FROM SOURCE
 RUNNING
 ###############################################################################
 
-0. Mithras depends on using ssh-agent.  Make sure it is set up and has the right keys added.
+0. Mithras depends on using `ssh-agent`.  Make sure it is set up and has the right keys added.
 1. Set up a site directory. Let's say it's '~/projects/my_site'
 2. `EXPORT MITHRASHOME=~/projects/my_site`.
 3. Create your site file, `site.js`.
