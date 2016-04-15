@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>object_path.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>object_path.js</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>MITHRAS: Javascript configuration management tool for AWS.
+Copyright (C) 2016, Colin Steele</p>
+<p> This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+                 (at your option) any later version.</p>
+<p>   This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+             GNU General Public License for more details.</p>
+<p>  You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+        
+          <div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root, factory</span>)</span>{
+<span class="hljs-meta">    'use strict'</span>;
+
+    <span class="hljs-comment">/*istanbul ignore next:cant test*/</span>
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span> === <span class="hljs-string">'object'</span> &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span>.exports === <span class="hljs-string">'object'</span>) {
+	<span class="hljs-built_in">module</span>.exports = factory();
+    } <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> define === <span class="hljs-string">'function'</span> &amp;&amp; define.amd) {</pre></div>
+        
+      
+        
+        <p>AMD. Register as an anonymous module.</p>
+
+        
+          <div class='highlight'><pre>	define([], factory);
+    } <span class="hljs-keyword">else</span> {</pre></div>
+        
+      
+        
+        <p>Browser globals</p>
+
+        
+          <div class='highlight'><pre>	root.objectPath = factory();
+    }
+})(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>{
+<span class="hljs-meta">    'use strict'</span>;
+
+    <span class="hljs-keyword">var</span>
+    toStr = <span class="hljs-built_in">Object</span>.prototype.toString,
+    _hasOwnProperty = <span class="hljs-built_in">Object</span>.prototype.hasOwnProperty;
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isEmpty</span>(<span class="hljs-params">value</span>)</span>{
+	<span class="hljs-keyword">if</span> (!value) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}
+	<span class="hljs-keyword">if</span> (isArray(value) &amp;&amp; value.length === <span class="hljs-number">0</span>) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (!isString(value)) {
+	    <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> value) {
+		<span class="hljs-keyword">if</span> (_hasOwnProperty.call(value, i)) {
+		    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+		}
+	    }
+	    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+	}
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">toString</span>(<span class="hljs-params">type</span>)</span>{
+	<span class="hljs-keyword">return</span> toStr.call(type);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isNumber</span>(<span class="hljs-params">value</span>)</span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> value === <span class="hljs-string">'number'</span> || toString(value) === <span class="hljs-string">"[object Number]"</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isString</span>(<span class="hljs-params">obj</span>)</span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'string'</span> || toString(obj) === <span class="hljs-string">"[object String]"</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isObject</span>(<span class="hljs-params">obj</span>)</span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'object'</span> &amp;&amp; toString(obj) === <span class="hljs-string">"[object Object]"</span>;
+    }
+
+    <span class="hljs-keyword">var</span> isArray = <span class="hljs-built_in">Array</span>.isArray || <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>)</span>{
+	<span class="hljs-keyword">return</span> toStr.call(obj) === <span class="hljs-string">'[object Array]'</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">isBoolean</span>(<span class="hljs-params">obj</span>)</span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-keyword">typeof</span> obj === <span class="hljs-string">'boolean'</span> || toString(obj) === <span class="hljs-string">'[object Boolean]'</span>;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getKey</span>(<span class="hljs-params">key</span>)</span>{
+	<span class="hljs-keyword">var</span> intKey = <span class="hljs-built_in">parseInt</span>(key);
+	<span class="hljs-keyword">if</span> (intKey.toString() === key) {
+	    <span class="hljs-keyword">return</span> intKey;
+	}
+	<span class="hljs-keyword">return</span> key;
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">set</span>(<span class="hljs-params">obj, path, value, doNotReplace</span>)</span>{
+	<span class="hljs-keyword">if</span> (isNumber(path)) {
+	    path = [path];
+	}
+	<span class="hljs-keyword">if</span> (isEmpty(path)) {
+	    <span class="hljs-keyword">return</span> obj;
+	}
+	<span class="hljs-keyword">if</span> (isString(path)) {
+	    <span class="hljs-keyword">return</span> set(obj, path.split(<span class="hljs-string">'.'</span>).map(getKey), value, doNotReplace);
+	}
+	<span class="hljs-keyword">var</span> currentPath = path[<span class="hljs-number">0</span>];
+
+	<span class="hljs-keyword">if</span> (path.length === <span class="hljs-number">1</span>) {
+	    <span class="hljs-keyword">var</span> oldVal = obj[currentPath];
+	    <span class="hljs-keyword">if</span> (oldVal === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span> || !doNotReplace) {
+		obj[currentPath] = value;
+	    }
+	    <span class="hljs-keyword">return</span> oldVal;
+	}
+
+	<span class="hljs-keyword">if</span> (obj[currentPath] === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {</pre></div>
+        
+      
+        
+        <p>check if we assume an array</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">if</span>(isNumber(path[<span class="hljs-number">1</span>])) {
+		obj[currentPath] = [];
+	    } <span class="hljs-keyword">else</span> {
+		obj[currentPath] = {};
+	    }
+	}
+
+	<span class="hljs-keyword">return</span> set(obj[currentPath], path.slice(<span class="hljs-number">1</span>), value, doNotReplace);
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">del</span>(<span class="hljs-params">obj, path</span>) </span>{
+	<span class="hljs-keyword">if</span> (isNumber(path)) {
+	    path = [path];
+	}
+
+	<span class="hljs-keyword">if</span> (isEmpty(obj)) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>;
+	}
+
+	<span class="hljs-keyword">if</span> (isEmpty(path)) {
+	    <span class="hljs-keyword">return</span> obj;
+	}
+	<span class="hljs-keyword">if</span>(isString(path)) {
+	    <span class="hljs-keyword">return</span> del(obj, path.split(<span class="hljs-string">'.'</span>));
+	}
+
+	<span class="hljs-keyword">var</span> currentPath = getKey(path[<span class="hljs-number">0</span>]);
+	<span class="hljs-keyword">var</span> oldVal = obj[currentPath];
+
+	<span class="hljs-keyword">if</span>(path.length === <span class="hljs-number">1</span>) {
+	    <span class="hljs-keyword">if</span> (oldVal !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {
+		<span class="hljs-keyword">if</span> (isArray(obj)) {
+		    obj.splice(currentPath, <span class="hljs-number">1</span>);
+		} <span class="hljs-keyword">else</span> {
+		    <span class="hljs-keyword">delete</span> obj[currentPath];
+		}
+	    }
+	} <span class="hljs-keyword">else</span> {
+	    <span class="hljs-keyword">if</span> (obj[currentPath] !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {
+		<span class="hljs-keyword">return</span> del(obj[currentPath], path.slice(<span class="hljs-number">1</span>));
+	    }
+	}
+
+	<span class="hljs-keyword">return</span> obj;
+    }
+
+    <span class="hljs-keyword">var</span> objectPath = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj</span>) </span>{
+	<span class="hljs-keyword">return</span> <span class="hljs-built_in">Object</span>.keys(objectPath).reduce(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">proxy, prop</span>) </span>{
+	    <span class="hljs-comment">/*istanbul ignore else*/</span>
+	    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> objectPath[prop] === <span class="hljs-string">'function'</span>) {
+		proxy[prop] = objectPath[prop].bind(objectPath, obj);
+	    }
+
+	    <span class="hljs-keyword">return</span> proxy;
+	}, {});
+    };
+
+    objectPath.has = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path</span>) </span>{
+	<span class="hljs-keyword">if</span> (isEmpty(obj)) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	}
+
+	<span class="hljs-keyword">if</span> (isNumber(path)) {
+	    path = [path];
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isString(path)) {
+	    path = path.split(<span class="hljs-string">'.'</span>);
+	}
+
+	<span class="hljs-keyword">if</span> (isEmpty(path) || path.length === <span class="hljs-number">0</span>) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	}
+
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; path.length; i++) {
+	    <span class="hljs-keyword">var</span> j = path[i];
+	    <span class="hljs-keyword">if</span> ((isObject(obj) || isArray(obj)) &amp;&amp; _hasOwnProperty.call(obj, j)) {
+		obj = obj[j];
+	    } <span class="hljs-keyword">else</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+	    }
+	}
+
+	<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+    };
+
+    objectPath.ensureExists = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path, value</span>)</span>{
+	<span class="hljs-keyword">return</span> set(obj, path, value, <span class="hljs-literal">true</span>);
+    };
+
+    objectPath.set = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path, value, doNotReplace</span>)</span>{
+	<span class="hljs-keyword">return</span> set(obj, path, value, doNotReplace);
+    };
+
+    objectPath.insert = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path, value, at</span>)</span>{
+	<span class="hljs-keyword">var</span> arr = objectPath.get(obj, path);
+	at = ~~at;
+	<span class="hljs-keyword">if</span> (!isArray(arr)) {
+	    arr = [];
+	    objectPath.set(obj, path, arr);
+	}
+	arr.splice(at, <span class="hljs-number">0</span>, value);
+    };
+
+    objectPath.empty = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj, path</span>) </span>{
+	<span class="hljs-keyword">if</span> (isEmpty(path)) {
+	    <span class="hljs-keyword">return</span> obj;
+	}
+	<span class="hljs-keyword">if</span> (isEmpty(obj)) {
+	    <span class="hljs-keyword">return</span> <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>;
+	}
+
+	<span class="hljs-keyword">var</span> value, i;
+	<span class="hljs-keyword">if</span> (!(value = objectPath.get(obj, path))) {
+	    <span class="hljs-keyword">return</span> obj;
+	}
+
+	<span class="hljs-keyword">if</span> (isString(value)) {
+	    <span class="hljs-keyword">return</span> objectPath.set(obj, path, <span class="hljs-string">''</span>);
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isBoolean(value)) {
+	    <span class="hljs-keyword">return</span> objectPath.set(obj, path, <span class="hljs-literal">false</span>);
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isNumber(value)) {
+	    <span class="hljs-keyword">return</span> objectPath.set(obj, path, <span class="hljs-number">0</span>);
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isArray(value)) {
+	    value.length = <span class="hljs-number">0</span>;
+	} <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (isObject(value)) {
+	    <span class="hljs-keyword">for</span> (i <span class="hljs-keyword">in</span> value) {
+		<span class="hljs-keyword">if</span> (_hasOwnProperty.call(value, i)) {
+		    <span class="hljs-keyword">delete</span> value[i];
+		}
+	    }
+	} <span class="hljs-keyword">else</span> {
+	    <span class="hljs-keyword">return</span> objectPath.set(obj, path, <span class="hljs-literal">null</span>);
+	}
+    };
+
+    objectPath.push = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path <span class="hljs-comment">/*, values */</span></span>)</span>{
+	<span class="hljs-keyword">var</span> arr = objectPath.get(obj, path);
+	<span class="hljs-keyword">if</span> (!isArray(arr)) {
+	    arr = [];
+	    objectPath.set(obj, path, arr);
+	}
+
+	arr.push.apply(arr, <span class="hljs-built_in">Array</span>.prototype.slice.call(<span class="hljs-built_in">arguments</span>, <span class="hljs-number">2</span>));
+    };
+
+    objectPath.coalesce = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, paths, defaultValue</span>) </span>{
+	<span class="hljs-keyword">var</span> value;
+
+	<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>, len = paths.length; i &lt; len; i++) {
+	    <span class="hljs-keyword">if</span> ((value = objectPath.get(obj, paths[i])) !== <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {
+		<span class="hljs-keyword">return</span> value;
+	    }
+	}
+
+	<span class="hljs-keyword">return</span> defaultValue;
+    };
+
+    objectPath.get = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">obj, path, defaultValue</span>)</span>{
+	<span class="hljs-keyword">if</span> (isNumber(path)) {
+	    path = [path];
+	}
+	<span class="hljs-keyword">if</span> (isEmpty(path)) {
+	    <span class="hljs-keyword">return</span> obj;
+	}
+	<span class="hljs-keyword">if</span> (isEmpty(obj)) {
+	    <span class="hljs-keyword">return</span> defaultValue;
+	}
+	<span class="hljs-keyword">if</span> (isString(path)) {
+	    <span class="hljs-keyword">return</span> objectPath.get(obj, path.split(<span class="hljs-string">'.'</span>), defaultValue);
+	}
+
+	<span class="hljs-keyword">var</span> currentPath = getKey(path[<span class="hljs-number">0</span>]);
+
+	<span class="hljs-keyword">if</span> (path.length === <span class="hljs-number">1</span>) {
+	    <span class="hljs-keyword">if</span> (obj[currentPath] === <span class="hljs-keyword">void</span> <span class="hljs-number">0</span>) {
+		<span class="hljs-keyword">return</span> defaultValue;
+	    }
+	    <span class="hljs-keyword">return</span> obj[currentPath];
+	}
+
+	<span class="hljs-keyword">return</span> objectPath.get(obj[currentPath], path.slice(<span class="hljs-number">1</span>), defaultValue);
+    };
+
+    objectPath.del = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">obj, path</span>) </span>{
+	<span class="hljs-keyword">return</span> del(obj, path);
+    };
+
+    <span class="hljs-keyword">return</span> objectPath;
+});</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

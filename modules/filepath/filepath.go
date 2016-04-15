@@ -33,6 +33,7 @@ package filepath
 // > * [filepath.clean](#clean)
 // > * [filepath.abs](#abs)
 // > * [filepath.join](#join)
+// > * [filepath.walk](#walk)
 //
 // This API allows the caller to work with filesystem paths.
 //
@@ -237,8 +238,31 @@ package filepath
 //
 // ```
 //
+// ## FILEPATH.walk
+// <a name="walk"></a>
+// `filepath.walk(path, walker);`
+//
+// Walk walks the file tree rooted at root, calling `walker` for each
+// file or directory in the tree, including root. All errors that
+// arise visiting files and directories are filtered by `walker`. The
+// files are walked in lexical order, which makes the output
+// deterministic but means that for very large directories Walk can be
+// inefficient. Walk does not follow symbolic links.
+//
+// Example:
+//
+// ```
+//
+//  filepath.walk("/var", function(path,info,err) { console.log(path); });
+//
+// ```
+//
 import (
+	"errors"
+	"log"
+	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/robertkrimen/otto"
 
@@ -295,7 +319,47 @@ func join(elem ...string) string {
 func init() {
 	core.RegisterInit(func(rt *otto.Otto) {
 		obj, _ := rt.Object(`filepath = {}`)
-		// TODO: join and walk
+		obj.Set("walk", func(call otto.FunctionCall) otto.Value {
+			cb := call.Argument(1)
+			f := core.Sanitizer(rt)
+			filepath.Walk(call.Argument(0).String(),
+				func(path string, info os.FileInfo, err error) error {
+					type r struct {
+						Name       string
+						Size       int64
+						Mode       os.FileMode
+						ModeString string
+						ModTime    time.Time
+						IsDir      bool
+						IsRegular  bool
+						Perm       os.FileMode
+						Error      error
+					}
+					i := r{
+						Name:       info.Name(),
+						Size:       info.Size(),
+						Mode:       info.Mode(),
+						ModeString: info.Mode().String(),
+						ModTime:    info.ModTime(),
+						IsDir:      info.IsDir(),
+						IsRegular:  info.Mode().IsRegular(),
+						Perm:       info.Mode().Perm(),
+					}
+					result, oops := cb.Call(otto.Value{}, path, f(i), f(err))
+					if oops != nil {
+						log.Fatalf("Error in walk callback: %s", oops)
+					}
+					if result.IsUndefined() {
+						return nil
+					} else if result.String() == "skip" {
+						return filepath.SkipDir
+					} else {
+						return errors.New(result.String())
+					}
+					return nil
+				})
+			return otto.Value{}
+		})
 		obj.Set("abs", abs)
 		obj.Set("clean", clean)
 		obj.Set("rel", rel)

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>script.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>script.go</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>MITHRAS: Javascript configuration management tool for AWS.
+Copyright (C) 2016, Colin Steele</p>
+<p> This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+                 (at your option) any later version.</p>
+<p>   This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+             GNU General Public License for more details.</p>
+<p>  You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> main
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"os"</span>
+	<span class="hljs-string">"path/filepath"</span>
+
+	<span class="hljs-string">"github.com/robertkrimen/otto"</span>
+	_ <span class="hljs-string">"github.com/robertkrimen/otto/underscore"</span>
+
+	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/core"</span>
+	<span class="hljs-string">"github.com/cvillecsteele/mithras/modules/require"</span>
+)
+
+<span class="hljs-keyword">func</span> initModules(rt *otto.Otto) {
+	<span class="hljs-keyword">for</span> idx, _ := <span class="hljs-keyword">range</span> core.InitFuncs {
+		core.InitFuncs[idx](rt)
+	}
+}
+
+<span class="hljs-keyword">func</span> loadScriptRuntime(name <span class="hljs-keyword">string</span>, jsdir <span class="hljs-keyword">string</span>, home <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>, args []<span class="hljs-keyword">string</span>, modules []ModuleVersion) *otto.Otto {</pre></div>
+        
+      
+        
+        <p>Set path</p>
+
+        
+          <div class='highlight'><pre>	<span class="hljs-keyword">if</span> jsdir != <span class="hljs-string">""</span> {
+		require.JsDir = jsdir
+	} <span class="hljs-keyword">else</span> {
+		require.JsDir = filepath.Join(home, <span class="hljs-string">"js"</span>)
+	}
+
+	path := filepath.Join(require.JsDir, <span class="hljs-string">"mithras.js"</span>)
+	coreBuff := require.LoadScript(path)
+	userBuff := require.LoadScript(name)
+
+	rt := otto.New()</pre></div>
+        
+      
+        
+        <p>Create empty mithras object and module exports</p>
+
+        
+          <div class='highlight'><pre>	rt.Object(<span class="hljs-string">`mithras = {}`</span>)</pre></div>
+        
+      
+        
+        <p>Initialize modules</p>
+
+        
+          <div class='highlight'><pre>	initModules(rt)</pre></div>
+        
+      
+        
+        <p>Load our base js</p>
+
+        
+          <div class='highlight'><pre>	<span class="hljs-keyword">if</span> _, err := rt.Run(coreBuff.String()); err != <span class="hljs-literal">nil</span> {
+		log.Fatalf(<span class="hljs-string">"Error loading '%s': %s"</span>, path, err)
+	}</pre></div>
+        
+      
+        
+        <p>Set some variables</p>
+
+        
+          <div class='highlight'><pre>	o, err := rt.Get(<span class="hljs-string">"mithras"</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}
+	m, err := rt.Object(<span class="hljs-string">`({})`</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}
+	o.Object().Set(<span class="hljs-string">"MODULES"</span>, m)
+	<span class="hljs-keyword">for</span> _, mod := <span class="hljs-keyword">range</span> modules {
+		js := <span class="hljs-string">`(function (name, version) { return this["MODULES"][name] = version; })`</span>
+		_, err = rt.Call(js, o, mod.module, mod.version)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			log.Fatalf(<span class="hljs-string">"Error setting module versions"</span>)
+		}
+	}
+	o.Object().Set(<span class="hljs-string">"VERSION"</span>, Version)
+	o.Object().Set(<span class="hljs-string">"verbose"</span>, verbose)
+	o.Object().Set(<span class="hljs-string">"GOPATH"</span>, os.Getenv(<span class="hljs-string">"GOPATH"</span>))
+	a, err := rt.Object(<span class="hljs-string">`([])`</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}
+	<span class="hljs-keyword">for</span> _, e := <span class="hljs-keyword">range</span> args {
+		v, err := rt.ToValue(e)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			<span class="hljs-built_in">panic</span>(err)
+		}
+		a.Call(<span class="hljs-string">"push"</span>, v)
+	}
+	o.Object().Set(<span class="hljs-string">"ARGS"</span>, a)</pre></div>
+        
+      
+        
+        <p>Load the script file into the runtime before we return it for use</p>
+
+        
+          <div class='highlight'><pre>	<span class="hljs-keyword">if</span> _, err := rt.Run(userBuff.String()); err != <span class="hljs-literal">nil</span> {
+		log.Fatal(err)
+	}
+	<span class="hljs-keyword">return</span> rt
+}</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

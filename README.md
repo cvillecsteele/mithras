@@ -54,6 +54,13 @@ DESIGN
 * Explicit dependencies
 * Immutable infrastructure
 
+DOCS
+###############################################################################
+
+Run:
+
+    docco -l linear -o website/docs *.go modules/*/*.go js/*.js
+
 BUILDING FROM SOURCE
 ###############################################################################
 
@@ -85,7 +92,7 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* make sure no handlers are interacting with AWS outside the catalog...
+* make sure no handlers are interacting with AWS outside the catalog (s3)
 * DOCUMENTATION: fix css / toc
  * rds
  * region
@@ -102,6 +109,7 @@ TODO
  * web
  * wrapper
 
+* more s3 configuration support for buckets
 * test goroutines interaction with otto runtime
 * select for writes
 * repl should have mithras env loaded

@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>file.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>file.js</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>MITHRAS: Javascript configuration management tool for AWS.
+Copyright (C) 2016, Colin Steele</p>
+<p> This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+                 (at your option) any later version.</p>
+<p>   This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+             GNU General Public License for more details.</p>
+<p>  You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+        
+          <div class='highlight'><pre>(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">root, factory</span>)</span>{
+    <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span> === <span class="hljs-string">'object'</span> &amp;&amp; <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">module</span>.exports === <span class="hljs-string">'object'</span>) {
+	<span class="hljs-built_in">module</span>.exports = factory();
+    }
+})(<span class="hljs-keyword">this</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>{
+    
+    <span class="hljs-keyword">var</span> sprintf = <span class="hljs-built_in">require</span>(<span class="hljs-string">"sprintf.js"</span>).sprintf;
+
+    <span class="hljs-keyword">var</span> handler = {
+	moduleName: <span class="hljs-string">"file"</span>
+	run: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">params</span>) </span>{
+	    <span class="hljs-keyword">var</span> sprintf = <span class="hljs-built_in">require</span>(<span class="hljs-string">"sprintf.js"</span>).sprintf;</pre></div>
+        
+      
+        
+        <p>If directory, all immediate subdirectories will be
+created if they do not exist. If file, the file will
+NOT be created if it does not exist, see the copy or
+template module if you want that behavior. If link, the
+symbolic link will be created or changed. Use hard for
+hardlinks. If absent, directories will be recursively
+deleted, and files or symlinks will be unlinked. If
+touch, an empty file will be created if the path does
+not exist, while an existing file or directory will
+receive updated file access and modification times
+(similar to the way <code>touch</code> works from the command
+line).</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">var</span> ensure = params.ensure;</pre></div>
+        
+      
+        
+        <p>name of the user that should own the file/directory, as
+would be fed to chown</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">var</span> chown = params.owner;</pre></div>
+        
+      
+        
+        <p>mode the file or directory should be. For those used to
+/usr/bin/chmod remember that modes are actually octal
+numbers (like 0644). Leaving off the leading zero will
+likely have unexpected results</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">var</span> mode = params.mode;</pre></div>
+        
+      
+        
+        <p>path of the file to link to (applies only to
+ensure=link). Will accept absolute, relative and
+nonexisting paths. Relative paths are not expanded.</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">var</span> src = params.src;</pre></div>
+        
+      
+        
+        <p>Target</p>
+
+        
+          <div class='highlight'><pre>	    <span class="hljs-keyword">var</span> dest = params.dest;
+
+	    <span class="hljs-keyword">var</span> stat = fs.stat(dest);
+	    <span class="hljs-keyword">if</span> (chown) {
+		<span class="hljs-keyword">var</span> u = user.lookup(chown)[<span class="hljs-number">0</span>];
+		<span class="hljs-keyword">if</span> (!u) {
+		    <span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"User '%s' does not exist"</span>, chown));
+		    os.exit(<span class="hljs-number">1</span>);
+		}
+	    }
+	    <span class="hljs-keyword">var</span> present = !stat.Err;
+
+	    <span class="hljs-keyword">switch</span>(ensure) {
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"directory"</span>:
+		<span class="hljs-keyword">if</span> (!present) {
+		    error = fs.mkdirAll(dest, mode);
+		    <span class="hljs-keyword">if</span> (error) {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create directory error"</span>, 
+				    <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">3</span>);
+		    }</pre></div>
+        
+      
+        
+        <p>Check it.</p>
+
+        
+          <div class='highlight'><pre>		    <span class="hljs-keyword">var</span> stat = fs.stat(dest);
+		    <span class="hljs-keyword">if</span> (stat.Err) {
+			<span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Error creating directory '%s': %s"</span>, 
+					    dest,
+					    <span class="hljs-built_in">JSON</span>.stringify(stat, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>)));
+			os.exit(<span class="hljs-number">4</span>);
+		    }
+		    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Created"</span>);
+		    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+		}
+		log(sprintf(<span class="hljs-string">"Found '%s', no action taken"</span>, dest));
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+		<span class="hljs-keyword">break</span>;
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"file"</span>:
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"touch"</span>:
+		<span class="hljs-keyword">if</span> (present) {
+		    <span class="hljs-keyword">break</span>;
+		}
+		result = fs.create(dest);
+		f = result[<span class="hljs-number">0</span>];
+		error = result[<span class="hljs-number">1</span>];
+		<span class="hljs-keyword">if</span> (error) {
+		    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create file error"</span>, 
+				<span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+		    os.exit(<span class="hljs-number">3</span>);
+		}
+		error = fs.close(f);
+		<span class="hljs-keyword">if</span> (error) {
+		    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create file close error"</span>, 
+				<span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+		    os.exit(<span class="hljs-number">3</span>);
+		}</pre></div>
+        
+      
+        
+        <p>Check it.</p>
+
+        
+          <div class='highlight'><pre>		<span class="hljs-keyword">var</span> stat = fs.stat(dest);
+		<span class="hljs-keyword">if</span> (stat.Err) {
+		    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create file error"</span>, <span class="hljs-built_in">JSON</span>.stringify(stat, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+		    os.exit(<span class="hljs-number">4</span>);
+		}</pre></div>
+        
+      
+        
+        <p>Chown it.</p>
+
+        
+          <div class='highlight'><pre>		<span class="hljs-keyword">if</span> (chown) {
+		    result = user.lookup(chown);
+		    user = result[<span class="hljs-number">0</span>];
+		    error = result[<span class="hljs-number">1</span>];
+		    <span class="hljs-keyword">if</span> (error) {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Copy error user lookupg"</span>, 
+				    <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">5</span>);
+		    }
+		    error = fs.chown(dest, user.Uid);
+		    <span class="hljs-keyword">if</span> (error) {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Copy error chown"</span>, 
+				    <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">5</span>);
+		    }
+		}</pre></div>
+        
+      
+        
+        <p>Chmod it.</p>
+
+        
+          <div class='highlight'><pre>		<span class="hljs-keyword">if</span> (mode) {
+		    error = user.chown(dest, u.Uid);
+		    <span class="hljs-keyword">if</span> (error) {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create file error"</span>, <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">6</span>);
+		    }
+		}
+
+		<span class="hljs-keyword">if</span> (ensure === <span class="hljs-string">"touch"</span>) {
+		    error = user.chtimes(dest)
+		    <span class="hljs-keyword">if</span> (error) {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create chtimes error"</span>, 
+				    <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">7</span>);
+		    }
+		}
+
+		<span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Created '%s'"</span>, dest));
+		<span class="hljs-keyword">break</span>;
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"link"</span>:
+		error = fs.symlink(src, dest);
+		<span class="hljs-keyword">if</span> (error) {
+		    <span class="hljs-keyword">if</span> (error.Err == <span class="hljs-number">17</span>) {
+			<span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"%s already exists"</span>, dest));
+		    } <span class="hljs-keyword">else</span> {
+			<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create symlink error"</span>, <span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+			os.exit(<span class="hljs-number">8</span>);
+		    }
+		} <span class="hljs-keyword">else</span> {
+		    <span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Created '%s'"</span>, dest));
+		}
+		<span class="hljs-keyword">break</span>;
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"hard"</span>:
+		error = fs.link(dest, src);
+		<span class="hljs-keyword">if</span> (error) {
+		    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"Create hard link error"</span>, 
+				<span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+		    os.exit(<span class="hljs-number">9</span>);
+		}
+		<span class="hljs-keyword">break</span>;
+	    <span class="hljs-keyword">case</span> <span class="hljs-string">"absent"</span>:
+		error = sanitize(fs.removeAll(dest));
+		<span class="hljs-keyword">if</span> (error) {
+		    <span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Can't remove '%s'"</span>, dest),
+				<span class="hljs-built_in">JSON</span>.stringify(error, <span class="hljs-literal">null</span>, <span class="hljs-number">2</span>));
+		    os.exit(<span class="hljs-number">10</span>);
+		}
+		<span class="hljs-keyword">break</span>;
+	    <span class="hljs-keyword">default</span>:
+		<span class="hljs-built_in">console</span>.log(sprintf(<span class="hljs-string">"Invalid 'ensure': %s"</span>, ensure))
+		os.exit(<span class="hljs-number">11</span>);
+	    }
+	}
+	handle: <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">catalog, resources, resource</span>) </span>{
+	    <span class="hljs-keyword">if</span> (resource.module != handler.moduleName) {
+		<span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">false</span>];
+	    }
+	    <span class="hljs-keyword">var</span> params = resource.params;
+	    <span class="hljs-keyword">if</span> (params.hosts) {
+		<span class="hljs-keyword">var</span> js = sprintf(<span class="hljs-string">"var run = function() {\n (%s)(%s); };\n"</span>, 
+				 handler.run.toString(),
+				 <span class="hljs-built_in">JSON</span>.stringify(_.omit(params, <span class="hljs-string">'hosts'</span>)));
+		<span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i <span class="hljs-keyword">in</span> resource.params.hosts) {
+		    <span class="hljs-keyword">var</span> instance = resource.params.hosts[i];
+		    <span class="hljs-keyword">var</span> result = mithras.remote.mithras(instance, 
+							mithras.sshUserForInstance(resource, 
+										   instance), 
+							mithras.sshKeyPathForInstance(resource, 
+										      instance), 
+							js,
+							resource.params.become,
+							resource.params.becomeUser,
+							resource.params.becomeMethod);
+		    <span class="hljs-keyword">if</span> (result[<span class="hljs-number">3</span>] == <span class="hljs-number">0</span>) {
+			<span class="hljs-keyword">var</span> out = result[<span class="hljs-number">0</span>].trim();
+			log(sprintf(<span class="hljs-string">"File '%s' %s: %s."</span>, 
+				    resource.params.dest,
+				    resource.params.ensure,
+				    out != <span class="hljs-string">""</span> ? out : <span class="hljs-string">"success"</span>));
+		    }
+		}
+	    } <span class="hljs-keyword">else</span> {
+		handler.run(params);
+	    }
+	    <span class="hljs-keyword">return</span> [<span class="hljs-literal">null</span>, <span class="hljs-literal">true</span>];
+	}
+    };
+    
+    handler.init = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>{
+	mithras.modules.handlers.register(<span class="hljs-string">"file"</span>, handler.handle);
+    };
+    
+    <span class="hljs-keyword">return</span> handler;
+});</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>

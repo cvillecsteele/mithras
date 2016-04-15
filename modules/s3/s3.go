@@ -164,6 +164,17 @@ func deleteObject(bucket string, key string, region string) {
 	}
 }
 
+func putWebsite(region string, params s3.PutBucketWebsiteInput) {
+	svc := s3.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	_, err := svc.PutBucketWebsite(&params)
+
+	if err != nil {
+		log.Fatalf("Error putting bucket website configuration: %s", err)
+	}
+}
+
 func init() {
 	mcore.RegisterInit(func(rt *otto.Otto) {
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {
@@ -173,7 +184,7 @@ func init() {
 		o2, _ := rt.Object(`aws.s3.buckets = {}`)
 		o3, _ := rt.Object(`aws.s3.objects = {}`)
 
-		// Objects
+		// Buckets
 		o2.Set("delete", deleteBucket)
 		o2.Set("create", func(call otto.FunctionCall) otto.Value {
 			// Translate target into a struct
@@ -198,8 +209,24 @@ func init() {
 			return mcore.Sanitize(rt, getObject(region, bucket, key))
 		})
 		o2.Set("describe", describeBucket)
+		o2.Set("website", func(call otto.FunctionCall) otto.Value {
+			// Translate target into a struct
+			var input s3.PutBucketWebsiteInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for S3 website input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall s3 website json: %s", err)
+			}
+			region := call.Argument(0).String()
+			putWebsite(region, input)
+			return otto.Value{}
+		})
 
-		// Buckets
+		// Objects
 		o3.Set("delete", deleteObject)
 		o3.Set("create", func(call otto.FunctionCall) otto.Value {
 			// Translate target into a struct

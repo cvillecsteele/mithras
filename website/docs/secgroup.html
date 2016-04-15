@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>secgroup.go</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="public/stylesheets/normalize.css" />
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="page">
+
+      <div class="header">
+        
+          <h1>secgroup.go</h1>
+        
+
+        
+          <div class="toc">
+            <h3>Table of Contents</h3>
+            <ol>
+              
+                
+                <li>
+                  <a class="source" href="cli.html">
+                    cli.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="become.html">
+                    become.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="cache.html">
+                    cache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="copy.html">
+                    copy.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="dep_graph.html">
+                    dep_graph.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="file.html">
+                    file.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="git.html">
+                    git.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="mithras.html">
+                    mithras.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="object_path.html">
+                    object_path.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="packager.html">
+                    packager.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="scp.html">
+                    scp.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="shell.html">
+                    shell.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="sprintf.html">
+                    sprintf.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="traverse.html">
+                    traverse.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.js
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="main.html">
+                    main.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="build.html">
+                    build.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="channels.html">
+                    channels.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="core.html">
+                    core.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elasticache.html">
+                    elasticache.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="elb.html">
+                    elb.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="exec.html">
+                    exec.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="filepath.html">
+                    filepath.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="fs.html">
+                    fs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="goroutines.html">
+                    goroutines.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="iam.html">
+                    iam.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="instance.html">
+                    instance.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="keypairs.html">
+                    keypairs.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="log.html">
+                    log.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="network.html">
+                    network.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="os.html">
+                    os.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="peek.html">
+                    peek.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="rds.html">
+                    rds.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="region.html">
+                    region.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="remote.html">
+                    remote.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="require.html">
+                    require.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="route53.html">
+                    route53.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="routetables.html">
+                    routetables.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="s3.html">
+                    s3.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="secgroup.html">
+                    secgroup.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="service.html">
+                    service.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="subnet.html">
+                    subnet.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="tag.html">
+                    tag.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="time.html">
+                    time.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="user.html">
+                    user.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="vpc.html">
+                    vpc.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="web.html">
+                    web.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="wrapper.html">
+                    wrapper.go
+                  </a>
+                </li>
+              
+                
+                <li>
+                  <a class="source" href="script.html">
+                    script.go
+                  </a>
+                </li>
+              
+            </ol>
+          </div>
+        
+      </div>
+
+      
+        
+        <p>MITHRAS: Javascript configuration management tool for AWS.
+Copyright (C) 2016, Colin Steele</p>
+<p> This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+                 (at your option) any later version.</p>
+<p>   This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+             GNU General Public License for more details.</p>
+<p>  You should have received a copy of the GNU General Public License
+along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+
+        
+      
+        
+        <h1 id="core-functions-secgroup">CORE FUNCTIONS: SECGROUP</h1>
+
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> secgroup</pre></div>
+        
+      
+        
+        <p>This package exports several entry points into the JS environment,
+including:</p>
+<blockquote>
+<ul>
+<li><a href="#scan">aws.securityGroups.scan</a></li>
+<li><a href="#create">aws.securityGroups.create</a></li>
+<li><a href="#delete">aws.securityGroups.delete</a></li>
+<li><a href="#describe">aws.securityGroups.describe</a></li>
+<li><a href="#ingress">aws.securityGroups.authorizeIngress</a></li>
+<li><a href="#egress">aws.securityGroups.authorizeEgress</a></li>
+</ul>
+</blockquote>
+<p>This API allows resource handlers to manage secgroups in an AWS VPC.</p>
+<h2 id="aws-securitygroups-scan">AWS.SECURITYGROUPS.SCAN</h2>
+<p><a name="scan"></a>
+<code>aws.securityGroups.scan(region);</code></p>
+<p>Returns a list of security groups.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> secgroups =  aws.securityGroups.scan(<span class="hljs-string">"us-east-1"</span>);
+</code></pre><h2 id="aws-securitygroups-create">AWS.SECURITYGROUPS.CREATE</h2>
+<p><a name="create"></a>
+<code>aws.securityGroups.create(region, config);</code></p>
+<p>Create a security group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> secgroup =  aws.securityGroups.create(
+   <span class="hljs-string">"us-east-1"</span>,
+   {
+     Description: <span class="hljs-string">"Webserver security group"</span>
+     GroupName:   <span class="hljs-string">"webserver"</span>
+     VpcId:       <span class="hljs-string">"vpc-xyz"</span>
+   });
+</code></pre><h2 id="aws-securitygroups-delete">AWS.SECURITYGROUPS.DELETE</h2>
+<p><a name="delete"></a>
+<code>aws.securityGroups.delete(region, secgroup_id);</code></p>
+<p>Delete a security group.</p>
+<p>Example:</p>
+<pre><code>
+ aws.securityGroups.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"sg-abcd"</span>);
+</code></pre><h2 id="aws-securitygroups-describe">AWS.SECURITYGROUPS.DESCRIBE</h2>
+<p><a name="describe"></a>
+<code>aws.securityGroups.describe(region, secgroup_id);</code></p>
+<p>Get info from AWS about a security group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> secgroup = aws.securityGroups.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"sg-abcd"</span>);
+</code></pre><h2 id="aws-securitygroups-authorizeingress">AWS.SECURITYGROUPS.AUTHORIZEINGRESS</h2>
+<p><a name="ingress"></a>
+<code>aws.securityGroups.authorizeIngress(region, permissions);</code></p>
+<p>Authorize ingress routes for a security group.</p>
+<p>Example:</p>
+<pre><code>
+aws.securityGroups.authorizeIngress(<span class="hljs-string">"us-east-1"</span>, {
+  GroupId: <span class="hljs-string">"sg-xyz"</span>
+  IpPermissions: [
+    {
+      FromPort:   <span class="hljs-number">22</span>
+      IpProtocol: <span class="hljs-string">"tcp"</span>
+      IpRanges: [ {CidrIp: <span class="hljs-string">"0.0.0.0/0"</span>} ]
+      ToPort: <span class="hljs-number">22</span>
+    },
+    {
+      FromPort:   <span class="hljs-number">80</span>
+      IpProtocol: <span class="hljs-string">"tcp"</span>
+      IpRanges: [ {CidrIp: <span class="hljs-string">"0.0.0.0/0"</span>} ]
+      ToPort: <span class="hljs-number">80</span>
+    }
+  ]
+});
+</code></pre><h2 id="aws-securitygroups-authorizeegress">AWS.SECURITYGROUPS.AUTHORIZEEGRESS</h2>
+<p><a name="egress"></a>
+<code>aws.securityGroups.authorizeEgress(region, permissions);</code></p>
+<p>Authorize egress routes for a security group.</p>
+<p>Example:</p>
+<pre><code>
+aws.securityGroups.authorizeEgress(<span class="hljs-string">"us-east-1"</span>, {
+  GroupId: <span class="hljs-string">"sg-xyz"</span>
+  IpPermissions: [
+    {
+      FromPort:   <span class="hljs-number">0</span>
+      IpProtocol: <span class="hljs-string">"tcp"</span>
+      IpRanges: [ {CidrIp: <span class="hljs-string">"0.0.0.0/0"</span>} ]
+      ToPort: <span class="hljs-number">65535</span>
+    },
+  ]
+});
+</code></pre>
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"encoding/json"</span>
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"time"</span>
+
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/aws"</span>
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/aws/session"</span>
+	<span class="hljs-string">"github.com/aws/aws-sdk-go/service/ec2"</span>
+	<span class="hljs-string">"github.com/robertkrimen/otto"</span>
+
+	mcore <span class="hljs-string">"github.com/cvillecsteele/mithras/modules/core"</span>
+)
+
+<span class="hljs-keyword">var</span> Version = <span class="hljs-string">"1.0.0"</span>
+<span class="hljs-keyword">var</span> ModuleName = <span class="hljs-string">"secgroup"</span>
+
+<span class="hljs-keyword">func</span> describe(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>) *ec2.SecurityGroup {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	params := &amp;ec2.DescribeSecurityGroupsInput{
+		GroupIds: []*<span class="hljs-keyword">string</span>{
+			aws.String(id),
+		},
+	}
+	resp, err := svc.DescribeSecurityGroups(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>
+	}
+
+	<span class="hljs-keyword">return</span> resp.SecurityGroups[<span class="hljs-number">0</span>]
+}
+
+<span class="hljs-keyword">func</span> authorizeIngress(region <span class="hljs-keyword">string</span>, params *ec2.AuthorizeSecurityGroupIngressInput, verbose <span class="hljs-keyword">bool</span>) {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	_, err := svc.AuthorizeSecurityGroupIngress(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatal(err.Error())
+	}
+}
+
+<span class="hljs-keyword">func</span> authorizeEgress(region <span class="hljs-keyword">string</span>, params *ec2.AuthorizeSecurityGroupEgressInput, verbose <span class="hljs-keyword">bool</span>) {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	_, err := svc.AuthorizeSecurityGroupEgress(params)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatal(err.Error())
+	}
+}
+
+<span class="hljs-keyword">func</span> create(region <span class="hljs-keyword">string</span>, params *ec2.CreateSecurityGroupInput, verbose <span class="hljs-keyword">bool</span>) *ec2.SecurityGroup {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	resp, err := svc.CreateSecurityGroup(params)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatal(err.Error())
+	}
+	id := *resp.GroupId</pre></div>
+        
+      
+        
+        <p>Wait for it.</p>
+
+        
+          <div class='highlight'><pre>	<span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++ {
+		target := describe(region, id)
+		<span class="hljs-keyword">if</span> target != <span class="hljs-literal">nil</span> &amp;&amp; *target.GroupId == id {
+			<span class="hljs-keyword">break</span>
+		}
+		time.Sleep(time.Second * <span class="hljs-number">10</span>)
+	}</pre></div>
+        
+      
+        
+        <p>Describe it.</p>
+
+        
+          <div class='highlight'><pre>	target := describe(region, id)
+
+	<span class="hljs-keyword">return</span> target
+}
+
+<span class="hljs-keyword">func</span> <span class="hljs-built_in">delete</span>(region <span class="hljs-keyword">string</span>, id <span class="hljs-keyword">string</span>, verbose <span class="hljs-keyword">bool</span>) {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	i := &amp;ec2.DeleteSecurityGroupInput{
+		GroupId: aws.String(id),
+	}
+	_, err := svc.DeleteSecurityGroup(i)
+
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Fatal(err.Error())
+	}</pre></div>
+        
+      
+        
+        <p>TODO: Wait for it.</p>
+
+        
+          <div class='highlight'><pre>}
+
+<span class="hljs-keyword">func</span> scan(rt *otto.Otto, region <span class="hljs-keyword">string</span>) otto.Value {
+	svc := ec2.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(<span class="hljs-number">5</span>))
+
+	resp, err := svc.DescribeSecurityGroups(<span class="hljs-literal">nil</span>)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-built_in">panic</span>(err)
+	}</pre></div>
+        
+      
+        
+        <p>shove instances into jsland</p>
+
+        
+          <div class='highlight'><pre>	sgs := []ec2.SecurityGroup{}
+	<span class="hljs-keyword">for</span> _, i := <span class="hljs-keyword">range</span> resp.SecurityGroups {
+		sgs = <span class="hljs-built_in">append</span>(sgs, *i)
+	}
+	<span class="hljs-keyword">return</span> mcore.Sanitize(rt, sgs)
+}
+
+<span class="hljs-keyword">func</span> init() {
+	mcore.RegisterInit(<span class="hljs-keyword">func</span>(rt *otto.Otto) {
+		<span class="hljs-keyword">if</span> a, err := rt.Get(<span class="hljs-string">"aws"</span>); err != <span class="hljs-literal">nil</span> || a.IsUndefined() {
+			rt.Object(<span class="hljs-string">`aws = {}`</span>)
+		}
+		o1, _ := rt.Object(<span class="hljs-string">`aws.securityGroups = {}`</span>)
+		o1.Set(<span class="hljs-string">"scan"</span>, <span class="hljs-keyword">func</span>(region <span class="hljs-keyword">string</span>) otto.Value {
+			<span class="hljs-keyword">return</span> scan(rt, region)
+		})
+		o1.Set(<span class="hljs-string">"create"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
+        
+      
+        
+        <p>Translate params input into a struct</p>
+
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input ec2.CreateSecurityGroupInput
+			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't create json for secgroup create input: %s"</span>, err)
+			}
+			err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;input)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall secgroup create json: %s"</span>, err)
+			}
+
+			verbose := mcore.IsVerbose(rt)
+			region := call.Argument(<span class="hljs-number">0</span>).String()
+
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(create(region, &amp;input, verbose))
+		})
+		o1.Set(<span class="hljs-string">"delete"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			verbose := mcore.IsVerbose(rt)
+			region := call.Argument(<span class="hljs-number">0</span>).String()
+			id := call.Argument(<span class="hljs-number">1</span>).String()
+			<span class="hljs-built_in">delete</span>(region, id, verbose)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
+		o1.Set(<span class="hljs-string">"describe"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {
+			region := call.Argument(<span class="hljs-number">0</span>).String()
+			id := call.Argument(<span class="hljs-number">1</span>).String()
+			f := mcore.Sanitizer(rt)
+			<span class="hljs-keyword">return</span> f(describe(region, id))
+		})
+		o1.Set(<span class="hljs-string">"authorizeIngress"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
+        
+      
+        
+        <p>Translate params input into a struct</p>
+
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input ec2.AuthorizeSecurityGroupIngressInput
+			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't create json for secgroup create input: %s"</span>, err)
+			}
+			err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;input)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall secgroup ingress json: %s"</span>, err)
+			}
+
+			verbose := mcore.IsVerbose(rt)
+			region := call.Argument(<span class="hljs-number">0</span>).String()
+			authorizeIngress(region, &amp;input, verbose)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
+		o1.Set(<span class="hljs-string">"authorizeEgress"</span>, <span class="hljs-keyword">func</span>(call otto.FunctionCall) otto.Value {</pre></div>
+        
+      
+        
+        <p>Translate params input into a struct</p>
+
+        
+          <div class='highlight'><pre>			<span class="hljs-keyword">var</span> input ec2.AuthorizeSecurityGroupEgressInput
+			js := <span class="hljs-string">`(function (o) { return JSON.stringify(o); })`</span>
+			s, err := rt.Call(js, <span class="hljs-literal">nil</span>, call.Argument(<span class="hljs-number">1</span>))
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't create json for secgroup create input: %s"</span>, err)
+			}
+			err = json.Unmarshal([]<span class="hljs-keyword">byte</span>(s.String()), &amp;input)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+				log.Fatalf(<span class="hljs-string">"Can't unmarshall secgroup egress json: %s"</span>, err)
+			}
+
+			verbose := mcore.IsVerbose(rt)
+			region := call.Argument(<span class="hljs-number">0</span>).String()
+			authorizeEgress(region, &amp;input, verbose)
+			<span class="hljs-keyword">return</span> otto.Value{}
+		})
+	})
+}</pre></div>
+        
+      
+      <div class="fleur">h</div>
+    </div>
+  </div>
+</body>
+</html>
