@@ -45,25 +45,6 @@ function run() {
                     IndexDocument: {
                         Suffix: "index.html"
                     }
-	     //     RedirectAllRequestsTo: {
-	     //         HostName: "HostName"
-	     //         Protocol: "Protocol"
-	     //     }
-	     //     RoutingRules: [ {
-	     //         {
-	     //             Redirect: {
-	     //                 HostName:             "HostName"
-	     //                 HttpRedirectCode:     "HttpRedirectCode"
-	     //                 Protocol:             "Protocol"
-	     //                 ReplaceKeyPrefixWith: "ReplaceKeyPrefixWith"
-	     //                 ReplaceKeyWith:       "ReplaceKeyWith"
-	     //             }
-	     //             Condition: {
-	     //                 HttpErrorCodeReturnedEquals: "HttpErrCodeReturnedEquals"
-	     //                 KeyPrefixEquals:             "KeyPrefixEquals"
-	     //             }
-	     //         }
-	     //     } ]
 		}
 	    } // website
 	} // params

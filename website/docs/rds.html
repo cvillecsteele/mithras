@@ -121,6 +121,13 @@
               
                 
                 <li>
+                  <a class="source" href="moment.html">
+                    moment.js
+                  </a>
+                </li>
+              
+                
+                <li>
                   <a class="source" href="network.html">
                     network.js
                   </a>
@@ -476,9 +483,129 @@ Copyright (C) 2016, Colin Steele</p>
 along with this program.  If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
 
         
-          <div class='highlight'><pre><span class="hljs-keyword">package</span> rds
+      
+        
+        <h1 id="core-functions-rds">CORE FUNCTIONS: RDS</h1>
 
-<span class="hljs-keyword">import</span> (
+        
+          <div class='highlight'><pre>
+<span class="hljs-keyword">package</span> rds</pre></div>
+        
+      
+        
+        <p>This package exports several entry points into the JS environment,
+including:</p>
+<blockquote>
+<ul>
+<li><a href="#scan">aws.rds.scan</a></li>
+<li><a href="#create">aws.rds.create</a></li>
+<li><a href="#delete">aws.rds.delete</a></li>
+<li><a href="#describe">aws.rds.describe</a></li>
+</ul>
+</blockquote>
+
+        
+      
+        
+        <blockquote>
+<ul>
+<li><a href="#gcreate">aws.rds.subnetGroups.create</a></li>
+<li><a href="#gdelete">aws.rds.subnetGroups.delete</a></li>
+<li><a href="#gdescribe">aws.rds.subnetGroups.describe</a></li>
+</ul>
+</blockquote>
+<p>This API allows resource handlers to manage RDS.</p>
+<h2 id="aws-rds-scan">AWS.RDS.SCAN</h2>
+<p><a name="scan"></a>
+<code>aws.rds.scan(region);</code></p>
+<p>Returns a list of RDS clusters.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> dbs = aws.rds.scan(<span class="hljs-string">"us-east-1"</span>);
+</code></pre><h2 id="aws-rds-create">AWS.RDS.CREATE</h2>
+<p><a name="create"></a>
+<code>aws.rds.create(region, config, wait);</code></p>
+<p>Create an RDS cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> db = aws.rds.create(<span class="hljs-string">"us-east-1"</span>,
+  {
+     DBInstanceClass:         <span class="hljs-string">"db.m1.small"</span>
+     DBInstanceIdentifier:    <span class="hljs-string">"test-rds"</span>
+     Engine:                  <span class="hljs-string">"mysql"</span>
+     AllocatedStorage:        <span class="hljs-number">10</span>
+     AutoMinorVersionUpgrade: <span class="hljs-literal">true</span>
+     AvailabilityZone:        <span class="hljs-string">"us-east-1"</span>
+     MasterUserPassword:      <span class="hljs-string">"test123456789"</span>
+     MasterUsername:          <span class="hljs-string">"test"</span>
+     DBSubnetGroupName:       <span class="hljs-string">"test-subnet-group"</span>
+     DBName:                  <span class="hljs-string">"test"</span>
+     PubliclyAccessible:      <span class="hljs-literal">false</span>
+     Tags: [
+         {
+            Key:   <span class="hljs-string">"foo"</span>
+            Value: <span class="hljs-string">"bar"</span>
+         },
+     ]
+  },
+  <span class="hljs-literal">true</span>);
+</code></pre><h2 id="aws-rds-delete">AWS.RDS.DELETE</h2>
+<p><a name="delete"></a>
+<code>aws.rds.delete(region, config);</code></p>
+<p>Delete an RDS cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> db = aws.rds.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>,
+    {
+       DBInstanceIdentifier:      <span class="hljs-string">"db-xyz"</span>,
+       FinalDBSnapshotIdentifier: <span class="hljs-string">"byebye"</span> + Date.now()
+       SkipFinalSnapshot:         <span class="hljs-literal">true</span>
+    });
+</code></pre><h2 id="aws-rds-describe">AWS.RDS.DESCRIBE</h2>
+<p><a name="describe"></a>
+<code>aws.rds.describe(region, id);</code></p>
+<p>Get info about an RDS cluster.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> db = aws.rds.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"db-xyz"</span>);
+</code></pre><h2 id="aws-rds-subnetgroups-describe">AWS.RDS.SUBNETGROUPS.DESCRIBE</h2>
+<p><a name="gdescribe"></a>
+<code>aws.rds.subnetGroups.describe(region, id);</code></p>
+<p>Get info about an RDS subnet group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> group = aws.rds.subnetGroups.describe(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"sg-xyz"</span>);
+</code></pre><h2 id="aws-rds-subnetgroups-create">AWS.RDS.SUBNETGROUPS.CREATE</h2>
+<p><a name="gcreate"></a>
+<code>aws.rds.subnetGroups.create(region, config);</code></p>
+<p>Create an RDS subnet group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> group = aws.rds.subnetGroups.create(<span class="hljs-string">"us-east-1"</span>,
+{
+        DBSubnetGroupDescription: <span class="hljs-string">"test subnet group"</span>
+        DBSubnetGroupName: <span class="hljs-string">"test-subnet-group"</span>
+        SubnetIds: [
+      <span class="hljs-string">"subnet-1"</span>
+      <span class="hljs-string">"subnet-2"</span>
+        ]
+        Tags: [
+            {
+                 Key:   <span class="hljs-string">"Foo"</span>
+                 Value: <span class="hljs-string">"Bar"</span>
+            }
+        ]
+});
+</code></pre><h2 id="aws-rds-subnetgroups-delete">AWS.RDS.SUBNETGROUPS.DELETE</h2>
+<p><a name="gdelete"></a>
+<code>aws.rds.subnetGroups.delete(region, id);</code></p>
+<p>Delete an RDS subnet group.</p>
+<p>Example:</p>
+<pre><code>
+ <span class="hljs-keyword">var</span> group = aws.rds.subnetGroups.<span class="hljs-built_in">delete</span>(<span class="hljs-string">"us-east-1"</span>, <span class="hljs-string">"sg-xyz"</span>);
+</code></pre>
+        
+          <div class='highlight'><pre><span class="hljs-keyword">import</span> (
 	<span class="hljs-string">"encoding/json"</span>
 	<span class="hljs-string">"log"</span>
 	<span class="hljs-string">"time"</span>
