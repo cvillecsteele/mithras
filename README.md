@@ -93,16 +93,10 @@ TODO
 ###############################################################################
 
 * make sure no handlers are interacting with AWS outside the catalog (s3)
-* DOCUMENTATION: fix css / toc
- * routetables
- * s3
- * service
- * subnet
- * tag
- * time
- * user
- * web
- * wrapper
+* fix arg order in S3 exposed JS functions  
+* rework / robustify web core module
+* website
+* documentation: fix css / toc
 
 * more s3 configuration support for buckets
 * test goroutines interaction with otto runtime

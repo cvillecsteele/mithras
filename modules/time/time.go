@@ -13,8 +13,34 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//
+// # CORE FUNCTIONS: TIME
+//
+
 package time
 
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [time.sleep](#sleep)
+//
+// This API allows resource handlers to sleep the current thread of execution.
+//
+// ## TIME.SLEEP
+// <a name="sleep"></a>
+// `time.sleep(seconds);`
+//
+// Snore.
+//
+// Example:
+//
+// ```
+//
+// time.sleep(10);
+//
+// ```
+//
 import (
 	"time"
 

@@ -13,8 +13,34 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//
+// # CORE FUNCTIONS: USER
+//
+
 package user
 
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [user.lookup](#lookup)
+//
+// This API allows resource handlers to get system user ids.
+//
+// ## USER.LOOKUP
+// <a name="lookup"></a>
+// `user.lookup(user);`
+//
+// Get the user's UID.
+//
+// Example:
+//
+// ```
+//
+// user.lookup("root");
+//
+// ```
+//
 import (
 	"os/user"
 
