@@ -13,7 +13,34 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+//
+// # CORE FUNCTIONS: REGIONS
+//
+
 package region
+
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [aws.regions.scan](#scan)
+//
+// This API allows resource handlers to query AWS regions
+//
+// ## AWS.REGIONS.SCAN
+// <a name="scan"></a>
+// `aws.regions.scan(region);`
+//
+// Returns a list of regionss.
+//
+// Example:
+//
+// ```
+//
+//  var regions =  aws.regions.scan("us-east-1");
+//
+// ```
+//
 
 import (
 	"github.com/aws/aws-sdk-go/aws"
@@ -26,21 +53,6 @@ import (
 
 var Version = "1.0.0"
 var ModuleName = "region"
-
-func scanRegions(rt *otto.Otto, cb otto.Value) {
-	// Need a context (this) for Call below
-	ctx, _ := rt.Get("mithras")
-	svc := ec2.New(session.New(), aws.NewConfig().WithRegion("us-east-1").WithMaxRetries(5))
-
-	resp, err := svc.DescribeRegions(nil)
-	if err != nil {
-		panic(err)
-	}
-
-	for idx, _ := range resp.Regions {
-		cb.Call(ctx, *resp.Regions[idx].RegionName)
-	}
-}
 
 func scan(rt *otto.Otto) otto.Value {
 	svc := ec2.New(session.New(), aws.NewConfig().WithRegion("us-east-1").WithMaxRetries(5))

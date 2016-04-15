@@ -14,8 +14,33 @@
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+//
+// # CORE FUNCTIONS: REQUIRE
+//
+
 package require
 
+// This package exports several entry points into the JS environment,
+// including:
+//
+// > * [require](#require)
+//
+// This API allows resource handlers to load and evaluate javascript.
+//
+// ## REQUIRE
+// <a name="require"></a>
+// `require(source);`
+//
+// Require a Javascript module.
+//
+// Example:
+//
+// ```
+//
+// var moment = require("moment");
+//
+// ```
+//
 import (
 	"bytes"
 	"encoding/json"

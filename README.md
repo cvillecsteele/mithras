@@ -94,11 +94,6 @@ TODO
 
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * DOCUMENTATION: fix css / toc
- * rds
- * region
- * remote
- * require
- * route53
  * routetables
  * s3
  * service
