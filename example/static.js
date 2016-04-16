@@ -51,7 +51,7 @@ function run() {
     };
 
     var objects = [];
-    filepath.walk("website", function(path, info, err) {
+    filepath.walk("website/www", function(path, info, err) {
         if (!info.IsDir) {
             var type = s3.contentTypeMap[filepath.ext(path).substring(1)];
             objects.push({
@@ -64,7 +64,7 @@ function run() {
 		    stat: fs.stat(path)
                     object: {
                         Bucket:             bucketName
-                        Key:                filepath.rel("website", path)[0]
+                        Key:                filepath.rel("website/www", path)[0]
                         ACL:                "public-read"
                         Body:               fs.read(path)
                         ContentType:        type
