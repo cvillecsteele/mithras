@@ -48,7 +48,6 @@ function run() {
 		    md = md + c + "\n";
 		});
 		if (comments.length > 0) {
-		    fs.write(path, md, 0644);
 		    var path;
 		    if (ext === ".go") {
 			path = filepath.join("website", 
@@ -59,6 +58,10 @@ function run() {
 					     "handler_" + file.replace(extRE, ".md"));
 			handlers.push(path);
 		    }
+		    console.log(sprintf("%32s: Updated", path));
+		    fs.write(path, md, 0644);
+		} else {
+		    console.log(sprintf("%32s: No comments found", file));
 		}
 	    }
 	}
@@ -76,7 +79,6 @@ function run() {
 	    var results = filepath.split(file);
 	    var text = results[1].replace(/core_(.*).md/, '$1');
 	    var file = results[1].replace(/(core_.*).md/, '$1');
-	    console.log(file);
 	    contents = contents + 
 		sprintf("        li: a(href='%s') %s\n", file, text);
 	});
@@ -95,7 +97,6 @@ function run() {
 	    var results = filepath.split(file);
 	    var text = results[1].replace(/handler_(.*).md/, '$1');
 	    var file = results[1].replace(/(handler_.*).md/, '$1');
-	    console.log(file);
 	    contents = contents + 
 		sprintf("        li: a(href='%s') %s\n", file, text);
 	});

@@ -14,12 +14,16 @@
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// @public
+//
 //
 // # CORE FUNCTIONS: USER
 //
 
 package user
 
+// @public
+//
 // This package exports several entry points into the JS environment,
 // including:
 //

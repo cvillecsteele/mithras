@@ -14,12 +14,16 @@
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+// @public
+//
 //
 // # CORE FUNCTIONS: EXEC
 //
 
 package exec
 
+// @public
+//
 // This package exports one entry point into the JS environment:
 //
 // > * [exec.run](#run)
