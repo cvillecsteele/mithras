@@ -1,0 +1,41 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>CORE FUNCTIONS: OS</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#exit">os.exit</a></li>
+<li><a href="#hostname">os.hostname</a></li>
+<li><a href="#getenv">os.getenv</a></li>
+<li><a href="#expand">os.expandEnv</a></li>
+</ul>
+</blockquote>
+<p> This API allows resource handlers to execute various OS-related functions.</p>
+<h2>OS.EXIT</h2><p> <a name="exit"></a>
+ <code>os.exit(status);</code></p>
+<p> Terminate the program, returning the specificed status code.</p>
+<p> Example:</p>
+<pre><code>
+  os.exit(1);
+</code></pre><h2>OS.EXIT</h2><p> <a name="hostname"></a>
+ <code>os.hostname();</code></p>
+<p> Get the hostname.</p>
+<p> Example:</p>
+<pre><code>
+  var hostname = os.hostname();
+</code></pre><h2>OS.GETENV</h2><p> <a name="getenv"></a>
+ <code>os.getenv(key);</code></p>
+<p> Getenv retrieves the value of the environment variable named by the
+ key. It returns the value, which will be empty if the variable is
+ not present.</p>
+<p> Example:</p>
+<pre><code>
+  var home = os.getenv(&quot;HOME&quot;);
+</code></pre><h2>OS.EXPANDENV</h2><p> <a name="expand"></a>
+ <code>os.expandEnv(target);</code></p>
+<p> ExpandEnv replaces ${var} or $var in the string according to the
+ values of the current environment variables. References to
+ undefined variables are replaced by the empty string.</p>
+<p> Example:</p>
+<pre><code>
+  var where = os.getenv(&quot;$HOME/.ssh&quot;);
+</code></pre></div></div><script src="/js/main.js"></script></body></html>

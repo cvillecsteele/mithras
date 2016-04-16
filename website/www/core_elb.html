@@ -1,0 +1,352 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>CORE FUNCTIONS: ELB</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#create">aws.elbs.create</a></li>
+<li><a href="#delete">aws.elbs.delete</a></li>
+<li><a href="#describe">aws.elbs.describe</a></li>
+<li><a href="#scan">aws.elbs.scan</a></li>
+<li><a href="#register">aws.elbs.register</a></li>
+<li><a href="#deregister">aws.elbs.deRegister</a></li>
+<li><a href="#health">aws.elbs.setHealth</a></li>
+<li><a href="#attrs">aws.elbs.setAttrs</a></li>
+</ul>
+</blockquote>
+<p> This API allows exposes functions to manage AWS elastic load balancers.</p>
+<h2>AWS.ELBS.CREATE</h2><p> <a name="create"></a>
+ <code>aws.elbs.create(region, config);</code></p>
+<p> Create an ELB</p>
+<p> Example:</p>
+<pre><code>
+  var lb = aws.elbs.create(&quot;us-east-1&quot;, {
+ Listeners: [
+  {
+    InstancePort:     80
+    LoadBalancerPort: 80
+    Protocol:         &quot;http&quot;
+    InstanceProtocol: &quot;http&quot;
+  },
+ ]
+ LoadBalancerName: &quot;test-lb&quot;
+ SecurityGroups: [
+     &quot;sg-xyz&quot;
+ ]
+ Subnets: [
+     &quot;subnet-123&quot;
+     &quot;subnet-456&quot;
+ ]
+ Tags: [
+     {
+       Key:   &quot;foo&quot;
+       Value: &quot;bar&quot;
+     },
+ ]
+ });
+</code></pre><h2>AWS.ELBS.SETATTRS</h2><p> <a name="attrs"></a>
+ <code>aws.elbs.setAttrs(region, lbName, config);</code></p>
+<p> Set ELB attributes</p>
+<p> Example:</p>
+<pre><code>
+  aws.elbs.setAttrs(&quot;us-east-1&quot;, &quot;test-lb&quot;{
+  LoadBalancerAttributes: {
+      AccessLog: {
+        Enabled:        false
+        EmitInterval:   60
+        S3BucketName:   &quot;my-loadbalancer-logs&quot;
+        S3BucketPrefix: &quot;test-app&quot;
+      }
+      ConnectionDraining: {
+        Enabled: true
+        Timeout: 300
+      }
+      ConnectionSettings: {
+        IdleTimeout: 30
+      }
+      CrossZoneLoadBalancing: {
+        Enabled: true
+      }
+    }
+    LoadBalancerName: &quot;test-lb&quot;
+  }
+ });
+</code></pre><h2>AWS.ELBS.SETHEALTH</h2><p> <a name="health"></a>
+ <code>aws.elbs.setHealth(region, lbName, config);</code></p>
+<p> Set ELB health check.</p>
+<p> Example:</p>
+<pre><code>
+  aws.elbs.setHealth(&quot;us-east-1&quot;, &quot;test-lb&quot;, {
+  HealthCheck: {
+      HealthyThreshold:   2
+      Interval:           30
+      Target:             &quot;HTTP:80/hc&quot;
+      Timeout:            5
+      UnhealthyThreshold: 3
+  }
+  LoadBalancerName: &quot;test-lb&quot;
+ });
+</code></pre><h2>AWS.ELBS.DELETE</h2><p> <a name="delete"></a>
+ <code>aws.elbs.delete(region, lbName);</code></p>
+<p> Delete an ELB.</p>
+<p> Example:</p>
+<pre><code>
+  aws.elbs.delete(&quot;us-east-1&quot;, &quot;test-lb&quot;);
+</code></pre><h2>AWS.ELBS.DESCRIBE</h2><p> <a name="describe"></a>
+ <code>aws.elbs.describe(region, lbName);</code></p>
+<p> Get info about an ELB.</p>
+<p> Example:</p>
+<pre><code>
+  var elb = aws.elbs.describe(&quot;us-east-1&quot;, &quot;test-lb&quot;);
+</code></pre><h2>AWS.ELBS.SCAN</h2><p> <a name="scan"></a>
+ <code>aws.elbs.scan(region);</code></p>
+<p> Get info about ELBs.</p>
+<p> Example:</p>
+<pre><code>
+  var elbs = aws.elbs.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.ELBS.REGISTER</h2><p> <a name="register"></a>
+ <code>aws.elbs.register(region, lbName, instance);</code></p>
+<p> Register an EC2 instance with an ELB.</p>
+<p> Example:</p>
+<pre><code>
+ aws.elbs.register(&quot;us-east-1&quot;, &quot;test-lb&quot;,
+           {
+               &quot;AmiLaunchIndex&quot;: 0,
+               &quot;Architecture&quot;: &quot;x86_64&quot;,
+               &quot;BlockDeviceMappings&quot;: [
+               {
+                   &quot;DeviceName&quot;: &quot;/dev/xvda&quot;,
+                   &quot;Ebs&quot;: {
+                   &quot;AttachTime&quot;: &quot;2016-03-31T19:17:44Z&quot;,
+                   &quot;DeleteOnTermination&quot;: true,
+                   &quot;Status&quot;: &quot;attached&quot;,
+                   &quot;VolumeId&quot;: &quot;vol-3d1ab09f&quot;
+                   }
+               }
+               ],
+               &quot;ClientToken&quot;: &quot;&quot;,
+               &quot;EbsOptimized&quot;: false,
+               &quot;Hypervisor&quot;: &quot;xen&quot;,
+               &quot;IamInstanceProfile&quot;: {
+               &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:instance-profile/cr-webserver&quot;,
+               &quot;Id&quot;: &quot;AIPAIOOUMBIRCV2QCTIYA&quot;
+               },
+               &quot;ImageId&quot;: &quot;ami-60b6c60a&quot;,
+               &quot;InstanceId&quot;: &quot;i-824ad119&quot;,
+               &quot;InstanceLifecycle&quot;: null,
+               &quot;InstanceType&quot;: &quot;t2.small&quot;,
+               &quot;KernelId&quot;: null,
+               &quot;KeyName&quot;: &quot;cr&quot;,
+               &quot;LaunchTime&quot;: &quot;2016-03-31T19:17:43Z&quot;,
+               &quot;Monitoring&quot;: {
+               &quot;State&quot;: &quot;enabled&quot;
+               },
+               &quot;NetworkInterfaces&quot;: [
+               {
+                   &quot;Association&quot;: {
+                   &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+                   &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+                   &quot;PublicIp&quot;: &quot;52.90.244.101&quot;
+                   },
+                   &quot;Attachment&quot;: {
+                   &quot;AttachTime&quot;: &quot;2016-03-31T19:17:43Z&quot;,
+                   &quot;AttachmentId&quot;: &quot;eni-attach-4d1c8ab1&quot;,
+                   &quot;DeleteOnTermination&quot;: true,
+                   &quot;DeviceIndex&quot;: 0,
+                   &quot;Status&quot;: &quot;attached&quot;
+                   },
+                   &quot;Description&quot;: &quot;&quot;,
+                   &quot;Groups&quot;: [
+                   {
+                       &quot;GroupId&quot;: &quot;sg-57c9812f&quot;,
+                       &quot;GroupName&quot;: &quot;webserver&quot;
+                   }
+                   ],
+                   &quot;MacAddress&quot;: &quot;0e:6b:fe:c1:cb:45&quot;,
+                   &quot;NetworkInterfaceId&quot;: &quot;eni-a6b644f6&quot;,
+                   &quot;OwnerId&quot;: &quot;286536233385&quot;,
+                   &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+                   &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;,
+                   &quot;PrivateIpAddresses&quot;: [
+                   {
+                       &quot;Association&quot;: {
+                       &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+                       &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+                       &quot;PublicIp&quot;: &quot;52.90.244.101&quot;
+                       },
+                       &quot;Primary&quot;: true,
+                       &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+                       &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;
+                   }
+                   ],
+                   &quot;SourceDestCheck&quot;: true,
+                   &quot;Status&quot;: &quot;in-use&quot;,
+                   &quot;SubnetId&quot;: &quot;subnet-d76ae58f&quot;,
+                   &quot;VpcId&quot;: &quot;vpc-b88883dc&quot;
+               }
+               ],
+               &quot;Placement&quot;: {
+               &quot;Affinity&quot;: null,
+               &quot;AvailabilityZone&quot;: &quot;us-east-1d&quot;,
+               &quot;GroupName&quot;: &quot;&quot;,
+               &quot;HostId&quot;: null,
+               &quot;Tenancy&quot;: &quot;default&quot;
+               },
+               &quot;Platform&quot;: null,
+               &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+               &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;,
+               &quot;ProductCodes&quot;: null,
+               &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+               &quot;PublicIpAddress&quot;: &quot;52.90.244.101&quot;,
+               &quot;RamdiskId&quot;: null,
+               &quot;RootDeviceName&quot;: &quot;/dev/xvda&quot;,
+               &quot;RootDeviceType&quot;: &quot;ebs&quot;,
+               &quot;SecurityGroups&quot;: [
+               {
+                   &quot;GroupId&quot;: &quot;sg-57c9812f&quot;,
+                   &quot;GroupName&quot;: &quot;webserver&quot;
+               }
+               ],
+               &quot;SourceDestCheck&quot;: true,
+               &quot;SpotInstanceRequestId&quot;: null,
+               &quot;SriovNetSupport&quot;: null,
+               &quot;State&quot;: {
+               &quot;Code&quot;: 16,
+               &quot;Name&quot;: &quot;running&quot;
+               },
+               &quot;StateReason&quot;: null,
+               &quot;StateTransitionReason&quot;: &quot;&quot;,
+               &quot;SubnetId&quot;: &quot;subnet-d76ae58f&quot;,
+               &quot;Tags&quot;: [
+               {
+                   &quot;Key&quot;: &quot;Name&quot;,
+                   &quot;Value&quot;: &quot;webserver&quot;
+               }
+               ],
+               &quot;VirtualizationType&quot;: &quot;hvm&quot;,
+               &quot;VpcId&quot;: &quot;vpc-b88883dc&quot;,
+               &quot;uname&quot;: &quot;Linux ip-172-33-1-178 4.1.10-17.31.amzn1.x86_64 #1 SMP Sat Oct 24 01:31:37 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux\r\n&quot;
+           });
+</code></pre><h2>AWS.ELBS.DEREGISTER</h2><p> <a name="deregister"></a>
+ <code>aws.elbs.deregister(region, lbName, instance);</code></p>
+<p> Deregister an EC2 instance with an ELB.</p>
+<p> Example:</p>
+<pre><code>
+ aws.elbs.deregister(&quot;us-east-1&quot;, &quot;test-lb&quot;,
+           {
+               &quot;AmiLaunchIndex&quot;: 0,
+               &quot;Architecture&quot;: &quot;x86_64&quot;,
+               &quot;BlockDeviceMappings&quot;: [
+               {
+                   &quot;DeviceName&quot;: &quot;/dev/xvda&quot;,
+                   &quot;Ebs&quot;: {
+                   &quot;AttachTime&quot;: &quot;2016-03-31T19:17:44Z&quot;,
+                   &quot;DeleteOnTermination&quot;: true,
+                   &quot;Status&quot;: &quot;attached&quot;,
+                   &quot;VolumeId&quot;: &quot;vol-3d1ab09f&quot;
+                   }
+               }
+               ],
+               &quot;ClientToken&quot;: &quot;&quot;,
+               &quot;EbsOptimized&quot;: false,
+               &quot;Hypervisor&quot;: &quot;xen&quot;,
+               &quot;IamInstanceProfile&quot;: {
+               &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:instance-profile/cr-webserver&quot;,
+               &quot;Id&quot;: &quot;AIPAIOOUMBIRCV2QCTIYA&quot;
+               },
+               &quot;ImageId&quot;: &quot;ami-60b6c60a&quot;,
+               &quot;InstanceId&quot;: &quot;i-824ad119&quot;,
+               &quot;InstanceLifecycle&quot;: null,
+               &quot;InstanceType&quot;: &quot;t2.small&quot;,
+               &quot;KernelId&quot;: null,
+               &quot;KeyName&quot;: &quot;cr&quot;,
+               &quot;LaunchTime&quot;: &quot;2016-03-31T19:17:43Z&quot;,
+               &quot;Monitoring&quot;: {
+               &quot;State&quot;: &quot;enabled&quot;
+               },
+               &quot;NetworkInterfaces&quot;: [
+               {
+                   &quot;Association&quot;: {
+                   &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+                   &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+                   &quot;PublicIp&quot;: &quot;52.90.244.101&quot;
+                   },
+                   &quot;Attachment&quot;: {
+                   &quot;AttachTime&quot;: &quot;2016-03-31T19:17:43Z&quot;,
+                   &quot;AttachmentId&quot;: &quot;eni-attach-4d1c8ab1&quot;,
+                   &quot;DeleteOnTermination&quot;: true,
+                   &quot;DeviceIndex&quot;: 0,
+                   &quot;Status&quot;: &quot;attached&quot;
+                   },
+                   &quot;Description&quot;: &quot;&quot;,
+                   &quot;Groups&quot;: [
+                   {
+                       &quot;GroupId&quot;: &quot;sg-57c9812f&quot;,
+                       &quot;GroupName&quot;: &quot;webserver&quot;
+                   }
+                   ],
+                   &quot;MacAddress&quot;: &quot;0e:6b:fe:c1:cb:45&quot;,
+                   &quot;NetworkInterfaceId&quot;: &quot;eni-a6b644f6&quot;,
+                   &quot;OwnerId&quot;: &quot;286536233385&quot;,
+                   &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+                   &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;,
+                   &quot;PrivateIpAddresses&quot;: [
+                   {
+                       &quot;Association&quot;: {
+                       &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+                       &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+                       &quot;PublicIp&quot;: &quot;52.90.244.101&quot;
+                       },
+                       &quot;Primary&quot;: true,
+                       &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+                       &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;
+                   }
+                   ],
+                   &quot;SourceDestCheck&quot;: true,
+                   &quot;Status&quot;: &quot;in-use&quot;,
+                   &quot;SubnetId&quot;: &quot;subnet-d76ae58f&quot;,
+                   &quot;VpcId&quot;: &quot;vpc-b88883dc&quot;
+               }
+               ],
+               &quot;Placement&quot;: {
+               &quot;Affinity&quot;: null,
+               &quot;AvailabilityZone&quot;: &quot;us-east-1d&quot;,
+               &quot;GroupName&quot;: &quot;&quot;,
+               &quot;HostId&quot;: null,
+               &quot;Tenancy&quot;: &quot;default&quot;
+               },
+               &quot;Platform&quot;: null,
+               &quot;PrivateDnsName&quot;: &quot;ip-172-33-1-178.ec2.internal&quot;,
+               &quot;PrivateIpAddress&quot;: &quot;172.33.1.178&quot;,
+               &quot;ProductCodes&quot;: null,
+               &quot;PublicDnsName&quot;: &quot;ec2-52-90-244-101.compute-1.amazonaws.com&quot;,
+               &quot;PublicIpAddress&quot;: &quot;52.90.244.101&quot;,
+               &quot;RamdiskId&quot;: null,
+               &quot;RootDeviceName&quot;: &quot;/dev/xvda&quot;,
+               &quot;RootDeviceType&quot;: &quot;ebs&quot;,
+               &quot;SecurityGroups&quot;: [
+               {
+                   &quot;GroupId&quot;: &quot;sg-57c9812f&quot;,
+                   &quot;GroupName&quot;: &quot;webserver&quot;
+               }
+               ],
+               &quot;SourceDestCheck&quot;: true,
+               &quot;SpotInstanceRequestId&quot;: null,
+               &quot;SriovNetSupport&quot;: null,
+               &quot;State&quot;: {
+               &quot;Code&quot;: 16,
+               &quot;Name&quot;: &quot;running&quot;
+               },
+               &quot;StateReason&quot;: null,
+               &quot;StateTransitionReason&quot;: &quot;&quot;,
+               &quot;SubnetId&quot;: &quot;subnet-d76ae58f&quot;,
+               &quot;Tags&quot;: [
+               {
+                   &quot;Key&quot;: &quot;Name&quot;,
+                   &quot;Value&quot;: &quot;webserver&quot;
+               }
+               ],
+               &quot;VirtualizationType&quot;: &quot;hvm&quot;,
+               &quot;VpcId&quot;: &quot;vpc-b88883dc&quot;,
+               &quot;uname&quot;: &quot;Linux ip-172-33-1-178 4.1.10-17.31.amzn1.x86_64 #1 SMP Sat Oct 24 01:31:37 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux\r\n&quot;
+           });
+</code></pre></div></div><script src="/js/main.js"></script></body></html>
