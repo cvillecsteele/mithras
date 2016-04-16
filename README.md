@@ -92,11 +92,11 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* website
+* documentation: fix css / toc
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * fix arg order in S3 exposed JS functions  
 * rework / robustify web core module
-* website
-* documentation: fix css / toc
 
 * more s3 configuration support for buckets
 * test goroutines interaction with otto runtime
