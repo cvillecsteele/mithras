@@ -1,35 +1,35 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>Cache</h1><p>This module exports:</p>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>Cache</h1><p> This module exports:</p>
 <blockquote>
 <ul>
-<li><code>Cache</code> constructor</li>
+<li><code>Cache</code> constructor function</li>
 </ul>
 </blockquote>
-<p>Usage:</p>
-<p><code>var Cache = (new (require(&quot;cache&quot;).Cache)).init();</code></p>
-<h2><code>Cache</code></h2><p>Constructor function</p>
-<p><code>new Cache(path)</code></p>
-<p>Example:</p>
-<pre><code class="language-javascript">var cache = new Cache(&quot;.cache&quot;);
+<p> Usage:</p>
+<p> <code>var Cache = (new (require(&quot;cache&quot;).Cache)).init();</code></p>
+<h2><code>Cache</code></h2><p> Constructor function</p>
+<p> <code>new Cache(path)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
 </code></pre>
-<h2><code>init</code></h2><p>Initialize a cache</p>
-<p><code>cache.init()</code></p>
-<p>Example:</p>
-<pre><code class="language-javascript">var cache = new Cache(&quot;.cache&quot;);
-cache.init();
+<h2><code>init</code></h2><p> Initialize a cache</p>
+<p> <code>cache.init()</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
 </code></pre>
-<h2><code>get</code></h2><p>Get an object from cache.</p>
-<p><code>cache.get(key)</code></p>
-<p>Example:</p>
-<pre><code class="language-javascript">var cache = new Cache(&quot;.cache&quot;);
-cache.init();
-var foo = cache.get(&quot;foo&quot;);
+<h2><code>get</code></h2><p> Get an object from cache.</p>
+<p> <code>cache.get(key)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
+ var foo = cache.get(&quot;foo&quot;);
 </code></pre>
-<h2><code>put</code></h2><p>Put an object into the cache.  The <code>value</code> arg is run
-through <code>JSON.stringify</code> before storage in the cache.</p>
-<p><code>cache.put(key, value, expiry)</code></p>
-<p>Example:</p>
-<pre><code class="language-javascript">var cache = new Cache(&quot;.cache&quot;);
-cache.init();
-cache.put(&quot;foo&quot;, &quot;somevalue&quot;, (60 * 5));
+<h2><code>put</code></h2><p> Put an object into the cache.  The <code>value</code> arg is run
+ through <code>JSON.stringify</code> before storage in the cache.</p>
+<p> <code>cache.put(key, value, expiry)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
+ cache.put(&quot;foo&quot;, &quot;somevalue&quot;, (60 * 5));
 </code></pre></div></div><script src="/js/main.js"></script></body></html>

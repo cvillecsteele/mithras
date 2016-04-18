@@ -1,30 +1,30 @@
+ 
 
 
-
-# CORE FUNCTIONS: TAG
-
+ # CORE FUNCTIONS: TAG
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [aws.tags.create](#create)
+ > * [aws.tags.create](#create)
 
-This API allows resource handlers to manipulate DNS records in Route53.
+ This API allows resource handlers to manipulate DNS records in Route53.
 
-## AWS.TAGS.CREATE
-<a name="create"></a>
-`aws.tags.create(region, id, tags);`
+ ## AWS.TAGS.CREATE
+ <a name="create"></a>
+ `aws.tags.create(region, id, tags);`
 
-Tag an AWS resource.
+ Tag an AWS resource.
 
-Example:
+ Example:
 
-```
+ ```
 
-tags.create("us-east-1", "vpc-abc", { Name: "foo" });
+ tags.create("us-east-1", "vpc-abc", { Name: "foo" });
 
-```
+ ```
 
 

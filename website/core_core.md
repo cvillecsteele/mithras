@@ -1,32 +1,32 @@
+ 
+
+ # CORE FUNCTIONS: CORE
 
 
-# CORE FUNCTIONS: CORE
+ 
 
+ This package exports several entry points into the JS environment,
+ including:
 
+ > * [sanitize](#sanitize)
 
+ This API allows exposes "core" functions to JS.
 
-This package exports several entry points into the JS environment,
-including:
+ ## SANITIZE
+ <a name="sanitize"></a>
+ `sanitize(thing_from_go);`
 
-> * [sanitize](#sanitize)
+ Make an object returned from a raw Go function and make it
+ digestible by JS.
 
-This API allows exposes "core" functions to JS.
+ TODO: kill this???
 
-## SANITIZE
-<a name="sanitize"></a>
-`sanitize(thing_from_go);`
+ Example:
 
-Make an object returned from a raw Go function and make it
-digestible by JS.
+ ```
 
-TODO: kill this???
+  sanitize(<something>);
 
-Example:
-
-```
-
-sanitize(<something>);
-
-```
+ ```
 
 

@@ -1,140 +1,140 @@
+ 
 
 
-
-# CORE FUNCTIONS: VPC
-
+ # CORE FUNCTIONS: VPC
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [aws.vpcs.scan](#vscan)
-> * [aws.vpcs.create](#vcreate)
-> * [aws.vpcs.delete](#vdelete)
-> * [aws.vpcs.describe](#vdescribe)
-> * [aws.gateways.scan](#gscan)
-> * [aws.gateways.create](#gcreate)
-> * [aws.gateways.delete](#gdelete)
-> * [aws.gateways.describe](#gdescribe)
+ > * [aws.vpcs.scan](#vscan)
+ > * [aws.vpcs.create](#vcreate)
+ > * [aws.vpcs.delete](#vdelete)
+ > * [aws.vpcs.describe](#vdescribe)
+ > * [aws.gateways.scan](#gscan)
+ > * [aws.gateways.create](#gcreate)
+ > * [aws.gateways.delete](#gdelete)
+ > * [aws.gateways.describe](#gdescribe)
 
-This API allows resource handlers to manage VPCS.
+ This API allows resource handlers to manage VPCS.
 
-## AWS.VPCS.SCAN
-<a name="vscan"></a>
-`aws.vpcs.scan(region);`
+ ## AWS.VPCS.SCAN
+ <a name="vscan"></a>
+ `aws.vpcs.scan(region);`
 
-Returns a list of vpcs.
+ Returns a list of vpcs.
 
-Example:
+ Example:
 
-```
+ ```
 
-var vpcs =  aws.vpcs.scan("us-east-1");
+  var vpcs =  aws.vpcs.scan("us-east-1");
 
-```
+ ```
 
-## AWS.VPCS.CREATE
-<a name="vcreate"></a>
-`aws.vpcs.create(region, config, gateway);`
+ ## AWS.VPCS.CREATE
+ <a name="vcreate"></a>
+ `aws.vpcs.create(region, config, gateway);`
 
-Create a VPC.
+ Create a VPC.
 
-Example:
+ Example:
 
-```
+ ```
 
-var vpc =  aws.vpcs.create(
-"us-east-1",
-{
-CidrBlock:       "172.33.0.0/16"
-},
-true);
+  var vpc =  aws.vpcs.create(
+    "us-east-1",
+    {
+		  CidrBlock:       "172.33.0.0/16"
+    },
+    true);
 
-```
+ ```
 
-## AWS.VPCS.DELETE
-<a name="vdelete"></a>
-`aws.vpcs.delete(region, vpc_id);`
+ ## AWS.VPCS.DELETE
+ <a name="vdelete"></a>
+ `aws.vpcs.delete(region, vpc_id);`
 
-Delete a VPC.
+ Delete a VPC.
 
-Example:
+ Example:
 
-```
+ ```
 
-aws.vpcs.delete("us-east-1", "vpc-abcd");
+  aws.vpcs.delete("us-east-1", "vpc-abcd");
 
-```
+ ```
 
-## AWS.VPCS.DESCRIBE
-<a name="vdescribe"></a>
-`aws.vpcs.describe(region, vpc_id);`
+ ## AWS.VPCS.DESCRIBE
+ <a name="vdescribe"></a>
+ `aws.vpcs.describe(region, vpc_id);`
 
-Get info from AWS about a VPC.
+ Get info from AWS about a VPC.
 
-Example:
+ Example:
 
-```
+ ```
 
-var vpc = aws.vpcs.describe("us-east-1", "vpc-abcd");
+  var vpc = aws.vpcs.describe("us-east-1", "vpc-abcd");
 
-```
+ ```
 
-## AWS.GATEWAYS.SCAN
-<a name="gscan"></a>
-`aws.gateways.scan(region);`
+ ## AWS.GATEWAYS.SCAN
+ <a name="gscan"></a>
+ `aws.gateways.scan(region);`
 
-Returns a list of gateways.
+ Returns a list of gateways.
 
-Example:
+ Example:
 
-```
+ ```
 
-var gateways =  mithras.gateways.scan("us-east-1");
+  var gateways =  mithras.gateways.scan("us-east-1");
 
-```
+ ```
 
-## AWS.GATEWAYS.CREATE
-<a name="gcreate"></a>
-`aws.gateways.create(region);`
+ ## AWS.GATEWAYS.CREATE
+ <a name="gcreate"></a>
+ `aws.gateways.create(region);`
 
-Create a gateway.
+ Create a gateway.
 
-Example:
+ Example:
 
-```
+ ```
 
-var gateway =  mithras.gateways.create("us-east-1");
+  var gateway =  mithras.gateways.create("us-east-1");
 
-```
+ ```
 
-## AWS.GATEWAYS.DELETE
-<a name="gdelete"></a>
-`aws.gateways.delete(region, gateway_id);`
+ ## AWS.GATEWAYS.DELETE
+ <a name="gdelete"></a>
+ `aws.gateways.delete(region, gateway_id);`
 
-Delete a gateway.
+ Delete a gateway.
 
-Example:
+ Example:
 
-```
+ ```
 
-mithras.gateways.delete("us-east-1", "gw-abcd");
+  mithras.gateways.delete("us-east-1", "gw-abcd");
 
-```
+ ```
 
-## AWS.GATEWAYS.DESCRIBE
-<a name="gdescribe"></a>
-`aws.gateways.describe(region, gateway_id);`
+ ## AWS.GATEWAYS.DESCRIBE
+ <a name="gdescribe"></a>
+ `aws.gateways.describe(region, gateway_id);`
 
-Get info from AWS about a gateway.
+ Get info from AWS about a gateway.
 
-Example:
+ Example:
 
-```
+ ```
 
-var gateway = mithras.gateways.describe("us-east-1", "gw-abcd");
+  var gateway = mithras.gateways.describe("us-east-1", "gw-abcd");
 
-```
+ ```
 
 

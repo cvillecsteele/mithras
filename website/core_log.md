@@ -1,89 +1,89 @@
+ 
 
 
-
-# CORE FUNCTIONS: LOG
-
+ # CORE FUNCTIONS: LOG
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [log](#log)
-> * [log0](#log0)
-> * [log1](#log1)
-> * [log2](#log2)
+ > * [log](#log)
+ > * [log0](#log0)
+ > * [log1](#log1)
+ > * [log2](#log2)
 
-This API allows resource handlers to log.
+ This API allows resource handlers to log.
 
-## LOG
-<a name="log"></a>
-`log(message);`
+ ## LOG
+ <a name="log"></a>
+ `log(message);`
 
-Logs a message in the default format
+ Logs a message in the default format
 
-Example:
+ Example:
 
-```
+ ```
 
-log("hello");
+  log("hello");
 
-```
+ ```
 
-## LOG
-<a name="log"></a>
-`log(message);`
+ ## LOG
+ <a name="log"></a>
+ `log(message);`
 
-Logs a message in the default format
+ Logs a message in the default format
 
-Example:
+ Example:
 
-```
+ ```
 
-log("hello");
+  log("hello");
 
-```
+ ```
 
-## LOG0
-<a name="log0"></a>
-`log0(message);`
+ ## LOG0
+ <a name="log0"></a>
+ `log0(message);`
 
-Logs a more important message.
+ Logs a more important message.
 
-Example:
+ Example:
 
-```
+ ```
 
-log0("hello");
+  log0("hello");
 
-```
+ ```
 
-## LOG1
-<a name="log1"></a>
-`log1(message);`
+ ## LOG1
+ <a name="log1"></a>
+ `log1(message);`
 
-Logs a less important message
+ Logs a less important message
 
-Example:
+ Example:
 
-```
+ ```
 
-log1("hello");
+  log1("hello");
 
-```
+ ```
 
-## LOG2
-<a name="log1"></a>
-`log1(message);`
+ ## LOG2
+ <a name="log1"></a>
+ `log1(message);`
 
-Logs an even less important message
+ Logs an even less important message
 
-Example:
+ Example:
 
-```
+ ```
 
-log2("hello");
+  log2("hello");
 
-```
+ ```
 
 

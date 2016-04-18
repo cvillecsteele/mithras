@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>Elasticache</h1><p> Elasticache is resource handler for managing AWS caches.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;elasticache&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var elasticache = require(&quot;elasticache&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rds = {
+   name: &quot;rdsA&quot;
+   module: &quot;rds&quot;
+   dependsOn: [otherResource.name]
+   params: {
+     ensure: ensure
+     region: defaultRegion
+     wait: true
+     subnetGroup: {
+         DBSubnetGroupDescription: &quot;test subnet group&quot;
+         DBSubnetGroupName: &quot;test-subnet-group&quot;
+         SubnetIds: [
+              &quot;subnet-123&quot;,
+              &quot;subnet-456&quot;
+         ]
+         Tags: [
+             {
+                 Key:   &quot;Foo&quot;
+                 Value: &quot;Bar&quot;
+             }
+         ]
+     }
+     db: {
+         DBInstanceClass:         &quot;db.m1.small&quot;
+         DBInstanceIdentifier:    &quot;test-rds&quot;
+         Engine:                  &quot;mysql&quot;
+         AllocatedStorage:        10
+         AutoMinorVersionUpgrade: true
+         AvailabilityZone:        defaultZone
+         MasterUserPassword:      &quot;test123456789&quot;
+         MasterUsername:          &quot;test&quot;
+         DBSubnetGroupName:       &quot;test-subnet-group&quot;
+         DBName:                  &quot;test&quot;
+         PubliclyAccessible:      false
+         Tags: [
+             {
+                 Key:   &quot;foo&quot;
+                 Value: &quot;bar&quot;
+             },
+         ]
+     }
+     delete: {
+         DBInstanceIdentifier:      &quot;db-abcd&quot;
+         FinalDBSnapshotIdentifier: &quot;byebye&quot; + Date.now()
+         SkipFinalSnapshot:         true
+     }
+   }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the db specified by <code>db</code> will be created, and
+if <code>&quot;absent&quot;</code>, it will be removed using the <code>delete</code> property.</p>
+<h3><code>region</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: string, any valid AWS region; eg &quot;us-east-1&quot;</p>
+<p>The region for calls to the AWS API.</p>
+<h3><code>wait</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: true or false</p>
+<p>If <code>true</code>, delay execution until the db has been created in AWS.</p>
+<h3><code>subnetGroup</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/rds.html#type-CreateDbSubnetGroupInput">here</a></p>
+<p>If set, a subnet group will be created for your db.</p>
+<h3><code>db</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/rds.html#type-CreateDBClusterInput">here</a></p>
+<p>Parameters for resource creation.</p>
+<h3><code>delete</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/rds.html#type-DeleteDBClusterInput">here</a></p>
+<p>Parameters for deletion.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

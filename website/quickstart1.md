@@ -21,13 +21,14 @@ up correctly.
 ### The `run()` function
 
 For this section of the guide, we'll be using the script found in the
-`example/simple.js` file of the Mithras distribution, typically found
-in your `$GOPATH/src/github.com/cvillecsteele/mithras` folder.  Pull
-that file up in your favorite editor, and take a look around.  One
-thing you'll see is the `run()` function:
+`example/simple.js` file (here on
+[github](https://github.com/cvillecsteele/mithras/blob/master/example/simple.js))
+of the Mithras distribution, typically found in your
+`$GOPATH/src/github.com/cvillecsteele/mithras` folder.  Pull that file
+up in your favorite editor, and take a look around.  One thing you'll
+see is the `run()` function:
 
 ```javascript
-
 function run() {...}
 
 ```
@@ -37,16 +38,15 @@ when invoked.  Broadly speaking, Mithras scripts consist of three
 parts: initialization, during which the script does some setup, and
 AWS is queried to create a `catalog`; definition of `resources`, in
 which you lay out the various components of your application, and
-relate them to one another using `dependencies`; and finally
-application of your resources to the catalog.  All of this work is
-triggered by Mithras' invocation of your `run()` function.
+relate them to one another using the resource property `dependsOn`;
+and finally application of your resources to the catalog.  All of this
+work is triggered by Mithras' invocation of your `run()` function.
 
 ### Config and setup
 
 Next, you'll see a line of configuration setup:
 
 ```javascript
-
 // Filter regions
 mithras.activeRegions = function (catalog) { return ["us-east-1"]; };
 
@@ -62,7 +62,6 @@ APIs to get a snapshot of all of the AWS resources currently active in
 your account:
 
 ```javascript
-
 // Talk to AWS
 var catalog = mithras.run();
 
@@ -75,8 +74,7 @@ satisfy your script.
 
 Next up comes some configuration code:
 
-```javacript
-
+```javascript
 // Setup, variables, etc.
 var ensure = "present";
 var reverse = false;
@@ -117,7 +115,6 @@ following resource definitions will use.
 Next come resource definitions, the first of which is for an SSH keypair:
 
 ```javascript
-
 var rKey = {
   name: "key"                 // required: resources always have a name
   module: "keypairs"          // required: resources always have a handler

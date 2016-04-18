@@ -1,30 +1,30 @@
+ 
 
 
-
-# CORE FUNCTIONS: REGIONS
-
+ # CORE FUNCTIONS: REGIONS
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [aws.regions.scan](#scan)
+ > * [aws.regions.scan](#scan)
 
-This API allows resource handlers to query AWS regions
+ This API allows resource handlers to query AWS regions
 
-## AWS.REGIONS.SCAN
-<a name="scan"></a>
-`aws.regions.scan(region);`
+ ## AWS.REGIONS.SCAN
+ <a name="scan"></a>
+ `aws.regions.scan(region);`
 
-Returns a list of regionss.
+ Returns a list of regionss.
 
-Example:
+ Example:
 
-```
+ ```
 
-var regions =  aws.regions.scan("us-east-1");
+  var regions =  aws.regions.scan("us-east-1");
 
-```
+ ```
 
 

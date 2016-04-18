@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>Instance</h1><p> Instance is resource handler for managing AWS caches.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;instance&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var instance = require(&quot;instance&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var webServer = {
+      name: &quot;webserver&quot;
+      module: &quot;instance&quot;
+      dependsOn: [resource.name]
+      params: {
+          region: defaultRegion
+          ensure: ensure
+          on_find: function(catalog) {
+              var matches = _.filter(catalog.instances, function (i) {
+                  if (i.State.Name != &quot;running&quot;) {
+                      return false;
+                  }
+                  return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
+                                           &quot;Value&quot;: webserverTagName}).length &gt; 0);
+              });
+              return matches;
+          }
+          tags: {
+              Name: webserverTagName
+          }
+          instance: {
+              ImageId:        &quot;ami-60b6c60a&quot;
+              MaxCount:       1
+              MinCount:       1
+              DisableApiTermination: false
+              EbsOptimized:          false
+              IamInstanceProfile: {
+                  Name: iamProfileName
+              }
+              InstanceInitiatedShutdownBehavior: &quot;terminate&quot;
+              InstanceType:                      &quot;t2.small&quot;
+              KeyName:                           keyName
+              Monitoring: {
+                  Enabled: true
+              }
+              NetworkInterfaces: [
+                  {
+                      AssociatePublicIpAddress: true
+                      DeleteOnTermination:      true
+                      DeviceIndex:              0
+                      Groups:                  [ &quot;sg-abc&quot; ]
+                      SubnetId:                &quot;subnet-123&quot;
+                  }
+              ]
+          } // instance
+      } // params
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the db specified by <code>db</code> will be created, and
+if <code>&quot;absent&quot;</code>, it will be removed using the <code>delete</code> property.</p>
+<h3><code>region</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: string, any valid AWS region; eg &quot;us-east-1&quot;</p>
+<p>The region for calls to the AWS API.</p>
+<h3><code>instance</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/ec2.html#type-RunInstancesInput">here</a></p>
+<p>Parameters for resource creation.</p>
+<h3><code>on_find</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: <code>function(catalog) { ... }</code></p>
+<p>Called to find matching instances in <code>catalog.instances</code>.  Returns
+an array of matching EC2 instance objects.</p>
+<h3><code>tags</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: A map of tags to be applied to created instances</p>
+<p>A map of tags to be applied to created instances</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

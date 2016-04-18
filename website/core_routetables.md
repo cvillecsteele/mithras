@@ -1,149 +1,149 @@
+ 
 
 
-
-# CORE FUNCTIONS: ROUTETABLES
-
+ # CORE FUNCTIONS: ROUTETABLES
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [aws.routetables.scan](#scan)
-> * [aws.routetables.describeForSubnet](#describeForSubnet)
-> * [aws.routetables.describe](#describe)
-> * [aws.routetables.create](#create)
-> * [aws.routetables.delete](#delete)
-> * [aws.routetables.associate](#associate)
-> * [aws.routetables.disassociate](#disassociate)
-> * [aws.routetables.deleteAssociation](#deleteAssociation)
+ > * [aws.routetables.scan](#scan)
+ > * [aws.routetables.describeForSubnet](#describeForSubnet)
+ > * [aws.routetables.describe](#describe)
+ > * [aws.routetables.create](#create)
+ > * [aws.routetables.delete](#delete)
+ > * [aws.routetables.associate](#associate)
+ > * [aws.routetables.disassociate](#disassociate)
+ > * [aws.routetables.deleteAssociation](#deleteAssociation)
 
-This API allows resource handlers to manipulate DNS records in Route53.
+ This API allows resource handlers to manipulate DNS records in Route53.
 
-## AWS.ROUTETABLES.SCAN
-<a name="scan"></a>
-`aws.routetables.scan(region);`
+ ## AWS.ROUTETABLES.SCAN
+ <a name="scan"></a>
+ `aws.routetables.scan(region);`
 
-Query routetables.
+ Query routetables.
 
-Example:
+ Example:
 
-```
+ ```
 
-var tables = aws.routetables.scan("us-east-1");
+ var tables = aws.routetables.scan("us-east-1");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DESCRIBEFORSUBNET
-<a name="describeforsubnet"></a>
-`aws.routetables.describeForSubnet(region, subnet-id);`
+ ## AWS.ROUTETABLES.DESCRIBEFORSUBNET
+ <a name="describeforsubnet"></a>
+ `aws.routetables.describeForSubnet(region, subnet-id);`
 
-Get routetables associated with the supplied subnet.
+ Get routetables associated with the supplied subnet.
 
-Example:
+ Example:
 
-```
+ ```
 
-var tables = aws.routetables.describeForSubnet("us-east-1", "subnet-abc");
+ var tables = aws.routetables.describeForSubnet("us-east-1", "subnet-abc");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DESCRIBEFORSUBNET
-<a name="describeforsubnet"></a>
-`aws.routetables.describeForSubnet(region, subnet-id);`
+ ## AWS.ROUTETABLES.DESCRIBEFORSUBNET
+ <a name="describeforsubnet"></a>
+ `aws.routetables.describeForSubnet(region, subnet-id);`
 
-Get routetables associated with the supplied subnet.
+ Get routetables associated with the supplied subnet.
 
-Example:
+ Example:
 
-```
+ ```
 
-var tables = aws.routetables.describeForSubnet("us-east-1", "subnet-abc");
+ var tables = aws.routetables.describeForSubnet("us-east-1", "subnet-abc");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DESCRIBE
-<a name="describe"></a>
-`aws.routetables.describe(region, route-table-id);`
+ ## AWS.ROUTETABLES.DESCRIBE
+ <a name="describe"></a>
+ `aws.routetables.describe(region, route-table-id);`
 
-Get info about the supplied route table.
+ Get info about the supplied route table.
 
-Example:
+ Example:
 
-```
+ ```
 
-var table = aws.routetables.describe("us-east-1", "routetable-abc");
+ var table = aws.routetables.describe("us-east-1", "routetable-abc");
 
-```
+ ```
 
-## AWS.ROUTETABLES.CREATE
-<a name="create"></a>
-`aws.routetables.create(region, vpc-id);`
+ ## AWS.ROUTETABLES.CREATE
+ <a name="create"></a>
+ `aws.routetables.create(region, vpc-id);`
 
-Create a route table in a vpc.
+ Create a route table in a vpc.
 
-Example:
+ Example:
 
-```
+ ```
 
-var table = aws.routetables.create("us-east-1", "vpc-123");
+ var table = aws.routetables.create("us-east-1", "vpc-123");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DELETE
-<a name="delete"></a>
-`aws.routetables.delete(region, subnet-id);`
+ ## AWS.ROUTETABLES.DELETE
+ <a name="delete"></a>
+ `aws.routetables.delete(region, subnet-id);`
 
-Delete a route table.
+ Delete a route table.
 
-Example:
+ Example:
 
-```
+ ```
 
-aws.routetables.delete("us-east-1", "routetable-123");
+ aws.routetables.delete("us-east-1", "routetable-123");
 
-```
+ ```
 
-## AWS.ROUTETABLES.ASSOCIATE
-<a name="associate"></a>
-`aws.routetables.associate(region, subnet-id, route-table-id);`
+ ## AWS.ROUTETABLES.ASSOCIATE
+ <a name="associate"></a>
+ `aws.routetables.associate(region, subnet-id, route-table-id);`
 
-Assocate a route table with a subnet.
+ Assocate a route table with a subnet.
 
-Example:
+ Example:
 
-```
+ ```
 
-aws.routetables.associate("us-east-1", "subnet-abc", "routetable-123");
+ aws.routetables.associate("us-east-1", "subnet-abc", "routetable-123");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DISASSOCIATE
-<a name="disassociate"></a>
-`aws.routetables.disassociate(region, association-id);`
+ ## AWS.ROUTETABLES.DISASSOCIATE
+ <a name="disassociate"></a>
+ `aws.routetables.disassociate(region, association-id);`
 
-Disassocate a route table and a subnet.
+ Disassocate a route table and a subnet.
 
-Example:
+ Example:
 
-```
+ ```
 
-aws.routetables.disassociate("us-east-1", "association-xyz");
+ aws.routetables.disassociate("us-east-1", "association-xyz");
 
-```
+ ```
 
-## AWS.ROUTETABLES.DELETEASSOCIATION
-<a name="deleteAssociation"></a>
-`aws.routetables.deleteAssociation(region, association-id);`
+ ## AWS.ROUTETABLES.DELETEASSOCIATION
+ <a name="deleteAssociation"></a>
+ `aws.routetables.deleteAssociation(region, association-id);`
 
-Delete a route table association.
+ Delete a route table association.
 
-Example:
+ Example:
 
-```
+ ```
 
-aws.routetables.deleteAssociation("us-east-1", "association-xyz");
+ aws.routetables.deleteAssociation("us-east-1", "association-xyz");
 
-```
+ ```
 
 

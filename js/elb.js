@@ -13,218 +13,355 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// @public
+// 
+// # ELB
+// 
+// Elb is resource handler for managing AWS elastic load balancers.
+// 
+// This module exports:
+// 
+// > * `init` Initialization function, registers itself as a resource
+// >   handler with `mithras.modules.handlers` for resources with a
+// >   module value of `"elb"`
+// 
+// Usage:
+// 
+// `var elb = require("elb").init();`
+// 
+//  ## Example Resource
+// 
+// ```javascript
+// var lbName = "my-lb";
+// var rElb = {
+//      name: "elb"
+//      module: "elb"
+//      dependsOn: [otherResource.name]
+//      on_delete: function(elb) { 
+//          // Sometimes aws takes a bit to delete an elb, and we can't
+//          // proceed with deleting until it's GONE.
+//          this.delay = 30; 
+//          return true;
+//      }
+//      params: {
+//          region: "us-east-1"
+//          ensure: "present"
+//          elb: {
+//              Listeners: [
+//                  {
+//                      InstancePort:     80
+//                      LoadBalancerPort: 80
+//                      Protocol:         "http"
+//                      InstanceProtocol: "http"
+//                  },
+//              ]
+//              LoadBalancerName: lbName
+//              SecurityGroups: [ "sg-123" ]
+//              Subnets: [
+//                  "subnet-abc"
+//                  "subnet-def"
+//              ]
+//              Tags: [
+//                  {
+//                      Key:   "foo"
+//                      Value: "bar"
+//                  },
+//              ]
+//          }
+//          attributes: {
+//              LoadBalancerAttributes: {
+//                  AccessLog: {
+//                      Enabled:        false
+//                      EmitInterval:   60
+//                      S3BucketName:   "my-loadbalancer-logs"
+//                      S3BucketPrefix: "test-app"
+//                  }
+//                  ConnectionDraining: {
+//                      Enabled: true
+//                      Timeout: 300
+//                  }
+//                  ConnectionSettings: {
+//                      IdleTimeout: 30
+//                  }
+//                  CrossZoneLoadBalancing: {
+//                      Enabled: true
+//                  }
+//              }
+//              LoadBalancerName: lbName
+//          }
+//          health: {
+//              HealthCheck: {
+//                  HealthyThreshold:   2
+//                  Interval:           30
+//                  Target:             "HTTP:80/hc"
+//                  Timeout:            5
+//                  UnhealthyThreshold: 3
+//              }
+//              LoadBalancerName: lbName
+//          }
+//      }
+// };
+// ```
+// 
+// ## Parameter Properties
+// 
+// ### `ensure`
+//
+// * Required: true
+// * Allowed Values: "present" or "absent"
+//
+// If `"present"`, the db specified by `db` will be created, and
+// if `"absent"`, it will be removed using the `delete` property.
+// 
+// ### `region`
+//
+// * Required: true
+// * Allowed Values: string, any valid AWS region; eg "us-east-1"
+//
+// The region for calls to the AWS API.
+// 
+// ### `elb`
+//
+// * Required: true
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-CreateLoadBalanerInput)
+//
+// Parameters for resource creation.
+// 
+// ### `on_delete`
+//
+// * Required: false
+// * Allowed Values: `function(elb) { ... }`
+//
+// Called after resource deletion.  May be used to modify `wait`
+// property (see example above).
+// 
+// ### `attributes`
+//
+// * Required: false
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-ModifyLoadBalancerAttributesInput)
+//
+// If specified, used to apply attributes to a created ELB.
+// 
+// ### `health`
+//
+// * Required: false
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-ConfigureHealthCheckInput)
+//
+// If specified, used to specify health check params for a created ELB.
+// 
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = factory();
+        module.exports = factory();
     }
 })(this, function() {
     
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-	moduleNames: ["elb", "elbMembership"]
-	findInCatalog: function(catalog, elbName) {
-	    return _.find(catalog.elbs, function(elb) {
-		return elb.LoadBalancerName === elbName;
-	    });
-	}
-	handle: function(catalog, resources, resource) {
-	    if (!_.find(handler.moduleNames, function(m) { 
-		return resource.module === m; 
-	    })) {
-		return [null, false];
-	    }
-		
-	    var ensure = resource.params.ensure;
-	    var params = resource.params;
-	    
-	    switch(resource.module) {
-	    case "elb":
-		// Sanity
-		if (!resource.params.elb) {
-		    console.log("Invalid elb params")
-		    exit(1);
-		}
-		var elb = resource._target;
-		
-		switch(ensure) {
-		case "absent":
-		    if (!elb) {
-			log(sprintf("ELB not found, no action taken."));
-			break;
-		    }
-		    
-		    // Remove it
-		    if (mithras.verbose) {
-			log(sprintf("Deleting ELB '%s'", 
-				    params.elb.LoadBalancerName));
-		    }
-		    aws.elbs.delete(params.region, params.elb.LoadBalancerName);
+        moduleNames: ["elb", "elbMembership"]
+        findInCatalog: function(catalog, elbName) {
+            return _.find(catalog.elbs, function(elb) {
+                return elb.LoadBalancerName === elbName;
+            });
+        }
+        handle: function(catalog, resources, resource) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
+                
+            var ensure = resource.params.ensure;
+            var params = resource.params;
+            
+            switch(resource.module) {
+            case "elb":
+                // Sanity
+                if (!resource.params.elb) {
+                    console.log("Invalid elb params")
+                    exit(1);
+                }
+                var elb = resource._target;
+                
+                switch(ensure) {
+                case "absent":
+                    if (!elb) {
+                        log(sprintf("ELB not found, no action taken."));
+                        break;
+                    }
+                    
+                    // Remove it
+                    if (mithras.verbose) {
+                        log(sprintf("Deleting ELB '%s'", 
+                                    params.elb.LoadBalancerName));
+                    }
+                    aws.elbs.delete(params.region, params.elb.LoadBalancerName);
 
-		    break;
-		case "present":
-		    if (elb) {
-			log(sprintf("ELB found, no action taken."));
-			return [elb, true];
-			break;
-		    }
-		    
-		    // create 
-		    if (mithras.verbose) {
-			log(sprintf("Creating elb '%s'", 
-				    params.elb.LoadBalancerName));
-		    }
-		    created = aws.elbs.create(params.region, params.elb);
-		    
-		    // Set health
-		    if (mithras.verbose) {
-			log(sprintf("Setting health for elb '%s'", 
-				    params.elb.LoadBalancerName));
-		    }
-		    aws.elbs.setHealth(params.region, 
-				       params.elb.LoadBalancerName, 
-				       params.health);
-		    
-		    // Set attrs
-		    if (mithras.verbose) {
-			log(sprintf("Setting attributes for elb '%s'", 
-				    params.elb.LoadBalancerName));
-		    }
-		    aws.elbs.setAttrs(params.region, 
-				      params.elb.LoadBalancerName, 
-				      params.attributes);
-		    
-		    // add to catalog
-		    catalog.elbs.push(created);
-		    
-		    // return it
-		    return [created, true];
-		}
-		return [null, true];
-		break;
-	    case "elbMembership":
-		var elb = handler.findInCatalog(catalog, 
-						params.membership.LoadBalancerName);
+                    break;
+                case "present":
+                    if (elb) {
+                        log(sprintf("ELB found, no action taken."));
+                        return [elb, true];
+                        break;
+                    }
+                    
+                    // create 
+                    if (mithras.verbose) {
+                        log(sprintf("Creating elb '%s'", 
+                                    params.elb.LoadBalancerName));
+                    }
+                    created = aws.elbs.create(params.region, params.elb);
+                    
+                    // Set health
+                    if (mithras.verbose) {
+                        log(sprintf("Setting health for elb '%s'", 
+                                    params.elb.LoadBalancerName));
+                    }
+                    aws.elbs.setHealth(params.region, 
+                                       params.elb.LoadBalancerName, 
+                                       params.health);
+                    
+                    // Set attrs
+                    if (mithras.verbose) {
+                        log(sprintf("Setting attributes for elb '%s'", 
+                                    params.elb.LoadBalancerName));
+                    }
+                    aws.elbs.setAttrs(params.region, 
+                                      params.elb.LoadBalancerName, 
+                                      params.attributes);
+                    
+                    // add to catalog
+                    catalog.elbs.push(created);
+                    
+                    // return it
+                    return [created, true];
+                }
+                return [null, true];
+                break;
+            case "elbMembership":
+                var elb = handler.findInCatalog(catalog, 
+                                                params.membership.LoadBalancerName);
 
-		if (ensure === "present") {
-		    if (!elb) { 
-			console.log(sprintf("Can't find elb '%s' in catalog", 
-					    params.membership.LoadBalancerName));
-			os.exit(1);
-		    }
-		} else if (ensure === "absent") {
-		    if (!elb) {
-			return [null, true];
-		    }
-		}
+                if (ensure === "present") {
+                    if (!elb) { 
+                        console.log(sprintf("Can't find elb '%s' in catalog", 
+                                            params.membership.LoadBalancerName));
+                        os.exit(1);
+                    }
+                } else if (ensure === "absent") {
+                    if (!elb) {
+                        return [null, true];
+                    }
+                }
 
-		// intersection of input and LB
-		lbInstanceIds = _.pluck(elb.Instances, "InstanceId");
-		inInstanceIds = _.pluck(params.membership.Instances, "InstanceId");
-		var inBoth = _.intersection(lbInstanceIds, inInstanceIds);
-		// What's in the LB minus what's in input
-		var inLB = _.difference(lbInstanceIds, inInstanceIds);
-		// inputs minus what's in the LB
-		var inInput = _.difference(inInstanceIds, lbInstanceIds);
+                // intersection of input and LB
+                lbInstanceIds = _.pluck(elb.Instances, "InstanceId");
+                inInstanceIds = _.pluck(params.membership.Instances, "InstanceId");
+                var inBoth = _.intersection(lbInstanceIds, inInstanceIds);
+                // What's in the LB minus what's in input
+                var inLB = _.difference(lbInstanceIds, inInstanceIds);
+                // inputs minus what's in the LB
+                var inInput = _.difference(inInstanceIds, lbInstanceIds);
 
-		// build map id -> instance
-		var byIds = _.reduce(elb.Instances, function(memo, i) { 
-		    memo[i.InstanceId] = i;
-		    return memo;
-		}, {});
-		byIds = _.reduce(params.membership.Instances, function(memo, i) { 
-		    memo[i.InstanceId] = i;
-		    return memo;
-		}, byIds);
+                // build map id -> instance
+                var byIds = _.reduce(elb.Instances, function(memo, i) { 
+                    memo[i.InstanceId] = i;
+                    return memo;
+                }, {});
+                byIds = _.reduce(params.membership.Instances, function(memo, i) { 
+                    memo[i.InstanceId] = i;
+                    return memo;
+                }, byIds);
 
-		// Turn lists of ids back into lists of instances
-		inInput = _.reduce(inInput, function(memo, id) {
-		    memo.push(byIds[id]);
-		    return memo;
-		}, []);
-		inLB = _.reduce(inLB, function(memo, id) {
-		    memo.push(byIds[id]);
-		    return memo;
-		}, []);
+                // Turn lists of ids back into lists of instances
+                inInput = _.reduce(inInput, function(memo, id) {
+                    memo.push(byIds[id]);
+                    return memo;
+                }, []);
+                inLB = _.reduce(inLB, function(memo, id) {
+                    memo.push(byIds[id]);
+                    return memo;
+                }, []);
 
-		switch(ensure) {
-		case "absent":
-		    if (inInput.length > 0) {
-			if (mithras.verbose) {
-			    log(sprintf("Deregistering %d instances", 
-					inInput.length));
-			}
-			aws.elbs.deRegister(params.region, 
-					    params.membership.LoadBalancerName, 
-					    inInput);
-		    } else {
-			if (mithras.verbose) {
-			    log(sprintf("No action taken."));
-			}
-		    }
-		    break;
-		case "present":
-		    if (inInput.length > 0) {
-			if (mithras.verbose) {
-			    log(sprintf("Registering %d instances", 
-					inInput.length));
-			}
-			aws.elbs.register(params.region, 
-					  params.membership.LoadBalancerName, 
-					  inInput);
-		    } else {
-			if (mithras.verbose) {
-			    log(sprintf("No action taken."));
-			}
-		    }
-		    break;
-		case "converge":
-		    if (inInput.length > 0) {
-			if (mithras.verbose) {
-			    log(sprintf("Registering %d instances", 
-					inInput.length));
-			}
-			aws.elbs.register(params.region, 
-					  params.membership.LoadBalancerName, 
-					  inInput);
-		    }
-		    if (inLB.length > 0) {
-			if (mithras.verbose) {
-			    log(sprintf("Deregistering %d instances", 
-					inLB.length));
-			}
-			aws.elbs.deRegister(params.region, 
-					    params.membership.LoadBalancerName, 
-					    inLB);
-		    }
-		    break;
-		}
-		return [null, true];
-		break;
-	    }
-	}
-	preflight: function(catalog, resource) {
-	    if (!_.find(handler.moduleNames, function(m) { 
-		return resource.module === m; 
-	    })) {
-		return [null, false];
-	    }
-	    if (resource.module === handler.moduleNames[0]) {
-		var params = resource.params;
-		var elb = params.elb;
-		var t = handler.findInCatalog(catalog, elb.LoadBalancerName);
-		if (t) {
-		    return [t, true];
-		}
-	    }
-	    return [null, true];
-	}
+                switch(ensure) {
+                case "absent":
+                    if (inInput.length > 0) {
+                        if (mithras.verbose) {
+                            log(sprintf("Deregistering %d instances", 
+                                        inInput.length));
+                        }
+                        aws.elbs.deRegister(params.region, 
+                                            params.membership.LoadBalancerName, 
+                                            inInput);
+                    } else {
+                        if (mithras.verbose) {
+                            log(sprintf("No action taken."));
+                        }
+                    }
+                    break;
+                case "present":
+                    if (inInput.length > 0) {
+                        if (mithras.verbose) {
+                            log(sprintf("Registering %d instances", 
+                                        inInput.length));
+                        }
+                        aws.elbs.register(params.region, 
+                                          params.membership.LoadBalancerName, 
+                                          inInput);
+                    } else {
+                        if (mithras.verbose) {
+                            log(sprintf("No action taken."));
+                        }
+                    }
+                    break;
+                case "converge":
+                    if (inInput.length > 0) {
+                        if (mithras.verbose) {
+                            log(sprintf("Registering %d instances", 
+                                        inInput.length));
+                        }
+                        aws.elbs.register(params.region, 
+                                          params.membership.LoadBalancerName, 
+                                          inInput);
+                    }
+                    if (inLB.length > 0) {
+                        if (mithras.verbose) {
+                            log(sprintf("Deregistering %d instances", 
+                                        inLB.length));
+                        }
+                        aws.elbs.deRegister(params.region, 
+                                            params.membership.LoadBalancerName, 
+                                            inLB);
+                    }
+                    break;
+                }
+                return [null, true];
+                break;
+            }
+        }
+        preflight: function(catalog, resource) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
+            if (resource.module === handler.moduleNames[0]) {
+                var params = resource.params;
+                var elb = params.elb;
+                var t = handler.findInCatalog(catalog, elb.LoadBalancerName);
+                if (t) {
+                    return [t, true];
+                }
+            }
+            return [null, true];
+        }
     };
     
     handler.init = function () {
-	mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
-	mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
-	return handler;
+        mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
+        mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
+        return handler;
     };
     
     return handler;

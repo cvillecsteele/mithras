@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>ELB</h1><p> Elb is resource handler for managing AWS elastic load balancers.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;elb&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var elb = require(&quot;elb&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var lbName = &quot;my-lb&quot;;
+ var rElb = {
+      name: &quot;elb&quot;
+      module: &quot;elb&quot;
+      dependsOn: [otherResource.name]
+      on_delete: function(elb) { 
+          // Sometimes aws takes a bit to delete an elb, and we can&#39;t
+          // proceed with deleting until it&#39;s GONE.
+          this.delay = 30; 
+          return true;
+      }
+      params: {
+          region: &quot;us-east-1&quot;
+          ensure: &quot;present&quot;
+          elb: {
+              Listeners: [
+                  {
+                      InstancePort:     80
+                      LoadBalancerPort: 80
+                      Protocol:         &quot;http&quot;
+                      InstanceProtocol: &quot;http&quot;
+                  },
+              ]
+              LoadBalancerName: lbName
+              SecurityGroups: [ &quot;sg-123&quot; ]
+              Subnets: [
+                  &quot;subnet-abc&quot;
+                  &quot;subnet-def&quot;
+              ]
+              Tags: [
+                  {
+                      Key:   &quot;foo&quot;
+                      Value: &quot;bar&quot;
+                  },
+              ]
+          }
+          attributes: {
+              LoadBalancerAttributes: {
+                  AccessLog: {
+                      Enabled:        false
+                      EmitInterval:   60
+                      S3BucketName:   &quot;my-loadbalancer-logs&quot;
+                      S3BucketPrefix: &quot;test-app&quot;
+                  }
+                  ConnectionDraining: {
+                      Enabled: true
+                      Timeout: 300
+                  }
+                  ConnectionSettings: {
+                      IdleTimeout: 30
+                  }
+                  CrossZoneLoadBalancing: {
+                      Enabled: true
+                  }
+              }
+              LoadBalancerName: lbName
+          }
+          health: {
+              HealthCheck: {
+                  HealthyThreshold:   2
+                  Interval:           30
+                  Target:             &quot;HTTP:80/hc&quot;
+                  Timeout:            5
+                  UnhealthyThreshold: 3
+              }
+              LoadBalancerName: lbName
+          }
+      }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the db specified by <code>db</code> will be created, and
+if <code>&quot;absent&quot;</code>, it will be removed using the <code>delete</code> property.</p>
+<h3><code>region</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: string, any valid AWS region; eg &quot;us-east-1&quot;</p>
+<p>The region for calls to the AWS API.</p>
+<h3><code>elb</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-CreateLoadBalanerInput">here</a></p>
+<p>Parameters for resource creation.</p>
+<h3><code>on_delete</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: <code>function(elb) { ... }</code></p>
+<p>Called after resource deletion.  May be used to modify <code>wait</code>
+property (see example above).</p>
+<h3><code>attributes</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-ModifyLoadBalancerAttributesInput">here</a></p>
+<p>If specified, used to apply attributes to a created ELB.</p>
+<h3><code>health</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/elb.html#type-ConfigureHealthCheckInput">here</a></p>
+<p>If specified, used to specify health check params for a created ELB.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

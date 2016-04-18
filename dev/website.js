@@ -3,7 +3,7 @@ function run() {
     var sprintf = require("sprintf").sprintf;
 
     var publicRE = new RegExp("@public", 'm');
-    var commentRE= new RegExp("^[ \t]*//[ \t]*");
+    var commentRE= new RegExp("^[ \t]*//");
 
     var re = new RegExp("go|js$");
     var skip = [new RegExp("^vendor"), new RegExp("^website")];

@@ -1,5 +1,5 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>QUICKSTART GUIDE</h1><p>Use this document to get your first Mithras recipe working quickly and
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>QUICKSTART GUIDE</h1><p>Use this document to get your first Mithras recipe working quickly and
 easily, and get introduced to some of the concepts behind Mithras.</p>
 <ul>
 <li><a href="quickstart1.html">Part One</a>: An EC2 instance</li>
@@ -14,24 +14,24 @@ catalog and idempotent operations.</p>
 Mithras first.  Also, double check that your AWS credentials are set
 up correctly.</p>
 <h3>The <code>run()</code> function</h3><p>For this section of the guide, we&#39;ll be using the script found in the
-<code>example/simple.js</code> file of the Mithras distribution, typically found
-in your <code>$GOPATH/src/github.com/cvillecsteele/mithras</code> folder.  Pull
-that file up in your favorite editor, and take a look around.  One
-thing you&#39;ll see is the <code>run()</code> function:</p>
-<pre><code class="language-javascript">
-function run() {...}
+<code>example/simple.js</code> file (here on
+<a href="https://github.com/cvillecsteele/mithras/blob/master/example/simple.js">github</a>)
+of the Mithras distribution, typically found in your
+<code>$GOPATH/src/github.com/cvillecsteele/mithras</code> folder.  Pull that file
+up in your favorite editor, and take a look around.  One thing you&#39;ll
+see is the <code>run()</code> function:</p>
+<pre><code class="language-javascript">function run() {...}
 </code></pre>
 <p>Mithras scripts define a <code>run()</code> function, which Mithras will call
 when invoked.  Broadly speaking, Mithras scripts consist of three
 parts: initialization, during which the script does some setup, and
 AWS is queried to create a <code>catalog</code>; definition of <code>resources</code>, in
 which you lay out the various components of your application, and
-relate them to one another using <code>dependencies</code>; and finally
-application of your resources to the catalog.  All of this work is
-triggered by Mithras&#39; invocation of your <code>run()</code> function.</p>
+relate them to one another using the resource property <code>dependsOn</code>;
+and finally application of your resources to the catalog.  All of this
+work is triggered by Mithras&#39; invocation of your <code>run()</code> function.</p>
 <h3>Config and setup</h3><p>Next, you&#39;ll see a line of configuration setup:</p>
-<pre><code class="language-javascript">
-// Filter regions
+<pre><code class="language-javascript">// Filter regions
 mithras.activeRegions = function (catalog) { return [&quot;us-east-1&quot;]; };
 </code></pre>
 <p>This code restricts the scanning of AWS resources to a single region,
@@ -41,8 +41,7 @@ regions will be considered active.</p>
 <p>Next, our script calls <code>mithras.run()</code>, which interrogrates the AWS
 APIs to get a snapshot of all of the AWS resources currently active in
 your account:</p>
-<pre><code class="language-javascript">
-// Talk to AWS
+<pre><code class="language-javascript">// Talk to AWS
 var catalog = mithras.run();
 </code></pre>
 <p>The return value from <code>mithras.run()</code> is captured in the <code>catalog</code>
@@ -50,8 +49,7 @@ variable.  Later, this set of Javascript objects will be used to
 determine which resources need to be created or deleted in order to
 satisfy your script.</p>
 <p>Next up comes some configuration code:</p>
-<pre><code class="language-javacript">
-// Setup, variables, etc.
+<pre><code class="language-javascript">// Setup, variables, etc.
 var ensure = &quot;present&quot;;
 var reverse = false;
 if (mithras.ARGS[0] === &quot;down&quot;) { 
@@ -82,8 +80,7 @@ additional values, such as <code>latest</code>, for <code>package</code> resourc
 <p>You will also notice the script sets a few additional variables which
 following resource definitions will use.</p>
 <h3>Keypair resource</h3><p>Next come resource definitions, the first of which is for an SSH keypair:</p>
-<pre><code class="language-javascript">
-var rKey = {
+<pre><code class="language-javascript">var rKey = {
   name: &quot;key&quot;                 // required: resources always have a name
   module: &quot;keypairs&quot;          // required: resources always have a handler
   skip: (ensure === &#39;absent&#39;) // Optional.  Don&#39;t delete keys

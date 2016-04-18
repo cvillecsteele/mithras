@@ -1,30 +1,30 @@
+ 
 
 
-
-# CORE FUNCTIONS: TIME
-
+ # CORE FUNCTIONS: TIME
 
 
+ 
 
-This package exports several entry points into the JS environment,
-including:
+ This package exports several entry points into the JS environment,
+ including:
 
-> * [time.sleep](#sleep)
+ > * [time.sleep](#sleep)
 
-This API allows resource handlers to sleep the current thread of execution.
+ This API allows resource handlers to sleep the current thread of execution.
 
-## TIME.SLEEP
-<a name="sleep"></a>
-`time.sleep(seconds);`
+ ## TIME.SLEEP
+ <a name="sleep"></a>
+ `time.sleep(seconds);`
 
-Snore.
+ Snore.
 
-Example:
+ Example:
 
-```
+ ```
 
-time.sleep(10);
+ time.sleep(10);
 
-```
+ ```
 
 

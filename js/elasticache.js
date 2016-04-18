@@ -13,9 +13,113 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// @public
+// 
+// # Elasticache
+// 
+// Elasticache is resource handler for managing AWS caches.
+// 
+// This module exports:
+// 
+// > * `init` Initialization function, registers itself as a resource
+// >   handler with `mithras.modules.handlers` for resources with a
+// >   module value of `"elasticache"`
+// 
+// Usage:
+// 
+// `var elasticache = require("elasticache").init();`
+// 
+//  ## Example Resource
+// 
+// ```javascript
+// var rCache = {
+//      name: "redis"
+//      module: "elasticache"
+//      dependsOn: [otherResource.name]
+//      params: {
+//          ensure: ensure
+//          region: "us-east-1"
+//          wait: true
+//          subnetGroup: {
+//              CacheSubnetGroupDescription: "Redis Subnet Group"
+//              CacheSubnetGroupName:        "redis-subnet-group"
+//              SubnetIds: [
+//                  "subnet-123",
+//                  "subnet-456"
+//              ]
+//          }
+//          cache: {
+//              CacheClusterId:          "test-redis"
+//              AutoMinorVersionUpgrade: true
+//              CacheNodeType:           "cache.t2.small"
+//              CacheSubnetGroupName:    "redis-subnet-group"
+//              Engine:                  "redis"
+//              NumCacheNodes:           1
+//              SecurityGroupIds:        []
+//              Tags: [
+//                  {
+//                      Key:   "Name"
+//                      Value: "test-cluster"
+//                  },
+//              ]
+//          }
+//          delete: {
+//              CacheClusterId:          "test-redis"
+//          }
+//
+//      }
+// };
+// ```
+// 
+// ## Copy Parameter Properties
+// 
+// ### `ensure`
+//
+// * Required: true
+// * Allowed Values: "present" or "absent"
+//
+// If `"present"`, the cache specified by `cache` will be created, and
+// if `"absent"`, the cache will be removed using the `delete` property.
+// 
+// ### `region`
+//
+// * Required: true
+// * Allowed Values: string, any valid AWS region; eg "us-east-1"
+//
+// The region for calls to the AWS API.
+// 
+// ### `wait`
+//
+// * Required: false
+// * Allowed Values: true or false
+//
+// If `true`, delay execution until the cache has been created in AWS.
+// 
+// ### `subnetGroup`
+//
+// * Required: false
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elasticache.html#type-CreateCacheSubnetGroupInput)
+//
+// If set, a subnet group will be created for your cache.
+// 
+// ### `cache`
+//
+// * Required: true
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elasticache.html#type-CreateCacheInput)
+//
+// Parameters for cache creation.
+// 
+// ### `delete`
+//
+// * Required: true
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/elasticache.html#type-DeleteCacheInput)
+//
+// Parameters for cache deletion.
+// 
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = factory();
+        module.exports = factory();
     }
 })(this, function() {
     
@@ -23,118 +127,118 @@
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-	moduleNames: ["elasticache"]
-	handle: function(catalog, resources, resource) {
-	    if (!_.find(handler.moduleNames, function(m) { 
-		return resource.module === m; 
-	    })) {
-		return [null, false];
-	    }
+        moduleNames: ["elasticache"]
+        handle: function(catalog, resources, resource) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
 
-	    var p = resource.params;
-	    var ensure = p.ensure;
-	    var cache = resource._target;
-		    
-	    // Sanity
-	    if (!p || !p.cache || !p.delete) {
-		console.log(sprintf("Invalid elasticache resource '%s'", resource.name));
-		os.exit(1);
-	    }
+            var p = resource.params;
+            var ensure = p.ensure;
+            var cache = resource._target;
+                    
+            // Sanity
+            if (!p || !p.cache || !p.delete) {
+                console.log(sprintf("Invalid elasticache resource '%s'", resource.name));
+                os.exit(1);
+            }
 
-	    switch(ensure) {
-	    case "absent":
+            switch(ensure) {
+            case "absent":
 
-		if (!cache) {
-		    if (mithras.verbose) {
-			log(sprintf("Elasticache '%s' not found, no action taken.", p.cache.CacheClusterId));
-		    }
-		    break;
-		}
-		var id = resource._target.CacheClusterId;
-		
-		// delete
-		if (mithras.verbose) {
-		    log(sprintf("Deleting elasticache instance '%s'", id));
-		}
-		aws.elasticache.delete(p.region, p.delete);
+                if (!cache) {
+                    if (mithras.verbose) {
+                        log(sprintf("Elasticache '%s' not found, no action taken.", p.cache.CacheClusterId));
+                    }
+                    break;
+                }
+                var id = resource._target.CacheClusterId;
+                
+                // delete
+                if (mithras.verbose) {
+                    log(sprintf("Deleting elasticache instance '%s'", id));
+                }
+                aws.elasticache.delete(p.region, p.delete);
 
-		// remove subnet group
-		if (p.subnetGroup &&
-		    aws.elasticache.subnetGroups.describe(p.region, 
-							  p.subnetGroup.CacheSubnetGroupName)) {
-		    if (mithras.verbose) {
-			log(sprintf("Deleting elasticache subnet group '%s'", 
-				    p.subnetGroup.CacheSubnetGroupName));
-		    }
-		    aws.elasticache.subnetGroups.delete(p.region, p.subnetGroup.CacheSubnetGroupName);
-		}
-		
-		// remove from catalog
-		catalog.caches = _.reject(catalog.caches, 
-				       function(x) { 
-					   return x.CacheClusterId == id;
-				       });
-		break;
-	    case "present":
-		if (cache) {
-		    if (mithras.verbose) {
-			log(sprintf("Elasticache '%s' found, no action taken.", p.cache.CacheClusterId));
-		    }
-		    break;
-		}
-		var id = p.cache.CacheClusterId;
+                // remove subnet group
+                if (p.subnetGroup &&
+                    aws.elasticache.subnetGroups.describe(p.region, 
+                                                          p.subnetGroup.CacheSubnetGroupName)) {
+                    if (mithras.verbose) {
+                        log(sprintf("Deleting elasticache subnet group '%s'", 
+                                    p.subnetGroup.CacheSubnetGroupName));
+                    }
+                    aws.elasticache.subnetGroups.delete(p.region, p.subnetGroup.CacheSubnetGroupName);
+                }
+                
+                // remove from catalog
+                catalog.caches = _.reject(catalog.caches, 
+                                       function(x) { 
+                                           return x.CacheClusterId == id;
+                                       });
+                break;
+            case "present":
+                if (cache) {
+                    if (mithras.verbose) {
+                        log(sprintf("Elasticache '%s' found, no action taken.", p.cache.CacheClusterId));
+                    }
+                    break;
+                }
+                var id = p.cache.CacheClusterId;
 
-		// create subnet group
-		if (p.subnetGroup && 
-		    (!aws.elasticache.subnetGroups.describe(p.region, 
-						    p.subnetGroup.CacheSubnetGroupName))) {
-		    if (mithras.verbose) {
-			log(sprintf("Creating elasticache subnet group '%s'", 
-				    p.subnetGroup.CacheSubnetGroupName));
-		    }
-		    aws.elasticache.subnetGroups.create(p.region, p.subnetGroup);
-		}
-		
-		// create instance
-		if (mithras.verbose) {
-		    log(sprintf("Creating elasticache instance '%s' (WAIT FOR IT...)", id));
-		}
-		aws.elasticache.create(p.region, p.cache, p.wait);
+                // create subnet group
+                if (p.subnetGroup && 
+                    (!aws.elasticache.subnetGroups.describe(p.region, 
+                                                    p.subnetGroup.CacheSubnetGroupName))) {
+                    if (mithras.verbose) {
+                        log(sprintf("Creating elasticache subnet group '%s'", 
+                                    p.subnetGroup.CacheSubnetGroupName));
+                    }
+                    aws.elasticache.subnetGroups.create(p.region, p.subnetGroup);
+                }
+                
+                // create instance
+                if (mithras.verbose) {
+                    log(sprintf("Creating elasticache instance '%s' (WAIT FOR IT...)", id));
+                }
+                aws.elasticache.create(p.region, p.cache, p.wait);
 
-		// re-describe it
-		cache = aws.elasticache.describe(p.region, id);
+                // re-describe it
+                cache = aws.elasticache.describe(p.region, id);
 
-		// add to catalog
-		catalog.caches.push(cache);
-		break;
-	    }
-	    return [null, true];
-	}
-	findInCatalog: function(catalog, id) {
-	    return _.find(catalog.caches, function(inst) { 
-		return inst.CacheClusterId === id;
-	    });
-	}
-	preflight: function(catalog, resource) {
-	    if (!_.find(handler.moduleNames, function(m) { 
-		return resource.module === m; 
-	    })) {
-		return [null, false];
-	    }
-	    var cache = handler.findInCatalog(catalog, 
-					      resource.params.cache.CacheClusterId);
-	    if (cache) {
-		return [cache, true];
-	    }
-	    return [null, true];
-	}
+                // add to catalog
+                catalog.caches.push(cache);
+                break;
+            }
+            return [null, true];
+        }
+        findInCatalog: function(catalog, id) {
+            return _.find(catalog.caches, function(inst) { 
+                return inst.CacheClusterId === id;
+            });
+        }
+        preflight: function(catalog, resource) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
+            var cache = handler.findInCatalog(catalog, 
+                                              resource.params.cache.CacheClusterId);
+            if (cache) {
+                return [cache, true];
+            }
+            return [null, true];
+        }
     };
-		   
+                   
 
     handler.init = function () {
-	mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
-	mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
-	return handler;
+        mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
+        mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
+        return handler;
     };
     
     return handler;
