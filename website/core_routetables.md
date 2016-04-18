@@ -35,21 +35,7 @@
  ```
 
  ## AWS.ROUTETABLES.DESCRIBEFORSUBNET
- <a name="describeforsubnet"></a>
- `aws.routetables.describeForSubnet(region, subnet-id);`
-
- Get routetables associated with the supplied subnet.
-
- Example:
-
- ```
-
- var tables = aws.routetables.describeForSubnet("us-east-1", "subnet-abc");
-
- ```
-
- ## AWS.ROUTETABLES.DESCRIBEFORSUBNET
- <a name="describeforsubnet"></a>
+ <a name="describeForSubnet"></a>
  `aws.routetables.describeForSubnet(region, subnet-id);`
 
  Get routetables associated with the supplied subnet.

@@ -31,7 +31,7 @@ package rds
 // > * [aws.rds.create](#create)
 // > * [aws.rds.delete](#delete)
 // > * [aws.rds.describe](#describe)
-
+//
 // > * [aws.rds.subnetGroups.create](#gcreate)
 // > * [aws.rds.subnetGroups.delete](#gdelete)
 // > * [aws.rds.subnetGroups.describe](#gdescribe)
