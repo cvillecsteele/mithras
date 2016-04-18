@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>IAM</h1><p> Iam is resource handler for manipulating AWS IAM resources</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;iam&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var iam = require(&quot;iam&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var iamProfileName = &quot;my-instance-profile&quot;;
+ var iamRoleName = &quot;test-webserver-iam-role&quot;;
+ var rIAM = {
+      name: &quot;IAM&quot;
+      module: &quot;iamProfile&quot;
+      dependsOn: [otherResource.name]
+      params: {
+          region: &quot;us-east-1&quot;
+          ensure: &quot;present&quot;
+          profile: {
+              InstanceProfileName: iamProfileName
+          }
+          role: {
+              RoleName: iamRoleName
+              AssumeRolePolicyDocument: aws.iam.roles.ec2TrustPolicy
+          }
+          policies: {
+              &quot;s3_full_access&quot;: {
+                  &quot;Version&quot;: &quot;2012-10-17&quot;,
+                  &quot;Statement&quot;: [
+                      {
+                          &quot;Effect&quot;: &quot;Allow&quot;,
+                          &quot;Action&quot;: &quot;s3:*&quot;,
+                          &quot;Resource&quot;: &quot;*&quot;
+                      }
+                  ]
+              },
+          }
+      }
+ }
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;absent&quot;, &quot;present&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the handler will ensure the profile exists, and it
+not, it will be created.  If <code>&quot;absent&quot;</code>, the profile is removed.</p>
+<h3><code>profile</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/iam.html#type-CreateInstanceProfileInput">here</a></p>
+<p>Specifies parameters for profile creation.</p>
+<h3><code>role</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/iam.html#type-CreateRoleInput">here</a></p>
+<h3><code>policies</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: map of policyname =&gt; IAM policy document</p>
+<p>Adds an inline policy document that is embedded in the specified role.</p>
+<p>When you embed an inline policy in a role, the inline policy is
+used as the role&#39;s access (permissions) policy. The role&#39;s trust
+policy is created at the same time as the role.  For more
+information about roles, go to <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/roles-toplevel.html">Using Roles to Delegate Permissions
+and Federate
+Identities</a>.</p>
+<p>A role can also have a managed policy attached to it. Refer to
+<a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/policies-managed-vs-inline.html">Managed Policies and Inline
+Policies</a>
+in the IAM User Guide.</p>
+<p>For information about limits on the number of inline policies that
+you can embed with a role, see <a href="http://docs.aws.amazon.com/IAM/latest/UserGuide/LimitationsOnEntities.html">Limitations on IAM
+Entities</a>
+in the IAM User Guide.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

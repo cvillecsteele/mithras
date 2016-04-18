@@ -43,9 +43,9 @@ AWS_SECRET_ACCESS_KEY=MY-SECRET-KEY
 
 To run the example from the mithras repo:
 
-    `$ mithras -v run -f example/site.js`
+    $ mithras -v run -f example/site.js
 
 To run a JS repl:
 
-    `$ mithras repl`
+    $ mithras repl
 

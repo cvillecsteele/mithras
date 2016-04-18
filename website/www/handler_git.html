@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>Git</h1><p> Git is resource handler for manipulating git repos.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;git&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var git = require(&quot;git&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rGit = {
+   name: &quot;someGit&quot;
+   module: &quot;git&quot;
+   dependsOn: [otherResource.name]
+   params: {
+     ensure: &quot;present&quot;
+     repo: &quot;git@github.com:cvillecsteele/mithras.git&quot;
+     version: &quot;HEAD&quot;
+     dest: &quot;myrepo&quot;
+     hosts: [&lt;array of ec2 instance objects&gt;]
+   }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;absent, &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the handler will ensure the repo exists, and it
+not, it will be cloned into <code>dest</code>.  If <code>&quot;absent&quot;</code>, the repo is
+removed from <code>dest</code>.</p>
+<h3><code>hosts</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: an array of ec2 instance objects</p>
+<p>This property specifies the hosts on which this resource is to be applied.</p>
+<h3><code>repo</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: string specifying git repo</p>
+<p>This git repo will be cloned.</p>
+<h3><code>dest</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: path to destination for cloned repo</p>
+<p>This property specifies the path into which the repo will be cloned.</p>
+<h3><code>version</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: a git SHA or other clone-able commit-ish id</p>
+<p>The clone will fetch this version of the repo.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

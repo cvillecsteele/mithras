@@ -30,9 +30,9 @@ function run() {
     var altZone = "us-east-1b";
     var lbName = "webserverLB";
     var apiSHA = "HEAD";
-    var bucketName = "test-9987x"
-    var iamProfileName = "test-webserver"
-    var iamRoleName = "test-webserver-iam-role"
+    var bucketName = "test-9987x";
+    var iamProfileName = "test-webserver";
+    var iamRoleName = "test-webserver-iam-role";
     var keyName = "mithras";
     var webserverTagName = "webserver";
 
