@@ -17,13 +17,15 @@
   ## Example Resource
  
  ```javascript
+ var webserverTagName: "my-web-server";
+ var keyname: "test-key";
  var webServer = {
       name: "webserver"
       module: "instance"
       dependsOn: [resource.name]
       params: {
-          region: defaultRegion
-          ensure: ensure
+          region: "us-east-1"
+          ensure: "present"
           on_find: function(catalog) {
               var matches = _.filter(catalog.instances, function (i) {
                   if (i.State.Name != "running") {

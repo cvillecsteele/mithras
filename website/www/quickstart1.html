@@ -63,7 +63,7 @@ var keyName = &quot;mithras&quot;
 var ami = &quot;ami-22111148&quot;;
 
 // We tag (and find) our instance based on this tag
-var instanceNameTag = &quot;instance&quot;
+var instanceNameTag = &quot;instance&quot;;
 </code></pre>
 <p>Note here that our script examines <code>mithras.ARGS</code>.  When you invoke
 <code>mithras run</code> from teh command line, any additional arguments you
@@ -166,7 +166,7 @@ resource has a dependency on the resource with the name as the array
 element.  So in our case:</p>
 <pre><code>dependsOn = [rKey.name]
 </code></pre><p>indicates that the resource we&#39;re defining (named <code>instance</code>) depends
-on the resource named <code>key</code>.</p>
+on the resource <code>rKey</code>.</p>
 <p>The effect of dependency declaration is to order the application of
 resource handlers.  In AWS-land, generally you a graph of resource
 dependencies, often with persistent or container-like resources as the

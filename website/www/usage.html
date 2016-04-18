@@ -1,5 +1,12 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>INSTALLATION &amp; USAGE</h1><h2>Configuring AWS Credentials</h2><p>Before using Mithras, ensure that you&#39;ve configured AWS
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>INSTALLATION &amp; USAGE</h1><h2>Building From Source</h2><ol>
+<li>Set up a standard <a href="http://golang.org/doc/code.html">Go 1.6 environment</a> and ensure that your <code>$GOPATH</code> environment variable properly set.</li>
+<li><code>go get github.com/cvillecsteele/mithras</code></li>
+<li><code>cd $GOPATH/src/github.com/cvillecsteele/mithras</code></li>
+<li><code>go install</code> to build the mithras binary</li>
+<li>Make sure <code>$GOPATH/bin</code> is in your <code>$PATH</code>.</li>
+</ol>
+<h2>Configuring AWS Credentials</h2><p>Before using Mithras, ensure that you&#39;ve configured AWS
 credentials. The best way to configure credentials on a development
 machine is to use the <code>~/.aws/credentials</code> file, which might look
 like:</p>
@@ -9,26 +16,26 @@ aws_secret_access_key = MY-SECRET-KEY
 </code></pre><p>You can learn more about the credentials file from this
 <a href="http://blogs.aws.amazon.com/security/post/Tx3D6U6WSFGOK2H/A-New-and-Standardized-Way-to-Manage-Credentials-in-the-AWS-SDKs">blog post</a>.</p>
 <p>Alternatively, you can set the following environment variables:</p>
-<pre><code>AWS_ACCESS_KEY_ID=AKID1234567890
-AWS_SECRET_ACCESS_KEY=MY-SECRET-KEY
-</code></pre><h2>Building From Source</h2><ol>
-<li>Set up a standard <a href="http://golang.org/doc/code.html">Go 1.6 environment</a> and ensure that your <code>$GOPATH</code> environment variable properly set.</li>
-<li><code>go get github.com/cvillecsteele/mithras</code></li>
-<li><code>cd $GOPATH/src/github.com/cvillecsteele/mithras</code></li>
-<li><code>go install</code> to build the mithras binary</li>
-<li>Make sure <code>$GOPATH/bin</code> is in your <code>$PATH</code>.</li>
-</ol>
+<pre><code>export AWS_ACCESS_KEY_ID=AKID1234567890
+export AWS_SECRET_ACCESS_KEY=MY-SECRET-KEY
+</code></pre><p>You can select a credentials file profile to use by setting an environment variable:</p>
+<pre><code>export AWS_PROFILE=nifty
+</code></pre><p>Or, on the command line with Mithras:</p>
+<pre><code>AWS_PROFILE=nifty mithras -v run
+</code></pre><p>Read more about setting up credentials <a href="https://github.com/aws/aws-sdk-go/wiki/configuring-sdk">here</a>.</p>
 <h2>Running</h2><ol>
-<li>Mithras depends on using <code>ssh-agent</code>.  Make sure it is set up and has the right keys added.</li>
-<li>Set up a site directory. Let&#39;s say it&#39;s <code>~/projects/my_site</code></li>
-<li><code>EXPORT MITHRASHOME=~/projects/my_site</code>.</li>
-<li>Create your site file, <code>site.js</code>.</li>
+<li>Mithras depends on using <code>ssh-agent</code>.  Make sure it is set up and has the right keys added.  Github has a <a href="https://developer.github.com/guides/using-ssh-agent-forwarding/">good explanation</a>.</li>
+<li><code>export MITHRASHOME=$GOPATH/src/github.com/cvillecsteele/mithras</code></li>
 <li>Set up your AWS credentials file and specify a profile to use with <code>export AWS_PROFILE=...</code>.  </li>
 <li>Build remote runner and wrapper with <code>mithras build</code></li>
-<li><code>mithras -v run</code></li>
+<li>Set up a site directory. Let&#39;s say it&#39;s <code>~/projects/my_site</code></li>
+<li>Create your site file, <code>site.js</code>.  A good example to start with is <code>cp $MITHRASHOME/example/simple.js ~/projects/my_site/site.js</code></li>
 </ol>
-<p>To run the example from the mithras repo:</p>
-<pre><code>`$ mithras -v run -f example/site.js`
+<p>To run your script:</p>
+<pre><code>cd ~/project/my_site
+mithras -v run -f site.js
+</code></pre><p>To run the example from the mithras repo:</p>
+<pre><code>mithras -v run -f $MITHRASHOME/example/simple.js
 </code></pre><p>To run a JS repl:</p>
-<pre><code>`$ mithras repl`
+<pre><code>mithras repl
 </code></pre></div></div><script src="/js/main.js"></script></body></html>

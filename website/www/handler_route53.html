@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>route53</h1><p> Route53 is resource handler for working with AWS&#39;s route53 dns system.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;route53&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var route53 = require(&quot;route53&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rElbDnsEntry = {
+     name: &quot;elbDnsEntry&quot;
+     module: &quot;route53&quot;
+     dependsOn: [rElb.name]
+     params: {
+         region: defaultRegion
+         ensure: ensure
+         domain: &quot;mithras.io.&quot;
+         resource: {
+             Name: &quot;test.mithras.io.&quot;
+             Type: &quot;A&quot;
+             AliasTarget: {
+                 DNSName:              mithras.watch(&quot;elb._target.DNSName&quot;)
+                 EvaluateTargetHealth: true
+                 HostedZoneId:         mithras.watch(&quot;elb._target.CanonicalHostedZoneNameID&quot;)
+             }
+         }
+     } // params
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot;, &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the dns entry will be created if it doesn&#39;t already
+exist.  If <code>&quot;absent&quot;</code>, the dns entry will be removed if it is
+present.</p>
+<h3><code>resource</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/route53.html#type-ResourceRecordSet">here</a></li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

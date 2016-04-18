@@ -10,13 +10,15 @@ module value of <code>&quot;instance&quot;</code></li>
 </blockquote>
 <p> Usage:</p>
 <p> <code>var instance = require(&quot;instance&quot;).init();</code></p>
-<h2>Example Resource</h2><pre><code class="language-javascript"> var webServer = {
+<h2>Example Resource</h2><pre><code class="language-javascript"> var webserverTagName: &quot;my-web-server&quot;;
+ var keyname: &quot;test-key&quot;;
+ var webServer = {
       name: &quot;webserver&quot;
       module: &quot;instance&quot;
       dependsOn: [resource.name]
       params: {
-          region: defaultRegion
-          ensure: ensure
+          region: &quot;us-east-1&quot;
+          ensure: &quot;present&quot;
           on_find: function(catalog) {
               var matches = _.filter(catalog.instances, function (i) {
                   if (i.State.Name != &quot;running&quot;) {

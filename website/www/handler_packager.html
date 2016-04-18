@@ -1,0 +1,63 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>packager</h1><p> Packager is resource handler for working with packager connections.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;packager&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var packager = require(&quot;packager&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rUpdatePkgs = {
+     name: &quot;updatePackages&quot;
+     module: &quot;packager&quot;
+     dependsOn: [otherResource.name]
+     params: {
+         ensure: &quot;latest&quot;
+         name: &quot;&quot;
+         become: true
+         becomeMethod: &quot;sudo&quot;
+         becomeUser: &quot;root&quot;
+         hosts: [ec2 instances objects]
+     }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot;, &quot;absent&quot;, &quot;latest&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the package will be installed if is not already.
+If <code>&quot;absent&quot;</code>, the package will be removed if it is present.  If
+<code>&quot;latest&quot;</code>, the package will be installed if not present, and
+updated if it is already on the remote system.</p>
+<h3><code>name</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: any valid package name; eg &quot;nginx&quot;</p>
+<p>If set to the empty string, <code>&quot;&quot;</code>, this resource handler will omit
+the package name from the command line invocation of <code>yum</code>.  Use
+<code>&quot;&quot;</code> in conjunction with <code>ensure: &quot;latest&quot;</code> to upgrade all packages
+on the remote system.</p>
+<h3><code>become</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: true or false</p>
+<p>If <code>true</code>, the copy will attempt to run with escalated privs, as
+specified in the properties <code>becomeMethod</code> and <code>becomeUser</code>.</p>
+<h3><code>becomeMethod</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: &quot;su&quot; or &quot;sudo&quot;</p>
+<p>The method of privilege escalation.</p>
+<h3><code>becomeUser</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: any string specifying a username suitable for use by <code>becomeMethod</code></p>
+<h3><code>hosts</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: an array of ec2 instance objects</p>
+<p>This property specifies the hosts on which this resource is to be applied.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

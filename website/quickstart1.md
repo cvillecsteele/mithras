@@ -89,7 +89,7 @@ var keyName = "mithras"
 var ami = "ami-22111148";
 
 // We tag (and find) our instance based on this tag
-var instanceNameTag = "instance"
+var instanceNameTag = "instance";
 
 ```
 
@@ -218,7 +218,7 @@ dependsOn = [rKey.name]
 ```
 
 indicates that the resource we're defining (named `instance`) depends
-on the resource named `key`.
+on the resource `rKey`.
 
 The effect of dependency declaration is to order the application of
 resource handlers.  In AWS-land, generally you a graph of resource

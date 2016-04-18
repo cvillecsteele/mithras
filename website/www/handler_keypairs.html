@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>keypairs</h1><p> Keypairs is resource handler for manipulating AWS SSH keypairs.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;keypairs&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var keypairs = require(&quot;keypairs&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rKey = {
+      name: &quot;key&quot;
+      module: &quot;keypairs&quot;
+      skip: (ensure === &#39;absent&#39;) // Don&#39;t delete keys
+      params: {
+          region: &quot;us-east-1&quot;
+          ensure: &quot;present&quot;
+          key: {
+              KeyName: &quot;my-fancy-key&quot;
+          }
+          savePath: os.expandEnv(&quot;$HOME/.ssh/&quot; + keyName + &quot;.pem&quot;)
+      }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;absent&quot;, &quot;present&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the handler will ensure the keypair exists, and it
+not, it will be created.  If <code>&quot;absent&quot;</code>, the keypair is removed.</p>
+<h3><code>key</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/ec2.html#type-CreateKeyPairInput">here</a></p>
+<p>Specifies parameters for keypair creation.</p>
+<h3><code>savepath</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: A valid path for saving the pemfile when a keypair is created</p>
+<p>When the handler creates a new keypair, the contents of the key are saved to this path.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

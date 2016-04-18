@@ -20,7 +20,7 @@ function run() {
     var ami = "ami-22111148";
 
     // We tag (and find) our instance based on this tag
-    var instanceNameTag = "mithras-instance"
+    var instanceNameTag = "mithras-instance";
 
     //////////////////////////////////////////////////////////////////////
     // Resource Definitions

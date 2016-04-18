@@ -83,6 +83,7 @@ TODO
 ###############################################################################
 
 * document all handlers
+* network handler should respect 'ensure'
 * website
   * quickstart 2
   * quickstart 3
