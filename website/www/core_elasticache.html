@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>CORE FUNCTIONS: ELASTICACHE</h1><p> This package exports several entry points into the JS environment,
- including:</p>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>CORE FUNCTIONS: ELASTICACHE</h1><p>This package exports several entry points into the JS environment,
+including:</p>
 <blockquote>
 <ul>
 <li><a href="#create">aws.elasticache.create</a></li>
@@ -12,76 +12,76 @@
 <li><a href="#sgdescribe">aws.elasticache.subnetGroups.describe</a></li>
 </ul>
 </blockquote>
-<p> This API allows exposes functions to manage AWS cache clusters and
- their associated subnet groups.</p>
-<h2>AWS.ELASTICACHE.CREATE</h2><p> <a name="create"></a>
- <code>aws.elasticache.create(region, config);</code></p>
-<p> Create a cache cluster.</p>
-<p> Example:</p>
+<p>This API allows exposes functions to manage AWS cache clusters and
+their associated subnet groups.</p>
+<h2>AWS.ELASTICACHE.CREATE</h2><p><a name="create"></a>
+<code>aws.elasticache.create(region, config);</code></p>
+<p>Create a cache cluster.</p>
+<p>Example:</p>
 <pre><code>
-  var cache = aws.elasticache.create(&quot;us-east-1&quot;, {
-     CacheClusterId:          &quot;test-redis&quot;
-     AutoMinorVersionUpgrade: true
-     CacheNodeType:           &quot;cache.t2.small&quot;
-     CacheSubnetGroupName:    &quot;redis-subnet-group&quot;
-     Engine:                  &quot;redis&quot;
-     NumCacheNodes:           1
-     SecurityGroupIds:        []
-     Tags: [
-         {
-            Key:   &quot;Name&quot;
-            Value: &quot;test-cluster&quot;
-         },
-     ]
- });
-</code></pre><h2>AWS.ELASTICACHE.DELETE</h2><p> <a name="delete"></a>
- <code>aws.elasticache.delete(region, cache_id);</code></p>
-<p> Delete a cache cluster.</p>
-<p> Example:</p>
+var cache = aws.elasticache.create(&quot;us-east-1&quot;, {
+CacheClusterId:          &quot;test-redis&quot;
+AutoMinorVersionUpgrade: true
+CacheNodeType:           &quot;cache.t2.small&quot;
+CacheSubnetGroupName:    &quot;redis-subnet-group&quot;
+Engine:                  &quot;redis&quot;
+NumCacheNodes:           1
+SecurityGroupIds:        []
+Tags: [
+{
+Key:   &quot;Name&quot;
+Value: &quot;test-cluster&quot;
+},
+]
+});
+</code></pre><h2>AWS.ELASTICACHE.DELETE</h2><p><a name="delete"></a>
+<code>aws.elasticache.delete(region, cache_id);</code></p>
+<p>Delete a cache cluster.</p>
+<p>Example:</p>
 <pre><code>
-  aws.elasticache.delete(&quot;us-east-1&quot;, &quot;test-redis&quot;);
-</code></pre><h2>AWS.ELASTICACHE.DESCRIBE</h2><p> <a name="describe"></a>
- <code>aws.elasticache.describe(region, cache_id);</code></p>
-<p> Get information about a cache cluster.</p>
-<p> Example:</p>
+aws.elasticache.delete(&quot;us-east-1&quot;, &quot;test-redis&quot;);
+</code></pre><h2>AWS.ELASTICACHE.DESCRIBE</h2><p><a name="describe"></a>
+<code>aws.elasticache.describe(region, cache_id);</code></p>
+<p>Get information about a cache cluster.</p>
+<p>Example:</p>
 <pre><code>
-  var cache = aws.elasticache.describe(&quot;us-east-1&quot;, &quot;test-redis&quot;);
-</code></pre><h2>AWS.ELASTICACHE.SCAN</h2><p> <a name="scan"></a>
- <code>aws.elasticache.scan(region, cache_id);</code></p>
-<p> Get information about all cache clusters.</p>
-<p> Example:</p>
+var cache = aws.elasticache.describe(&quot;us-east-1&quot;, &quot;test-redis&quot;);
+</code></pre><h2>AWS.ELASTICACHE.SCAN</h2><p><a name="scan"></a>
+<code>aws.elasticache.scan(region, cache_id);</code></p>
+<p>Get information about all cache clusters.</p>
+<p>Example:</p>
 <pre><code>
-  var caches = aws.elasticache.scan(&quot;us-east-1&quot;);
-</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.CREATE</h2><p> <a name="sgcreate"></a>
- <code>aws.elasticache.subnetGroups.create(region, config);</code></p>
-<p> Create an elasticache subnet group.</p>
-<p> Example:</p>
+var caches = aws.elasticache.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.CREATE</h2><p><a name="sgcreate"></a>
+<code>aws.elasticache.subnetGroups.create(region, config);</code></p>
+<p>Create an elasticache subnet group.</p>
+<p>Example:</p>
 <pre><code>
-  var cache = aws.elasticache.create(&quot;us-east-1&quot;, {
-     CacheClusterId:          &quot;test-redis&quot;
-     AutoMinorVersionUpgrade: true
-     CacheNodeType:           &quot;cache.t2.small&quot;
-     CacheSubnetGroupName:    &quot;redis-subnet-group&quot;
-     Engine:                  &quot;redis&quot;
-     NumCacheNodes:           1
-     SecurityGroupIds:        []
-     Tags: [
-         {
-            Key:   &quot;Name&quot;
-            Value: &quot;test-cluster&quot;
-         },
-     ]
- });
-</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.DELETE</h2><p> <a name="sgdelete"></a>
- <code>aws.elasticache.subnetGroups.delete(region, cache_id);</code></p>
-<p> Delete a cache subnet group.</p>
-<p> Example:</p>
+var cache = aws.elasticache.create(&quot;us-east-1&quot;, {
+CacheClusterId:          &quot;test-redis&quot;
+AutoMinorVersionUpgrade: true
+CacheNodeType:           &quot;cache.t2.small&quot;
+CacheSubnetGroupName:    &quot;redis-subnet-group&quot;
+Engine:                  &quot;redis&quot;
+NumCacheNodes:           1
+SecurityGroupIds:        []
+Tags: [
+{
+Key:   &quot;Name&quot;
+Value: &quot;test-cluster&quot;
+},
+]
+});
+</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.DELETE</h2><p><a name="sgdelete"></a>
+<code>aws.elasticache.subnetGroups.delete(region, cache_id);</code></p>
+<p>Delete a cache subnet group.</p>
+<p>Example:</p>
 <pre><code>
-  aws.elasticache.subnetGroups.delete(&quot;us-east-1&quot;, &quot;redis-subnet-group&quot;);
-</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.DESCRIBE</h2><p> <a name="sgdescribe"></a>
- <code>aws.elasticache.subnetGroups.describe(region, cache_id);</code></p>
-<p> Get information about a cache cluster.</p>
-<p> Example:</p>
+aws.elasticache.subnetGroups.delete(&quot;us-east-1&quot;, &quot;redis-subnet-group&quot;);
+</code></pre><h2>AWS.ELASTICACHE.SUBNETGROUPS.DESCRIBE</h2><p><a name="sgdescribe"></a>
+<code>aws.elasticache.subnetGroups.describe(region, cache_id);</code></p>
+<p>Get information about a cache cluster.</p>
+<p>Example:</p>
 <pre><code>
-  var group = aws.elasticache.subnetGroups.describe(&quot;us-east-1&quot;, &quot;redis-subnet-group&quot;);
+var group = aws.elasticache.subnetGroups.describe(&quot;us-east-1&quot;, &quot;redis-subnet-group&quot;);
 </code></pre></div></div><script src="/js/main.js"></script></body></html>

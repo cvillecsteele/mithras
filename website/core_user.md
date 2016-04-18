@@ -1,30 +1,30 @@
- 
 
 
- # CORE FUNCTIONS: USER
+
+# CORE FUNCTIONS: USER
 
 
- 
 
- This package exports several entry points into the JS environment,
- including:
 
- > * [user.lookup](#lookup)
+This package exports several entry points into the JS environment,
+including:
 
- This API allows resource handlers to get system user ids.
+> * [user.lookup](#lookup)
 
- ## USER.LOOKUP
- <a name="lookup"></a>
- `user.lookup(user);`
+This API allows resource handlers to get system user ids.
 
- Get the user's UID.
+## USER.LOOKUP
+<a name="lookup"></a>
+`user.lookup(user);`
 
- Example:
+Get the user's UID.
 
- ```
+Example:
 
- user.lookup("root");
+```
 
- ```
+user.lookup("root");
+
+```
 
 

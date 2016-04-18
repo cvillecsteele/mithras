@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>QUICKSTART GUIDE</h1><p>Use this document to get your first Mithras recipe working quickly and
+easily, and get introduced to some of the concepts behind Mithras.</p>
+<ul>
+<li><a href="quickstart1.html">Part One</a>: An EC2 instance</li>
+<li><a href="quickstart2.html">Part Two</a>: Configuring our instance</li>
+<li><a href="quickstart3.html">Part Three</a>: A complete application stack</li>
+</ul>
+<h2>Part One: An EC2 Instance</h2><p>This part of the guide will show you how to use Mithras to stand up an
+instance in EC2 in your default VPC.  In addition, you learn about
+some key concepts Mithras uses, including resources, handlers, the
+catalog and idempotent operations.</p>
+<p>Before you get going, make sure that you&#39;ve <a href="usage.html">installed</a>
+Mithras first.  Also, double check that your AWS credentials are set
+up correctly.</p>
+<h3>The <code>run()</code> function</h3><p>For this section of the guide, we&#39;ll be using the script found in the
+<code>example/simple.js</code> file of the Mithras distribution, typically found
+in your <code>$GOPATH/src/github.com/cvillecsteele/mithras</code> folder.  Pull
+that file up in your favorite editor, and take a look around.  One
+thing you&#39;ll see is the <code>run()</code> function:</p>
+<pre><code class="language-javascript">
+function run() {...}
+</code></pre>
+<p>Mithras scripts define a <code>run()</code> function, which Mithras will call
+when invoked.  Broadly speaking, Mithras scripts consist of three
+parts: initialization, during which the script does some setup, and
+AWS is queried to create a <code>catalog</code>; definition of <code>resources</code>, in
+which you lay out the various components of your application, and
+relate them to one another using <code>dependencies</code>; and finally
+application of your resources to the catalog.  All of this work is
+triggered by Mithras&#39; invocation of your <code>run()</code> function.</p>
+<h3>Config and setup</h3><p>Next, you&#39;ll see a line of configuration setup:</p>
+<pre><code class="language-javascript">
+// Filter regions
+mithras.activeRegions = function (catalog) { return [&quot;us-east-1&quot;]; };
+</code></pre>
+<p>This code restricts the scanning of AWS resources to a single region,
+in this case <code>us-east-1</code>.  It is not necessary to provide this filter,
+and if you do not override the <code>mithras.activeRegions</code> function, all
+regions will be considered active.</p>
+<p>Next, our script calls <code>mithras.run()</code>, which interrogrates the AWS
+APIs to get a snapshot of all of the AWS resources currently active in
+your account:</p>
+<pre><code class="language-javascript">
+// Talk to AWS
+var catalog = mithras.run();
+</code></pre>
+<p>The return value from <code>mithras.run()</code> is captured in the <code>catalog</code>
+variable.  Later, this set of Javascript objects will be used to
+determine which resources need to be created or deleted in order to
+satisfy your script.</p>
+<p>Next up comes some configuration code:</p>
+<pre><code class="language-javacript">
+// Setup, variables, etc.
+var ensure = &quot;present&quot;;
+var reverse = false;
+if (mithras.ARGS[0] === &quot;down&quot;) { 
+  var ensure = &quot;absent&quot;;
+  var reverse = true;
+}
+var defaultRegion = &quot;us-east-1&quot;;
+var defaultZone = &quot;us-east-1d&quot;;
+var altZone = &quot;us-east-1b&quot;;
+var keyName = &quot;mithras&quot;
+var ami = &quot;ami-22111148&quot;;
+
+// We tag (and find) our instance based on this tag
+var instanceNameTag = &quot;instance&quot;
+</code></pre>
+<p>Note here that our script examines <code>mithras.ARGS</code>.  When you invoke
+<code>mithras run</code> from teh command line, any additional arguments you
+provide are passed through to your script via the <code>ARGS</code> property on
+the <code>mithras</code> object.  You can use these, as this example script does,
+to alter data or behavior in your script.  Here, if you invoke
+<code>mithras run up</code>, the var <code>ensure</code> will be set to <code>&quot;present&quot;</code>, and if
+you invoke mithras with <code>mithras run down</code>, the var <code>ensure</code> will have
+the value <code>&quot;absent&quot;</code>.</p>
+<p>Most often, <code>resources</code> indicate their desired state via a parameter
+<code>ensure</code>, which generally take the values <code>present</code> or <code>absent</code>.
+(Though in some cases, the associated resource handler may permit
+additional values, such as <code>latest</code>, for <code>package</code> resources.)</p>
+<p>You will also notice the script sets a few additional variables which
+following resource definitions will use.</p>
+<h3>Keypair resource</h3><p>Next come resource definitions, the first of which is for an SSH keypair:</p>
+<pre><code class="language-javascript">
+var rKey = {
+  name: &quot;key&quot;                 // required: resources always have a name
+  module: &quot;keypairs&quot;          // required: resources always have a handler
+  skip: (ensure === &#39;absent&#39;) // Optional.  Don&#39;t delete keys
+  params: {
+    region: defaultRegion
+    ensure: ensure
+    key: {
+        KeyName: keyName
+    }
+    savePath: os.expandEnv(&quot;$HOME/.ssh/&quot; + keyName + &quot;.pem&quot;)
+  }
+};
+</code></pre>
+<p>Note that this code doesn&#39;t <em>do</em> anything in AWS-land.  It&#39;s not
+executing any API calls; it&#39;s just creating a Javascript object and
+filling in a few properties.  Nothing magic.</p>
+<p>There are a few things to note.  The two most basic properties of a
+resource are its name and it&#39;s associated handler, which are specified
+by the <code>name</code> and the <code>module</code> properties, respectively.</p>
+<p>Next, we set a <code>skip</code> property on the resource.  This is an optional
+property, and in this case it&#39;s set to <code>true</code> if the <code>ensure</code> variable
+has a value ot <code>&quot;absent&quot;</code>.  When this resource is applied to a catalog
+later in this script, this <code>skip</code> property will indicate that it
+should not be applied to the catalog when the caller invoked mithras
+with <code>mithras run down</code>.  The effect is that the resource will create
+a keypair if needed, but it will not delete the keypair when the
+script is invoked for teardown.</p>
+<p>Next up is the <code>params</code> property.  Every handler has a different set
+of parameters it needs to accomplish its work, and these settings are
+communicated from the resource definition to the handler via the
+<code>params</code> property.  In this case, our <code>params</code> set a region (to
+<code>defaultRegion</code>, defined above), the <code>ensure</code> property, and a <code>key</code>
+property.  Most AWS-oriented resources require a <code>region</code>, and also
+require resource-specific properites.  In this case we need a <code>key</code>
+property with an object as its value, and that object has a <code>KeyName</code>
+property which specifies the name of the SSH keypair in AWS.</p>
+<p>Finally, our resource definition also inludes a <code>savePath</code> property,
+which the resource handler uses to save the contents of the keypair
+when (if) it is created, so it can be used to SSH into any instances
+that are created with this key.</p>
+<h3>Instance resource</h3><p>Next, our script defines a resource for the EC2 instance itself.  This
+definition is a bit longer, but there are a couple of important things
+to note.</p>
+<pre><code>// This will launch an instance into your default (classic) VPC
+var rInstance = {
+        name: &quot;instance&quot;
+        module: &quot;instance&quot;
+        dependsOn: [rKey.name]
+        params: {
+            region: defaultRegion
+            ensure: ensure
+            on_find: function(catalog) {
+                var matches = _.filter(catalog.instances, function (i) {
+                    if (i.State.Name != &quot;running&quot;) {
+                        return false;
+                    }
+                    return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
+                                             &quot;Value&quot;: instanceNameTag}).length &gt; 0);
+                });
+                return matches;
+            }
+            instance: {
+                ImageId:                           ami
+                MaxCount:                          1
+                MinCount:                          1
+                DisableApiTermination:             false
+                EbsOptimized:                      false
+                InstanceInitiatedShutdownBehavior: &quot;terminate&quot;
+                KeyName:                           keyName
+                Monitoring: {
+                    Enabled: false
+                }
+            } // instance
+            tags: {
+                Name: instanceNameTag
+            }
+        } // params
+};
+</code></pre><p>Since you&#39;re new to Mithras, the first one to note is the <code>dependsOn</code>
+property.  The value of this property should be a Javascript array of
+strings.  Each element of the array tells Mithras that the current
+resource has a dependency on the resource with the name as the array
+element.  So in our case:</p>
+<pre><code>dependsOn = [rKey.name]
+</code></pre><p>indicates that the resource we&#39;re defining (named <code>instance</code>) depends
+on the resource named <code>key</code>.</p>
+<p>The effect of dependency declaration is to order the application of
+resource handlers.  In AWS-land, generally you a graph of resource
+dependencies, often with persistent or container-like resources as the
+root(s) of the dependency tree.  For example, you may have a VPC in
+which all of your AWS resources will live in.</p>
+<p>This explicit dependency declaration allows you to control when
+resources are created and deleted in relation to one another.  This is
+requirement of dealing with AWS, which doesn&#39;t allow you to delete
+resources with active dependencies, for example.</p>
+<p>Moving on, the <code>on_find</code>. property deserves a special mention for this
+resource.  This property is specific to resources with a <code>module</code>
+value of <code>&quot;instance&quot;</code>, indicating that they will be handled by the
+<code>&quot;instance&quot;</code> handler.  This handler cooperates with your resource
+definitions by providing a programmatic interface to informing the
+handler about which running EC2 instances are matches for this
+resource definition.  The resource handler calls the <code>on_find</code> method,
+invoking your code, which may perform complex (or simple) convolutions
+to determine which instances in the supplied <code>catalog</code> object satisfy
+your notion of instances which match this resource definition.</p>
+<pre><code class="language-javascript">on_find: function(catalog) {
+    // Use underscore.js to filter catalog.instances     
+    var matches = _.filter(catalog.instances, function (i) {
+        // Our iterator first looks at instance state
+        if (i.State.Name != &quot;running&quot;) {
+            return false;
+        }
+        // Then tags are considered
+        return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
+                                 &quot;Value&quot;: instanceNameTag}).length &gt; 0);
+    });
+    // return an array of matching instance objects
+    return matches;
+}
+</code></pre>
+<p>Typically, as seen in this example, your <code>on_find</code> callback will look
+through the <code>catalog.instances</code> array for instances matching criteria
+such as a set of tags.  In this case, we consider &quot;matches&quot; to be
+running instances with a tag <code>Name</code> with value matching the variable
+<code>instanceNameTag</code>, which is <code>&quot;mithras-instance&quot;</code>.</p>
+<p>Next up is the portion of the <code>params</code> object dedicated to informing
+the handler how we want to create EC2 instances.  It corresponds to
+the format and property names of the AWS Go SDK.  Each resource
+handler&#39;s documentation will include links to the appropriate
+documentation, which will outline all of the available properties and
+values.</p>
+<p>For our definition of the <code>instance</code> property, we set the <code>ImageId</code> to
+the value of the <code>ami</code> variable, defined above, the <code>keyName</code> to the
+value of the <code>keyName</code> variable, also defined above, and some other
+properties germain to the AWS Go SDK, which as
+<code>DisableApiTermination</code>.</p>
+<p>Finally, our resource definition indicates that it wants EC2 instances
+that match to be tagged with a <code>Name</code> of the value of the
+<code>instanceNameTag</code> variable, which is <code>mithras-instance</code>.</p>
+<h3>Applying resources to the catalog</h3><p>Phew!  That&#39;s it for resource definition.  Now that our script has set
+things up with resources, it tells Mithras to do the work of applying
+those resources to the current catalog of existing AWS resources:</p>
+<pre><code>mithras.apply(catalog, [ rKey, rInstance ], reverse);
+</code></pre><p>This code tells mithras to <code>apply</code> the resources in the second
+argument, <code>[rKey, rInstance]</code>, to the <code>catalog</code> argument.  The final
+argument is a boolean and if <code>true</code>, it tells Mithras that the order
+of dependencies is reversed, which is appropriate for <em>deleting</em> AWS
+resources, which is done in the opposite order as <em>creating</em> them.</p>
+<h3>Running the script</h3><p>Last but not least, here&#39;s how you tell Mithras to run this script.  Make sure you&#39;ve set everything up according to the <a href="usage.html">usage</a> instructions, first.  Then, in your terminal, run:</p>
+<pre><code>mithras -v run -f example/simple.js
+</code></pre><p>Since we specified a global Mithras CLI option of <code>-v</code>, we see some
+pretty verbose output about what Mirthas does.  You should see it
+create a keypair, and then stand up an EC2 instance.</p>
+<p>Woot!</p>
+<p>Now that you&#39;ve seen the basics, it&#39;s time to move on to <a href="quickstart2.html">Part Two</a>.</p></div></div><script src="/js/main.js"></script></body></html>

@@ -1,30 +1,30 @@
- 
 
 
- # CORE FUNCTIONS: NETWORK
+
+# CORE FUNCTIONS: NETWORK
 
 
- 
 
- This package exports several entry points into the JS environment,
- including:
 
- > * [network.check](#check)
+This package exports several entry points into the JS environment,
+including:
 
- This API allows resource handlers to open TCP connections.
+> * [network.check](#check)
 
- ## NETWORK.check
- <a name="check"></a>
- `network.check(host, port, timeout);`
+This API allows resource handlers to open TCP connections.
 
- Returns true if a TCP connection can be established.
+## NETWORK.check
+<a name="check"></a>
+`network.check(host, port, timeout);`
 
- Example:
+Returns true if a TCP connection can be established.
 
- ```
+Example:
 
-  var ok = network.check("10.0.22.33", 22, 100);
+```
 
- ```
+var ok = network.check("10.0.22.33", 22, 100);
+
+```
 
 

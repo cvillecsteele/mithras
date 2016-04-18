@@ -1,337 +1,337 @@
- 
 
 
- # CORE FUNCTIONS: FS
 
+# CORE FUNCTIONS: FS
 
- 
 
- This package exports entry points into the JS environment:
 
- > * [fs.chtimes](#chtimes)
- > * [fs.link](#link)
- > * [fs.symlink](#symlink)
- > * [fs.create](#create)
- > * [fs.close](#close)
- > * [fs.read](#read)
- > * [fs.write](#write)
- > * [fs.copy](#copy)
- > * [fs.chdir](#chdir)
- > * [fs.getwd](#getwd)
- > * [fs.mkdirAll](#mkdirAll)
- > * [fs.remove](#remove)
- > * [fs.removeAll](#removeAll)
- > * [fs.rename](#rename)
- > * [fs.chown](#chown)
- > * [fs.lChown](#lchown)
- > * [fs.chmod](#chmod)
- > * [fs.dir](#dir)
- > * [fs.stat](#stat)
 
- This API allows the caller to work with files.
+This package exports entry points into the JS environment:
 
- ## FS.CHTIMES
- <a name="chtimes"></a>
- `filepath.chtimes(path);`
+> * [fs.chtimes](#chtimes)
+> * [fs.link](#link)
+> * [fs.symlink](#symlink)
+> * [fs.create](#create)
+> * [fs.close](#close)
+> * [fs.read](#read)
+> * [fs.write](#write)
+> * [fs.copy](#copy)
+> * [fs.chdir](#chdir)
+> * [fs.getwd](#getwd)
+> * [fs.mkdirAll](#mkdirAll)
+> * [fs.remove](#remove)
+> * [fs.removeAll](#removeAll)
+> * [fs.rename](#rename)
+> * [fs.chown](#chown)
+> * [fs.lChown](#lchown)
+> * [fs.chmod](#chmod)
+> * [fs.dir](#dir)
+> * [fs.stat](#stat)
 
- Sets the file at `path` to have current atime and mtime.  TODO: rename this to `touch`.
+This API allows the caller to work with files.
 
- Example:
+## FS.CHTIMES
+<a name="chtimes"></a>
+`filepath.chtimes(path);`
 
- ```
+Sets the file at `path` to have current atime and mtime.  TODO: rename this to `touch`.
 
-  var err = fs.chtimes("/tmp/foo");
+Example:
 
- ```
+```
 
- ## FS.LINK
- <a name="link"></a>
- `filepath.link(old, new);`
+var err = fs.chtimes("/tmp/foo");
 
- Link creates newname as a hard link to the oldname file. If there
- is an error, it will be of type LinkError.
+```
 
- Example:
+## FS.LINK
+<a name="link"></a>
+`filepath.link(old, new);`
 
- ```
+Link creates newname as a hard link to the oldname file. If there
+is an error, it will be of type LinkError.
 
-  var err = fs.link("/tmp/old" "/tmp/new");
+Example:
 
- ```
+```
 
- ## FS.SYMLINK
- <a name="symlink"></a>
- `filepath.symlink(old, new);`
+var err = fs.link("/tmp/old" "/tmp/new");
 
- Symlink creates newname as a symbolic link to oldname. If there is
- an error, it will be of type LinkError.
+```
 
- Example:
+## FS.SYMLINK
+<a name="symlink"></a>
+`filepath.symlink(old, new);`
 
- ```
+Symlink creates newname as a symbolic link to oldname. If there is
+an error, it will be of type LinkError.
 
-  var err = fs.symlink("/tmp/old" "/tmp/new");
+Example:
 
- ```
+```
 
- ## FS.CREATE
- <a name="create"></a>
- `filepath.create(path);`
+var err = fs.symlink("/tmp/old" "/tmp/new");
 
- Create creates the named file with mode 0666 (before umask),
- truncating it if it already exists. If successful, methods on the
- returned File can be used for I/O; the associated file descriptor
- has mode O_RDWR. If there is an error, it will be of type
- PathError.
+```
 
- Example:
+## FS.CREATE
+<a name="create"></a>
+`filepath.create(path);`
 
- ```
+Create creates the named file with mode 0666 (before umask),
+truncating it if it already exists. If successful, methods on the
+returned File can be used for I/O; the associated file descriptor
+has mode O_RDWR. If there is an error, it will be of type
+PathError.
 
-  var results = fs.create("/tmp/foo");
-  var file = results[0];
-  var error = results[1];
+Example:
 
- ```
+```
 
- ## FS.CLOSE
- <a name="close"></a>
- `filepath.close(file);`
+var results = fs.create("/tmp/foo");
+var file = results[0];
+var error = results[1];
 
- Close closes the File, rendering it unusable for I/O. It returns an
- error, if any.
+```
 
- Example:
+## FS.CLOSE
+<a name="close"></a>
+`filepath.close(file);`
 
- ```
+Close closes the File, rendering it unusable for I/O. It returns an
+error, if any.
 
-  var results = fs.create("/tmp/foo");
-  var file = results[0];
-  var error = results[1];
-  if (error) {
-   ...
-  }
-  var error = fs.close(file);
+Example:
 
- ```
+```
 
- ## FS.READ
- <a name="read"></a>
- `filepath.read(path);`
+var results = fs.create("/tmp/foo");
+var file = results[0];
+var error = results[1];
+if (error) {
+...
+}
+var error = fs.close(file);
 
- Read the contents of the file at `path`.
+```
 
- Example:
+## FS.READ
+<a name="read"></a>
+`filepath.read(path);`
 
- ```
+Read the contents of the file at `path`.
 
-  var results = fs.read("/tmp/foo");
-  var contents = results[0];
-  var error = results[1];
+Example:
 
- ```
+```
 
- ## FS.WRITE
- <a name="write"></a>
- `filepath.write(path, contents, perms);`
+var results = fs.read("/tmp/foo");
+var contents = results[0];
+var error = results[1];
 
- Write the contents of the file at `path`.
+```
 
- Example:
+## FS.WRITE
+<a name="write"></a>
+`filepath.write(path, contents, perms);`
 
- ```
+Write the contents of the file at `path`.
 
-  var error = fs.read("/tmp/foo", "contents", 0644);
+Example:
 
- ```
+```
 
- ## FS.COPY
- <a name="copy"></a>
- `filepath.copy(src, dest, perms);`
+var error = fs.read("/tmp/foo", "contents", 0644);
 
- Copy the file from `src` to `dest`.
+```
 
- Example:
+## FS.COPY
+<a name="copy"></a>
+`filepath.copy(src, dest, perms);`
 
- ```
+Copy the file from `src` to `dest`.
 
-  var error = fs.copy("/tmp/foo", "/tmp/bar", 0644);
+Example:
 
- ```
+```
 
- ## FS.CHDIR
- <a name="chdir"></a>
- `filepath.chdir(dir);`
+var error = fs.copy("/tmp/foo", "/tmp/bar", 0644);
 
- Change working director to `dir`.
+```
 
- Example:
+## FS.CHDIR
+<a name="chdir"></a>
+`filepath.chdir(dir);`
 
- ```
+Change working director to `dir`.
 
-  var error = fs.chdir("/tmp");
+Example:
 
- ```
+```
 
- ## FS.GETWD
- <a name="getwd"></a>
- `filepath.getwd();`
+var error = fs.chdir("/tmp");
 
- Get the current working directory.
+```
 
- Example:
+## FS.GETWD
+<a name="getwd"></a>
+`filepath.getwd();`
 
- ```
+Get the current working directory.
 
-  var results = fs.getwd();
-  var where = results[0];
-  var err = results[1];
+Example:
 
- ```
+```
 
- ## FS.MKDIRALL
- <a name="mkdirAll"></a>
- `filepath.mkdirALL(path, perm);`
+var results = fs.getwd();
+var where = results[0];
+var err = results[1];
 
- MkdirAll creates a directory named path, along with any necessary
- parents, and returns nil, or else returns an error. The permission
- bits perm are used for all directories that MkdirAll creates. If
- path is already a directory, MkdirAll does nothing and returns nil.
+```
 
- Example:
+## FS.MKDIRALL
+<a name="mkdirAll"></a>
+`filepath.mkdirALL(path, perm);`
 
- ```
+MkdirAll creates a directory named path, along with any necessary
+parents, and returns nil, or else returns an error. The permission
+bits perm are used for all directories that MkdirAll creates. If
+path is already a directory, MkdirAll does nothing and returns nil.
 
-  var error = fs.mkdirAll("/tmp/a/b/c", 0777);
+Example:
 
- ```
+```
 
- ## FS.REMOVE
- <a name="remove"></a>
- `filepath.remove(path);`
+var error = fs.mkdirAll("/tmp/a/b/c", 0777);
 
- Remove the file at `path`.
+```
 
- Example:
+## FS.REMOVE
+<a name="remove"></a>
+`filepath.remove(path);`
 
- ```
+Remove the file at `path`.
 
-  var error = fs.remove("/tmp/a/b/c");
+Example:
 
- ```
+```
 
- ## FS.REMOVEALL
- <a name="removeAll"></a>
- `filepath.removeAll(path);`
+var error = fs.remove("/tmp/a/b/c");
 
- RemoveAll removes path and any children it contains. It removes
- everything it can but returns the first error it encounters. If the
- path does not exist,
+```
 
- Example:
+## FS.REMOVEALL
+<a name="removeAll"></a>
+`filepath.removeAll(path);`
 
- ```
+RemoveAll removes path and any children it contains. It removes
+everything it can but returns the first error it encounters. If the
+path does not exist,
 
-  var error = fs.removeAll("/tmp/a/b/c");
+Example:
 
- ```
+```
 
- ## FS.RENAME
- <a name="rename"></a>
- `filepath.rename(oldname, newname);`
+var error = fs.removeAll("/tmp/a/b/c");
 
- Rename renames (moves) oldpath to newpath. If newpath already
- exists, Rename replaces it. OS-specific restrictions may apply when
- oldpath and newpath are in different directories. If there is an
- error, it will be of type *LinkError.
+```
 
- Example:
+## FS.RENAME
+<a name="rename"></a>
+`filepath.rename(oldname, newname);`
 
- ```
+Rename renames (moves) oldpath to newpath. If newpath already
+exists, Rename replaces it. OS-specific restrictions may apply when
+oldpath and newpath are in different directories. If there is an
+error, it will be of type *LinkError.
 
-  var error = fs.rename("/tmp/foo", "/tmp/bar");
+Example:
 
- ```
+```
 
- ## FS.CHOWN
- <a name="chown"></a>
- `filepath.chown(path, uid, gid);`
+var error = fs.rename("/tmp/foo", "/tmp/bar");
 
- Chown changes the numeric uid and gid of the named file. If the
- file is a symbolic link,it changes the uid and gid of the link's
- target. If there is an error, it will be of type *PathError.
+```
 
- Example:
+## FS.CHOWN
+<a name="chown"></a>
+`filepath.chown(path, uid, gid);`
 
- ```
+Chown changes the numeric uid and gid of the named file. If the
+file is a symbolic link,it changes the uid and gid of the link's
+target. If there is an error, it will be of type *PathError.
 
-  var error = fs.chown("/tmp/foo", 12, 34);
+Example:
 
- ```
+```
 
- ## FS.LCHOWN
- <a name="lchown"></a>
- `filepath.lChown(path, uid, gid);`
+var error = fs.chown("/tmp/foo", 12, 34);
 
- Lchown changes the numeric uid and gid of the named file. If the
- file is a symbolic link, it changes the uid and gid of the link
- itself. If there is an error, it will be of type *PathError.
+```
 
- Example:
+## FS.LCHOWN
+<a name="lchown"></a>
+`filepath.lChown(path, uid, gid);`
 
- ```
+Lchown changes the numeric uid and gid of the named file. If the
+file is a symbolic link, it changes the uid and gid of the link
+itself. If there is an error, it will be of type *PathError.
 
-  var error = fs.lchown("/tmp/foo", 12, 34);
+Example:
 
- ```
+```
 
- ## FS.CHMOD
- <a name="chmod"></a>
- `filepath.chmod(path, mode);`
+var error = fs.lchown("/tmp/foo", 12, 34);
 
- Chmod changes the mode of the named file to mode. If the file is a
- symbolic link, it changes the mode of the link's target. If there
- is an error, it will be of type *PathError.
+```
 
- Example:
+## FS.CHMOD
+<a name="chmod"></a>
+`filepath.chmod(path, mode);`
 
- ```
+Chmod changes the mode of the named file to mode. If the file is a
+symbolic link, it changes the mode of the link's target. If there
+is an error, it will be of type *PathError.
 
-  var error = fs.chmod("/tmp/foo", 0777);
+Example:
 
- ```
+```
 
- ## FS.DIR
- <a name="dir"></a>
- `filepath.dir(path);`
+var error = fs.chmod("/tmp/foo", 0777);
 
- Return the directory entries from `path`
+```
 
- Example:
+## FS.DIR
+<a name="dir"></a>
+`filepath.dir(path);`
 
- ```
+Return the directory entries from `path`
 
-  var results = fs.chmod("/tmp");
-  var entries = results[0];
-  var error = results[1];
+Example:
 
- ```
+```
 
- ## FS.STAT
- <a name="stat"></a>
- `filepath.stat(path);`
+var results = fs.chmod("/tmp");
+var entries = results[0];
+var error = results[1];
 
- Stat returns the FileInfo structure describing file. If there is an
- error, it will be of type *PathError.
+```
 
- Example:
+## FS.STAT
+<a name="stat"></a>
+`filepath.stat(path);`
 
- ```
+Stat returns the FileInfo structure describing file. If there is an
+error, it will be of type *PathError.
 
-  var results = fs.stat("/tmp/foo");
-  var info = results[0];
-  var error = results[1];
+Example:
 
- ```
+```
+
+var results = fs.stat("/tmp/foo");
+var info = results[0];
+var error = results[1];
+
+```
 
 

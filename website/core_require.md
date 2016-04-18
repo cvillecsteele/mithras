@@ -1,30 +1,30 @@
- 
 
 
- # CORE FUNCTIONS: REQUIRE
+
+# CORE FUNCTIONS: REQUIRE
 
 
- 
 
- This package exports several entry points into the JS environment,
- including:
 
- > * [require](#require)
+This package exports several entry points into the JS environment,
+including:
 
- This API allows resource handlers to load and evaluate javascript.
+> * [require](#require)
 
- ## REQUIRE
- <a name="require"></a>
- `require(source);`
+This API allows resource handlers to load and evaluate javascript.
 
- Require a Javascript module.
+## REQUIRE
+<a name="require"></a>
+`require(source);`
 
- Example:
+Require a Javascript module.
 
- ```
+Example:
 
- var moment = require("moment");
+```
 
- ```
+var moment = require("moment");
+
+```
 
 

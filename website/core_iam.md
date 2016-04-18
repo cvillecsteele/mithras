@@ -1,205 +1,205 @@
- 
 
 
- # CORE FUNCTIONS: IAM
 
+# CORE FUNCTIONS: IAM
 
- 
 
- This package exports entry points into the JS environment:
 
- > * [aws.iam.profiles.scan](#scan)
- > * [aws.iam.profiles.delete](#delete)
- > * [aws.iam.profiles.create](#create)
- > * [aws.iam.profiles.describe](#describe)
 
- > * [aws.iam.roles.scan](#scanRole)
- > * [aws.iam.roles.delete](#deleteRole)
- > * [aws.iam.roles.create](#createRole)
- > * [aws.iam.roles.describe](#describeRole)
- > * [aws.iam.roles.putRolePolicy](#putPolicy)
- > * [aws.iam.roles.deleteRolePolicy](#deletePolicy)
- > * [aws.iam.roles.addRoleToProfile](#add)
- > * [aws.iam.roles.removeRoleFromProfile](#remove)
+This package exports entry points into the JS environment:
 
- This API allows the caller to work with IAM profiles.
+> * [aws.iam.profiles.scan](#scan)
+> * [aws.iam.profiles.delete](#delete)
+> * [aws.iam.profiles.create](#create)
+> * [aws.iam.profiles.describe](#describe)
 
- ## AWS.IAM.PROFILES.SCAN
- <a name="scan"></a>
- `aws.iam.profiles.scan(region);`
+> * [aws.iam.roles.scan](#scanRole)
+> * [aws.iam.roles.delete](#deleteRole)
+> * [aws.iam.roles.create](#createRole)
+> * [aws.iam.roles.describe](#describeRole)
+> * [aws.iam.roles.putRolePolicy](#putPolicy)
+> * [aws.iam.roles.deleteRolePolicy](#deletePolicy)
+> * [aws.iam.roles.addRoleToProfile](#add)
+> * [aws.iam.roles.removeRoleFromProfile](#remove)
 
- Scan AWS for IAM profiles
+This API allows the caller to work with IAM profiles.
 
- Example:
+## AWS.IAM.PROFILES.SCAN
+<a name="scan"></a>
+`aws.iam.profiles.scan(region);`
 
- ```
+Scan AWS for IAM profiles
 
-  var profiles = aws.iam.profiles.scan("us-east-1");
+Example:
 
- ```
+```
 
- ## AWS.IAM.PROFILES.DELETE
- <a name="delete"></a>
- `aws.iam.profiles.delete(region, id);`
+var profiles = aws.iam.profiles.scan("us-east-1");
 
- Delete a profile.
+```
 
- Example:
+## AWS.IAM.PROFILES.DELETE
+<a name="delete"></a>
+`aws.iam.profiles.delete(region, id);`
 
- ```
+Delete a profile.
 
-  aws.iam.profiles.delete("us-east-1", "my-profile");
+Example:
 
- ```
+```
 
- ## AWS.IAM.PROFILES.CREATE
- <a name="create"></a>
- `aws.iam.profiles.create(region, id);`
+aws.iam.profiles.delete("us-east-1", "my-profile");
 
- Create a profile.
+```
 
- Example:
+## AWS.IAM.PROFILES.CREATE
+<a name="create"></a>
+`aws.iam.profiles.create(region, id);`
 
- ```
+Create a profile.
 
-  var profile = aws.iam.profiles.create("us-east-1", "my-profile");
+Example:
 
- ```
+```
 
- ## AWS.IAM.PROFILES.DESCRIBE
- <a name="describe"></a>
- `aws.iam.profiles.describe(region, id);`
+var profile = aws.iam.profiles.create("us-east-1", "my-profile");
 
- Get info about a profile
+```
 
- Example:
+## AWS.IAM.PROFILES.DESCRIBE
+<a name="describe"></a>
+`aws.iam.profiles.describe(region, id);`
 
- ```
+Get info about a profile
 
-  var p = aws.iam.profiles.describe("us-east-1", "my-profile");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.SCAN
- <a name="scanRole"></a>
- `aws.iam.roles.scan(region);`
+var p = aws.iam.profiles.describe("us-east-1", "my-profile");
 
- Scan AWS for IAM roles
+```
 
- Example:
+## AWS.IAM.ROLES.SCAN
+<a name="scanRole"></a>
+`aws.iam.roles.scan(region);`
 
- ```
+Scan AWS for IAM roles
 
-  var roles = aws.iam.roles.scan("us-east-1");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.DELETE
- <a name="deleteRole"></a>
- `aws.iam.roles.delete(region, id);`
+var roles = aws.iam.roles.scan("us-east-1");
 
- Delete a profile.
+```
 
- Example:
+## AWS.IAM.ROLES.DELETE
+<a name="deleteRole"></a>
+`aws.iam.roles.delete(region, id);`
 
- ```
+Delete a profile.
 
-  aws.iam.roles.delete("us-east-1", "my-role");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.CREATE
- <a name="createRole"></a>
- `aws.iam.roles.create(region, id, trust);`
+aws.iam.roles.delete("us-east-1", "my-role");
 
- Create a role.
+```
 
- Example:
+## AWS.IAM.ROLES.CREATE
+<a name="createRole"></a>
+`aws.iam.roles.create(region, id, trust);`
 
- ```
+Create a role.
 
-  var role = aws.iam.roles.create("us-east-1", "my-role", aws.iam.roles.ec2TrustPolicy);
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.DESCRIBE
- <a name="describeRole"></a>
- `aws.iam.roles.describe(region, id);`
+var role = aws.iam.roles.create("us-east-1", "my-role", aws.iam.roles.ec2TrustPolicy);
 
- Get info about a role
+```
 
- Example:
+## AWS.IAM.ROLES.DESCRIBE
+<a name="describeRole"></a>
+`aws.iam.roles.describe(region, id);`
 
- ```
+Get info about a role
 
-  var p = aws.iam.roles.describe("us-east-1", "my-role");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.PUTROLEPOLICY
- <a name="putPolicy"></a>
- `aws.iam.roles.putRolePolicy(region, id, policyName, policy);`
+var p = aws.iam.roles.describe("us-east-1", "my-role");
 
- Attach a policy to a role.
+```
 
- Example:
+## AWS.IAM.ROLES.PUTROLEPOLICY
+<a name="putPolicy"></a>
+`aws.iam.roles.putRolePolicy(region, id, policyName, policy);`
 
- ```
+Attach a policy to a role.
 
-  aws.iam.roles.putRolePolicy("us-east-1", "my-role", "s3_full_access",
-   {
-		    "Version": "2012-10-17",
-		    "Statement": [
-			{
-			    "Effect": "Allow",
-			    "Action": "s3:*",
-			    "Resource": "*"
-			}
-		    ]
-	});
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.DELETEROLEPOLICY
- <a name="deletePolicy"></a>
- `aws.iam.roles.deleteRolePolicy(region, id, policyName);`
+aws.iam.roles.putRolePolicy("us-east-1", "my-role", "s3_full_access",
+{
+"Version": "2012-10-17",
+"Statement": [
+{
+"Effect": "Allow",
+"Action": "s3:*",
+"Resource": "*"
+}
+]
+});
 
- Delete a policy from a role.
+```
 
- Example:
+## AWS.IAM.ROLES.DELETEROLEPOLICY
+<a name="deletePolicy"></a>
+`aws.iam.roles.deleteRolePolicy(region, id, policyName);`
 
- ```
+Delete a policy from a role.
 
-  aws.iam.roles.deleteRolePolicy("us-east-1", "my-role", "s3_full_access");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.ADDROLETOPROFILE
- <a name="add"></a>
- `aws.iam.roles.addRoleToProfile(region, profileName, roleName);`
+aws.iam.roles.deleteRolePolicy("us-east-1", "my-role", "s3_full_access");
 
- Add a role to a profile.
+```
 
- Example:
+## AWS.IAM.ROLES.ADDROLETOPROFILE
+<a name="add"></a>
+`aws.iam.roles.addRoleToProfile(region, profileName, roleName);`
 
- ```
+Add a role to a profile.
 
-  aws.iam.roles.addRoleToProfile("us-east-1", "my-profile", "my-role");
+Example:
 
- ```
+```
 
- ## AWS.IAM.ROLES.REMOVEROLEFROMPROFILE
- <a name="remove"></a>
- `aws.iam.roles.removeRoleFromProfile(region, profileName, roleName);`
+aws.iam.roles.addRoleToProfile("us-east-1", "my-profile", "my-role");
 
- Remove a role from a profile.
+```
 
- Example:
+## AWS.IAM.ROLES.REMOVEROLEFROMPROFILE
+<a name="remove"></a>
+`aws.iam.roles.removeRoleFromProfile(region, profileName, roleName);`
 
- ```
+Remove a role from a profile.
 
-  aws.iam.roles.removeRoleFromProfile("us-east-1", "my-profile", "my-role");
+Example:
 
- ```
+```
+
+aws.iam.roles.removeRoleFromProfile("us-east-1", "my-profile", "my-role");
+
+```
 
 

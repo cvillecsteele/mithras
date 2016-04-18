@@ -13,16 +13,56 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// @public
+// 
+// # Cache
+// 
+// This module exports:
+// 
+// > * `Cache` constructor function
+// 
+// Usage:
+// 
+// `var Cache = (new (require("cache").Cache)).init();`
+// 
 (function(window) {
     'use strict'
 
     var sprintf = require("sprintf").sprintf;
 
+    // @public
+    // 
+    // ## `Cache`
+    // 
+    // Constructor function
+    // 
+    // `new Cache(path)`
+    // 
+    // Example:
+    // ```javascript
+    // var cache = new Cache(".cache");
+    // ```
+    // 
     var Cache = function Cache(path) {
 	this.path = path || "cache";
     };
 
     Cache.prototype = {
+	// @public
+	// 
+	// ## `init`
+	// 
+	// Initialize a cache
+	// 
+	// `cache.init()`
+	// 
+	// Example:
+	// ```javascript
+	// var cache = new Cache(".cache");
+	// cache.init();
+	// ```
+	// 
 	init: function () {
 
 	    // TODO: clean up old entries
@@ -58,6 +98,21 @@
 	    return this;
 	}
 
+	// @public
+	// 
+	// ## `get`
+	// 
+	// Get an object from cache.
+	// 
+	// `cache.get(key)`
+	// 
+	// Example:
+	// ```javascript
+	// var cache = new Cache(".cache");
+	// cache.init();
+	// var foo = cache.get("foo");
+	// ```
+	// 
 	get: function (key) {
 	    // Is it cached?
 	    if (!this.exMap[key]) {
@@ -98,6 +153,22 @@
 	    }
 	}
 
+	// @public
+	// 
+	// ## `put`
+	// 
+	// Put an object into the cache.  The `value` arg is run
+	// through `JSON.stringify` before storage in the cache.
+	// 
+	// `cache.put(key, value, expiry)`
+	// 
+	// Example:
+	// ```javascript
+	// var cache = new Cache(".cache");
+	// cache.init();
+	// cache.put("foo", "somevalue", (60 * 5));
+	// ```
+	// 
 	put: function(key, value, expiry) {
 	    var path = filepath.join(this.path, key);
 

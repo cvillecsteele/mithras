@@ -4,9 +4,55 @@ p.lead.text-center AWS Config management for Javascripters
 
 hr
 
-.well
-  
-  p Lorem Ipsum text
+div.container-fluid
+  div.row
+    div.col-md-4.col-md-offset-1.text-center
+      i.fa.fa-bullseye.fa-4x
+      p Use Mithras to deploy and configure full-stack applications in AWS, with agentless setup and the flexibility and power of a Javascript configuration language.
+
+    div.col-md-4.col-md-offset-1.text-center
+      i.fa.fa-eye.fa-4x
+      p Mithras focuses on AWS, making design choices that make simple AWS tasks easy, including features like explicit dependency declaration and idempotent operations.
+
+    div.col-md-4.col-md-offset-1.text-center
+      i.fa.fa-fighter-jet.fa-4x
+      p Mithras presents a simplified interface, reducing the surface area of the AWS SDK to a digestible and easily managed size.
+
+    div.col-md-4.col-md-offset-1.text-center
+      i.fa.fa-star.fa-4x
+      p Standing on the shoulders of giants, Mithras provides a powerful server-side Javascript environment without callback hell. (We're looking at you, Node.)
+
+    div.col-md-4.col-md-offset-3.text-center
+      i.fa.fa-key.fa-4x
+      p Using brittle data languages such as YAML make customizing your configuration unecessarily convoluted. Mithras chooses a well-known and powerful language for descriving your AWS configurations: Javascript. You won't have to twist an unsuitable language to do what's needed for your configuration.
+
+h2 Getting Started
+
+p See the <a href="usage.html">Usage Guide</a> to get Mithras installed on your system.
+
+p Then, jump into <a href="quickstart1.html">Quickstart</a> to get up and running.
+
+div.container-fluid
+  div.row
+    div.col-md-6
+      h2 Design
+      ul
+        li AWS first
+        li Javascript DSL
+        li Simple (abstract) aws interface
+        li Agentless
+        li Idempotent
+        li Declarative resources
+        li Explicit dependencies
+        li Immutable infrastructure
+    div.col-md-6
+      h2 Use Cases
+      ul
+        li Provisioning
+        li Configuration Management
+        li App Deployment
+        li Continuous Delivery
+        li Orchestration
 
 h2 API Reference
 
@@ -15,6 +61,12 @@ include ./core.jade
 
 h3 Handlers
 include ./handlers.jade
+
+h2 Caveats
+
+p Sounds pretty nifty, eh? But it's not perfect. If you need enterprise configuration management features, Mithras isn't a good choice. (Not yet, anyway.) If you have the need to manage hosts and resources outside AWS, Mithras probably isn't a good choice. If you love YAML, don't bother with Mithras.
+
+p Finally, Mithras is new. It's currently alpha quality software, with bugs and design choices still being shaken out. Proceed with caution.
 
 hr
 

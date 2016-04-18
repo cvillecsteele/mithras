@@ -13,12 +13,38 @@
 //
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// @public
+// 
+// # BECOME
+// 
+// This module exports:
+// 
+// > * `become`
+// 
+// Usage:
+// 
+// `var become = require("become").become;`
+// 
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
 	module.exports = factory();
     }
 })(this, function() {
-    
+
+    // @public
+    // 
+    // ## `become`
+    // 
+    // Returns a command suitable for running with escalated privs.
+    // 
+    // `become(become, becomeUser, becomeMethod, command);`
+    // 
+    // Example:
+    // ```javascript
+    // var cmd = become(true, "root", "sudo", "ls /var/log");
+    // ```
+    // 
     var become = function(become, becomeUser, becomeMethod, command) {
 	var cmd = command;
 	if (become) {

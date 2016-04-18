@@ -1,0 +1,22 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>INSTALLATION &amp; USAGE</h1><h2>BUILDING FROM SOURCE</h2><ol>
+<li>Set up a standard <a href="http://golang.org/doc/code.html">Go 1.6 environment</a> and ensure that your <code>$GOPATH</code> environment variable properly set.</li>
+<li><code>go get github.com/cvillecsteele/mithras</code></li>
+<li><code>cd $GOPATH/src/github.com/cvillecsteele/mithras</code></li>
+<li><code>go install</code> to build the mithras binary</li>
+<li>Make sure <code>$GOPATH/bin</code> is in your <code>$PATH</code>.</li>
+</ol>
+<h2>RUNNING</h2><ol>
+<li>Mithras depends on using <code>ssh-agent</code>.  Make sure it is set up and has the right keys added.</li>
+<li>Set up a site directory. Let&#39;s say it&#39;s <code>~/projects/my_site</code></li>
+<li><code>EXPORT MITHRASHOME=~/projects/my_site</code>.</li>
+<li>Create your site file, <code>site.js</code>.</li>
+<li>Set up your AWS credentials file and specify a profile to use with <code>export AWS_PROFILE=...</code>.  (See: <a href="https://github.com/aws/aws-sdk-go/wiki/configuring-sdk">here</a>)</li>
+<li>Build remote runner and wrapper with <code>mithras build</code></li>
+<li><code>mithras -v run</code></li>
+</ol>
+<p>To run the example from the mithras repo:</p>
+<pre><code>`$ mithras -v run -f example/site.js`
+</code></pre><p>To run a JS repl:</p>
+<pre><code>`$ mithras repl`
+</code></pre></div></div><script src="/js/main.js"></script></body></html>

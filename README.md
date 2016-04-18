@@ -1,6 +1,9 @@
 WHAT IS MITHRAS?
 ###############################################################################
 
+See the Mithras main site at [mithras.io](http://mithras.io) for more
+information.
+
 Use Mithras to deploy and configure full-stack applications in AWS,
 with agentless setup and the flexibility and power of a Javascript
 configuration language.
@@ -17,12 +20,6 @@ configuration unecessarily convoluted.  Mithras chooses a well-known
 and powerful language for descriving your AWS configurations:
 Javascript.  You won't have to twist an unsuitable language to do
 what's needed for your configuration.
-
-Moreover, standing on the shoulders of giants, (Google's GO
-programming language, Javascript, and Robert Krimen's
-[Otto](https://github.com/robertkrimen/otto) interpreter), Mithras
-provides a powerful and flexible server-side Javascript environment
-without callback hell.  (We're looking at you, Node.)
 
 Here are some uses cases for Mithras:
 
@@ -53,13 +50,6 @@ DESIGN
 * Declarative resources
 * Explicit dependencies
 * Immutable infrastructure
-
-DOCS
-###############################################################################
-
-Run:
-
-    docco -l linear -o website/docs *.go modules/*/*.go js/*.js
 
 BUILDING FROM SOURCE
 ###############################################################################
@@ -92,7 +82,10 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* document all handlers
 * website
+  * quickstart 2
+  * quickstart 3
 * documentation: fix css / toc
 * better null arg handling in exec.run  
 * make sure no handlers are interacting with AWS outside the catalog (s3)
@@ -108,6 +101,17 @@ TODO
 * ssh pipelines
 * versioned js modules
 * better nodejs package support
+
+BUILDING DOCS
+###############################################################################
+
+Run:
+
+    mithras -v run dev/website.js
+
+To serve docs locally, first install [harp](http://harpjs.com), then:
+
+    cd website && harp server
 
 ISSUES
 ###############################################################################

@@ -48,7 +48,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/web"
 )
 
-var Version = "1.0.0"
+var Version = "0.1.0"
 
 type ModuleVersion struct{ version, module string }
 

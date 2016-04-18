@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"></head><body><div class="wrapper"><div class="main"><h1>QUICKSTART GUIDE</h1><p>Use this document to get up and working quickly and easily with
+Mithras.</p>
+<ul>
+<li><a href="quickstart1.html">Part One</a>: An EC2 instance</li>
+<li><a href="quickstart2.html">Part Two</a>: Configuring our instance</li>
+<li><a href="quickstart3.html">Part Three</a>: A complete application stack</li>
+</ul>
+<h2>Part Two: Configuring our EC2 Instance</h2><p>This part of the guide will show you how to use Mithras to configure
+various resources on an EC2 instance, such as package upgrades and
+installation, service initialization, and more. We&#39;ll also dig a
+little deeper into key concepts used by Mithras.</p>
+<p>Before you get going, make sure that you&#39;ve <a href="usage.html">installed</a>
+Mithras first.  Also, double check that your AWS credentials are set
+up correctly and that you&#39;ve run the first part of this script. (See
+<a href="quickstart1.html">Part One</a>.)</p>
+<h3>A Security Group</h3><h3>Coordinating Resources</h3><h3>Keypair resource</h3><h3>Instance resource</h3><h3>Applying resources to the catalog</h3><p>Phew!  That&#39;s it for resource definition.  Now that our script has set
+things up with resources, it tells Mithras to do the work of applying
+those resources to the current catalog of existing AWS resources:</p>
+<pre><code>mithras.apply(catalog, [  ], reverse);
+</code></pre><p>This code tells mithras to <code>apply</code> the resources in the second
+argument, <code>[rKey, rInstance]</code>, to the <code>catalog</code> argument.  The final
+argument is a boolean and if <code>true</code>, it tells Mithras that the order
+of dependencies is reversed, which is appropriate for <em>deleting</em> AWS
+resources, which is done in the opposite order as <em>creating</em> them.</p>
+<h3>Running the script</h3><p>Last but not least, here&#39;s how you tell Mithras to run this script.
+Make sure you&#39;ve set everything up according to the
+<a href="usage.html">usage</a> instructions, first.  Then, in your terminal, run:</p>
+<pre><code>mithras -v run -f example/intermediate.js
+</code></pre><p>Since we specified a global Mithras CLI option of <code>-v</code>, we see some
+pretty verbose output about what Mirthas does.</p></div></div><script src="/js/main.js"></script></body></html>
