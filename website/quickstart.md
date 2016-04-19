@@ -10,6 +10,8 @@ Install the system from source, and then get your AWS credentials set
 up.  Make sure that your AWS credentials give you authorization to
 create security groups and instances in AWS.
 
+## RUN!
+
 Then:
 
     export MITHRASHOME=$GOPATH/src/github.com/cvillecsteele/mithras
@@ -19,7 +21,7 @@ Then:
     cd mysite
     AWS_PROFILE=<your-profile-name> mithras -v run -f site.js up
 
-Watch as mithras creates a security group, an SSH key, and then an instance.
+Watch as Mithras creates a security group, an SSH key, and then an instance.
 
 To shut it all down:
 
