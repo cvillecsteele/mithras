@@ -209,7 +209,11 @@
                         var res = aws.s3.objects.create(params.object,
                                                         params.region,
                                                         mithras.verbose);
-                    }
+                    } else {
+                        if (mithras.verbose) {
+                            log(sprintf("No action taken.", params.object.Key));
+                        }
+		    }
                 }
             } else {
                 if ((params.ensure === 'present') ||
@@ -554,7 +558,9 @@
         "xsd": "application/xml",
         "xsl": "text/xml",
         "xslt": "application/xml",
-        "xss": "application/xml"
+        "xss": "application/xml",
+
+	"svg": "image/svg+xml"
     };
     
     return handler;

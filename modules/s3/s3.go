@@ -366,6 +366,7 @@ func init() {
 			// Translate target into a struct
 			var input s3.PutObjectInput
 			body, err := call.Argument(0).Object().Get("Body")
+
 			js := `(function (o) { return JSON.stringify(_.omit(o, "Body")); })`
 			s, err := rt.Call(js, nil, call.Argument(0))
 			if err != nil {
@@ -375,7 +376,13 @@ func init() {
 			if err != nil {
 				log.Fatalf("Can't unmarshall s3 putobject json: %s", err)
 			}
-			input.Body = bytes.NewReader([]byte(body.String()))
+			if body.IsString() {
+				input.Body = bytes.NewReader([]byte(body.String()))
+			} else {
+				// assume it is an array of JS "number"
+				x, _ := body.Export()
+				input.Body = bytes.NewReader(x.([]byte))
+			}
 
 			region := call.Argument(1).String()
 			verbose, _ := call.Argument(2).ToBoolean()

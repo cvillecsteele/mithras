@@ -32,6 +32,7 @@ package fs
 // > * [fs.create](#create)
 // > * [fs.close](#close)
 // > * [fs.read](#read)
+// > * [fs.bread](#bread)
 // > * [fs.write](#write)
 // > * [fs.copy](#copy)
 // > * [fs.chdir](#chdir)
@@ -144,6 +145,23 @@ package fs
 // ```
 //
 //  var results = fs.read("/tmp/foo");
+//  var contents = results[0];
+//  var error = results[1];
+//
+// ```
+//
+// ## FS.BREAD
+// <a name="bread"></a>
+// `filepath.bread(path);`
+//
+// Read the contents of the file at `path` and return an array of
+// `[content, error]`, where `content` is an array of numbers.
+//
+// Example:
+//
+// ```
+//
+//  var results = fs.bread("/tmp/foo");
 //  var contents = results[0];
 //  var error = results[1];
 //
@@ -381,6 +399,11 @@ func read(fileName string) (string, error) {
 	return string(content), err
 }
 
+func bread(fileName string) ([]byte, error) {
+	content, err := ioutil.ReadFile(fileName)
+	return content, err
+}
+
 func write(fileName, data string, perm uint64) error {
 	return ioutil.WriteFile(fileName, []byte(data), os.FileMode(perm))
 }
@@ -531,6 +554,7 @@ func init() {
 			f := mcore.Sanitizer(rt)
 			return f(read(fileName))
 		})
+		fsObj.Set("bread", bread)
 		fsObj.Set("write", func(fileName, data string, perm uint64) otto.Value {
 			f := mcore.Sanitizer(rt)
 			return f(write(fileName, data, perm))

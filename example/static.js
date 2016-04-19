@@ -53,7 +53,18 @@ function run() {
     var objects = [];
     filepath.walk("website/www", function(path, info, err) {
         if (!info.IsDir) {
-            var type = s3.contentTypeMap[filepath.ext(path).substring(1)];
+	    var ext = filepath.ext(path).substring(1);
+            var type = s3.contentTypeMap[ext];
+	    var result;
+	    if (ext != "html" && ext != "js") {
+		result = fs.bread(path);
+	    } else {
+		result = fs.read(path);
+	    }
+	    if (result[1]) {
+		console.log(sprintf("Error reading path '%s': %s", path, result[1]));
+		os.exit(1);
+	    }
             objects.push({
                 name: path
                 module: "s3"
@@ -66,7 +77,7 @@ function run() {
                         Bucket:             bucketName
                         Key:                filepath.rel("website/www", path)[0]
                         ACL:                "public-read"
-                        Body:               fs.read(path)
+                        Body:               result[0]
                         ContentType:        type
                     }
                 }
