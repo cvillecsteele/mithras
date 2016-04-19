@@ -79,7 +79,7 @@ function run() {
     var rInstance = {
     	name: "instance"
     	module: "instance"
-	dependsOn: [rKey.name, rwsSG.name]
+	dependsOn: [rKey.name, security.name]
     	params: {
 	    region: defaultRegion
     	    ensure: ensure
@@ -112,7 +112,7 @@ function run() {
 	} // params
     };
 
-    mithras.apply(catalog, [ rwsSG, rKey, rInstance, test ], reverse);
+    mithras.apply(catalog, [ security, rKey, rInstance ], reverse);
 
     return true;
 }
