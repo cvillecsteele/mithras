@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>QUICKSTART</h1><p>We&#39;re gonna get you up and running, quick.</p>
+<h2>Install</h2><p>Follow the <a href="usage.html">usage guide</a> to get Mithras installed.</p>
+<p>Install the system from source, and then get your AWS credentials set
+up.  Make sure that your AWS credentials give you authorization to
+create security groups and instances in AWS.</p>
+<p>Then:</p>
+<pre><code>export MITHRASHOME=$GOPATH/src/github.com/cvillecsteele/mithras
+cd ~
+mkdir mysite
+cp $MITHRASHOME/example/simple.js mysite/site.js
+cd mysite
+AWS_PROFILE=&lt;your-profile-name&gt; mithras -v run -f site.js up
+</code></pre><p>Watch as mithras creates a security group, an SSH key, and then an instance.</p>
+<p>To shut it all down:</p>
+<pre><code>AWS_PROFILE=&lt;your-profile-name&gt; mithras -v run -f site.js down
+</code></pre></div></div><script src="/js/main.js"></script></body></html>

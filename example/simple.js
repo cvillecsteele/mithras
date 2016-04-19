@@ -18,6 +18,7 @@ function run() {
     var altZone = "us-east-1b";
     var keyName = "mithras"
     var ami = "ami-22111148";
+    var sgName = "simple-sg";
 
     // We tag (and find) our instance based on this tag
     var instanceNameTag = "mithras-instance";
@@ -25,6 +26,39 @@ function run() {
     //////////////////////////////////////////////////////////////////////
     // Resource Definitions
     //////////////////////////////////////////////////////////////////////
+
+    // A simple firewall
+    var security = {
+    	name: "webserverSG"
+    	module: "secgroup"
+    	params: {
+	    region: defaultRegion
+    	    ensure: ensure
+	    secgroup: {
+		Description: "Webserver security group"
+		GroupName:   sgName
+	    }
+	    tags: {
+		Name: "webserver"
+	    }
+	    ingress: {
+		IpPermissions: [
+		    {
+			FromPort:   22
+			IpProtocol: "tcp"
+			IpRanges: [ {CidrIp: "0.0.0.0/0"} ]
+			ToPort: 22
+		    },
+		    {
+			FromPort:   80
+			IpProtocol: "tcp"
+			IpRanges: [ {CidrIp: "0.0.0.0/0"} ]
+			ToPort: 80
+		    }
+		]
+	    }
+    	}
+    };
 
     // Define a keypair resource for the instance
     var rKey = {
@@ -45,7 +79,7 @@ function run() {
     var rInstance = {
     	name: "instance"
     	module: "instance"
-	dependsOn: [rKey.name]
+	dependsOn: [rKey.name, rwsSG.name]
     	params: {
 	    region: defaultRegion
     	    ensure: ensure
@@ -70,6 +104,7 @@ function run() {
 		Monitoring: {
 		    Enabled: false
 		}
+		SecurityGroups: [ sgName ]
 	    } // instance
 	    tags: {
 		Name: instanceNameTag
@@ -77,7 +112,7 @@ function run() {
 	} // params
     };
 
-    mithras.apply(catalog, [ rKey, rInstance ], reverse);
+    mithras.apply(catalog, [ rwsSG, rKey, rInstance, test ], reverse);
 
     return true;
 }

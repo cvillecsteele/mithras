@@ -14,27 +14,54 @@
  
  `var s3 = require("s3").init();`
  
-  ## Example Resource
+  ## Example Bucket Resource
  
  ```javascript
- var rElbDnsEntry = {
-     name: "elbDnsEntry"
+ var bucket = {
+     name: "s3bucket"
      module: "s3"
-     dependsOn: [rElb.name]
      params: {
-         region: defaultRegion
          ensure: ensure
-         domain: "mithras.io."
-         resource: {
-             Name: "test.mithras.io."
-             Type: "A"
-             AliasTarget: {
-                 DNSName:              mithras.watch("elb._target.DNSName")
-                 EvaluateTargetHealth: true
-                 HostedZoneId:         mithras.watch("elb._target.CanonicalHostedZoneNameID")
-             }
+         region: defaultRegion
+         bucket: {
+             Bucket: bucketName
+             ACL:    "public-read"
+             LocationConstraint: defaultRegion
          }
-     } // params
+         website: {
+             Bucket: bucketName
+             WebsiteConfiguration: {
+                 ErrorDocument: {
+                     Key: "error.html"
+                 }
+                 IndexDocument: {
+                     Suffix: "index.html"
+                 }
+              }
+          } // website
+      } // params
+ };
+ ```
+ 
+  ## Example Object Resource
+ 
+ ```javascript
+ var thing = {
+     name: "thingInS3"
+     module: "s3"
+     dependsOn: [bucket.name]
+     params: {
+       ensure: "latest"
+       region: defaultRegion
+       stat: fs.stat(path)
+       object: {
+            Bucket:             bucketName
+            Key:                "some/thing.html" 
+            ACL:                "public-read"
+            Body:               "..."
+            ContentType:        "text/html"
+       }
+     }
  };
  ```
  
@@ -43,15 +70,43 @@
  ### `ensure`
 
  * Required: true
- * Allowed Values: "present", "absent"
+ * Allowed Values: "present", "absent" or "latest" (for objects)
 
- If `"present"`, the dns entry will be created if it doesn't already
- exist.  If `"absent"`, the dns entry will be removed if it is
- present.
+ If `"present"`, the bucket/object will be created if it doesn't
+ already exist.  If `"absent"`, the bucket/object will be removed if
+ it is present.  If `"latest"`, the resource specifies a `stat`
+ property with the results of `fs.stat` on the source path, and if
+ the object is S3 is older than the one on local disk, the object in
+ S3 is updated.
  
- ### `resource`
+ ### `stat`
 
- * Required: true
- * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-ResourceRecordSet)
+ * Required: false
+ * Allowed Values: results of `fs.stat()` on the source file
+
+ If operating on an object in S3, and the object is S3 has a
+ modification time before the `ModTime` of the stat'd file, the
+ object in S3 will be updated.
+
+ ### `object`
+
+ * Required: false
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutObjectInput)
+
+ Specifies the parameters for the object.
+
+ ### `bucket`
+
+ * Required: false
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-CreateBucketInput)
+
+ Specifies the parameters for the bucket.
+
+ ### `website`
+
+ * Required: false
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketWebsiteInput)
+
+ If you want to serve a static website from S3, specify this property along with `bucket`.
 
 

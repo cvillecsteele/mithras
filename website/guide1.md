@@ -1,4 +1,4 @@
-# QUICKSTART GUIDE
+# WALKTHROUGH, PART 1
 
 Use this document to get your first Mithras recipe working quickly and
 easily, and get introduced to some of the concepts behind Mithras.

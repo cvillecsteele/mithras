@@ -10,34 +10,79 @@ module value of <code>&quot;s3&quot;</code></li>
 </blockquote>
 <p> Usage:</p>
 <p> <code>var s3 = require(&quot;s3&quot;).init();</code></p>
-<h2>Example Resource</h2><pre><code class="language-javascript"> var rElbDnsEntry = {
-     name: &quot;elbDnsEntry&quot;
+<h2>Example Bucket Resource</h2><pre><code class="language-javascript"> var bucket = {
+     name: &quot;s3bucket&quot;
      module: &quot;s3&quot;
-     dependsOn: [rElb.name]
      params: {
-         region: defaultRegion
          ensure: ensure
-         domain: &quot;mithras.io.&quot;
-         resource: {
-             Name: &quot;test.mithras.io.&quot;
-             Type: &quot;A&quot;
-             AliasTarget: {
-                 DNSName:              mithras.watch(&quot;elb._target.DNSName&quot;)
-                 EvaluateTargetHealth: true
-                 HostedZoneId:         mithras.watch(&quot;elb._target.CanonicalHostedZoneNameID&quot;)
-             }
+         region: defaultRegion
+         bucket: {
+             Bucket: bucketName
+             ACL:    &quot;public-read&quot;
+             LocationConstraint: defaultRegion
          }
-     } // params
+         website: {
+             Bucket: bucketName
+             WebsiteConfiguration: {
+                 ErrorDocument: {
+                     Key: &quot;error.html&quot;
+                 }
+                 IndexDocument: {
+                     Suffix: &quot;index.html&quot;
+                 }
+              }
+          } // website
+      } // params
+ };
+</code></pre>
+<h2>Example Object Resource</h2><pre><code class="language-javascript"> var thing = {
+     name: &quot;thingInS3&quot;
+     module: &quot;s3&quot;
+     dependsOn: [bucket.name]
+     params: {
+       ensure: &quot;latest&quot;
+       region: defaultRegion
+       stat: fs.stat(path)
+       object: {
+            Bucket:             bucketName
+            Key:                &quot;some/thing.html&quot; 
+            ACL:                &quot;public-read&quot;
+            Body:               &quot;...&quot;
+            ContentType:        &quot;text/html&quot;
+       }
+     }
  };
 </code></pre>
 <h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
 <li>Required: true</li>
-<li><p>Allowed Values: &quot;present&quot;, &quot;absent&quot;</p>
-<p>If <code>&quot;present&quot;</code>, the dns entry will be created if it doesn&#39;t already
-exist.  If <code>&quot;absent&quot;</code>, the dns entry will be removed if it is
-present.</p>
-<h3><code>resource</code></h3></li>
-<li><p>Required: true</p>
+<li><p>Allowed Values: &quot;present&quot;, &quot;absent&quot; or &quot;latest&quot; (for objects)</p>
+<p>If <code>&quot;present&quot;</code>, the bucket/object will be created if it doesn&#39;t
+already exist.  If <code>&quot;absent&quot;</code>, the bucket/object will be removed if
+it is present.  If <code>&quot;latest&quot;</code>, the resource specifies a <code>stat</code>
+property with the results of <code>fs.stat</code> on the source path, and if
+the object is S3 is older than the one on local disk, the object in
+S3 is updated.</p>
+<h3><code>stat</code></h3></li>
+<li><p>Required: false</p>
 </li>
-<li>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-ResourceRecordSet">here</a></li>
+<li><p>Allowed Values: results of <code>fs.stat()</code> on the source file</p>
+<p>If operating on an object in S3, and the object is S3 has a
+modification time before the <code>ModTime</code> of the stat&#39;d file, the
+object in S3 will be updated.</p>
+<h3><code>object</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutObjectInput">here</a></p>
+<p>Specifies the parameters for the object.</p>
+<h3><code>bucket</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-CreateBucketInput">here</a></p>
+<p>Specifies the parameters for the bucket.</p>
+<h3><code>website</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketWebsiteInput">here</a></p>
+<p>If you want to serve a static website from S3, specify this property along with <code>bucket</code>.</p>
+</li>
 </ul></div></div><script src="/js/main.js"></script></body></html>

@@ -494,8 +494,11 @@
                     log0(sprintf("RESOURCE: %s", rName));
 
                     // Update the resource
-                    var updated = mithras.updateResource(dict[rName], catalog, resources, rName);
-                    
+                    var updated = mithras.updateResource(dict[rName], 
+							 catalog, 
+							 resources, 
+							 rName);
+
                     // Run handlers on updated resource
                     mithras.modules.handlers.run(catalog, resources, updated, dict);
                     

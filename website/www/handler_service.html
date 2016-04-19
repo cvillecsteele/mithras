@@ -1,0 +1,33 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>service</h1><p> Service is a resource handler for dealing with services running on instances.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;service&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var service = require(&quot;service&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var svc = {
+     name: &quot;myservice&quot;
+     module: &quot;service&quot;
+     params: {
+       ensure: &quot;present&quot; // or &quot;absent&quot;
+       name: &quot;nginx&quot;
+     }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code> and the service <code>name</code> is not running, it is started.
+If <code>&quot;absent&quot;</code>, and the service is running, it is stopped.</p>
+<h3><code>name</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: a string specifying a configured service on the instance.</p>
+<p>This is the service that is started/stopped.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

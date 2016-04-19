@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>vpc</h1><p> Vpc is a resource handler for dealing with AWS security groups.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;vpc&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var vpc = require(&quot;vpc&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rVpc = {
+      name: &quot;VPC&quot;
+      module: &quot;vpc&quot;
+      params: {
+          region: defaultRegion
+          ensure: ensure
+          vpc: {
+              CidrBlock:       &quot;172.33.0.0/16&quot;
+          }
+          gateway: true
+          tags: {
+              Name: &quot;my-vpc&quot;
+          }
+      }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code> and the vpc named
+<code>params.vpc.GroupName</code> does not exist, it is created.  If
+<code>&quot;absent&quot;</code>, and the vpc exists, it is removed.</p>
+<h3><code>vpc</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/ec2.html#type-CreateVpcInput">here</a></p>
+<p>Parameters for VPC creation.</p>
+<h3><code>tags</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: a map of tags to be set on a created vpc</p>
+<p>For tagging.</p>
+<h3><code>gateway</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: true or false</p>
+<p>If true, an internet gateway is created for the VPC.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

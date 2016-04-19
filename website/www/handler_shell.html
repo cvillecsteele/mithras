@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"><h1>RESOURDCE HANDLER: SHELL</h1><h1>shell</h1><p> Shell is a resource handler for dealing with shells running on instances.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;shell&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var shell = require(&quot;shell&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var foo = {
+     name: &quot;dostuff&quot;
+     module: &quot;shell&quot;
+     params: {
+       command: &quot;whoami&quot;
+       hosts: [ec2 instance objects...]
+     }
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>command</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: a valid shell command for the remote instance</p>
+<p>The command in this property is run on remote instances.</p>
+<h3><code>hosts</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: an array of ec2 instance objects</p>
+<p>The command is executed on these instances.</p>
+</li>
+</ul></div></div><script src="/js/main.js"></script></body></html>

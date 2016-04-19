@@ -1,4 +1,4 @@
-# QUICKSTART GUIDE
+# WALKTHROUGH, PART 2
 
 Use this document to get up and working quickly and easily with
 Mithras.
