@@ -56,7 +56,7 @@ function run() {
 	    var ext = filepath.ext(path).substring(1);
             var type = s3.contentTypeMap[ext];
 	    var result;
-	    if (ext != "html" && ext != "js") {
+	    if (ext != "html" && ext != "js" && ext != "css") {
 		result = fs.bread(path);
 	    } else {
 		result = fs.read(path);
