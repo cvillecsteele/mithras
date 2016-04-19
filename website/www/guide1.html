@@ -49,24 +49,24 @@ variable.  Later, this set of Javascript objects will be used to
 determine which resources need to be created or deleted in order to
 satisfy your script.</p>
 <p>Next up comes some configuration code:</p>
-<pre><code class="language-javascript">// Setup, variables, etc.
+<pre><code>// Setup, variables, etc.
 var ensure = &quot;present&quot;;
 var reverse = false;
 if (mithras.ARGS[0] === &quot;down&quot;) { 
-  var ensure = &quot;absent&quot;;
-  var reverse = true;
+    var ensure = &quot;absent&quot;;
+    var reverse = true;
 }
 var defaultRegion = &quot;us-east-1&quot;;
 var defaultZone = &quot;us-east-1d&quot;;
 var altZone = &quot;us-east-1b&quot;;
 var keyName = &quot;mithras&quot;
 var ami = &quot;ami-22111148&quot;;
+var sgName = &quot;simple-sg&quot;;
 
 // We tag (and find) our instance based on this tag
-var instanceNameTag = &quot;instance&quot;;
-</code></pre>
-<p>Note here that our script examines <code>mithras.ARGS</code>.  When you invoke
-<code>mithras run</code> from teh command line, any additional arguments you
+var instanceNameTag = &quot;mithras-instance&quot;;
+</code></pre><p>Note here that our script examines <code>mithras.ARGS</code>.  When you invoke
+<code>mithras run</code> from the command line, any additional arguments you
 provide are passed through to your script via the <code>ARGS</code> property on
 the <code>mithras</code> object.  You can use these, as this example script does,
 to alter data or behavior in your script.  Here, if you invoke
@@ -74,33 +74,72 @@ to alter data or behavior in your script.  Here, if you invoke
 you invoke mithras with <code>mithras run down</code>, the var <code>ensure</code> will have
 the value <code>&quot;absent&quot;</code>.</p>
 <p>Most often, <code>resources</code> indicate their desired state via a parameter
-<code>ensure</code>, which generally take the values <code>present</code> or <code>absent</code>.
+<code>ensure</code>, which generally take the values <code>&quot;present&quot;</code> or <code>&quot;absent&quot;</code>.
 (Though in some cases, the associated resource handler may permit
 additional values, such as <code>latest</code>, for <code>package</code> resources.)</p>
 <p>You will also notice the script sets a few additional variables which
 following resource definitions will use.</p>
-<h3>Keypair resource</h3><p>Next come resource definitions, the first of which is for an SSH keypair:</p>
-<pre><code class="language-javascript">var rKey = {
-  name: &quot;key&quot;                 // required: resources always have a name
-  module: &quot;keypairs&quot;          // required: resources always have a handler
-  skip: (ensure === &#39;absent&#39;) // Optional.  Don&#39;t delete keys
-  params: {
-    region: defaultRegion
-    ensure: ensure
-    key: {
-        KeyName: keyName
+<h3>Security group resource</h3><p>Now we come to resource definitions, the first of which is a security
+group:</p>
+<pre><code>// A simple firewall
+var security = {
+    name: &quot;webserverSG&quot;
+    module: &quot;secgroup&quot;
+    params: {
+        region: defaultRegion
+        ensure: ensure
+        secgroup: {
+            Description: &quot;Webserver security group&quot;
+            GroupName:   sgName
+        }
+        tags: {
+            Name: &quot;webserver&quot;
+        }
+        ingress: {
+            IpPermissions: [
+                {
+                    FromPort:   22
+                    IpProtocol: &quot;tcp&quot;
+                    IpRanges: [ {CidrIp: &quot;0.0.0.0/0&quot;} ]
+                    ToPort: 22
+                },
+                {
+                    FromPort:   80
+                    IpProtocol: &quot;tcp&quot;
+                    IpRanges: [ {CidrIp: &quot;0.0.0.0/0&quot;} ]
+                    ToPort: 80
+                }
+            ]
+        }
     }
-    savePath: os.expandEnv(&quot;$HOME/.ssh/&quot; + keyName + &quot;.pem&quot;)
-  }
 };
-</code></pre>
-<p>Note that this code doesn&#39;t <em>do</em> anything in AWS-land.  It&#39;s not
+</code></pre><p>Note that this code doesn&#39;t <em>do</em> anything in AWS-land.  It&#39;s not
 executing any API calls; it&#39;s just creating a Javascript object and
 filling in a few properties.  Nothing magic.</p>
 <p>There are a few things to note.  The two most basic properties of a
 resource are its name and it&#39;s associated handler, which are specified
 by the <code>name</code> and the <code>module</code> properties, respectively.</p>
-<p>Next, we set a <code>skip</code> property on the resource.  This is an optional
+<p>Resources have module-specific settings in the <code>params</code> property,
+which is a javascript object whose definition is handler-dependent.</p>
+<p>In this case, the <code>params</code> for a security group include <code>secgroup</code>,
+<code>tags</code> and <code>ingress</code>.  You can find documentation for handlers in the
+the API <a href="api.html">Reference</a>.</p>
+<h3>Keypair resource</h3><p>Next we need an SSH key:</p>
+<pre><code>// Define a keypair resource for the instance
+var rKey = {
+    name: &quot;key&quot;
+    module: &quot;keypairs&quot;
+    skip: (ensure === &#39;absent&#39;) // Don&#39;t delete keys
+    params: {
+        region: defaultRegion
+        ensure: ensure
+        key: {
+            KeyName: keyName
+        }
+        savePath: os.expandEnv(&quot;$HOME/.ssh/&quot; + keyName + &quot;.pem&quot;)
+    }
+};
+</code></pre><p>We set a <code>skip</code> property on this resource.  This is an optional
 property, and in this case it&#39;s set to <code>true</code> if the <code>ensure</code> variable
 has a value ot <code>&quot;absent&quot;</code>.  When this resource is applied to a catalog
 later in this script, this <code>skip</code> property will indicate that it
@@ -126,47 +165,48 @@ definition is a bit longer, but there are a couple of important things
 to note.</p>
 <pre><code>// This will launch an instance into your default (classic) VPC
 var rInstance = {
-        name: &quot;instance&quot;
-        module: &quot;instance&quot;
-        dependsOn: [rKey.name]
-        params: {
-            region: defaultRegion
-            ensure: ensure
-            on_find: function(catalog) {
-                var matches = _.filter(catalog.instances, function (i) {
-                    if (i.State.Name != &quot;running&quot;) {
-                        return false;
-                    }
-                    return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
-                                             &quot;Value&quot;: instanceNameTag}).length &gt; 0);
-                });
-                return matches;
-            }
-            instance: {
-                ImageId:                           ami
-                MaxCount:                          1
-                MinCount:                          1
-                DisableApiTermination:             false
-                EbsOptimized:                      false
-                InstanceInitiatedShutdownBehavior: &quot;terminate&quot;
-                KeyName:                           keyName
-                Monitoring: {
-                    Enabled: false
+    name: &quot;instance&quot;
+    module: &quot;instance&quot;
+    dependsOn: [rKey.name, security.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+        on_find: function(catalog) {
+            var matches = _.filter(catalog.instances, function (i) {
+                if (i.State.Name != &quot;running&quot;) {
+                    return false;
                 }
-            } // instance
-            tags: {
-                Name: instanceNameTag
+                return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
+                                         &quot;Value&quot;: instanceNameTag}).length &gt; 0);
+            });
+            return matches;
+        }
+        instance: {
+            ImageId:                           ami
+            MaxCount:                          1
+            MinCount:                          1
+            DisableApiTermination:             false
+            EbsOptimized:                      false
+            InstanceInitiatedShutdownBehavior: &quot;terminate&quot;
+            KeyName:                           keyName
+            Monitoring: {
+                Enabled: false
             }
-        } // params
+            SecurityGroups: [ sgName ]
+        } // instance
+        tags: {
+            Name: instanceNameTag
+        }
+    } // params
 };
 </code></pre><p>Since you&#39;re new to Mithras, the first one to note is the <code>dependsOn</code>
 property.  The value of this property should be a Javascript array of
 strings.  Each element of the array tells Mithras that the current
 resource has a dependency on the resource with the name as the array
 element.  So in our case:</p>
-<pre><code>dependsOn = [rKey.name]
+<pre><code>dependsOn: [rKey.name, security.name]
 </code></pre><p>indicates that the resource we&#39;re defining (named <code>instance</code>) depends
-on the resource <code>rKey</code>.</p>
+on the resources <code>rKey</code> and <code>security</code>.</p>
 <p>The effect of dependency declaration is to order the application of
 resource handlers.  In AWS-land, generally you a graph of resource
 dependencies, often with persistent or container-like resources as the
@@ -223,14 +263,16 @@ that match to be tagged with a <code>Name</code> of the value of the
 <h3>Applying resources to the catalog</h3><p>Phew!  That&#39;s it for resource definition.  Now that our script has set
 things up with resources, it tells Mithras to do the work of applying
 those resources to the current catalog of existing AWS resources:</p>
-<pre><code>mithras.apply(catalog, [ rKey, rInstance ], reverse);
+<pre><code>mithras.apply(catalog, [ security, rKey, rInstance ], reverse);
 </code></pre><p>This code tells mithras to <code>apply</code> the resources in the second
 argument, <code>[rKey, rInstance]</code>, to the <code>catalog</code> argument.  The final
 argument is a boolean and if <code>true</code>, it tells Mithras that the order
 of dependencies is reversed, which is appropriate for <em>deleting</em> AWS
 resources, which is done in the opposite order as <em>creating</em> them.</p>
-<h3>Running the script</h3><p>Last but not least, here&#39;s how you tell Mithras to run this script.  Make sure you&#39;ve set everything up according to the <a href="usage.html">usage</a> instructions, first.  Then, in your terminal, run:</p>
-<pre><code>mithras -v run -f example/simple.js
+<h3>Running the script</h3><p>Last but not least, here&#39;s how you tell Mithras to run this script.
+Make sure you&#39;ve set everything up according to the
+<a href="usage.html">usage</a> instructions, first.  Then, in your terminal, run:</p>
+<pre><code>AWS_PROFILE=&lt;some-profile&gt; mithras -v run -f example/simple.js
 </code></pre><p>Since we specified a global Mithras CLI option of <code>-v</code>, we see some
 pretty verbose output about what Mirthas does.  You should see it
 create a keypair, and then stand up an EC2 instance.</p>

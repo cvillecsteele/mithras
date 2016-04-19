@@ -74,27 +74,25 @@ satisfy your script.
 
 Next up comes some configuration code:
 
-```javascript
-// Setup, variables, etc.
-var ensure = "present";
-var reverse = false;
-if (mithras.ARGS[0] === "down") { 
-  var ensure = "absent";
-  var reverse = true;
-}
-var defaultRegion = "us-east-1";
-var defaultZone = "us-east-1d";
-var altZone = "us-east-1b";
-var keyName = "mithras"
-var ami = "ami-22111148";
+    // Setup, variables, etc.
+    var ensure = "present";
+    var reverse = false;
+    if (mithras.ARGS[0] === "down") { 
+        var ensure = "absent";
+        var reverse = true;
+    }
+    var defaultRegion = "us-east-1";
+    var defaultZone = "us-east-1d";
+    var altZone = "us-east-1b";
+    var keyName = "mithras"
+    var ami = "ami-22111148";
+    var sgName = "simple-sg";
 
-// We tag (and find) our instance based on this tag
-var instanceNameTag = "instance";
-
-```
+    // We tag (and find) our instance based on this tag
+    var instanceNameTag = "mithras-instance";
 
 Note here that our script examines `mithras.ARGS`.  When you invoke
-`mithras run` from teh command line, any additional arguments you
+`mithras run` from the command line, any additional arguments you
 provide are passed through to your script via the `ARGS` property on
 the `mithras` object.  You can use these, as this example script does,
 to alter data or behavior in your script.  Here, if you invoke
@@ -103,33 +101,50 @@ you invoke mithras with `mithras run down`, the var `ensure` will have
 the value `"absent"`.
 
 Most often, `resources` indicate their desired state via a parameter
-`ensure`, which generally take the values `present` or `absent`.
+`ensure`, which generally take the values `"present"` or `"absent"`.
 (Though in some cases, the associated resource handler may permit
 additional values, such as `latest`, for `package` resources.)
 
 You will also notice the script sets a few additional variables which
 following resource definitions will use.
 
-### Keypair resource
+### Security group resource
 
-Next come resource definitions, the first of which is for an SSH keypair:
+Now we come to resource definitions, the first of which is a security
+group:
 
-```javascript
-var rKey = {
-  name: "key"                 // required: resources always have a name
-  module: "keypairs"          // required: resources always have a handler
-  skip: (ensure === 'absent') // Optional.  Don't delete keys
-  params: {
-    region: defaultRegion
-    ensure: ensure
-    key: {
-        KeyName: keyName
-    }
-    savePath: os.expandEnv("$HOME/.ssh/" + keyName + ".pem")
-  }
-};
-
-```
+    // A simple firewall
+    var security = {
+        name: "webserverSG"
+        module: "secgroup"
+        params: {
+            region: defaultRegion
+            ensure: ensure
+            secgroup: {
+                Description: "Webserver security group"
+                GroupName:   sgName
+            }
+            tags: {
+                Name: "webserver"
+            }
+            ingress: {
+                IpPermissions: [
+                    {
+                        FromPort:   22
+                        IpProtocol: "tcp"
+                        IpRanges: [ {CidrIp: "0.0.0.0/0"} ]
+                        ToPort: 22
+                    },
+                    {
+                        FromPort:   80
+                        IpProtocol: "tcp"
+                        IpRanges: [ {CidrIp: "0.0.0.0/0"} ]
+                        ToPort: 80
+                    }
+                ]
+            }
+        }
+    };
 
 Note that this code doesn't *do* anything in AWS-land.  It's not
 executing any API calls; it's just creating a Javascript object and
@@ -139,7 +154,33 @@ There are a few things to note.  The two most basic properties of a
 resource are its name and it's associated handler, which are specified
 by the `name` and the `module` properties, respectively.
 
-Next, we set a `skip` property on the resource.  This is an optional
+Resources have module-specific settings in the `params` property,
+which is a javascript object whose definition is handler-dependent.
+
+In this case, the `params` for a security group include `secgroup`,
+`tags` and `ingress`.  You can find documentation for handlers in the
+the API <a href="api.html">Reference</a>.
+
+### Keypair resource
+
+Next we need an SSH key:
+
+    // Define a keypair resource for the instance
+    var rKey = {
+        name: "key"
+        module: "keypairs"
+        skip: (ensure === 'absent') // Don't delete keys
+        params: {
+            region: defaultRegion
+            ensure: ensure
+            key: {
+                KeyName: keyName
+            }
+            savePath: os.expandEnv("$HOME/.ssh/" + keyName + ".pem")
+        }
+    };
+
+We set a `skip` property on this resource.  This is an optional
 property, and in this case it's set to `true` if the `ensure` variable
 has a value ot `"absent"`.  When this resource is applied to a catalog
 later in this script, this `skip` property will indicate that it
@@ -169,12 +210,11 @@ Next, our script defines a resource for the EC2 instance itself.  This
 definition is a bit longer, but there are a couple of important things
 to note.
 
-```
-// This will launch an instance into your default (classic) VPC
-var rInstance = {
+    // This will launch an instance into your default (classic) VPC
+    var rInstance = {
         name: "instance"
         module: "instance"
-        dependsOn: [rKey.name]
+        dependsOn: [rKey.name, security.name]
         params: {
             region: defaultRegion
             ensure: ensure
@@ -199,13 +239,13 @@ var rInstance = {
                 Monitoring: {
                     Enabled: false
                 }
+                SecurityGroups: [ sgName ]
             } // instance
             tags: {
                 Name: instanceNameTag
             }
         } // params
-};
-```
+    };
 
 Since you're new to Mithras, the first one to note is the `dependsOn`
 property.  The value of this property should be a Javascript array of
@@ -213,12 +253,10 @@ strings.  Each element of the array tells Mithras that the current
 resource has a dependency on the resource with the name as the array
 element.  So in our case:
 
-```
-dependsOn = [rKey.name]
-```
+    dependsOn: [rKey.name, security.name]
 
 indicates that the resource we're defining (named `instance`) depends
-on the resource `rKey`.
+on the resources `rKey` and `security`.
 
 The effect of dependency declaration is to order the application of
 resource handlers.  In AWS-land, generally you a graph of resource
@@ -244,7 +282,7 @@ your notion of instances which match this resource definition.
 
 ```javascript
 on_find: function(catalog) {
-    // Use underscore.js to filter catalog.instances	 
+    // Use underscore.js to filter catalog.instances     
     var matches = _.filter(catalog.instances, function (i) {
         // Our iterator first looks at instance state
         if (i.State.Name != "running") {
@@ -288,9 +326,7 @@ Phew!  That's it for resource definition.  Now that our script has set
 things up with resources, it tells Mithras to do the work of applying
 those resources to the current catalog of existing AWS resources:
 
-```
-mithras.apply(catalog, [ rKey, rInstance ], reverse);
-```
+    mithras.apply(catalog, [ security, rKey, rInstance ], reverse);
 
 This code tells mithras to `apply` the resources in the second
 argument, `[rKey, rInstance]`, to the `catalog` argument.  The final
@@ -300,9 +336,11 @@ resources, which is done in the opposite order as *creating* them.
 
 ### Running the script
 
-Last but not least, here's how you tell Mithras to run this script.  Make sure you've set everything up according to the [usage](usage.html) instructions, first.  Then, in your terminal, run:
+Last but not least, here's how you tell Mithras to run this script.
+Make sure you've set everything up according to the
+[usage](usage.html) instructions, first.  Then, in your terminal, run:
 
-    mithras -v run -f example/simple.js
+    AWS_PROFILE=<some-profile> mithras -v run -f example/simple.js
 
 Since we specified a global Mithras CLI option of `-v`, we see some
 pretty verbose output about what Mirthas does.  You should see it
