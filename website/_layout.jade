@@ -22,7 +22,27 @@ html(lang="en")
   body
     .wrapper
       .main
-        != yield
+      div.container-fluid
+        div.row
+          div.col-md-2
+            a(href="/")
+              img(src="logo-word.svg", width="100%")
+           div.col-md-4.col-md-offset-6.text-right
+             ul.list-inline
+               li 
+                 a(href="community.html") Community
+               li
+                 a(href="api.html") Documentation
+               li
+                 a(href="https://github.com/cvillecsteele/mithras") GitHub
+      div.container-fluid
+        div.row
+          div.col-md-12
+            lead.text-center AWS Config management for Javascripters
+            hr
+      != yield
     
+      hr
+
     script(src="/js/main.js")
     
