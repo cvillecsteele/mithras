@@ -1,10 +1,11 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>WALKTHROUGH, PART 1</h1><p>Use this document to get your first Mithras recipe working quickly and
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>WALKTHROUGH, PART 1: An EC2 Instance</h1><p>Use this document to get your first Mithras recipe working quickly and
 easily, and get introduced to some of the concepts behind Mithras.</p>
 <ul>
-<li><a href="quickstart1.html">Part One</a>: An EC2 instance</li>
-<li><a href="quickstart2.html">Part Two</a>: Configuring our instance</li>
-<li><a href="quickstart3.html">Part Three</a>: A complete application stack</li>
+<li><a href="guide1.html">Part One</a>: An EC2 instance</li>
+<li><a href="guide2.html">Part Two</a>: VPC &amp; Configuring our instance</li>
+<li><a href="guide3.html">Part Three</a>: A complete application stack</li>
+<li><a href="guide4.html">Part Four</a>: A dynamically-built script</li>
 </ul>
 <h2>Part One: An EC2 Instance</h2><p>This part of the guide will show you how to use Mithras to stand up an
 instance in EC2 in your default VPC.  In addition, you learn about
@@ -13,6 +14,10 @@ catalog and idempotent operations.</p>
 <p>Before you get going, make sure that you&#39;ve <a href="usage.html">installed</a>
 Mithras first.  Also, double check that your AWS credentials are set
 up correctly.</p>
+<p>To get rolling:</p>
+<pre><code>cp -r $MITHRASHOME/example ~/mysite
+</code></pre><p>Then fire up your favorite editor and load <code>~/mysite/example/simple.js</code>
+to follow along.</p>
 <h3>The <code>run()</code> function</h3><p>For this section of the guide, we&#39;ll be using the script found in the
 <code>example/simple.js</code> file (here on
 <a href="https://github.com/cvillecsteele/mithras/blob/master/example/simple.js">github</a>)

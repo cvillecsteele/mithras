@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>WALKTHROUGH, PART 3: A Complete Application Stack</h1><p>Use this document to get up and working quickly and easily with
+Mithras.</p>
+<ul>
+<li><a href="guide1.html">Part One</a>: An EC2 instance</li>
+<li><a href="guide2.html">Part Two</a>: VPC &amp; Configuring our instance</li>
+<li><a href="guide3.html">Part Three</a>: A complete application stack</li>
+<li><a href="guide4.html">Part Four</a>: A dynamically-built script</li>
+</ul>
+<h2>Part Three: A Complete Application Stack</h2><p>This part of the guide demonstrates a somewhat &quot;full&quot; environment, including:</p>
+<ul>
+<li>VPC</li>
+<li>Subnets</li>
+<li>Security Group</li>
+<li>IAM Instance Profile</li>
+<li>RDS Cluster</li>
+<li>Elasticache Cluster</li>
+<li>ELB</li>
+<li>ELB Instance Membership</li>
+<li>Route53 DNS Entry for ELB</li>
+<li>Instance</li>
+<li>Instance Setup<ul>
+<li>Package Update</li>
+<li>Package Installation</li>
+<li>Git Clone</li>
+<li>Nginx Installation and Configuration</li>
+</ul>
+</li>
+</ul>
+<p>Just for fun, though they don&#39;t do anything &quot;real&quot;, it also includes:</p>
+<ul>
+<li>File Manipulation on the Instance</li>
+<li>S3 Bucket Creation</li>
+<li>S3 Object Creation</li>
+</ul>
+<p>Since you&#39;ve gotten this far through the Guide, you already have some
+basic familiarity with Mithras.  This script does introduce a few new
+things, however.</p>
+<p>To get rolling:</p>
+<pre><code>cp -r $MITHRASHOME/example ~/mysite
+</code></pre><p>Then fire up your favorite editor and load <code>~/mysite/example/site.js</code>
+to follow along.</p>
+<h3>Dealing with AWS Slowness</h3><pre><code>var rElb = {
+    name: &quot;elb&quot;
+    module: &quot;elb&quot;
+    dependsOn: [rVpc.name, rSubnetA.name, rSubnetB.name, rwsSG.name]
+    on_delete: function(elb) { 
+        // Sometimes aws takes a bit to delete an elb, and we can&#39;t
+        // proceed with deleting until it&#39;s GONE.
+        this.delay = 30; 
+        return true;
+    }
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        elb: {...}
+        ...
+   }
+}
+</code></pre><p>Here, you&#39;ll notice this use of a new resource callback, <code>on_delete</code>.
+The <code>&quot;elb&quot;</code> handler implements this callback, giving you a way to
+modify the runtime value of the resource when the ELB has been
+deleted.  Why?  Sometimes AWS is slow.</p>
+<h3>Nginx</h3><pre><code>var template = {dependsOn: [rBootstrap.name]
+                params: {
+                    ensure: ensure 
+                    hosts: mithras.watch(rWebServer.name+&quot;._target&quot;)
+                    become: true
+                    becomeMethod: &quot;sudo&quot;
+                    becomeUser: &quot;root&quot;
+                }
+               };
+var nginx = require(&quot;nginx&quot;)(template, 
+                             // base conf content - use default
+                             null, 
+                             // included configs - none in this case
+                             null,
+                             // config files for our sites
+                             {
+                                 site1: fs.read(&quot;example/site1.conf&quot;)[0]
+                             });
+nginx.dependsOn = [rBootstrap.name]
+</code></pre><p>Here, we are using a Mithras Module, a javascript package which builds
+on core Mithras functions.  In this case it&#39;s the
+<a href="mod_nginx.html">nginx</a> module.  This module returns a set of
+resources to the caller, which neatly package up all of the work to
+install and configure Nginx on an instance.</p>
+<p>We call it with a template, which it copies into all of its included
+resources.  We also give it a configuration file to install on the
+remote instance.</p>
+<h3>Working with Git</h3><pre><code>var rRepo = {
+    name: &quot;apiRepo&quot;
+    module: &quot;git&quot;
+    dependsOn: [rGitPkg.name]
+    params: {
+        ensure: ensure
+        repo: &quot;git@github.com:cvillecsteele/mithras.git&quot;
+        version: apiSHA
+        dest: &quot;mithras&quot;
+        hosts: mithras.watch(rWebServer.name+&quot;._target&quot;)
+    }
+};
+</code></pre><p>This resource will clone a Git repository from GitHub onto the remote
+instance.  This functionality is one of the reasons that Mithras uses
+<code>ssh-agent</code>.  It uses SSH Key Forwarding to pass your keys from the
+machine running Mithras through the remote instance and on to GitHub,
+so you don&#39;t have to mess with moving your sensitive keys all round
+the &#39;net.  See
+<a href="https://developer.github.com/guides/using-ssh-agent-forwarding/">here</a>
+for more information about SSH key forwarding.</p>
+<h3>Run It</h3><p>Try it:</p>
+<pre><code>mithras -v run -f example/site.js up
+</code></pre><p>Be prepared to wait a bit.  Spinning up RDS and Elasticache Clusters
+can be slowwww.  To tear it all down:</p>
+<pre><code>mithras -v run -f example/site.js down
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

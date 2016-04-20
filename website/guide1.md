@@ -3,9 +3,10 @@
 Use this document to get your first Mithras recipe working quickly and
 easily, and get introduced to some of the concepts behind Mithras.
 
-* [Part One](quickstart1.html): An EC2 instance
-* [Part Two](quickstart2.html): VPC & Configuring our instance
-* [Part Three](quickstart3.html): A complete application stack
+* [Part One](guide1.html): An EC2 instance
+* [Part Two](guide2.html): VPC & Configuring our instance
+* [Part Three](guide3.html): A complete application stack
+* [Part Four](guide4.html): A dynamically-built script
 
 ## Part One: An EC2 Instance
 
@@ -17,6 +18,13 @@ catalog and idempotent operations.
 Before you get going, make sure that you've [installed](usage.html)
 Mithras first.  Also, double check that your AWS credentials are set
 up correctly.
+
+To get rolling:
+
+    cp -r $MITHRASHOME/example ~/mysite
+
+Then fire up your favorite editor and load `~/mysite/example/simple.js`
+to follow along.
 
 ### The `run()` function
 

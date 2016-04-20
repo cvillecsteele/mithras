@@ -657,7 +657,7 @@
         // instead of a string, array, etc.  When the resource is
         // preflight'ed, that function will be called with two
         // arguments, the current `catalog`, and an array of
-        // `resources`.  The parameter function may return undefined,
+        // `resources`.  The parameter function may return `undefined`,
         // and if so, it will remain a function.  If it returns any
         // other value, the value of the property to which it is
         // attached is retplaced with the parameter function's return

@@ -50,7 +50,7 @@ Read more about setting up credentials [here](https://github.com/aws/aws-sdk-go/
 To run your script:
 
     cd ~/project/my_site
-    mithras -v run -f 
+    mithras -v run -f site.js
 
 To run the example from the mithras repo:
 

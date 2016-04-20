@@ -1,31 +1,325 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>WALKTHROUGH, PART 2</h1><p>Use this document to get up and working quickly and easily with
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>WALKTHROUGH, PART 2: VPC &amp; Instance Configuration</h1><p>Use this document to get up and working quickly and easily with
 Mithras.</p>
 <ul>
-<li><a href="quickstart1.html">Part One</a>: An EC2 instance</li>
-<li><a href="quickstart2.html">Part Two</a>: Configuring our instance</li>
-<li><a href="quickstart3.html">Part Three</a>: A complete application stack</li>
+<li><a href="guide1.html">Part One</a>: An EC2 instance</li>
+<li><a href="guide2.html">Part Two</a>: VPC &amp; Configuring our instance</li>
+<li><a href="guide3.html">Part Three</a>: A complete application stack</li>
+<li><a href="guide4.html">Part Four</a>: A dynamically-built script</li>
 </ul>
-<h2>Part Two: Configuring our EC2 Instance</h2><p>This part of the guide will show you how to use Mithras to configure
-various resources on an EC2 instance, such as package upgrades and
-installation, service initialization, and more. We&#39;ll also dig a
-little deeper into key concepts used by Mithras.</p>
+<h2>Part Two: VPC &amp; Configuring our EC2 Instance</h2><p>This part of the guide demonstrates a somewhat more involved AWS
+configuration, including a VPC, two subnets, a security group, an IAM
+role, and an instance with some configuration done to it.</p>
+<p>You&#39;ll find the script in <code>$MITHRASHOME/example/intermediate.js</code> You
+should copy it to your Mithras sandbox:</p>
+<pre><code>cp $MITHRASHOME/example/intermediate.js ~/projects/mysite
+</code></pre><p>You&#39;ll see use of caching in this example, to reduce the overhead of
+querying AWS repeatedly for resources.  (Since it can take awhile.)</p>
+<p>We&#39;ll use explicit dependencies to order the resources so they can be
+built and torn down succesfully.  This example will demonstrate
+runtime configuration using <code>mithras.watch</code>.</p>
+<p>It also uses <code>mithras.bootstrap</code>, which prepares an instance for
+complex configuration operations by moving a copy of Mithras itself
+onto the target instance.</p>
 <p>Before you get going, make sure that you&#39;ve <a href="usage.html">installed</a>
 Mithras first.  Also, double check that your AWS credentials are set
-up correctly and that you&#39;ve run the first part of this script. (See
-<a href="quickstart1.html">Part One</a>.)</p>
-<h3>A Security Group</h3><h3>Coordinating Resources</h3><h3>Keypair resource</h3><h3>Instance resource</h3><h3>Applying resources to the catalog</h3><p>Phew!  That&#39;s it for resource definition.  Now that our script has set
-things up with resources, it tells Mithras to do the work of applying
-those resources to the current catalog of existing AWS resources:</p>
-<pre><code>mithras.apply(catalog, [  ], reverse);
-</code></pre><p>This code tells mithras to <code>apply</code> the resources in the second
-argument, <code>[rKey, rInstance]</code>, to the <code>catalog</code> argument.  The final
-argument is a boolean and if <code>true</code>, it tells Mithras that the order
-of dependencies is reversed, which is appropriate for <em>deleting</em> AWS
-resources, which is done in the opposite order as <em>creating</em> them.</p>
-<h3>Running the script</h3><p>Last but not least, here&#39;s how you tell Mithras to run this script.
-Make sure you&#39;ve set everything up according to the
-<a href="usage.html">usage</a> instructions, first.  Then, in your terminal, run:</p>
+up correctly and that if you&#39;ve run the first part of this script,
+you&#39;ve torn it down. (See <a href="guide1.html">Part One</a>.)</p>
+<p>Then:</p>
+<pre><code>cp -r $MITHRASHOME/example ~/mysite
+</code></pre><p>Fire up your favorite editor and load
+<code>~/mysite/example/intermediate.js</code> to follow along.</p>
+<h3>Caching</h3><p>The first part of this example sets up a cache.  When Mithras queries
+AWS, the resulting information is saved to disk in a <code>&quot;cache&quot;</code> folder,
+and subsequently used as the catalog:</p>
+<pre><code>// Filter regions
+mithras.activeRegions = function (catalog) { return [&quot;us-east-1&quot;]; };
+
+// Set up caching
+var Cache = (new (require(&quot;cache&quot;).Cache)).init();
+
+// Look for cached catalog and if none found get one.
+var catalog = Cache.get(&quot;catalog&quot;);
+if (!catalog) {
+    catalog = mithras.run();
+} else {
+    log0(&quot;Using cached catalog.&quot;);
+}
+</code></pre><h3>Our VPC</h3><p>Resource definitions follow a brief set of variable declarations in
+<code>intermediate.js</code>.  The first definition is for our VPC:</p>
+<pre><code>var rVpc = {
+    name: &quot;VPC&quot;
+    module: &quot;vpc&quot;
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        vpc: {
+            CidrBlock:       &quot;172.33.0.0/16&quot;
+        }
+        gateway: true
+        tags: {
+            Name: &quot;my-vpc&quot;
+        }
+    }
+};
+</code></pre><p>This sets up a VPC with a <code>CidrBlock</code> of <code>&quot;172.33.0.0/16&quot;</code>, and tags
+it.  The default mechanism used by the <code>&quot;vpc&quot;</code> handler is to identify
+VPCs by their <code>CidrBlock</code> value.  If, for example, you would like to
+identify VPCs based on tags, consult the VPC handler
+<a href="handler_vpc.html">documentation</a> for more information on the
+<code>on_find</code> property.</p>
+<h3>Two Subnets</h3><p>We define two subnet resources:</p>
+<pre><code>var rSubnetA = {
+    name: &quot;subnetA&quot;
+    module: &quot;subnet&quot;
+    dependsOn: [rVpc.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        subnet: {
+            CidrBlock:        &quot;172.33.1.0/24&quot;
+            VpcId:            mithras.watch(&quot;VPC._target.VpcId&quot;)
+            AvailabilityZone: defaultZone
+        }
+        tags: {
+            Name: &quot;primary-subnet&quot;
+        }
+        routes: [
+            {
+                DestinationCidrBlock: &quot;0.0.0.0/0&quot;
+                GatewayId:            mithras.watch(&quot;VPC._target.VpcId&quot;, mithras.findGWByVpcId)
+            }
+        ]
+    }
+};
+
+var rSubnetB = _.extend({}, rSubnetA, {
+    name: &quot;subnetB&quot;
+});
+rSubnetB.params = _.extend({}, rSubnetA.params, {
+    subnet: {
+        CidrBlock: &quot;172.33.2.0/24&quot;
+        VpcId:            mithras.watch(&quot;VPC._target.VpcId&quot;)
+        AvailabilityZone: altZone
+    }
+});
+</code></pre><p>You&#39;ll notice that for some of the properties in these resource
+definitions, a call to <code>mithras.watch</code> is used instead of a value.
+You can find the documentation for <code>mithras.watch</code>
+<a href="handler_mithras.html#watch">here</a>.  This function allows a resource
+to examine another resource for information gathered at runtime.</p>
+<p>In this case, the id of the VPC is not known until runtime, when AWS
+has been queried and a set of existing VPCs is known.  Or perhaps this
+VPC will be created during this run of Mithras.  In either case, the
+VPC resource defined above will have a <code>_target</code> property set to the
+VPC it matches, at runtime.  Using <code>mithras.watch</code>, we reach into the
+VPC resource and extract the <code>VpcId</code> property from the matching VPC.</p>
+<p>Use <code>mithras.watch</code> when one resource depends on information stored in
+the <code>_target</code> property of another resource.</p>
+<p>Here, the first part of the first argument to <code>mithras.watch</code> is
+<code>VPC</code>.  That&#39;s the value of the <code>name</code> property in the <code>rVpc</code> object
+defined above.  <code>Mithras.watch</code> uses the
+<a href="https://github.com/mariocasciaro/object-path">object-path</a> library to
+extract property values from other resources you&#39;ve defined.</p>
+<p>Also, note that our subnets have dependencies on the VPC resource,
+which is declared in the <code>dependsOn</code> property.</p>
+<h3>A Security Group</h3><pre><code>var rwsSG = {
+    name: &quot;webserverSG&quot;
+    module: &quot;secgroup&quot;
+    dependsOn: [rVpc.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        secgroup: {
+            Description: &quot;Webserver security group&quot;
+            GroupName:   &quot;webserver&quot;
+            VpcId:       mithras.watch(&quot;VPC._target.VpcId&quot;)
+        }
+        tags: {
+            Name: &quot;webserver&quot;
+        }
+        ingress: {
+            IpPermissions: [
+                {
+                    FromPort:   22
+                    IpProtocol: &quot;tcp&quot;
+                    IpRanges: [ {CidrIp: &quot;0.0.0.0/0&quot;} ]
+                    ToPort: 22
+                },
+                {
+                    FromPort:   80
+                    IpProtocol: &quot;tcp&quot;
+                    IpRanges: [ {CidrIp: &quot;0.0.0.0/0&quot;} ]
+                    ToPort: 80
+                }
+            ]
+        }
+        egress: {
+            IpPermissions: [
+                {
+                    FromPort:   0
+                    IpProtocol: &quot;tcp&quot;
+                    IpRanges: [ {CidrIp: &quot;0.0.0.0/0&quot;} ]
+                    ToPort:     65535
+                }
+            ]
+        }
+
+    }
+};
+</code></pre><p>Here, we define a simple &quot;firewall&quot; that our instances will use.  It
+allows incoming connections to port <code>22</code> and <code>80</code>, and outgoing
+connections to anywhere.</p>
+<h3>IAM Instance Profile</h3><p>Commonly, instances need to interact with the AWS API in some way.  A
+best practice on AWS is to use instance profiles.  Here, we give our
+instances permissions for any operation on S3 (just as an example):</p>
+<pre><code>var rIAM = {
+    name: &quot;IAM&quot;
+    module: &quot;iamProfile&quot;
+    dependsOn: [rVpc.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+        profile: {
+            InstanceProfileName: iamProfileName
+        }
+        role: {
+            RoleName: iamRoleName
+            AssumeRolePolicyDocument: aws.iam.roles.ec2TrustPolicy
+        }
+        policies: {
+            &quot;s3_full_access&quot;: {
+                &quot;Version&quot;: &quot;2012-10-17&quot;,
+                &quot;Statement&quot;: [
+                    {
+                        &quot;Effect&quot;: &quot;Allow&quot;,
+                        &quot;Action&quot;: &quot;s3:*&quot;,
+                        &quot;Resource&quot;: &quot;*&quot;
+                    }
+                ]
+            },
+        }
+    }
+}
+</code></pre><p>See the <a href="handler_iam.html">docs</a> for the <code>&quot;iamProfile&quot;</code> handler and
+for the <a href="core_iam.html">IAM Core Functions</a> for more information.</p>
+<h3>Instance Resource</h3><p>The next interesting resource is our instance:</p>
+<pre><code>var rWebServer = {
+    name: &quot;webserver&quot;
+    module: &quot;instance&quot;
+    dependsOn: [rwsSG.name, rSubnetA.name, rIAM.name, rKey.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+        on_find: function(catalog) {
+            var matches = _.filter(catalog.instances, function (i) {
+                if (i.State.Name != &quot;running&quot;) {
+                    return false;
+                }
+                return (_.where(i.Tags, {&quot;Key&quot;: &quot;Name&quot;, 
+                                         &quot;Value&quot;: webserverTagName}).length &gt; 0);
+            });
+            return matches;
+        }
+        tags: {
+            Name: webserverTagName
+        }
+        instance: {
+            ImageId:        &quot;ami-60b6c60a&quot;
+            MaxCount:       1
+            MinCount:       1
+            DisableApiTermination: false
+            EbsOptimized:          false
+            IamInstanceProfile: {
+                Name: iamProfileName
+            }
+            InstanceInitiatedShutdownBehavior: &quot;terminate&quot;
+            InstanceType:                      &quot;t2.small&quot;
+            KeyName:                           keyName
+            Monitoring: {
+                Enabled: true
+            }
+            NetworkInterfaces: [
+                {
+                    AssociatePublicIpAddress: true
+                    DeleteOnTermination:      true
+                    DeviceIndex:              0
+                    Groups:                  [ mithras.watch(&quot;webserverSG._target.GroupId&quot;) ]
+                    SubnetId:                mithras.watch(&quot;subnetA._target.SubnetId&quot;)
+                }
+            ]
+        } // instance
+    } // params
+};
+</code></pre><p>We want our instance to have a security group and an IAM instance
+profile, so this resource depends on those.</p>
+<h3>Bootstrapping</h3><pre><code>var rBootstrap = new mithras.bootstrap({
+    name: &quot;bootstrap&quot;
+    dependsOn: [rWebServer.name]
+    params: {
+        ensure: ensure
+        become: true
+        becomeMethod: &quot;sudo&quot;
+        becomeUser: &quot;root&quot;
+        hosts: mithras.watch(rWebServer.name+&quot;._target&quot;)
+    }
+});
+</code></pre><p>Mithras uses copies of itself on remote instances to perform complex
+configuration tasks.  Handlers like <code>&quot;packager&quot;</code> and <code>&quot;service&quot;</code>
+require it.  Before we go any farther, we call <code>mithras.bootstrap</code> to
+obtain a standard set of resources for setting up an instance for
+complex ops using Mithras.</p>
+<h3>The Punchline: Package Update!</h3><p>The final resource tells Mithras to run <code>&quot;yum update&quot;</code> on our instance:</p>
+<pre><code>var rUpdatePkgs = {
+    name: &quot;updatePackages&quot;
+    module: &quot;packager&quot;
+    skip: (ensure === &#39;absent&#39;)
+    dependsOn: [rBootstrap.name]
+    params: {
+        ensure: &quot;latest&quot;
+        name: &quot;&quot;
+        become: true
+        becomeMethod: &quot;sudo&quot;
+        becomeUser: &quot;root&quot;
+        hosts: mithras.watch(rWebServer.name+&quot;._target&quot;)
+    }
+};
+</code></pre><p>This is the simplest possible per-instance configuration.  See the API
+<a href="api.html">Reference</a> to get an idea about what you can do
+with Mithras.</p>
+<h3>Applying Resources to the Catalog</h3><p>Finally we are ready to apply these resources to the current catalog
+on AWS.  For convenience, we group the resources into to containing
+resources:</p>
+<pre><code>var rStack = {
+    name: &quot;stack&quot;
+    includes: [
+        rVpc, 
+        rSubnetA, 
+        rSubnetB, 
+        rwsSG, 
+        rIAM
+    ]
+}
+
+var rWSTier = {
+    name: &quot;wsTier&quot;
+    includes: [
+        rKey,
+        rWebServer, 
+        rBootstrap,
+        rUpdatePkgs,
+    ]
+}
+</code></pre><p>Then we apply:</p>
+<pre><code>catalog = mithras.apply(catalog, [ rStack, rWSTier ], reverse);
+</code></pre><h3>Caching Again</h3><p><code>Mithras.apply</code> returns an updated copy of the catalog, which includes
+any changes it makes as a result of running your resources.  We take
+that updated catalog and store it on disk for 5 minutes:</p>
+<pre><code>// Cache it for 5 mintues.
+Cache.put(&quot;catalog&quot;, catalog, (5 * 60));
+</code></pre><h3>Running the script</h3><p>Run the script:</p>
 <pre><code>mithras -v run -f example/intermediate.js
-</code></pre><p>Since we specified a global Mithras CLI option of <code>-v</code>, we see some
-pretty verbose output about what Mirthas does.</p><hr></div><script src="/js/main.js"></script></body></html>
+</code></pre><p>Watch Mithras build your stack, run your instance, and configure it.</p><hr></div><script src="/js/main.js"></script></body></html>

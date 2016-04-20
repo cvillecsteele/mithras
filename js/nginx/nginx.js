@@ -47,9 +47,8 @@
 // This module exports a constructor, into which the caller passes in
 // 4 arguments: `template`, `baseConf`, `configs`, and `sites`.  Nginx
 // returns a single resource, which `includes` sub-resources, giving
-// the caller a convenient way of boostrapping remote instances with
-// all of the necessary configuration needed for Mithras to operate on
-// them.
+// the caller a convenient way of setting up Nginx on a remote
+// instance.
 // 
 // Typically, the caller will define a resource using the `"instance"`
 // module, which creates (or finds) instances on AWS.  The `template`

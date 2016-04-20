@@ -82,9 +82,11 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* document on-find for all handlers
 * website
   * quickstart 2
   * quickstart 3
+* ASG solution
 * better null arg handling in exec.run  
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * fix arg order in S3 exposed JS functions  
