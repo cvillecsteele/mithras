@@ -3,68 +3,76 @@ function run() {
     var sprintf = require("sprintf").sprintf;
 
     var publicRE = new RegExp("@public", 'm');
+    var modRE = new RegExp("@module", 'm');
     var commentRE= new RegExp("^[ \t]*//");
 
     var re = new RegExp("go|js$");
     var skip = [new RegExp("^vendor"), new RegExp("^website")];
     var core = [];
     var handlers = [];
+    var mod = [];
     filepath.walk(".", function(path, info, err) {
-        if (!info.IsDir) {
-	    var results = filepath.split(path);
-	    var dir = results[0];
-	    var file = results[1];
-	    for (i in skip) {
-		if (skip[i].exec(dir)) {
-		    return;
-		}
+        if (info.IsDir || (!re.exec(path))) {
+	    return;
+	}
+	var results = filepath.split(path);
+	var dir = results[0];
+	var file = results[1];
+	for (i in skip) {
+	    if (skip[i].exec(dir)) {
+		return;
 	    }
-	    if (re.exec(path)) {
-		var results = fs.read(path);
-		if (results[1]) {
-		    console.log("Error", results[1]);
-		    os.exit(1);
-		}
-		var ext = filepath.ext(file);
-		var extRE = new RegExp(ext);
-		var contents = results[0].split("\n");
-		var comments = [];
-		var current = "";
-		for (var lineNo in contents) {
-		    var line = contents[lineNo];
-		    if (line.match(commentRE)) {
-			var stripped = line.replace(commentRE, '');
-			current = current + stripped + "\n";
-		    } else {
-			if (current != "") {
-			    if (current.match(publicRE)) {
+	}
+	var results = fs.read(path);
+	if (results[1]) {
+	    console.log("Error", results[1]);
+	    os.exit(1);
+	}
+	var ext = filepath.ext(file);
+	var extRE = new RegExp(ext);
+	var contents = results[0].split("\n");
+	var comments = [];
+	var current = "";
+	for (var lineNo in contents) {
+	    var line = contents[lineNo];
+	    if (line.match(commentRE)) {
+		var stripped = line.replace(commentRE, '');
+		current = current + stripped + "\n";
+	    } else {
+		if (current != "") {
+		    if (current.match(publicRE)) {
+			if (comments.length == 0) {
+			    if (current.match(modRE)) {
+				var f = "mod_" + file.replace(extRE, ".md");
+				path = filepath.join("website", f);
+				mod.push(path);
+				comments.
+				    push(current.replace(publicRE, "").
+					 replace(modRE, ""));
+			    } else if (ext === ".go") {
+				var f = "core_" + file.replace(extRE, ".md");
+				path = filepath.join("website", f);
+				core.push(path);
+				comments.push(current.replace(publicRE, ""));
+			    } else if (ext === ".js") {
+				var f = "handler_" + file.replace(extRE, ".md");
+				path = filepath.join("website", f);
+				handlers.push(path);
 				comments.push(current.replace(publicRE, ""));
 			    }
-			    current = "";
 			}
 		    }
-		}
-		var md = "";
-		_.each(comments, function (c) {
-		    md = md + c + "\n";
-		});
-		if (comments.length > 0) {
-		    var path;
-		    if (ext === ".go") {
-			path = filepath.join("website", 
-					     "core_" + file.replace(extRE, ".md"));
-			core.push(path);
-		    } else if (ext === ".js") {
-			path = filepath.join("website", 
-					     "handler_" + file.replace(extRE, ".md"));
-			handlers.push(path);
-		    }
-		    console.log(sprintf("%32s: Updated", path));
-		    fs.write(path, md, 0644);
-		} else {
-		    console.log(sprintf("%32s: No comments found", file));
+		    current = "";
 		}
 	    }
+	}
+	var md = "";
+	_.each(comments, function (c) {
+	    md = md + c + "\n";
+	});
+	console.log(sprintf("%32s: %d comments.", file, comments.length));
+	if (comments.length > 0) {
+	    fs.write(path, md, 0644);	    
 	}
     });
     
@@ -103,6 +111,24 @@ function run() {
 	});
     });
     fs.write("website/handlers.jade", contents, 0644);
+
+    // MODULES
+    var n = mod.length / 3;
+    var contents = "div.container-fluid\n  div.row\n";
+    var lists = _.chain(mod).groupBy(function(element, index) {
+	return Math.floor(index/n);
+    }).toArray().value();
+    _.each(lists, function(l) {
+	contents = contents + "    div.col-md-4\n      ul.list-unstyled\n";
+	_.each(l, function(file) {
+	    var results = filepath.split(file);
+	    var text = results[1].replace(/mod_(.*).md/, '$1');
+	    var file = results[1].replace(/(mod_.*).md/, '$1');
+	    contents = contents + 
+		sprintf("        li: a(href='%s.html') %s\n", file, text);
+	});
+    });
+    fs.write("website/modules.jade", contents, 0644);
 
     // BUILD
 

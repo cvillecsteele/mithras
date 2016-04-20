@@ -1,0 +1,44 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>nginx</h1><p> Nginx is a resource handler for dealing with nginx running on instances.</p>
+<p> Usage:</p>
+<pre><code> var template = {dependsOn: [rBootstrap.name]
+                  params: {
+                      ensure: ensure 
+                      hosts: mithras.watch(rWebServer.name+&quot;._target&quot;)
+                      become: true
+                      becomeMethod: &quot;sudo&quot;
+                      becomeUser: &quot;root&quot;
+                  }
+                 };
+ var nginx = require(&quot;nginx&quot;)(template, 
+                              // base conf content - use default
+                              null, 
+                              // included configs - none in this case
+                              null,
+                              // config files for our sites
+                              {
+                                  site1: fs.read(&quot;example/site1.conf&quot;)[0]
+                              });
+</code></pre><p> This module exports a constructor, into which the caller passes in
+ 4 arguments: <code>template</code>, <code>baseConf</code>, <code>configs</code>, and <code>sites</code>.  Nginx
+ returns a single resource, which <code>includes</code> sub-resources, giving
+ the caller a convenient way of boostrapping remote instances with
+ all of the necessary configuration needed for Mithras to operate on
+ them.</p>
+<p> Typically, the caller will define a resource using the <code>&quot;instance&quot;</code>
+ module, which creates (or finds) instances on AWS.  The <code>template</code>
+ passed into the <code>nginx</code> constructor will identify these instances
+ via a <code>hosts</code> parameter.</p>
+<p> <code>template</code>: This argument supplies the nginx base configuration,
+ including a <code>params</code> object, typically with a set of escalation
+ properties, and a <code>hosts</code> property.</p>
+<p> <code>baseConf</code>: A string containing the base nginx configuration file,
+ which will be copied to <code>/etc/nginx/nginx.conf</code>.  If the argument
+ is <code>null</code>, a default configuration is used.</p>
+<p> <code>configs</code>: A map of config-name =&gt; config-contents, where
+ <code>config-name</code> is the name of a file to be placed in
+ <code>/etc/nginx/conf.d</code>, with the contents <code>config-contents</code>.</p>
+<p> <code>sites</code>: A map of site-name =&gt; site-config, where <code>site-name</code> is
+ the name of a file to be placed in <code>/etc/nginx/sites-available</code>,
+ with the contents <code>site-config</code>.  Each file so placed is given a
+ symlink in <code>/etc/nginx/sites-enabled</code>.</p><hr></div><script src="/js/main.js"></script></body></html>

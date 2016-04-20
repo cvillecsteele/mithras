@@ -82,12 +82,11 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* document all handlers
+* document nginx handler
 * network handler should respect 'ensure'
 * website
   * quickstart 2
   * quickstart 3
-* documentation: fix css / toc
 * better null arg handling in exec.run  
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * fix arg order in S3 exposed JS functions  
@@ -117,5 +116,5 @@ To serve docs locally, first install [harp](http://harpjs.com), then:
 ISSUES
 ###############################################################################
 
-* damn it's a big hunk of code... 28Mb???
+* damn it's a big hunk of code... 28Mb???... NO... Now 30!!
 * phew is otto sloowwww
