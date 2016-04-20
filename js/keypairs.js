@@ -83,6 +83,14 @@
     var handler = {
         moduleNames: ["keypairs"]
         findInCatalog: function(catalog, resource) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.keypairs, function(key) { 
                 return key.KeyName === resource.params.key.KeyName;
             });
@@ -149,7 +157,7 @@
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {

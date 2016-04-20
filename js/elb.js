@@ -160,7 +160,15 @@
 
     var handler = {
         moduleNames: ["elb", "elbMembership"]
-        findInCatalog: function(catalog, elbName) {
+        findInCatalog: function(catalog, resource, elbName) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.elbs, function(elb) {
                 return elb.LoadBalancerName === elbName;
             });
@@ -340,7 +348,7 @@
                 break;
             }
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {
@@ -349,7 +357,7 @@
             if (resource.module === handler.moduleNames[0]) {
                 var params = resource.params;
                 var elb = params.elb;
-                var t = handler.findInCatalog(catalog, elb.LoadBalancerName);
+                var t = handler.findInCatalog(catalog, resource, elb.LoadBalancerName);
                 if (t) {
                     return [t, true];
                 }

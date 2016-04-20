@@ -133,13 +133,17 @@
 
     var handler = {
         moduleNames: ["instance"]
-        findInCatalog: function(catalog, resource) {
+        findInCatalog: function(catalog, resources, resource) {
             if (!typeof(resource.params.on_find) === 'function') {
                 console.log(sprintf("Instance resource '%s' has no 'on_find' param.", 
                                     resource.name));
                 os.exit(3);
             }
-            return resource.params.on_find(catalog);
+	    result = resource.params.on_find(catalog, resources);
+	    if (Array.isArray(result) && result.length == 0) {
+		return;
+	    }
+	    return result;
         }
         handle: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { return resource.module === m; })) {
@@ -230,19 +234,19 @@
                 }
                 
                 // return 'em
-                return [handler.findInCatalog(catalog, resource), true];
+                return [handler.findInCatalog(catalog, resources, resource), true];
                 break;
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {
                 return [null, false];
             }
             var params = resource.params;
-            var found = handler.findInCatalog(catalog, resource);
+            var found = handler.findInCatalog(catalog, resources, resource);
             if (found) {
                 return [found, true];
             }

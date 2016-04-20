@@ -44,8 +44,14 @@ func loadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 	}
 
 	path := filepath.Join(require.JsDir, "mithras.js")
-	coreBuff := require.LoadScript(path)
-	userBuff := require.LoadScript(name)
+	coreBuff, err := require.LoadScript(path)
+	if err != nil {
+		log.Fatalf("Error loading '%s': %s", path, err)
+	}
+	userBuff, err := require.LoadScript(name)
+	if err != nil {
+		log.Fatalf("Error loading '%s': %s", name, err)
+	}
 
 	rt := otto.New()
 

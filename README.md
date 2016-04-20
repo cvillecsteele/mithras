@@ -82,8 +82,6 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* document nginx handler
-* network handler should respect 'ensure'
 * website
   * quickstart 2
   * quickstart 3

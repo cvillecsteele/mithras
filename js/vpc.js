@@ -92,7 +92,15 @@
 
     var handler = {
         moduleName: "vpc"
-        findVPCInCatalog: function(catalog, cidr) {
+        findVPCInCatalog: function(catalog, resource, cidr) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.vpcs, function(vpc) { 
                 return vpc.CidrBlock === cidr;
             });
@@ -200,11 +208,13 @@
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
-            var vpc = handler.findVPCInCatalog(catalog, resource.params.vpc.CidrBlock);
+            var vpc = handler.findVPCInCatalog(catalog, 
+					       resource,
+					       resource.params.vpc.CidrBlock);
             if (vpc) {
                 return [vpc, true];
             }

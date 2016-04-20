@@ -1,2 +1,104 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: IAM</h1><hr></div><script src="/js/main.js"></script></body></html>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: IAM</h1><p> This package exports entry points into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#scan">aws.iam.profiles.scan</a></li>
+<li><a href="#delete">aws.iam.profiles.delete</a></li>
+<li><a href="#create">aws.iam.profiles.create</a></li>
+<li><p><a href="#describe">aws.iam.profiles.describe</a></p>
+</li>
+<li><p><a href="#scanRole">aws.iam.roles.scan</a></p>
+</li>
+<li><a href="#deleteRole">aws.iam.roles.delete</a></li>
+<li><a href="#createRole">aws.iam.roles.create</a></li>
+<li><a href="#describeRole">aws.iam.roles.describe</a></li>
+<li><a href="#putPolicy">aws.iam.roles.putRolePolicy</a></li>
+<li><a href="#deletePolicy">aws.iam.roles.deleteRolePolicy</a></li>
+<li><a href="#add">aws.iam.roles.addRoleToProfile</a></li>
+<li><a href="#remove">aws.iam.roles.removeRoleFromProfile</a></li>
+</ul>
+</blockquote>
+<p> This API allows the caller to work with IAM profiles.</p>
+<h2>AWS.IAM.PROFILES.SCAN</h2><p> <a name="scan"></a>
+ <code>aws.iam.profiles.scan(region);</code></p>
+<p> Scan AWS for IAM profiles</p>
+<p> Example:</p>
+<pre><code>
+  var profiles = aws.iam.profiles.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.IAM.PROFILES.DELETE</h2><p> <a name="delete"></a>
+ <code>aws.iam.profiles.delete(region, id);</code></p>
+<p> Delete a profile.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.profiles.delete(&quot;us-east-1&quot;, &quot;my-profile&quot;);
+</code></pre><h2>AWS.IAM.PROFILES.CREATE</h2><p> <a name="create"></a>
+ <code>aws.iam.profiles.create(region, id);</code></p>
+<p> Create a profile.</p>
+<p> Example:</p>
+<pre><code>
+  var profile = aws.iam.profiles.create(&quot;us-east-1&quot;, &quot;my-profile&quot;);
+</code></pre><h2>AWS.IAM.PROFILES.DESCRIBE</h2><p> <a name="describe"></a>
+ <code>aws.iam.profiles.describe(region, id);</code></p>
+<p> Get info about a profile</p>
+<p> Example:</p>
+<pre><code>
+  var p = aws.iam.profiles.describe(&quot;us-east-1&quot;, &quot;my-profile&quot;);
+</code></pre><h2>AWS.IAM.ROLES.SCAN</h2><p> <a name="scanRole"></a>
+ <code>aws.iam.roles.scan(region);</code></p>
+<p> Scan AWS for IAM roles</p>
+<p> Example:</p>
+<pre><code>
+  var roles = aws.iam.roles.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.IAM.ROLES.DELETE</h2><p> <a name="deleteRole"></a>
+ <code>aws.iam.roles.delete(region, id);</code></p>
+<p> Delete a profile.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.roles.delete(&quot;us-east-1&quot;, &quot;my-role&quot;);
+</code></pre><h2>AWS.IAM.ROLES.CREATE</h2><p> <a name="createRole"></a>
+ <code>aws.iam.roles.create(region, id, trust);</code></p>
+<p> Create a role.</p>
+<p> Example:</p>
+<pre><code>
+  var role = aws.iam.roles.create(&quot;us-east-1&quot;, &quot;my-role&quot;, aws.iam.roles.ec2TrustPolicy);
+</code></pre><h2>AWS.IAM.ROLES.DESCRIBE</h2><p> <a name="describeRole"></a>
+ <code>aws.iam.roles.describe(region, id);</code></p>
+<p> Get info about a role</p>
+<p> Example:</p>
+<pre><code>
+  var p = aws.iam.roles.describe(&quot;us-east-1&quot;, &quot;my-role&quot;);
+</code></pre><h2>AWS.IAM.ROLES.PUTROLEPOLICY</h2><p> <a name="putPolicy"></a>
+ <code>aws.iam.roles.putRolePolicy(region, id, policyName, policy);</code></p>
+<p> Attach a policy to a role.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.roles.putRolePolicy(&quot;us-east-1&quot;, &quot;my-role&quot;, &quot;s3_full_access&quot;,
+   {
+            &quot;Version&quot;: &quot;2012-10-17&quot;,
+            &quot;Statement&quot;: [
+            {
+                &quot;Effect&quot;: &quot;Allow&quot;,
+                &quot;Action&quot;: &quot;s3:*&quot;,
+                &quot;Resource&quot;: &quot;*&quot;
+            }
+            ]
+    });
+</code></pre><h2>AWS.IAM.ROLES.DELETEROLEPOLICY</h2><p> <a name="deletePolicy"></a>
+ <code>aws.iam.roles.deleteRolePolicy(region, id, policyName);</code></p>
+<p> Delete a policy from a role.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.roles.deleteRolePolicy(&quot;us-east-1&quot;, &quot;my-role&quot;, &quot;s3_full_access&quot;);
+</code></pre><h2>AWS.IAM.ROLES.ADDROLETOPROFILE</h2><p> <a name="add"></a>
+ <code>aws.iam.roles.addRoleToProfile(region, profileName, roleName);</code></p>
+<p> Add a role to a profile.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.roles.addRoleToProfile(&quot;us-east-1&quot;, &quot;my-profile&quot;, &quot;my-role&quot;);
+</code></pre><h2>AWS.IAM.ROLES.REMOVEROLEFROMPROFILE</h2><p> <a name="remove"></a>
+ <code>aws.iam.roles.removeRoleFromProfile(region, profileName, roleName);</code></p>
+<p> Remove a role from a profile.</p>
+<p> Example:</p>
+<pre><code>
+  aws.iam.roles.removeRoleFromProfile(&quot;us-east-1&quot;, &quot;my-profile&quot;, &quot;my-role&quot;);
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

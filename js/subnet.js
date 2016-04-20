@@ -100,7 +100,15 @@
 
     var handler = {
         moduleName: "subnet"
-        findSubnetInCatalog: function(catalog, vpcId, cidr) {
+        findSubnetInCatalog: function(catalog, resource, vpcId, cidr) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.subnets, function(s) { 
                 return (s.CidrBlock === cidr && s.VpcId == vpcId);
             });
@@ -238,12 +246,12 @@
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
             var params = resource.params;
-            var s = handler.findSubnetInCatalog(catalog, params.subnet.VpcId, params.subnet.CidrBlock);
+            var s = handler.findSubnetInCatalog(catalog, resource, params.subnet.VpcId, params.subnet.CidrBlock);
 
             if (s) {
                 return [s, true];

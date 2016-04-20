@@ -188,13 +188,15 @@
                     var dict = resourceMap(resources);
                     _.each(order, function(name) {
                         log0(sprintf("PREFLIGHT: %s", name));
+
                         var updated = mithras.updateResource(dict[name], 
                                                              catalog, 
                                                              resources, 
                                                              name);
                         dict[name] = updated;
+
                         _.each(mithras.modules.preflight.funcs, function(f) {
-                            var result = f(catalog, updated);
+                            var result = f(catalog, resources, updated);
                             var target = result[0];
                             var handled = result[1];
                             if (handled && target) {
@@ -235,6 +237,7 @@
             var ssh = _.extend({}, template, {
                 name: "mithrasSshAvailable"
                 module: "network"
+                skip: (template.params.ensure === "absent")
             });
             ssh.params = _.extend({}, template.params, {
                 timeout: 120
@@ -249,7 +252,8 @@
                 command: "uname -s"
             });
 
-            var paramsWithoutBecome = _.omit(template.params, "become", "becomeUser", "becomeMethod");
+            var paramsWithoutBecome = _.omit(template.params, 
+					     "become", "becomeUser", "becomeMethod");
 
             var dir = _.extend({}, template, {
                 name: "mithrasDir"
@@ -310,7 +314,7 @@
             jsDir.dependsOn = (jsDir.dependsOn || []).concat([binDir.name, dir.name]);
             jsDir.params = _.extend({}, template.params, {
                 skip: skipper("mithrasJsDir")
-                src: filepath.join(mithras.JSDIR, "js")
+                src: mithras.JSDIR
                 dest: ".mithras/js"
             });
 
@@ -363,12 +367,15 @@
                 skip: skipper("mithrasWrapper")
                 src: mithras.watch("mithrasWrapper._currentHost", 
                                    function(catalog, resources, inst) {
-                                       var u = objectPath.get(resources, "mithrasUname._target");
+                                       var u = objectPath.get(resources, 
+							      "mithrasUname._target");
                                        var ip = inst.PublicIpAddress;
                                        if (!u || !u[ip] || typeof(u[ip]) != "string") {
                                            return;
                                        }
-                                       var result = osAndArchForInstance(catalog, resources, inst);
+                                       var result = osAndArchForInstance(catalog, 
+									 resources, 
+									 inst);
                                        if (!result) {
                                            return;
                                        }
@@ -753,66 +760,52 @@
         // Called by user scripts to interrogate AWS and return a
         // `catalog` of resources.
         //
-        run: function () {
-            var cat = {
-                zones: [],
-                iamProfiles: [],
-                iamRoles: [],
-                keypairs: [],
-                rrs: [],
-                dbs: [],
-                caches: [],
-                securityGroups: [],
-                regions: [],
-                instances: [],
-                vpcs: [],
-                gateways: [],
-                subnets: [],
-                routeTables: [],
-                elbs: [],
-            }
-            
+        run: function (targets) {
             if (mithras.verbose) {
                 log(sprintf("MITHRAS v %s", mithras.VERSION));
             }
 
-            cat.regions = aws.regions.scan();
-            
-            var regions = mithras.activeRegions(cat);
-            var cnt = regions.length;
-            for (var i = 0; i < cnt; i++) {
+	    var scanners = {
+		caches: aws.elasticache.scan,
+		dbs: aws.rds.scan,
+		instances: aws.instances.scan,
+		securityGroups: aws.securityGroups.scan,
+		vpcs: aws.vpcs.scan,
+		gateways: aws.vpcs.gateways.scan,
+		subnets: aws.subnets.scan,
+		routeTables: aws.routeTables.scan,
+		elbs: aws.elbs.scan,
+		zones: aws.route53.zones.scan,
+		rrs: aws.route53.rrs.scan,
+		iamProfiles: aws.iam.profiles.scan,
+		iamRoles: aws.iam.roles.scan,
+		keypairs: aws.keypairs.scan,
+	    };
+
+	    if (!targets) {
+		targets = Object.keys(scanners);
+	    }
+	    var cat = _.reduce(targets, function(memo, t){ 
+		memo[t] = [];
+		return memo;
+            }, {});
+
+	    targets = _.reduce(targets, function(memo, t){ 
+		memo[t] = scanners[t];
+		return memo;
+            }, {});
+
+	    var regions = aws.regions.scan();
+	    cat.regions = regions;
+	    _.each(mithras.activeRegions(regions), function(region) {
                 if (mithras.verbose) {
-                    log(sprintf("Scanning ec2 region: %s", regions[i]));
+                    log(sprintf("Scanning ec2 region: %s", region));
                 }
-
                 // This concat nonsense is because scan functions return array-LIKE things, but we want real arrays.
-                cat.caches         = cat.caches.concat(aws.elasticache.scan(regions[i]));
-                cat.dbs            = cat.dbs.concat(aws.rds.scan(regions[i]));
-                cat.instances      = cat.instances.concat(aws.instances.scan(regions[i]));
-                cat.securityGroups = cat.securityGroups.concat(aws.securityGroups.scan(regions[i]));
-                cat.vpcs           = cat.vpcs.concat(aws.vpcs.scan(regions[i]));
-                cat.gateways       = cat.gateways.concat(aws.vpcs.gateways.scan(regions[i]));
-                cat.subnets        = cat.subnets.concat(aws.subnets.scan(regions[i]));
-                cat.routeTables    = cat.routeTables.concat(aws.routeTables.scan(regions[i]));
-                cat.elbs           = cat.elbs.concat(aws.elbs.scan(regions[i]));
-                cat.zones          = cat.zones.concat(aws.route53.zones.scan(regions[i]));
-                cat.rrs            = cat.rrs.concat(aws.route53.rrs.scan(regions[i]));
-                cat.iamProfiles    = cat.iamProfiles.concat(aws.iam.profiles.scan(regions[i]));
-                cat.iamRoles       = cat.iamRoles.concat(aws.iam.roles.scan(regions[i]));
-                cat.keypairs       = cat.keypairs.concat(aws.keypairs.scan(regions[i]));
-            }
-
-            var cnt = cat.instances.length;
-            for (var i = 0; i < cnt; i++) {
-                if (cat.instances[i].PublicIpAddress) {
-                    peek(cat.instances[i].PublicIpAddress, 
-                         mithras.sshKeyPathForInstance({}, cat.instances[i]), 
-                         mithras.sshUserForInstance({}, cat.instances[i]),
-                         function(output) {
-                             cat.instances[i].uname = output;
-                         });
-                }
-            }
+		_.each(targets, function(f, target) {
+		    cat[target] = cat[target].concat(f(region));
+		});
+	    });
 
             return cat;
         }

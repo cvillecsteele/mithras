@@ -214,18 +214,27 @@
             }
             return [null, true];
         }
-        findInCatalog: function(catalog, id) {
+        findInCatalog: function(catalog, resource, id) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.caches, function(inst) { 
                 return inst.CacheClusterId === id;
             });
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {
                 return [null, false];
             }
             var cache = handler.findInCatalog(catalog, 
+					      resource,
                                               resource.params.cache.CacheClusterId);
             if (cache) {
                 return [cache, true];

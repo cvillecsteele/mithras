@@ -70,26 +70,26 @@ type Package struct {
 	Version string
 }
 
-func LoadScript(name string) *bytes.Buffer {
+func LoadScript(name string) (*bytes.Buffer, error) {
 	f, err := os.Open(name)
 	if err != nil {
-		return nil
+		return nil, err
 	}
 	defer f.Close()
 	buff := bytes.NewBuffer(nil)
 
 	if _, err := buff.ReadFrom(f); err != nil {
-		return nil
+		return nil, err
 	}
 
-	return buff
+	return buff, nil
 }
 
 func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *bytes.Buffer) {
 
 	if regexp.MustCompile("^/").FindString(filename) != "" {
 		// Load absolute path
-		if buf := LoadScript(filename); buf != nil {
+		if buf, err := LoadScript(filename); buf != nil {
 			return filename, buf
 		}
 	}

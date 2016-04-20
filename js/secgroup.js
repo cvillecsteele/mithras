@@ -117,7 +117,15 @@
 
     var handler = {
         moduleName: "secgroup"
-        findInCatalog: function(catalog, vpcId, groupName) {
+        findInCatalog: function(catalog, resource, vpcId, groupName) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.securityGroups, function(s) { 
                 return (s.GroupName === groupName && s.VpcId == vpcId);
             });
@@ -204,13 +212,13 @@
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
             var params = resource.params;
             var sg = params.secgroup;
-            var s = handler.findInCatalog(catalog, sg.VpcId, sg.GroupName);
+            var s = handler.findInCatalog(catalog, resource, sg.VpcId, sg.GroupName);
             if (s) {
                 return [s, true];
             }

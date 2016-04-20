@@ -6,4 +6,30 @@
 </ul>
 </blockquote>
 <p> Usage:</p>
-<p> <code>var Cache = (new (require(&quot;cache&quot;).Cache)).init();</code></p><hr></div><script src="/js/main.js"></script></body></html>
+<p> <code>var Cache = (new (require(&quot;cache&quot;).Cache)).init();</code></p>
+<h2><code>Cache</code></h2><p> Constructor function</p>
+<p> <code>new Cache(path)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+</code></pre>
+<h2><code>init</code></h2><p> Initialize a cache</p>
+<p> <code>cache.init()</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
+</code></pre>
+<h2><code>get</code></h2><p> Get an object from cache.</p>
+<p> <code>cache.get(key)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
+ var foo = cache.get(&quot;foo&quot;);
+</code></pre>
+<h2><code>put</code></h2><p> Put an object into the cache.  The <code>value</code> arg is run
+ through <code>JSON.stringify</code> before storage in the cache.</p>
+<p> <code>cache.put(key, value, expiry)</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cache = new Cache(&quot;.cache&quot;);
+ cache.init();
+ cache.put(&quot;foo&quot;, &quot;somevalue&quot;, (60 * 5));
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

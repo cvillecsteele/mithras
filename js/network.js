@@ -108,22 +108,36 @@
 						     resources, 
 						     resource.name);
 		p = updated.params;
+		var ensure = p.ensure;
 		
 		var port = p.port || 22;
 		var timeout = p.timeout || 120;
 		var ok = network.check(host.PublicIpAddress, port, timeout);
 		
 		if (ok) {
-		    if (mithras.verbose) {
-			log(sprintf("Success."));
+		    if (ensure === "present") {
+			if (mithras.verbose) {
+			    log(sprintf("Success."));
+			}
+			target[host.PublicIpAddress] = ok;
+			target[host.InstanceId] = ok;
+		    } else if (ensure === "absent") {
+			log("Error: network connection still alive.");
+			os.exit(1);
 		    }
-		    target[host.PublicIpAddress] = ok;
-		    target[host.InstanceId] = ok;
 		} else {
-		    log(sprintf("Network error remote system '%s', port %d",
-				host.PublicIpAddress, 
-				port));
-		    os.exit(2);
+		    if (ensure === "present") {
+			log(sprintf("Network error remote system '%s', port %d",
+				    host.PublicIpAddress, 
+				    port));
+			os.exit(2);
+		    } else if (ensure === "absent") {
+			if (mithras.verbose) {
+			    log(sprintf("Success."));
+			}
+			target[host.PublicIpAddress] = ok;
+			target[host.InstanceId] = ok;
+		    }
 		}
 
 	    });

@@ -1,10 +1,10 @@
-# WALKTHROUGH, PART 1
+# WALKTHROUGH, PART 1: An EC2 Instance
 
 Use this document to get your first Mithras recipe working quickly and
 easily, and get introduced to some of the concepts behind Mithras.
 
 * [Part One](quickstart1.html): An EC2 instance
-* [Part Two](quickstart2.html): Configuring our instance
+* [Part Two](quickstart2.html): VPC & Configuring our instance
 * [Part Three](quickstart3.html): A complete application stack
 
 ## Part One: An EC2 Instance

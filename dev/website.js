@@ -39,27 +39,35 @@ function run() {
 		var stripped = line.replace(commentRE, '');
 		current = current + stripped + "\n";
 	    } else {
+		// Out of a comment section... If we already have one
+		// built up, it means it's time to use it.
 		if (current != "") {
+		    // Only pay attention to public comments
 		    if (current.match(publicRE)) {
+			// If it's the first public comment, do special stuff
 			if (comments.length == 0) {
 			    if (current.match(modRE)) {
 				var f = "mod_" + file.replace(extRE, ".md");
 				path = filepath.join("website", f);
 				mod.push(path);
-				comments.
-				    push(current.replace(publicRE, "").
-					 replace(modRE, ""));
 			    } else if (ext === ".go") {
 				var f = "core_" + file.replace(extRE, ".md");
 				path = filepath.join("website", f);
 				core.push(path);
-				comments.push(current.replace(publicRE, ""));
 			    } else if (ext === ".js") {
 				var f = "handler_" + file.replace(extRE, ".md");
 				path = filepath.join("website", f);
 				handlers.push(path);
-				comments.push(current.replace(publicRE, ""));
 			    }
+			}
+			if (current.match(modRE)) {
+			    comments.
+				push(current.replace(publicRE, "").
+				     replace(modRE, ""));
+			} else if (ext === ".go") {
+			    comments.push(current.replace(publicRE, ""));
+			} else if (ext === ".js") {
+			    comments.push(current.replace(publicRE, ""));
 			}
 		    }
 		    current = "";

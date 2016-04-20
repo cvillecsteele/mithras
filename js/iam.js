@@ -121,7 +121,15 @@
 
     var handler = {
         moduleNames: ["iam", "iamProfile", "iamRole"]
-        findProfile: function(catalog, name) {
+        findProfile: function(catalog, resource, name) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             return _.find(catalog.iamProfiles, function(p) {
                 return p.InstanceProfileName === name;
             });
@@ -270,9 +278,6 @@
                              (profile.Roles.length == 0) || 
                              (profile.Roles[0].RoleName != roleName))
 
-                    // Debugging
-                    console.log(JSON.stringify(profile, null, 2));
-
                     // add to catalog
                     catalog.iamProfiles.push(profile);
                     catalog.iamRoles.push(aws.iam.roles.describe(params.region, 
@@ -288,7 +293,7 @@
                 break;
             }
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {
@@ -298,7 +303,7 @@
             if (resource.module === handler.moduleNames[1]) {
                 var params = resource.params;
                 var profile = params.profile;
-                var p = handler.findProfile(catalog, profile.InstanceProfileName);
+                var p = handler.findProfile(catalog, resource, profile.InstanceProfileName);
                 if (p) {
                     return [p, true];
                 }

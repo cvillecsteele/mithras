@@ -1,2 +1,32 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: WEB</h1><hr></div><script src="/js/main.js"></script></body></html>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: WEB</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#run">user.run</a></li>
+<li><a href="#stop">user.stop</a></li>
+<li><a href="#get">user.get</a></li>
+<li><a href="#handler">user.handler</a></li>
+</ul>
+</blockquote>
+<p> This API allows JS to fetch from the web and to create a web server.</p>
+<h2>WEB.RUN</h2><p> <a name="run"></a>
+ <code>web.run(addr);</code></p>
+<p> Run a web server.</p>
+<p> Example:</p>
+<pre><code>
+ var server = web.run(&quot;:http&quot;);
+</code></pre><h2>WEB.STOP</h2><p> <a name="stop"></a>
+ <code>web.stop(server);</code></p>
+<p> Stop a web server.</p>
+<p> Example:</p>
+<pre><code>
+ var server = web.run(&quot;:http&quot;);
+ web.stop(server);
+</code></pre><h2>WEB.GET</h2><p> <a name="get"></a>
+ <code>web.get(url);</code></p>
+<p> Fetch an URL and return its contents.</p>
+<p> Example:</p>
+<pre><code>
+ var html = web.get(&quot;http://www.cnn.com&quot;);
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

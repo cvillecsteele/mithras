@@ -6,4 +6,9 @@
 </ul>
 </blockquote>
 <p> Usage:</p>
-<p> <code>var become = require(&quot;become&quot;).become;</code></p><hr></div><script src="/js/main.js"></script></body></html>
+<p> <code>var become = require(&quot;become&quot;).become;</code></p>
+<h2><code>become</code></h2><p> Returns a command suitable for running with escalated privs.</p>
+<p> <code>become(become, becomeUser, becomeMethod, command);</code></p>
+<p> Example:</p>
+<pre><code class="language-javascript"> var cmd = become(true, &quot;root&quot;, &quot;sudo&quot;, &quot;ls /var/log&quot;);
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

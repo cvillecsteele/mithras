@@ -96,7 +96,7 @@
             })) {
                 return [null, false];
             }
-                
+
             var p = resource.params;
             var ensure = p.ensure;
 
@@ -109,10 +109,11 @@
             
             // Loop over hosts
             if (typeof(p.hosts) != "object") {
+		log("No hosts set.");
                 return [null, true];
             }
 
-            var pre = resource._target;
+            var pre = resource._target || {};
             var target = resource._target = {};
 
             _.each(p.hosts, function(host) {
@@ -138,9 +139,11 @@
                 if (updatedParams.skip == true) {
                     log("Skipped.");
                 } else if ((updatedParams.ensure === 'absent')  &&
-                           (pre[host.PublicIpAddress] === "found")) {
+                           (pre[host.PublicIpAddress] != "found")) {
                     log("Ensure: absent; skipping.")
-                } else if ((updatedParams.ensure === 'present') &&
+		} else if (updatedParams.ensure === 'absent') {
+                    log("Ensure: absent but scp handler does not remove files.")
+		} else if ((updatedParams.ensure === 'present') &&
                            (pre[host.PublicIpAddress] != "found")) {
                     var result = mithras.remote.scp(host.PublicIpAddress, 
                                                     user, 
@@ -176,11 +179,13 @@
                                         out));
                         }
                     }
-                }
+                } else if (updatedParams.ensure === 'present') {
+		    log("Ensure: present but destination already exists.")
+		} 
             });
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (!_.find(handler.moduleNames, function(m) { 
                 return resource.module === m; 
             })) {

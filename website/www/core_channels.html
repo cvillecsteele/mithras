@@ -1,2 +1,50 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: CHANNELS</h1><hr></div><script src="/js/main.js"></script></body></html>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2"><a href="/"><img src="logo-word.svg" width="100%"></a></div><div class="col-md-4 col-md-offset-6 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div></div><div class="container-fluid"><div class="row"><div class="col-md-12"><lead class="text-center">AWS Config management for Javascripters</lead><hr></div></div></div><h1>CORE FUNCTIONS: CHANNELS</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#make">chan.make</a></li>
+<li><a href="#snd">chan.snd</a></li>
+<li><a href="#rcv">chan.rcv</a></li>
+<li><a href="#range">chan.range</a></li>
+<li><a href="#select">chan.select</a></li>
+</ul>
+</blockquote>
+<p> This API allows callers to create a Go channel.</p>
+<h2>CHAN.MAKE</h2><p> <a name="make"></a>
+ <code>chan.make(name);</code></p>
+<p> Creates a channel identified by <code>name</code>.</p>
+<p> Example:</p>
+<pre><code>
+  chan.make(&quot;test_channel&quot;);
+</code></pre><h2>CHAN.SND</h2><p> <a name="snd"></a>
+ <code>chan.snd(name, value);</code></p>
+<p> Send <code>value</code> to channel identified by <code>name</code>.</p>
+<p> Example:</p>
+<pre><code>
+  chan.snd(&quot;test_channel&quot;, &quot;hello, world!&quot;);
+</code></pre><h2>CHAN.RCV</h2><p> <a name="rcv"></a>
+ <code>chan.rcv(name);</code></p>
+<p> Read a value from the channel specified by <code>name</code>.</p>
+<p> Example:</p>
+<pre><code>
+ var fromChannel = chan.rcv(&quot;test_channel&quot;);
+</code></pre><h2>CHAN.RANGE</h2><p> <a name="range"></a>
+ <code>chan.range(name, callback);</code></p>
+<p> Read succeessive values from the channel <code>name</code>, calling <code>callback</code>
+ with each received value.  Callbacks cease to be invoked when the
+ channel is closed.</p>
+<p> Example:</p>
+<pre><code>
+  chan.range({&quot;test_channel&quot;: function(value) {
+    console.log(&quot;Got value &quot; + value);
+  }});
+</code></pre><h2>CHAN.SELECT</h2><p> <a name="select"></a>
+ <code>chan.select(selectMap);</code></p>
+<p> Perform a select operation on multiple channels, as per Go&#39;s <code>select</code>.</p>
+<p> Example:</p>
+<pre><code>
+  chan.select({&quot;test_channel&quot;: function(channelName, value, ok) {
+    console.log(&quot;Got value &quot; + value + &quot; on channel &quot; + channelName);
+  }});
+</code></pre><hr></div><script src="/js/main.js"></script></body></html>

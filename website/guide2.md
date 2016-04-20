@@ -1,13 +1,13 @@
-# WALKTHROUGH, PART 2
+# WALKTHROUGH, PART 2: VPC & Instance Configuration
 
 Use this document to get up and working quickly and easily with
 Mithras.
 
 * [Part One](quickstart1.html): An EC2 instance
-* [Part Two](quickstart2.html): Configuring our instance
+* [Part Two](quickstart2.html): VPC & Configuring our instance
 * [Part Three](quickstart3.html): A complete application stack
 
-## Part Two: Configuring our EC2 Instance
+## Part Two: VPC & Configuring our EC2 Instance
 
 This part of the guide will show you how to use Mithras to configure
 various resources on an EC2 instance, such as package upgrades and

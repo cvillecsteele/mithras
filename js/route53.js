@@ -80,7 +80,15 @@
 
     var handler = {
         moduleName: "route53"
-        findInCatalog: function(catalog, set) {
+        findInCatalog: function(catalog, resource, set) {
+            if (typeof(resource.params.on_find) === 'function') {
+		result = resource.params.on_find(catalog, resource);
+		if (!result || 
+		    (Array.isArray(result) && result.length == 0)) {
+		    return;
+		}
+		return result;
+	    }
             var alias = set.AliasTarget;
             var rrs = set.ResourceRecords;
             var name = set.Name;
@@ -169,13 +177,13 @@
             }
             return [null, true];
         }
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
             var params = resource.params;
             var r = params.resource;
-            var t = handler.findInCatalog(catalog, r);
+            var t = handler.findInCatalog(catalog, resource, r);
             if (t) {
                 return [t, true];
             }

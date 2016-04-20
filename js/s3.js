@@ -136,7 +136,7 @@
 
     var handler = {
         moduleName: "s3"
-        preflight: function(catalog, resource) {
+        preflight: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
