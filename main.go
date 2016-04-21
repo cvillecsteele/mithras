@@ -17,6 +17,9 @@
 package main
 
 import (
+	"github.com/cvillecsteele/mithras/modules/cli"
+	"github.com/cvillecsteele/mithras/modules/script"
+
 	"github.com/cvillecsteele/mithras/modules/log"
 	"github.com/cvillecsteele/mithras/modules/peek"
 
@@ -50,37 +53,35 @@ import (
 
 var Version = "0.1.0"
 
-type ModuleVersion struct{ version, module string }
-
 func main() {
-	vers := []ModuleVersion{
-		ModuleVersion{version: keypairs.Version, module: keypairs.ModuleName},
-		ModuleVersion{version: channels.Version, module: channels.ModuleName},
-		ModuleVersion{version: goroutines.Version, module: goroutines.ModuleName},
-		ModuleVersion{version: iam.Version, module: iam.ModuleName},
-		ModuleVersion{version: tag.Version, module: tag.ModuleName},
-		ModuleVersion{version: routetables.Version, module: routetables.ModuleName},
-		ModuleVersion{version: filepath.Version, module: filepath.ModuleName},
-		ModuleVersion{version: s3.Version, module: s3.ModuleName},
-		ModuleVersion{version: user.Version, module: user.ModuleName},
-		ModuleVersion{version: os.Version, module: os.ModuleName},
-		ModuleVersion{version: time.Version, module: time.ModuleName},
-		ModuleVersion{version: web.Version, module: web.ModuleName},
-		ModuleVersion{version: exec.Version, module: exec.ModuleName},
-		ModuleVersion{version: fs.Version, module: fs.ModuleName},
-		ModuleVersion{version: network.Version, module: network.ModuleName},
-		ModuleVersion{version: route53.Version, module: route53.ModuleName},
-		ModuleVersion{version: elasticache.Version, module: elasticache.ModuleName},
-		ModuleVersion{version: rds.Version, module: rds.ModuleName},
-		ModuleVersion{version: elb.Version, module: elb.ModuleName},
-		ModuleVersion{version: secgroup.Version, module: secgroup.ModuleName},
-		ModuleVersion{version: require.Version, module: require.ModuleName},
-		ModuleVersion{version: log.Version, module: log.ModuleName},
-		ModuleVersion{version: vpc.Version, module: vpc.ModuleName},
-		ModuleVersion{version: instance.Version, module: instance.ModuleName},
-		ModuleVersion{version: region.Version, module: region.ModuleName},
-		ModuleVersion{version: peek.Version, module: peek.ModuleName},
-		ModuleVersion{version: subnet.Version, module: subnet.ModuleName},
+	vers := []script.ModuleVersion{
+		script.ModuleVersion{Version: keypairs.Version, Module: keypairs.ModuleName},
+		script.ModuleVersion{Version: channels.Version, Module: channels.ModuleName},
+		script.ModuleVersion{Version: goroutines.Version, Module: goroutines.ModuleName},
+		script.ModuleVersion{Version: iam.Version, Module: iam.ModuleName},
+		script.ModuleVersion{Version: tag.Version, Module: tag.ModuleName},
+		script.ModuleVersion{Version: routetables.Version, Module: routetables.ModuleName},
+		script.ModuleVersion{Version: filepath.Version, Module: filepath.ModuleName},
+		script.ModuleVersion{Version: s3.Version, Module: s3.ModuleName},
+		script.ModuleVersion{Version: user.Version, Module: user.ModuleName},
+		script.ModuleVersion{Version: os.Version, Module: os.ModuleName},
+		script.ModuleVersion{Version: time.Version, Module: time.ModuleName},
+		script.ModuleVersion{Version: web.Version, Module: web.ModuleName},
+		script.ModuleVersion{Version: exec.Version, Module: exec.ModuleName},
+		script.ModuleVersion{Version: fs.Version, Module: fs.ModuleName},
+		script.ModuleVersion{Version: network.Version, Module: network.ModuleName},
+		script.ModuleVersion{Version: route53.Version, Module: route53.ModuleName},
+		script.ModuleVersion{Version: elasticache.Version, Module: elasticache.ModuleName},
+		script.ModuleVersion{Version: rds.Version, Module: rds.ModuleName},
+		script.ModuleVersion{Version: elb.Version, Module: elb.ModuleName},
+		script.ModuleVersion{Version: secgroup.Version, Module: secgroup.ModuleName},
+		script.ModuleVersion{Version: require.Version, Module: require.ModuleName},
+		script.ModuleVersion{Version: log.Version, Module: log.ModuleName},
+		script.ModuleVersion{Version: vpc.Version, Module: vpc.ModuleName},
+		script.ModuleVersion{Version: instance.Version, Module: instance.ModuleName},
+		script.ModuleVersion{Version: region.Version, Module: region.ModuleName},
+		script.ModuleVersion{Version: peek.Version, Module: peek.ModuleName},
+		script.ModuleVersion{Version: subnet.Version, Module: subnet.ModuleName},
 	}
-	Run(vers)
+	cli.Run(vers, Version)
 }

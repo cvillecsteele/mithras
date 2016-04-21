@@ -332,7 +332,7 @@ values.
 For our definition of the `instance` property, we set the `ImageId` to
 the value of the `ami` variable, defined above, the `keyName` to the
 value of the `keyName` variable, also defined above, and some other
-properties germain to the AWS Go SDK, which as
+properties germain to the AWS Go SDK, such as
 `DisableApiTermination`.
 
 Finally, our resource definition indicates that it wants EC2 instances
@@ -367,7 +367,7 @@ create a keypair, and then stand up an EC2 instance.
 
 Woot!
 
-Now that you've seen the basics, it's time to move on to [Part Two](quickstart2.html).
+Now that you've seen the basics, it's time to move on to [Part Two](guide2.html).
 
 
 

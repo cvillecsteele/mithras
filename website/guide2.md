@@ -25,11 +25,6 @@ This part of the guide demonstrates a somewhat more involved AWS
 configuration, including a VPC, two subnets, a security group, an IAM
 role, and an instance with some configuration done to it.
 
-You'll find the script in `$MITHRASHOME/example/intermediate.js` You
-should copy it to your Mithras sandbox:
-
-    cp $MITHRASHOME/example/intermediate.js ~/projects/mysite
-
 You'll see use of caching in this example, to reduce the overhead of
 querying AWS repeatedly for resources.  (Since it can take awhile.)
 

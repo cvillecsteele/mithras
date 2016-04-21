@@ -189,6 +189,10 @@
 			"Rev": "0b12d6b521d83fc7f755e7cfc1b1fbdd35a01a74"
 		},
 		{
+			"ImportPath": "github.com/kardianos/osext",
+			"Rev": "29ae4ffbc9a6fe9fb2bc5029050ce6996ea1d3bc"
+		},
+		{
 			"ImportPath": "github.com/robertkrimen/otto",
 			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
 		},
@@ -223,6 +227,10 @@
 		{
 			"ImportPath": "github.com/robertkrimen/otto/underscore",
 			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+		},
+		{
+			"ImportPath": "github.com/sevlyar/go-daemon",
+			"Rev": "3bf5e993af87194518e81cf9a81c1c53190a8911"
 		},
 		{
 			"ImportPath": "golang.org/x/crypto/ssh/terminal",

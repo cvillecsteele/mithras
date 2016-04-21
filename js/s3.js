@@ -155,8 +155,8 @@
                         log(sprintf("Deleting bucket '%s'", 
                                     resource.params.bucket.Bucket));
                     }
-                    aws.s3.buckets.delete(resource.params.bucket.Bucket,
-                                          resource.params.region);
+                    aws.s3.buckets.delete(resource.params.region,
+					  resource.params.bucket.Bucket);
                 }
             } else {
                 if (resource.params.ensure === 'present') {
@@ -164,9 +164,8 @@
                         log(sprintf("Creating bucket '%s'", 
                                     resource.params.bucket.Bucket));
                     }
-                    var res = aws.s3.buckets.create(resource.params.bucket,
-                                                    resource.params.region,
-                                                    mithras.verbose);
+                    var res = aws.s3.buckets.create(resource.params.region,
+						    resource.params.bucket);
                     if (resource.params.website) {
                         if (mithras.verbose) {
                             log(sprintf("Adding website config to bucket '%s'", 
@@ -193,9 +192,9 @@
                         log(sprintf("Deleting object '%s'", 
                                     params.object.Key));
                     }
-                    aws.s3.objects.delete(params.object.Bucket,
-                                          params.object.Key,
-                                          params.region);
+                    aws.s3.objects.delete(params.region,
+					  params.object.Bucket,
+                                          params.object.Key);
                 } else if (params.ensure === "latest") {
                     var m1 = moment(obj.LastModified.String(),
                                     "YYYY-MM-DD HH:mm:ss Z UTC",
@@ -206,9 +205,8 @@
                             log(sprintf("Updating object '%s'", 
                                         params.object.Key));
                         }
-                        var res = aws.s3.objects.create(params.object,
-                                                        params.region,
-                                                        mithras.verbose);
+                        var res = aws.s3.objects.create(params.region,
+							params.object);
                     } else {
                         if (mithras.verbose) {
                             log(sprintf("No action taken.", params.object.Key));

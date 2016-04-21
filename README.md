@@ -84,7 +84,6 @@ TODO
 
 * ASG solution
 * make sure no handlers are interacting with AWS outside the catalog (s3)
-* fix arg order in S3 exposed JS functions  
 * rework / robustify web core module
 
 * more s3 configuration support for buckets

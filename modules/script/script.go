@@ -14,19 +14,23 @@
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package script
 
 import (
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/codegangsta/cli"
 	"github.com/robertkrimen/otto"
 	_ "github.com/robertkrimen/otto/underscore"
 
+	"github.com/cvillecsteele/mithras/modules/build"
 	"github.com/cvillecsteele/mithras/modules/core"
 	"github.com/cvillecsteele/mithras/modules/require"
 )
+
+type ModuleVersion struct{ Version, Module string }
 
 func initModules(rt *otto.Otto) {
 	for idx, _ := range core.InitFuncs {
@@ -34,7 +38,47 @@ func initModules(rt *otto.Otto) {
 	}
 }
 
-func loadScriptRuntime(name string, jsdir string, home string, verbose bool, args []string, modules []ModuleVersion) *otto.Otto {
+func RunJS(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto {
+	jsfile := c.String("file")
+	jsdir := c.String("js")
+	home := c.GlobalString("mithras")
+	verbose := c.GlobalBool("verbose")
+
+	build.CachePath = filepath.Join(c.GlobalString("home"), "cache")
+
+	if jsfile == "" {
+		log.Fatalf("Script name not set.")
+	}
+	if home == "" && jsdir == "" {
+		log.Fatalf("$MITHRASHOME (or -m) not set and no jsdir set on command line.")
+	}
+	runtime := LoadScriptRuntime(jsfile, jsdir, home, verbose, []string(c.Args()), versions, version)
+
+	// Puke if needed
+	if runtime == nil {
+		log.Fatalf("Can't create JS runtime")
+	}
+
+	// By convention we will require scripts have a set name
+	result, err := runtime.Call("run", nil)
+	if err != nil {
+		if ottoErr, ok := err.(*otto.Error); ok {
+			log.Fatalf("JS error calling 'run' in script: %s", ottoErr.String())
+		}
+		log.Fatalf("Error calling 'run' in script: %s", err)
+	}
+
+	// If the js function did not return a bool error out because
+	// the script is invalid
+	_, err = result.ToBoolean()
+	if err != nil {
+		log.Fatalf("Error converting 'run' return value to boolean: %s", err)
+	}
+
+	return runtime
+}
+
+func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, args []string, modules []ModuleVersion, version string) *otto.Otto {
 
 	// Set path
 	if jsdir != "" {
@@ -78,14 +122,14 @@ func loadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 	o.Object().Set("MODULES", m)
 	for _, mod := range modules {
 		js := `(function (name, version) { return this["MODULES"][name] = version; })`
-		_, err = rt.Call(js, o, mod.module, mod.version)
+		_, err = rt.Call(js, o, mod.Module, mod.Version)
 		if err != nil {
 			log.Fatalf("Error setting module versions")
 		}
 	}
 
 	// Pass along some info to JS-land
-	o.Object().Set("VERSION", Version)
+	o.Object().Set("VERSION", version)
 	o.Object().Set("VERBOSE", verbose)
 	o.Object().Set("verbose", verbose)
 	o.Object().Set("GOPATH", os.Getenv("GOPATH"))

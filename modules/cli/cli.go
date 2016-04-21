@@ -14,10 +14,9 @@
 //   You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package main
+package cli
 
 import (
-	"log"
 	"os"
 	"path/filepath"
 
@@ -43,46 +42,6 @@ func runRepl(c *cli.Context) {
 	repl.Run(otto.New())
 }
 
-func run(c *cli.Context, versions []script.ModuleVersion) *otto.Otto {
-	jsfile := c.String("file")
-	jsdir := c.String("js")
-	home := c.GlobalString("mithras")
-	verbose := c.GlobalBool("verbose")
-
-	build.CachePath = filepath.Join(c.GlobalString("home"), "cache")
-
-	if jsfile == "" {
-		log.Fatalf("Script name not set.")
-	}
-	if home == "" && jsdir == "" {
-		log.Fatalf("$MITHRASHOME (or -m) not set and no jsdir set on command line.")
-	}
-	runtime := script.LoadScriptRuntime(jsfile, jsdir, home, verbose, []string(c.Args()), versions, Version)
-
-	// Puke if needed
-	if runtime == nil {
-		log.Fatalf("Can't create JS runtime")
-	}
-
-	// By convention we will require scripts have a set name
-	result, err := runtime.Call("run", nil)
-	if err != nil {
-		if ottoErr, ok := err.(*otto.Error); ok {
-			log.Fatalf("JS error calling 'run' in script: %s", ottoErr.String())
-		}
-		log.Fatalf("Error calling 'run' in script: %s", err)
-	}
-
-	// If the js function did not return a bool error out because
-	// the script is invalid
-	_, err = result.ToBoolean()
-	if err != nil {
-		log.Fatalf("Error converting 'run' return value to boolean: %s", err)
-	}
-
-	return runtime
-}
-
 func Run(versions []script.ModuleVersion, version string) {
 	cli.VersionFlag.Name = "version, V"
 
@@ -92,7 +51,7 @@ func Run(versions []script.ModuleVersion, version string) {
 	app := cli.NewApp()
 	app.Name = "mithras"
 	app.Usage = "Manage resources in AWS"
-	app.Version = Version
+	app.Version = version
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "mithras, m",
@@ -111,7 +70,7 @@ func Run(versions []script.ModuleVersion, version string) {
 			Aliases: []string{"r"},
 			Usage:   "Run a mithras script",
 			Action: func(c *cli.Context) {
-				run(c, versions)
+				script.RunJS(c, versions, version)
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -156,14 +115,14 @@ func Run(versions []script.ModuleVersion, version string) {
 
 		// daemon
 		{
-			Name:        "daemon",
-			Aliases:     []string{"d", "demon"},
-			Usage:       "Control the Mithras daemon",
-			Description: "Start or stop the Mithras daemon",
+			Name:    "daemon",
+			Aliases: []string{"d", "demon"},
+			// Usage:       "Control the Mithras daemon",
+			// Description: "Start or stop the Mithras daemon",
 			Subcommands: []cli.Command{
 				{
-					Name:    "start",
-					Aliases: []string{"run"},
+					Name: "start",
+					// Aliases: []string{""},
 					// Usage:       "sends a greeting in english",
 					// Description: "greets someone in english",
 					Flags: []cli.Flag{

@@ -242,7 +242,7 @@ func describeBucket(region string, bucket string) []*s3.Bucket {
 	return resp.Buckets
 }
 
-func createBucket(params s3.CreateBucketInput, region string, verbose bool) string {
+func createBucket(region string, params s3.CreateBucketInput) string {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
@@ -254,7 +254,7 @@ func createBucket(params s3.CreateBucketInput, region string, verbose bool) stri
 	return *resp.Location
 }
 
-func createObject(params s3.PutObjectInput, region string, verbose bool) s3.PutObjectOutput {
+func createObject(region string, params s3.PutObjectInput) s3.PutObjectOutput {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
@@ -266,7 +266,7 @@ func createObject(params s3.PutObjectInput, region string, verbose bool) s3.PutO
 	return *resp
 }
 
-func deleteBucket(id string, region string) {
+func deleteBucket(region, id string) {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
@@ -280,7 +280,7 @@ func deleteBucket(id string, region string) {
 	}
 }
 
-func deleteObject(bucket string, key string, region string) {
+func deleteObject(region, key, bucket string) {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
@@ -324,7 +324,7 @@ func init() {
 			// Translate target into a struct
 			var input s3.CreateBucketInput
 			js := `(function (o) { return JSON.stringify(o); })`
-			s, err := rt.Call(js, nil, call.Argument(0))
+			s, err := rt.Call(js, nil, call.Argument(1))
 			if err != nil {
 				log.Fatalf("Can't create json for S3 createbucket input: %s", err)
 			}
@@ -332,9 +332,8 @@ func init() {
 			if err != nil {
 				log.Fatalf("Can't unmarshall s3 createbucket json: %s", err)
 			}
-			region := call.Argument(1).String()
-			verbose, _ := call.Argument(2).ToBoolean()
-			return mcore.Sanitize(rt, createBucket(input, region, verbose))
+			region := call.Argument(0).String()
+			return mcore.Sanitize(rt, createBucket(region, input))
 		})
 		o2.Set("get", func(call otto.FunctionCall) otto.Value {
 			region := call.Argument(0).String()
@@ -365,10 +364,10 @@ func init() {
 		o3.Set("create", func(call otto.FunctionCall) otto.Value {
 			// Translate target into a struct
 			var input s3.PutObjectInput
-			body, err := call.Argument(0).Object().Get("Body")
+			body, err := call.Argument(1).Object().Get("Body")
 
 			js := `(function (o) { return JSON.stringify(_.omit(o, "Body")); })`
-			s, err := rt.Call(js, nil, call.Argument(0))
+			s, err := rt.Call(js, nil, call.Argument(1))
 			if err != nil {
 				log.Fatalf("Can't create json for S3 putobject input: %s", err)
 			}
@@ -384,10 +383,9 @@ func init() {
 				input.Body = bytes.NewReader(x.([]byte))
 			}
 
-			region := call.Argument(1).String()
-			verbose, _ := call.Argument(2).ToBoolean()
+			region := call.Argument(0).String()
 
-			return mcore.Sanitize(rt, createObject(input, region, verbose))
+			return mcore.Sanitize(rt, createObject(region, input))
 		})
 		o3.Set("describe", describeObject)
 	})

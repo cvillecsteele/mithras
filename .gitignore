@@ -30,3 +30,5 @@ _testmain.go
 /mithras
 /cache
 .DS_Store
+/log
+/pid
