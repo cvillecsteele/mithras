@@ -8,6 +8,17 @@ Mithras.
 * [Part Three](guide3.html): A complete application stack
 * [Part Four](guide4.html): A dynamically-built script
 
+<div class="alert alert-warning" role="alert">
+  <p><span class="label label-warning">Warning</span></p>
+
+  <p>The examples use real providers that launch <i>real</i>
+  resources. That means they can cost money to experiment with. To
+  avoid unexpected charges, be sure to understand the price of
+  resources before launching them, and verify any unneeded resources
+  are cleaned up afterwards.</p>
+
+</div>
+
 ## Part Four: A Dynamically-Built Script
 
 This part of the guide falls firmly into the "I'm eating my own

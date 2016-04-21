@@ -89,7 +89,7 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *by
 
 	if regexp.MustCompile("^/").FindString(filename) != "" {
 		// Load absolute path
-		if buf, err := LoadScript(filename); buf != nil {
+		if buf, _ := LoadScript(filename); buf != nil {
 			return filename, buf
 		}
 	}
@@ -106,7 +106,7 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *by
 			parentfile = v.String()
 		}
 		path := filepath.Join(filepath.Dir(parentfile), filename)
-		if buf := LoadScript(filename); buf != nil {
+		if buf, _ := LoadScript(filename); buf != nil {
 			return path, buf
 		}
 	}
@@ -118,13 +118,13 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *by
 
 			// Load source verbatim from dir
 			path := filepath.Join(dir, p)
-			if buf := LoadScript(path); buf != nil {
+			if buf, _ := LoadScript(path); buf != nil {
 				return path, buf
 			}
 
 			// Load source with ".js"
 			path = filepath.Join(dir, p+".js")
-			if buf := LoadScript(path); buf != nil {
+			if buf, _ := LoadScript(path); buf != nil {
 				return path, buf
 			}
 
@@ -137,7 +137,7 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *by
 					// load package.json
 					pkg := loadPackage(rt, path)
 					path := filepath.Join(dir, p, pkg.Main)
-					if buf := LoadScript(path); buf != nil {
+					if buf, _ := LoadScript(path); buf != nil {
 						return path, buf
 					} else {
 						log.Fatalf("Broken package '%s', main file '%s' not found.",

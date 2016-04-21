@@ -64,7 +64,7 @@ import (
 var Version = "1.0.0"
 var ModuleName = "exec"
 
-func run(cmd string, input string, env map[string]interface{}) (string, string, bool, int) {
+func run(cmd string, input *string, env *map[string]interface{}) (string, string, bool, int) {
 	args := strings.Fields(cmd)
 	c := exec.Command(args[0], args[1:]...)
 
@@ -73,13 +73,16 @@ func run(cmd string, input string, env map[string]interface{}) (string, string, 
 	c.Stdout = &out
 	c.Stderr = &err
 
-	parts := []string{}
-	for k, v := range env {
-		parts = append(parts, fmt.Sprintf("%s=%s", k, v.(string)))
+	if env != nil {
+		parts := []string{}
+		for k, v := range *env {
+			parts = append(parts, fmt.Sprintf("%s=%s", k, v.(string)))
+		}
+		c.Env = parts
 	}
-	c.Env = parts
-	if input != "" {
-		c.Stdin = bufio.NewReader(bytes.NewBufferString(input))
+
+	if input != nil && *input != "" {
+		c.Stdin = bufio.NewReader(bytes.NewBufferString(*input))
 	}
 
 	e := c.Run()
@@ -101,6 +104,19 @@ func run(cmd string, input string, env map[string]interface{}) (string, string, 
 func init() {
 	core.RegisterInit(func(rt *otto.Otto) {
 		obj, _ := rt.Object(`exec = {}`)
-		obj.Set("run", run)
+		obj.Set("run", func(call otto.FunctionCall) otto.Value {
+			cmd := call.Argument(0).String()
+			var input string
+			if !call.Argument(1).IsUndefined() && !call.Argument(1).IsNull() {
+				input = call.Argument(1).String()
+			}
+			var env map[string]interface{}
+			if !call.Argument(2).IsUndefined() && !call.Argument(2).IsNull() {
+				x, _ := call.Argument(2).Export()
+				env = x.(map[string]interface{})
+			}
+			f := core.Sanitizer(rt)
+			return f(run(cmd, &input, &env))
+		})
 	})
 }

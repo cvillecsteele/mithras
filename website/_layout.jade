@@ -24,29 +24,28 @@ html(lang="en")
       .main
       div.container-fluid
         div.row
-          div.col-md-2
+          div.col-md-2.col-xs-4
             a(href="/")
-              img(src="logo-word.png")
-           div.col-md-4.col-md-offset-6.text-right
-             ul.list-inline
-               li 
-                 a(href="community.html") Community
-               li
-                 a(href="docs.html") Documentation
-               li
-                 a(href="https://github.com/cvillecsteele/mithras") GitHub
-      div.container-fluid
+              img(src="logo-word.svg" width="100%")
         div.row
-          div.col-md-12
+          div.col-md-4.col-xs-8
             lead.text-center AWS Config management for Javascripters
-            hr
+          div.col-md-8.col-xs-12.text-right
+            ul.list-inline
+              li 
+                a(href="community.html") Community
+              li
+                a(href="docs.html") Documentation
+              li
+                 a(href="https://github.com/cvillecsteele/mithras") GitHub
+         hr
       != yield
     
       hr
       div.container-fluid
         div.row
-          div.col-md-12.text-center
-            <img src="logo.png"/>
+          div.col-md-2.col-md-offset-5.col-xs-2.col-xs-offset-5.text-center
+            <img src="logo.svg" width="100%"/>
       
 
     script(src="/js/main.js")
