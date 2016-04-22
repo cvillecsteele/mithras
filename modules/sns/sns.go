@@ -27,127 +27,132 @@ package sns
 // This package exports several entry points into the JS environment,
 // including:
 //
-// > * [aws.sns.scan](#vscan)
-// > * [aws.sns.create](#vcreate)
-// > * [aws.sns.delete](#vdelete)
-// > * [aws.sns.describe](#vdescribe)
+// > * [aws.sns.topics.scan](#tscan)
+// > * [aws.sns.topics.create](#tcreate)
+// > * [aws.sns.topics.delete](#tdelete)
+// > * [aws.sns.topics.describe](#tdescribe)
 //
 // This API allows resource handlers to manage SNS.
 //
-// ## AWS.SNS.SCAN
-// <a name="vscan"></a>
-// `aws.sns.scan(region);`
+// ## AWS.SNS.TOPICS.SCAN
+// <a name="tscan"></a>
+// `aws.sns.topics.scan(region);`
 //
-// Returns a list of sns.
-//
-// Example:
-//
-// ```
-//
-//  var sns =  aws.sns.scan("us-east-1");
-//
-// ```
-//
-// ## AWS.SNS.CREATE
-// <a name="vcreate"></a>
-// `aws.sns.create(region, config, gateway);`
-//
-// Create a SNS.
+// Returns a list of sns topics.
 //
 // Example:
 //
 // ```
 //
-//  var sns =  aws.sns.create(
+//  var topics = aws.sns.topics.scan("us-east-1");
+//
+// ```
+//
+// ## AWS.SNS.TOPICS.CREATE
+// <a name="tcreate"></a>
+// `aws.sns.create(region, config);`
+//
+// Create a SNS topic.
+//
+// Example:
+//
+// ```
+//
+//  var sns =  aws.sns.topics.create(
 //    "us-east-1",
 //    {
-//		  CidrBlock:       "172.33.0.0/16"
-//    },
-//    true);
+//		  Name: "mytopic"
+//    });
 //
 // ```
 //
-// ## AWS.SNS.DELETE
-// <a name="vdelete"></a>
-// `aws.sns.delete(region, sns_id);`
+// ## AWS.SNS.TOPICS.DELETE
+// <a name="tdelete"></a>
+// `aws.sns.topics.delete(region, name);`
 //
-// Delete a SNS.
+// Delete an SNS topic.
 //
 // Example:
 //
 // ```
 //
-//  aws.sns.delete("us-east-1", "sns-abcd");
+//  aws.sns.topics.delete("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test");
 //
 // ```
 //
-// ## AWS.SNS.DESCRIBE
-// <a name="vdescribe"></a>
-// `aws.sns.describe(region, sns_id);`
+// ## AWS.SNS.TOPICS.DESCRIBE
+// <a name="tdescribe"></a>
+// `aws.sns.topics.describe(region, sns_id);`
 //
-// Get info from AWS about a SNS.
+// Get info from AWS about an SNS topic.
 //
 // Example:
 //
 // ```
 //
-//  var sns = aws.sns.describe("us-east-1", "sns-abcd");
+//  var topic = aws.sns.topics.describe("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test");
 //
 // ```
 //
-// ## AWS.GATEWAYS.SCAN
-// <a name="gscan"></a>
-// `aws.gateways.scan(region);`
+// ## AWS.SNS.SUBS.SCAN
+// <a name="sscan"></a>
+// `aws.sns.subs.scan(region);`
 //
-// Returns a list of gateways.
+// Returns a list of sns subs.
 //
 // Example:
 //
 // ```
 //
-//  var gateways =  mithras.gateways.scan("us-east-1");
+//  var subs = aws.sns.subs.scan("us-east-1");
 //
 // ```
 //
-// ## AWS.GATEWAYS.CREATE
-// <a name="gcreate"></a>
-// `aws.gateways.create(region);`
+// ## AWS.SNS.SUBS.CREATE
+// <a name="screate"></a>
+// `aws.sns.create(region, config);`
 //
-// Create a gateway.
+// Create a SNS sub.
 //
 // Example:
 //
 // ```
 //
-//  var gateway =  mithras.gateways.create("us-east-1");
+//  var sns =  aws.sns.subs.create(
+//    "us-east-1",
+//    {
+//		  Protocol: "email"
+//		  TopicArn: mithras.watch(rTopic.name+"._target.topic")
+//		  Endpoint: "colin@mithras.io"
+//    });
 //
 // ```
 //
-// ## AWS.GATEWAYS.DELETE
-// <a name="gdelete"></a>
-// `aws.gateways.delete(region, gateway_id);`
+// ## AWS.SNS.SUBS.DELETE
+// <a name="sdelete"></a>
+// `aws.sns.subs.delete(region, sub_id);`
 //
-// Delete a gateway.
+// Delete an SNS sub.
 //
 // Example:
 //
 // ```
 //
-//  mithras.gateways.delete("us-east-1", "gw-abcd");
+//  aws.sns.subs.delete("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test:317abc61-7374-4d94-9947-19b1c26e119d");
 //
 // ```
 //
-// ## AWS.GATEWAYS.DESCRIBE
-// <a name="gdescribe"></a>
-// `aws.gateways.describe(region, gateway_id);`
+// ## AWS.SNS.SUBS.DESCRIBE
+// <a name="sdescribe"></a>
+// `aws.sns.subs.describe(region, sub_id);`
 //
-// Get info from AWS about a gateway.
+// Get info from AWS about an SNS sub.
 //
 // Example:
 //
 // ```
 //
-//  var gateway = mithras.gateways.describe("us-east-1", "gw-abcd");
+//  aws.sns.subs.describe("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test:317abc61-7374-4d94-9947-19b1c26e119d");
 //
 // ```
 //

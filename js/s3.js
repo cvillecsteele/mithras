@@ -220,9 +220,8 @@
                         log(sprintf("Creating object '%s'", 
                                     params.object.Key));
                     }
-                    var res = aws.s3.objects.create(params.object,
-                                                    params.region,
-                                                    mithras.verbose);
+                    var res = aws.s3.objects.create(params.region,
+						    params.object);
                 }
             }
         }

@@ -3,64 +3,69 @@
  including:</p>
 <blockquote>
 <ul>
-<li><a href="#vscan">aws.sns.scan</a></li>
-<li><a href="#vcreate">aws.sns.create</a></li>
-<li><a href="#vdelete">aws.sns.delete</a></li>
-<li><a href="#vdescribe">aws.sns.describe</a></li>
+<li><a href="#tscan">aws.sns.topics.scan</a></li>
+<li><a href="#tcreate">aws.sns.topics.create</a></li>
+<li><a href="#tdelete">aws.sns.topics.delete</a></li>
+<li><a href="#tdescribe">aws.sns.topics.describe</a></li>
 </ul>
 </blockquote>
 <p> This API allows resource handlers to manage SNS.</p>
-<h2>AWS.SNS.SCAN</h2><p> <a name="vscan"></a>
- <code>aws.sns.scan(region);</code></p>
-<p> Returns a list of sns.</p>
+<h2>AWS.SNS.TOPICS.SCAN</h2><p> <a name="tscan"></a>
+ <code>aws.sns.topics.scan(region);</code></p>
+<p> Returns a list of sns topics.</p>
 <p> Example:</p>
 <pre><code>
-  var sns =  aws.sns.scan(&quot;us-east-1&quot;);
-</code></pre><h2>AWS.SNS.CREATE</h2><p> <a name="vcreate"></a>
- <code>aws.sns.create(region, config, gateway);</code></p>
-<p> Create a SNS.</p>
+  var topics = aws.sns.topics.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.SNS.TOPICS.CREATE</h2><p> <a name="tcreate"></a>
+ <code>aws.sns.create(region, config);</code></p>
+<p> Create a SNS topic.</p>
 <p> Example:</p>
 <pre><code>
-  var sns =  aws.sns.create(
+  var sns =  aws.sns.topics.create(
     &quot;us-east-1&quot;,
     {
-          CidrBlock:       &quot;172.33.0.0/16&quot;
-    },
-    true);
-</code></pre><h2>AWS.SNS.DELETE</h2><p> <a name="vdelete"></a>
- <code>aws.sns.delete(region, sns_id);</code></p>
-<p> Delete a SNS.</p>
+          Name: &quot;mytopic&quot;
+    });
+</code></pre><h2>AWS.SNS.TOPICS.DELETE</h2><p> <a name="tdelete"></a>
+ <code>aws.sns.topics.delete(region, name);</code></p>
+<p> Delete an SNS topic.</p>
 <p> Example:</p>
 <pre><code>
-  aws.sns.delete(&quot;us-east-1&quot;, &quot;sns-abcd&quot;);
-</code></pre><h2>AWS.SNS.DESCRIBE</h2><p> <a name="vdescribe"></a>
- <code>aws.sns.describe(region, sns_id);</code></p>
-<p> Get info from AWS about a SNS.</p>
+  aws.sns.topics.delete(&quot;us-east-1&quot;, &quot;arn:aws:sns:us-east-1:286536233385:Test&quot;);
+</code></pre><h2>AWS.SNS.TOPICS.DESCRIBE</h2><p> <a name="tdescribe"></a>
+ <code>aws.sns.topics.describe(region, sns_id);</code></p>
+<p> Get info from AWS about an SNS topic.</p>
 <p> Example:</p>
 <pre><code>
-  var sns = aws.sns.describe(&quot;us-east-1&quot;, &quot;sns-abcd&quot;);
-</code></pre><h2>AWS.GATEWAYS.SCAN</h2><p> <a name="gscan"></a>
- <code>aws.gateways.scan(region);</code></p>
-<p> Returns a list of gateways.</p>
+  var topic = aws.sns.topics.describe(&quot;us-east-1&quot;, &quot;arn:aws:sns:us-east-1:286536233385:Test&quot;);
+</code></pre><h2>AWS.SNS.SUBS.SCAN</h2><p> <a name="sscan"></a>
+ <code>aws.sns.subs.scan(region);</code></p>
+<p> Returns a list of sns subs.</p>
 <p> Example:</p>
 <pre><code>
-  var gateways =  mithras.gateways.scan(&quot;us-east-1&quot;);
-</code></pre><h2>AWS.GATEWAYS.CREATE</h2><p> <a name="gcreate"></a>
- <code>aws.gateways.create(region);</code></p>
-<p> Create a gateway.</p>
+  var subs = aws.sns.subs.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.SNS.SUBS.CREATE</h2><p> <a name="screate"></a>
+ <code>aws.sns.create(region, config);</code></p>
+<p> Create a SNS sub.</p>
 <p> Example:</p>
 <pre><code>
-  var gateway =  mithras.gateways.create(&quot;us-east-1&quot;);
-</code></pre><h2>AWS.GATEWAYS.DELETE</h2><p> <a name="gdelete"></a>
- <code>aws.gateways.delete(region, gateway_id);</code></p>
-<p> Delete a gateway.</p>
+  var sns =  aws.sns.subs.create(
+    &quot;us-east-1&quot;,
+    {
+          Protocol: &quot;email&quot;
+          TopicArn: mithras.watch(rTopic.name+&quot;._target.topic&quot;)
+          Endpoint: &quot;colin@mithras.io&quot;
+    });
+</code></pre><h2>AWS.SNS.SUBS.DELETE</h2><p> <a name="sdelete"></a>
+ <code>aws.sns.subs.delete(region, sub_id);</code></p>
+<p> Delete an SNS sub.</p>
 <p> Example:</p>
 <pre><code>
-  mithras.gateways.delete(&quot;us-east-1&quot;, &quot;gw-abcd&quot;);
-</code></pre><h2>AWS.GATEWAYS.DESCRIBE</h2><p> <a name="gdescribe"></a>
- <code>aws.gateways.describe(region, gateway_id);</code></p>
-<p> Get info from AWS about a gateway.</p>
+  aws.sns.subs.delete(&quot;us-east-1&quot;, &quot;arn:aws:sns:us-east-1:286536233385:Test:317abc61-7374-4d94-9947-19b1c26e119d&quot;);
+</code></pre><h2>AWS.SNS.SUBS.DESCRIBE</h2><p> <a name="sdescribe"></a>
+ <code>aws.sns.subs.describe(region, sub_id);</code></p>
+<p> Get info from AWS about an SNS sub.</p>
 <p> Example:</p>
 <pre><code>
-  var gateway = mithras.gateways.describe(&quot;us-east-1&quot;, &quot;gw-abcd&quot;);
+  aws.sns.subs.describe(&quot;us-east-1&quot;, &quot;arn:aws:sns:us-east-1:286536233385:Test:317abc61-7374-4d94-9947-19b1c26e119d&quot;);
 </code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
