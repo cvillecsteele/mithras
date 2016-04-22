@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>CORE FUNCTIONS: WORKERS (GOROUTINES)</h1><p> This package exports entry points into the JS environment:</p>
+<blockquote>
+<ul>
+<li><a href="#run">workers.run</a></li>
+<li><a href="#stop">workers.stop</a></li>
+<li><a href="#send">workers.send</a></li>
+<li><a href="#receive">workers.receive</a></li>
+</ul>
+</blockquote>
+<p> This API allows the caller to work with workers</p>
+<h2>WORKERS.RUN</h2><p> <a name="run"></a>
+ <code>workers.run(name, source);</code></p>
+<p> Create a new worker identified by <code>name</code> and with a handler
+ function with the JS source of <code>source</code> (a string, not a function).</p>
+<p> Example:</p>
+<pre><code>  function foo(input) { return &quot;hi!&quot;; }
+  workers.run(&quot;test&quot;, foo.toString());
+</code></pre><h2>WORKERS.SEND</h2><p> <a name="send"></a>
+ <code>workers.send(name, value);</code></p>
+<p> Send a (string) value to the worker named <code>name</code>.</p>
+<p> Example:</p>
+<pre><code>  workers.send(&quot;test&quot;, JSON.stringify({&quot;a&quot;: 42}));
+</code></pre><h2>WORKERS.RECEIVE</h2><p> <a name="receive"></a>
+ `workers.receive(name);</p>
+<p> Read the output of a worker.</p>
+<p> Example:</p>
+<pre><code>  var out = JSON.parse(workers.receive(&quot;test&quot;));
+</code></pre><h2>WORKERS.STOP</h2><p> <a name="stop"></a>
+ `workers.stop(name);</p>
+<p> Shut down the worker and remove it.</p>
+<p> Example:</p>
+<pre><code>  workers.stop(&quot;name&quot;);
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

@@ -21,10 +21,7 @@ Mithras.</p>
 <h2>Part Two: VPC &amp; Configuring our EC2 Instance</h2><p>This part of the guide demonstrates a somewhat more involved AWS
 configuration, including a VPC, two subnets, a security group, an IAM
 role, and an instance with some configuration done to it.</p>
-<p>You&#39;ll find the script in <code>$MITHRASHOME/example/intermediate.js</code> You
-should copy it to your Mithras sandbox:</p>
-<pre><code>cp $MITHRASHOME/example/intermediate.js ~/projects/mysite
-</code></pre><p>You&#39;ll see use of caching in this example, to reduce the overhead of
+<p>You&#39;ll see use of caching in this example, to reduce the overhead of
 querying AWS repeatedly for resources.  (Since it can take awhile.)</p>
 <p>We&#39;ll use explicit dependencies to order the resources so they can be
 built and torn down succesfully.  This example will demonstrate

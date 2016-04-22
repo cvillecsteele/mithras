@@ -47,5 +47,17 @@ module value of <code>&quot;vpc&quot;</code></li>
 </li>
 <li><p>Allowed Values: true or false</p>
 <p>If true, an internet gateway is created for the VPC.</p>
+<h3><code>on_find</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: A function taking two parameters: <code>catalog</code> and <code>resource</code></p>
+<p>If defined in the resource&#39;s <code>params</code> object, the <code>on_find</code>
+function provides a way for a matching resource to be identified
+using a user-defined way.  The function is called with the current
+<code>catalog</code>, as well as the <code>resource</code> object itself.  The function
+can look through the catalog, find a matching object using whatever
+logic you want, and return it.  If the function returns <code>undefined</code>
+or a n empty Javascript array, (<code>[]</code>), the function is indicating
+that no matching resource was found in the <code>catalog</code>.</p>
 </li>
 </ul><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

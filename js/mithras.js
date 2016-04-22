@@ -780,6 +780,8 @@
 		iamProfiles: aws.iam.profiles.scan,
 		iamRoles: aws.iam.roles.scan,
 		keypairs: aws.keypairs.scan,
+		subs: aws.sns.subs.scan,
+		topics: aws.sns.topics.scan,
 	    };
 
 	    if (!targets) {
@@ -852,5 +854,6 @@
     var network = require("network").init();
     var scp = require("scp").init();
     var keypairs = require("keypairs").init();
+    var sns = require("sns").init();
 
 }());
