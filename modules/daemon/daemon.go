@@ -20,9 +20,9 @@ import (
 	"log"
 	"os"
 	"syscall"
-	"time"
 
 	"github.com/codegangsta/cli"
+	"github.com/robertkrimen/otto"
 	"github.com/sevlyar/go-daemon"
 
 	"github.com/cvillecsteele/mithras/modules/script"
@@ -69,10 +69,6 @@ func Quit() {
 
 // Start the daemon
 func Run(c *cli.Context, versions []script.ModuleVersion, version string) {
-	daemon.SetSigHandler(termHandler, syscall.SIGQUIT)
-	daemon.SetSigHandler(termHandler, syscall.SIGTERM)
-	daemon.SetSigHandler(reloadHandler, syscall.SIGHUP)
-
 	cntxt := &Context
 
 	d, err := cntxt.Reborn()
@@ -84,45 +80,59 @@ func Run(c *cli.Context, versions []script.ModuleVersion, version string) {
 	}
 	defer cntxt.Release()
 
-	script.RunJS(c, versions, version)
+	rt := script.RunJS(c, versions, version)
 
-	go worker()
+	daemon.SetSigHandler(makeTermHandler(rt), syscall.SIGQUIT)
+	daemon.SetSigHandler(makeTermHandler(rt), syscall.SIGTERM)
+	daemon.SetSigHandler(makeReloadHandler(rt), syscall.SIGHUP)
 
 	err = daemon.ServeSignals()
 	if err != nil {
 		log.Println("Error:", err)
 	}
-	log.Println("Terminated")
-}
-
-// Channels for talking to workers
-var (
-	stop = make(chan struct{})
-	done = make(chan struct{})
-)
-
-// Empty for now
-func worker() {
-	for {
-		time.Sleep(time.Second)
-		if _, ok := <-stop; ok {
-			break
-		}
-	}
-	done <- struct{}{}
 }
 
 // Shutdown handlers
-func termHandler(sig os.Signal) error {
-	log.Println("Terminating")
-	stop <- struct{}{}
-	if sig == syscall.SIGQUIT {
-		<-done
+func makeTermHandler(rt *otto.Otto) func(os.Signal) error {
+	return func(sig os.Signal) error {
+		// By convention we require scripts have a set entry point
+		result, err := rt.Call("stop", nil, sig)
+		if err != nil {
+			if ottoErr, ok := err.(*otto.Error); ok {
+				log.Fatalf("JS error calling 'stop' in script: %s", ottoErr.String())
+			}
+			log.Fatalf("Error calling 'stop' in script: %s", err)
+		}
+
+		// If the js function did not return a bool error out because
+		// the script is invalid
+		_, err = result.ToBoolean()
+		if err != nil {
+			log.Fatalf("Error converting 'stop' return value to boolean: %s", err)
+		}
+
+		return daemon.ErrStop
 	}
-	return daemon.ErrStop
 }
 
-func reloadHandler(sig os.Signal) error {
-	log.Println("Configuration reloaded")
-	return nil
+// Relaod
+func makeReloadHandler(rt *otto.Otto) func(os.Signal) error {
+	return func(sig os.Signal) error {
+		// By convention we require scripts have a set entry point
+		result, err := rt.Call("reload", nil, sig)
+		if err != nil {
+			if ottoErr, ok := err.(*otto.Error); ok {
+				log.Fatalf("JS error calling 'reload' in script: %s", ottoErr.String())
+			}
+			log.Fatalf("Error calling 'reload' in script: %s", err)
+		}
+
+		// If the js function did not return a bool error out because
+		// the script is invalid
+		_, err = result.ToBoolean()
+		if err != nil {
+			log.Fatalf("Error converting 'reload' return value to boolean: %s", err)
+		}
+		return nil
+	}
 }

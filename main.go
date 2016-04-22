@@ -34,11 +34,9 @@ import (
 	"github.com/cvillecsteele/mithras/modules/subnet"
 	"github.com/cvillecsteele/mithras/modules/vpc"
 
-	"github.com/cvillecsteele/mithras/modules/channels"
 	"github.com/cvillecsteele/mithras/modules/exec"
 	"github.com/cvillecsteele/mithras/modules/filepath"
 	"github.com/cvillecsteele/mithras/modules/fs"
-	"github.com/cvillecsteele/mithras/modules/goroutines"
 	"github.com/cvillecsteele/mithras/modules/iam"
 	"github.com/cvillecsteele/mithras/modules/keypairs"
 	"github.com/cvillecsteele/mithras/modules/network"
@@ -49,6 +47,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/time"
 	"github.com/cvillecsteele/mithras/modules/user"
 	"github.com/cvillecsteele/mithras/modules/web"
+	"github.com/cvillecsteele/mithras/modules/workers"
 )
 
 var Version = "0.1.0"
@@ -56,8 +55,7 @@ var Version = "0.1.0"
 func main() {
 	vers := []script.ModuleVersion{
 		script.ModuleVersion{Version: keypairs.Version, Module: keypairs.ModuleName},
-		script.ModuleVersion{Version: channels.Version, Module: channels.ModuleName},
-		script.ModuleVersion{Version: goroutines.Version, Module: goroutines.ModuleName},
+		script.ModuleVersion{Version: workers.Version, Module: workers.ModuleName},
 		script.ModuleVersion{Version: iam.Version, Module: iam.ModuleName},
 		script.ModuleVersion{Version: tag.Version, Module: tag.ModuleName},
 		script.ModuleVersion{Version: routetables.Version, Module: routetables.ModuleName},
