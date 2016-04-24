@@ -16,37 +16,40 @@
 
 // @public
 // 
-// # SNS
+// # SQS
 // 
-// SNS is a resource handler for dealing with AWS SNS resources.
+// SQS is a resource handler for dealing with AWS SQS resources.
 // 
 // This module exports:
 // 
 // > * `init` Initialization function, registers itself as a resource
 // >   handler with `mithras.modules.handlers` for resources with a
-// >   module value of `"sns"`
+// >   module value of `"sqs"`
 // 
 // Usage:
 // 
-// `var sns = require("sns").init();`
+// `var sqs = require("sqs").init();`
 // 
 //  ## Example Resource
 // 
 // ```javascript
-// var rTopic = {
-//     name: "snsTopic"
-//     module: "sns"
+// var rQueue = {
+//     name: "sqsQueue"
+//     module: "sqs"
 //     params: {
-//         region: defaultRegion
-//         ensure: ensure
-//         topic: {
-//             Name:  "my-topic"
-//         }
+//        region: defaultRegion
+//        ensure: ensure
+//        queue: {
+//          QueueName: "myqueue"
+//          Attributes: [
+//            "Key": "value"
+//          ]
+//        }
 //     }
 // };
 // var rSub = {
-//     name: "snsSub"
-//     module: "sns"
+//     name: "sqsSub"
+//     module: "sqs"
 //     dependsOn: [rTopic.name]
 //     params: {
 //         region: defaultRegion
@@ -59,8 +62,8 @@
 //     }
 // };
 // var rPub = {
-//     name: "snsPub"
-//     module: "sns"
+//     name: "sqsPub"
+//     module: "sqs"
 //     dependsOn: [rTopic.name]
 //     params: {
 //         region: defaultRegion
@@ -77,36 +80,25 @@
 // * Required: true
 // * Allowed Values: "present" or "absent"
 //
-// If `"present"` and the sns topic `params.topic.Name` does not
+// If `"present"` and the sqs queue `params.queue.QueueName` does not
 // exist, it is created.  If `"absent"`, and it exists, it is removed.
 // 
-// If `"present"` and the sns subscription referencing
-// `params.topic.Name` does not exist, it is created.  If `"absent"`,
-// and it exists, it is removed.
+// If `"present"` and the the `params.message` property is set, a message
+// is published to the queue.  This is NOT an idempotent operation.
 // 
-// If `"present"` and the the `params.pub` property is set, a message
-// is published to the topic.  This is NOT an idempotent operation.
-// 
-// ### `topic`
+// ### `queue`
 //
 // * Required: false
-// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-CreateTopicInput)
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-CreateQueueInput)
 //
-// Parameters for topic creation.
+// Parameters for queue creation.
 //
-// ### `sub`
-//
-// * Required: false
-// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-SubscribeInput)
-//
-// Parameters for subscription creation.
-//
-// ### `pub`
+// ### `message`
 //
 // * Required: false
-// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-PublishInput)
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-SendMessageInput)
 //
-// Parameters for publishing a message to a topic.
+// Parameters for publishing a message to a queue.
 //
 // ### `on_find`
 //
@@ -131,7 +123,7 @@
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-        moduleName: "sns"
+        moduleName: "sqs"
         findInCatalog: function(catalog, resource) {
             if (typeof(resource.params.on_find) === 'function') {
 		result = resource.params.on_find(catalog, resource);
@@ -141,26 +133,14 @@
 		}
 		return result;
 	    }
-	    var topic = null;
-	    var sub = null;
-	    if (resource.params.topic) {
-		var re = new RegExp(":"+resource.params.topic.Name+"$");
-		topic = _.find(catalog.topics, function(t) { 
+	    var queue = null;
+	    if (resource.params.queue) {
+		var re = new RegExp("/"+resource.params.queue.QueueName+"$");
+		queue = _.find(catalog.queues, function(t) { 
                     return re.exec(t);
 		});
 	    }
-	    if (resource.params.sub) {
-		sub = _.find(catalog.subs, function(s) { 
-		    var match = (s.TopicArn === resource.params.sub.TopicArn &&
-				 s.Protocol === resource.params.sub.Protocol &&
-				 s.Endpoint === resource.params.sub.Endpoint)
-                    return match;
-		});
-	    }
-	    if (topic || sub) {
-		return {topic: topic, sub: sub};
-	    }
-	    return;
+	    return queue;
         }
         handle: function(catalog, resources, resource) {
             if (resource.module != handler.moduleName) {
@@ -168,75 +148,53 @@
             }
 
             // Sanity
-            if (!resource.params.topic && !resource.params.sub) {
-                console.log("Invalid sns params")
+            if (!resource.params.queue && !resource.params.sub) {
+                console.log("Invalid sqs params")
                 os.exit(1);
             }
 
             var ensure = resource.params.ensure;
             var params = resource.params;
-	    var topic = resource._target ? resource._target.topic : null;
-	    var sub = resource._target ? resource._target.sub : null;
+	    var queue = resource._target;
 
             switch(ensure) {
             case "absent":
-		if (topic && params.topic) {
+		if (queue && params.queue) {
                     if (mithras.verbose) {
-			log(sprintf("Deleting topic '%s'", topic));
+			log(sprintf("Deleting queue '%s'", queue));
                     }
-                    aws.sns.topics.delete(params.region, topic);
-                    catalog.topics = _.reject(catalog.topics,
+                    aws.sqs.delete(params.region, queue);
+                    catalog.queues = _.reject(catalog.queues,
                                               function(t) { 
-						  return t === topic;
+						  return t === queue;
                                               });
-		}
-		if (sub && params.sub) {
-                    if (mithras.verbose) {
-			log(sprintf("Deleting sub '%s'", sub.SubscriptionArn));
-                    }
-                    aws.sns.subs.delete(params.region, sub.SubscriptionArn);
-                    catalog.subs = _.reject(catalog.subs,
-                                            function(s) { 
-						return s.SubscriptionArn === sub.SubscriptionArn;
-                                            });
-		}
-		if (!sub && !topic) {
+		} else if (!queue) {
                     if (mithras.verbose) {
 			log("No action taken.");
                     }
 		}
                 break;
             case "present":
-		if (params.topic) {
-		    if (!topic) {
+		if (params.queue) {
+		    if (!queue) {
 			if (mithras.verbose) {
-			    log(sprintf("Creating topic '%s'", params.topic.Name));
+			    log(sprintf("Creating queue '%s'", params.queue.QueueName));
 			}
-			topic = aws.sns.topics.create(params.region, params.topic);
-			catalog.topics.push(topic);
+			queue = aws.sqs.create(params.region, params.queue);
+			catalog.queues.push(queue);
 		    } else {
-			log(sprintf("Topic '%s' found, no action taken.", params.topic.Name));
+			log(sprintf("Queue '%s' found, no action taken.", 
+				    params.queue.QueueName));
 		    }
 		}
-		if (params.pub) {
+		if (params.message) {
 		    if (mithras.verbose) {
-			log(sprintf("Publishing message"))
+			log(sprintf("Sending message"))
 		    }
-		    aws.sns.topics.publish(params.region, params.pub);
-		}
-		if (params.sub) {
-		    if (!sub) {
-			if (mithras.verbose) {
-			    log(sprintf("Creating sub for '%s'", params.sub.TopicArn));
-			}
-			sub = aws.sns.subs.create(params.region, params.sub);
-			catalog.subs.push(sub);
-		    } else {
-			log(sprintf("Subscription found, no action taken."));
-		    }
+		    aws.sqs.messages.send(params.region, params.message);
 		}
                 // return it
-                return [{topic: topic, sub: sub}, true];
+                return [queue, true];
             }
             return [null, true];
         }
@@ -246,7 +204,6 @@
             }
             var params = resource.params;
             var s = handler.findInCatalog(catalog, resource);
-
             if (s) {
                 return [s, true];
             }

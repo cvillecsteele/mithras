@@ -31,6 +31,12 @@ package sns
 // > * [aws.sns.topics.create](#tcreate)
 // > * [aws.sns.topics.delete](#tdelete)
 // > * [aws.sns.topics.describe](#tdescribe)
+// > * [aws.sns.topics.publish](#tpublish)
+//
+// > * [aws.sns.subs.scan](#sscan)
+// > * [aws.sns.subs.create](#screate)
+// > * [aws.sns.sub.delete](#sdelete)
+// > * [aws.sns.subs.describe](#sdescribe)
 //
 // This API allows resource handlers to manage SNS.
 //
@@ -61,7 +67,7 @@ package sns
 //  var sns =  aws.sns.topics.create(
 //    "us-east-1",
 //    {
-//		  Name: "mytopic"
+//      Name: "mytopic"
 //    });
 //
 // ```
@@ -77,6 +83,34 @@ package sns
 // ```
 //
 //  aws.sns.topics.delete("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test");
+//
+// ```
+//
+// ## AWS.SNS.TOPICS.PUBLISH
+// <a name="tpublish"></a>
+// `aws.sns.topics.publish(region, input);`
+//
+// Publish to an SNS topic.
+//
+// Example:
+//
+// ```
+//
+//  aws.sns.topics.publish("us-east-1",
+//  {
+//    Message: "hello world"
+//    MessageAttributes: {
+//      "Key": {
+//        DataType:    "xyz"
+//        BinaryValue: "PAYLOAD"
+//        StringValue: "pdq"
+//      }
+//    }
+//    MessageStructure: "messageStructure"
+//    Subject:          "hi"
+//    TargetArn:        "targetARN"
+//    TopicArn:         "topicARN"
+//  });
 //
 // ```
 //
@@ -121,9 +155,9 @@ package sns
 //  var sns =  aws.sns.subs.create(
 //    "us-east-1",
 //    {
-//		  Protocol: "email"
-//		  TopicArn: mithras.watch(rTopic.name+"._target.topic")
-//		  Endpoint: "colin@mithras.io"
+//      Protocol: "email"
+//      TopicArn: mithras.watch(rTopic.name+"._target.topic")
+//      Endpoint: "colin@mithras.io"
 //    });
 //
 // ```
@@ -352,6 +386,24 @@ func init() {
 
 			f := mcore.Sanitizer(rt)
 			return f(createTopic(region, &input))
+		})
+		o2.Set("publish", func(call otto.FunctionCall) otto.Value {
+			// Translate params input into a struct
+			var input sns.PublishInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for SNS publish input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall SNS publish json: %s", err)
+			}
+
+			region := call.Argument(0).String()
+
+			f := mcore.Sanitizer(rt)
+			return f(publish(region, &input))
 		})
 		o2.Set("describe", func(call otto.FunctionCall) otto.Value {
 			region := call.Argument(0).String()

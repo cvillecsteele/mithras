@@ -1,36 +1,39 @@
  
  
- # SNS
+ # SQS
  
- SNS is a resource handler for dealing with AWS SNS resources.
+ SQS is a resource handler for dealing with AWS SQS resources.
  
  This module exports:
  
  > * `init` Initialization function, registers itself as a resource
  >   handler with `mithras.modules.handlers` for resources with a
- >   module value of `"sns"`
+ >   module value of `"sqs"`
  
  Usage:
  
- `var sns = require("sns").init();`
+ `var sqs = require("sqs").init();`
  
   ## Example Resource
  
  ```javascript
- var rTopic = {
-     name: "snsTopic"
-     module: "sns"
+ var rQueue = {
+     name: "sqsQueue"
+     module: "sqs"
      params: {
-         region: defaultRegion
-         ensure: ensure
-         topic: {
-             Name:  "my-topic"
-         }
+        region: defaultRegion
+        ensure: ensure
+        queue: {
+          QueueName: "myqueue"
+          Attributes: [
+            "Key": "value"
+          ]
+        }
      }
  };
  var rSub = {
-     name: "snsSub"
-     module: "sns"
+     name: "sqsSub"
+     module: "sqs"
      dependsOn: [rTopic.name]
      params: {
          region: defaultRegion
@@ -43,8 +46,8 @@
      }
  };
  var rPub = {
-     name: "snsPub"
-     module: "sns"
+     name: "sqsPub"
+     module: "sqs"
      dependsOn: [rTopic.name]
      params: {
          region: defaultRegion
@@ -61,36 +64,25 @@
  * Required: true
  * Allowed Values: "present" or "absent"
 
- If `"present"` and the sns topic `params.topic.Name` does not
+ If `"present"` and the sqs queue `params.queue.QueueName` does not
  exist, it is created.  If `"absent"`, and it exists, it is removed.
  
- If `"present"` and the sns subscription referencing
- `params.topic.Name` does not exist, it is created.  If `"absent"`,
- and it exists, it is removed.
+ If `"present"` and the the `params.message` property is set, a message
+ is published to the queue.  This is NOT an idempotent operation.
  
- If `"present"` and the the `params.pub` property is set, a message
- is published to the topic.  This is NOT an idempotent operation.
- 
- ### `topic`
+ ### `queue`
 
  * Required: false
- * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-CreateTopicInput)
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-CreateQueueInput)
 
- Parameters for topic creation.
+ Parameters for queue creation.
 
- ### `sub`
-
- * Required: false
- * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-SubscribeInput)
-
- Parameters for subscription creation.
-
- ### `pub`
+ ### `message`
 
  * Required: false
- * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-PublishInput)
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-SendMessageInput)
 
- Parameters for publishing a message to a topic.
+ Parameters for publishing a message to a queue.
 
  ### `on_find`
 

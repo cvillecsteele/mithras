@@ -7,6 +7,13 @@
 <li><a href="#tcreate">aws.sns.topics.create</a></li>
 <li><a href="#tdelete">aws.sns.topics.delete</a></li>
 <li><a href="#tdescribe">aws.sns.topics.describe</a></li>
+<li><p><a href="#tpublish">aws.sns.topics.publish</a></p>
+</li>
+<li><p><a href="#sscan">aws.sns.subs.scan</a></p>
+</li>
+<li><a href="#screate">aws.sns.subs.create</a></li>
+<li><a href="#sdelete">aws.sns.sub.delete</a></li>
+<li><a href="#sdescribe">aws.sns.subs.describe</a></li>
 </ul>
 </blockquote>
 <p> This API allows resource handlers to manage SNS.</p>
@@ -24,7 +31,7 @@
   var sns =  aws.sns.topics.create(
     &quot;us-east-1&quot;,
     {
-          Name: &quot;mytopic&quot;
+      Name: &quot;mytopic&quot;
     });
 </code></pre><h2>AWS.SNS.TOPICS.DELETE</h2><p> <a name="tdelete"></a>
  <code>aws.sns.topics.delete(region, name);</code></p>
@@ -32,6 +39,26 @@
 <p> Example:</p>
 <pre><code>
   aws.sns.topics.delete(&quot;us-east-1&quot;, &quot;arn:aws:sns:us-east-1:286536233385:Test&quot;);
+</code></pre><h2>AWS.SNS.TOPICS.PUBLISH</h2><p> <a name="tpublish"></a>
+ <code>aws.sns.topics.publish(region, input);</code></p>
+<p> Publish to an SNS topic.</p>
+<p> Example:</p>
+<pre><code>
+  aws.sns.topics.publish(&quot;us-east-1&quot;,
+  {
+    Message: &quot;hello world&quot;
+    MessageAttributes: {
+      &quot;Key&quot;: {
+        DataType:    &quot;xyz&quot;
+        BinaryValue: &quot;PAYLOAD&quot;
+        StringValue: &quot;pdq&quot;
+      }
+    }
+    MessageStructure: &quot;messageStructure&quot;
+    Subject:          &quot;hi&quot;
+    TargetArn:        &quot;targetARN&quot;
+    TopicArn:         &quot;topicARN&quot;
+  });
 </code></pre><h2>AWS.SNS.TOPICS.DESCRIBE</h2><p> <a name="tdescribe"></a>
  <code>aws.sns.topics.describe(region, sns_id);</code></p>
 <p> Get info from AWS about an SNS topic.</p>
@@ -52,9 +79,9 @@
   var sns =  aws.sns.subs.create(
     &quot;us-east-1&quot;,
     {
-          Protocol: &quot;email&quot;
-          TopicArn: mithras.watch(rTopic.name+&quot;._target.topic&quot;)
-          Endpoint: &quot;colin@mithras.io&quot;
+      Protocol: &quot;email&quot;
+      TopicArn: mithras.watch(rTopic.name+&quot;._target.topic&quot;)
+      Endpoint: &quot;colin@mithras.io&quot;
     });
 </code></pre><h2>AWS.SNS.SUBS.DELETE</h2><p> <a name="sdelete"></a>
  <code>aws.sns.subs.delete(region, sub_id);</code></p>

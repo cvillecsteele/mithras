@@ -27,33 +27,19 @@ function run() {
     // Resource Definitions
     //////////////////////////////////////////////////////////////////////
 
-    var rTopic = {
-	name: "snsTopic"
-	module: "sns"
+    var rQueue = {
+	name: "sqsQueue"
+	module: "sqs"
 	params: {
             region: defaultRegion
             ensure: ensure
-            topic: {
-		Name:  "Test"
-            }
-	}
-    };
-    var rSub = {
-	name: "snsSub"
-	module: "sns"
-	dependsOn: [rTopic.name]
-	params: {
-            region: defaultRegion
-            ensure: ensure
-            sub: {
-		Protocol: "email"
-		TopicArn: mithras.watch(rTopic.name+"._target.topic")
-		Endpoint: "cvillecsteele@gmail.com"
+            queue: {
+		QueueName:  "Test"
             }
 	}
     };
 
-    mithras.apply(catalog, [ rTopic, rSub ], reverse);
+    mithras.apply(catalog, [ rQueue ], reverse);
 
     return true;
 }

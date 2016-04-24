@@ -782,6 +782,7 @@
 		keypairs: aws.keypairs.scan,
 		subs: aws.sns.subs.scan,
 		topics: aws.sns.topics.scan,
+		queues: aws.sqs.scan,
 	    };
 
 	    if (!targets) {
@@ -855,5 +856,6 @@
     var scp = require("scp").init();
     var keypairs = require("keypairs").init();
     var sns = require("sns").init();
+    var sqs = require("sqs").init();
 
 }());

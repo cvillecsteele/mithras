@@ -154,6 +154,11 @@
 			"Rev": "0bd49bf38f0396818638e27de5c73eee6e66012d"
 		},
 		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/sqs",
+			"Comment": "v1.1.6-3-g0bd49bf",
+			"Rev": "0bd49bf38f0396818638e27de5c73eee6e66012d"
+		},
+		{
 			"ImportPath": "github.com/chzyer/readline/runes",
 			"Comment": "1.2-14-ga5bc4d4",
 			"Rev": "a5bc4d464ad74fd6abbbe88da940421ecb603618"

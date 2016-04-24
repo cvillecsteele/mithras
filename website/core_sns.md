@@ -13,6 +13,12 @@
  > * [aws.sns.topics.create](#tcreate)
  > * [aws.sns.topics.delete](#tdelete)
  > * [aws.sns.topics.describe](#tdescribe)
+ > * [aws.sns.topics.publish](#tpublish)
+
+ > * [aws.sns.subs.scan](#sscan)
+ > * [aws.sns.subs.create](#screate)
+ > * [aws.sns.sub.delete](#sdelete)
+ > * [aws.sns.subs.describe](#sdescribe)
 
  This API allows resource handlers to manage SNS.
 
@@ -43,7 +49,7 @@
   var sns =  aws.sns.topics.create(
     "us-east-1",
     {
-		  Name: "mytopic"
+      Name: "mytopic"
     });
 
  ```
@@ -59,6 +65,34 @@
  ```
 
   aws.sns.topics.delete("us-east-1", "arn:aws:sns:us-east-1:286536233385:Test");
+
+ ```
+
+ ## AWS.SNS.TOPICS.PUBLISH
+ <a name="tpublish"></a>
+ `aws.sns.topics.publish(region, input);`
+
+ Publish to an SNS topic.
+
+ Example:
+
+ ```
+
+  aws.sns.topics.publish("us-east-1",
+  {
+    Message: "hello world"
+    MessageAttributes: {
+      "Key": {
+        DataType:    "xyz"
+        BinaryValue: "PAYLOAD"
+        StringValue: "pdq"
+      }
+    }
+    MessageStructure: "messageStructure"
+    Subject:          "hi"
+    TargetArn:        "targetARN"
+    TopicArn:         "topicARN"
+  });
 
  ```
 
@@ -103,9 +137,9 @@
   var sns =  aws.sns.subs.create(
     "us-east-1",
     {
-		  Protocol: "email"
-		  TopicArn: mithras.watch(rTopic.name+"._target.topic")
-		  Endpoint: "colin@mithras.io"
+      Protocol: "email"
+      TopicArn: mithras.watch(rTopic.name+"._target.topic")
+      Endpoint: "colin@mithras.io"
     });
 
  ```

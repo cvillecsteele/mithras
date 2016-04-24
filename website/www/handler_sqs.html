@@ -1,29 +1,32 @@
 <!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
-</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>SNS</h1><p> SNS is a resource handler for dealing with AWS SNS resources.</p>
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>SQS</h1><p> SQS is a resource handler for dealing with AWS SQS resources.</p>
 <p> This module exports:</p>
 <blockquote>
 <ul>
 <li><code>init</code> Initialization function, registers itself as a resource
 handler with <code>mithras.modules.handlers</code> for resources with a
-module value of <code>&quot;sns&quot;</code></li>
+module value of <code>&quot;sqs&quot;</code></li>
 </ul>
 </blockquote>
 <p> Usage:</p>
-<p> <code>var sns = require(&quot;sns&quot;).init();</code></p>
-<h2>Example Resource</h2><pre><code class="language-javascript"> var rTopic = {
-     name: &quot;snsTopic&quot;
-     module: &quot;sns&quot;
+<p> <code>var sqs = require(&quot;sqs&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var rQueue = {
+     name: &quot;sqsQueue&quot;
+     module: &quot;sqs&quot;
      params: {
-         region: defaultRegion
-         ensure: ensure
-         topic: {
-             Name:  &quot;my-topic&quot;
-         }
+        region: defaultRegion
+        ensure: ensure
+        queue: {
+          QueueName: &quot;myqueue&quot;
+          Attributes: [
+            &quot;Key&quot;: &quot;value&quot;
+          ]
+        }
      }
  };
  var rSub = {
-     name: &quot;snsSub&quot;
-     module: &quot;sns&quot;
+     name: &quot;sqsSub&quot;
+     module: &quot;sqs&quot;
      dependsOn: [rTopic.name]
      params: {
          region: defaultRegion
@@ -36,8 +39,8 @@ module value of <code>&quot;sns&quot;</code></li>
      }
  };
  var rPub = {
-     name: &quot;snsPub&quot;
-     module: &quot;sns&quot;
+     name: &quot;sqsPub&quot;
+     module: &quot;sqs&quot;
      dependsOn: [rTopic.name]
      params: {
          region: defaultRegion
@@ -49,28 +52,20 @@ module value of <code>&quot;sns&quot;</code></li>
 <h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
 <li>Required: true</li>
 <li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
-<p>If <code>&quot;present&quot;</code> and the sns topic <code>params.topic.Name</code> does not
+<p>If <code>&quot;present&quot;</code> and the sqs queue <code>params.queue.QueueName</code> does not
 exist, it is created.  If <code>&quot;absent&quot;</code>, and it exists, it is removed.</p>
-<p>If <code>&quot;present&quot;</code> and the sns subscription referencing
-<code>params.topic.Name</code> does not exist, it is created.  If <code>&quot;absent&quot;</code>,
-and it exists, it is removed.</p>
-<p>If <code>&quot;present&quot;</code> and the the <code>params.pub</code> property is set, a message
-is published to the topic.  This is NOT an idempotent operation.</p>
-<h3><code>topic</code></h3></li>
+<p>If <code>&quot;present&quot;</code> and the the <code>params.message</code> property is set, a message
+is published to the queue.  This is NOT an idempotent operation.</p>
+<h3><code>queue</code></h3></li>
 <li><p>Required: false</p>
 </li>
-<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-CreateTopicInput">here</a></p>
-<p>Parameters for topic creation.</p>
-<h3><code>sub</code></h3></li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-CreateQueueInput">here</a></p>
+<p>Parameters for queue creation.</p>
+<h3><code>message</code></h3></li>
 <li><p>Required: false</p>
 </li>
-<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-SubscribeInput">here</a></p>
-<p>Parameters for subscription creation.</p>
-<h3><code>pub</code></h3></li>
-<li><p>Required: false</p>
-</li>
-<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/sns.html#type-PublishInput">here</a></p>
-<p>Parameters for publishing a message to a topic.</p>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/sqs.html#type-SendMessageInput">here</a></p>
+<p>Parameters for publishing a message to a queue.</p>
 <h3><code>on_find</code></h3></li>
 <li><p>Required: true</p>
 </li>

@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>CORE FUNCTIONS: SQS</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#scan">aws.sqs.scan</a></li>
+<li><a href="#create">aws.sqs.create</a></li>
+<li><a href="#delete">aws.sqs.delete</a></li>
+<li><a href="#describe">aws.sqs.describe</a></li>
+<li><a href="#msend">aws.sqs.messages.send</a></li>
+<li><a href="#mreceive">aws.sqs.messages.receive</a></li>
+<li><a href="#mdelete">aws.sqs.messages.delete</a></li>
+</ul>
+</blockquote>
+<p> This API allows resource handlers to manage SQS.</p>
+<h2>AWS.SQS.SCAN</h2><p> <a name="scan"></a>
+ <code>aws.sqs.scan(region);</code></p>
+<p> Returns a list of sqs queues.</p>
+<p> Example:</p>
+<pre><code>
+  var queues = aws.sqs.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.SQS.CREATE</h2><p> <a name="create"></a>
+ <code>aws.sqs.create(region, config);</code></p>
+<p> Create a SQS queue.</p>
+<p> Example:</p>
+<pre><code>
+  var sqs =  aws.sqs.create(
+    &quot;us-east-1&quot;,
+    {
+      QueueName: &quot;myqueue&quot;
+      Attributes: [
+        &quot;Key&quot;: &quot;value&quot;
+      ]
+    });
+</code></pre><h2>AWS.SQS.DELETE</h2><p> <a name="delete"></a>
+ <code>aws.sqs.delete(region, url);</code></p>
+<p> Delete an SQS queue.</p>
+<p> Example:</p>
+<pre><code>
+  aws.sqs.delete(&quot;us-east-1&quot;, &quot;queueUrl&quot;);
+</code></pre><h2>AWS.SQS.MESSAGES.SEND</h2><p> <a name="msend"></a>
+ <code>aws.sqs.messages.send(region, input);</code></p>
+<p> Publish to an SQS queue.</p>
+<p> Example:</p>
+<pre><code>
+  aws.sqs.messages.send(&quot;us-east-1&quot;,
+                  {
+                    MessageBody:  &quot;body&quot;
+                    QueueUrl:     &quot;url&quot;
+                    DelaySeconds: 1
+                    MessageAttributes: {
+                      &quot;Key&quot;: {
+                        DataType: &quot;type&quot;
+                        BinaryListValues: [
+                          &quot;PAYLOAD&quot;
+                        ]
+                        BinaryValue: &quot;PAYLOAD&quot;
+                        StringListValues: [
+                          &quot;String&quot;
+                        ]
+                        StringValue: &quot;String&quot;
+                      }
+                    }
+                   });
+</code></pre><h2>AWS.SQS.DESCRIBE</h2><p> <a name="describe"></a>
+ <code>aws.sqs.describe(region, sqs_id);</code></p>
+<p> Get info from AWS about an SQS queue.</p>
+<p> Example:</p>
+<pre><code>
+  var queue = aws.sqs.describe(&quot;us-east-1&quot;, &quot;queueName&quot;);
+</code></pre><h2>AWS.SQS.MESSAGES.RECEIVE</h2><p> <a name="mreceive"></a>
+ <code>aws.sqs.messages.receive(region, input);</code></p>
+<p> Get a message from a queue</p>
+<p> Example:</p>
+<pre><code>  var message =
+  aws.sqs.messages.receive(&quot;us-east-1&quot;,
+                  {
+                    QueueUrl: &quot;url&quot;
+                    AttributeNames: [
+                      &quot;QueueAttributeName&quot;
+                    ]
+                    MaxNumberOfMessages: 1
+                    MessageAttributeNames: [
+                      &quot;MessageAttributeName&quot;
+                    ]
+                    VisibilityTimeout: 1
+                    WaitTimeSeconds:   1
+                  });
+</code></pre><h2>AWS.SQS.MESSAGES.DELETE</h2><p> <a name="mdelete"></a>
+ <code>aws.sqs.messages.delete(region, input);</code></p>
+<p> Get a message from a queue</p>
+<p> Example:</p>
+<pre><code>  aws.sqs.messages.delete(&quot;us-east-1&quot;,
+  {
+    QueueUrl:      &quot;queueUrl&quot;
+    ReceiptHandle: &quot;123456&quot;
+  });
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
