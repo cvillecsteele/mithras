@@ -23,7 +23,6 @@ import (
 
 	"github.com/codegangsta/cli"
 	"github.com/robertkrimen/otto"
-	_ "github.com/robertkrimen/otto/underscore"
 
 	"github.com/cvillecsteele/mithras/modules/build"
 	"github.com/cvillecsteele/mithras/modules/core"
@@ -38,13 +37,18 @@ func initModules(rt *otto.Otto) {
 	}
 }
 
-func RunJS(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto {
+func RunCli(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto {
 	jsfile := c.String("file")
 	jsdir := c.String("js")
 	home := c.GlobalString("mithras")
 	verbose := c.GlobalBool("verbose")
+	args := []string(c.Args())
+	return RunJS(jsfile, jsdir, home, verbose, args, versions, version, nil)
+}
 
-	build.CachePath = filepath.Join(c.GlobalString("home"), "cache")
+func RunJS(jsfile, jsdir, home string, verbose bool, args []string, versions []ModuleVersion, version string, initFn *func(*otto.Otto)) *otto.Otto {
+
+	build.CachePath = filepath.Join(home, "cache")
 
 	if jsfile == "" {
 		log.Fatalf("Script name not set.")
@@ -52,7 +56,12 @@ func RunJS(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto 
 	if home == "" && jsdir == "" {
 		log.Fatalf("$MITHRASHOME (or -m) not set and no jsdir set on command line.")
 	}
-	runtime := LoadScriptRuntime(jsfile, jsdir, home, verbose, []string(c.Args()), versions, version)
+	runtime := LoadScriptRuntime(jsfile, jsdir, home, verbose, args, versions, version)
+
+	// Caller init
+	if initFn != nil {
+		(*initFn)(runtime)
+	}
 
 	// Puke if needed
 	if runtime == nil {
@@ -92,6 +101,11 @@ func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 	if err != nil {
 		log.Fatalf("Error loading '%s': %s", path, err)
 	}
+	path = filepath.Join(require.JsDir, "underscore-min.js")
+	underBuff, err := require.LoadScript(path)
+	if err != nil {
+		log.Fatalf("Error loading '%s': %s", path, err)
+	}
 	userBuff, err := require.LoadScript(name)
 	if err != nil {
 		log.Fatalf("Error loading '%s': %s", name, err)
@@ -104,6 +118,11 @@ func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 
 	// Initialize modules
 	initModules(rt)
+
+	// Load underscore
+	if _, err := rt.Run(underBuff.String()); err != nil {
+		log.Fatalf("Error loading '%s': %s", path, err)
+	}
 
 	// Load our base js
 	if _, err := rt.Run(coreBuff.String()); err != nil {

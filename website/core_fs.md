@@ -28,12 +28,13 @@
  > * [fs.chmod](#chmod)
  > * [fs.dir](#dir)
  > * [fs.stat](#stat)
+ > * [fs.tempDir](#tempdir)
 
  This API allows the caller to work with files.
 
  ## FS.CHTIMES
  <a name="chtimes"></a>
- `filepath.chtimes(path);`
+ `fs.chtimes(path);`
 
  Sets the file at `path` to have current atime and mtime.  TODO: rename this to `touch`.
 
@@ -47,7 +48,7 @@
 
  ## FS.LINK
  <a name="link"></a>
- `filepath.link(old, new);`
+ `fs.link(old, new);`
 
  Link creates newname as a hard link to the oldname file. If there
  is an error, it will be of type LinkError.
@@ -62,7 +63,7 @@
 
  ## FS.SYMLINK
  <a name="symlink"></a>
- `filepath.symlink(old, new);`
+ `fs.symlink(old, new);`
 
  Symlink creates newname as a symbolic link to oldname. If there is
  an error, it will be of type LinkError.
@@ -77,7 +78,7 @@
 
  ## FS.CREATE
  <a name="create"></a>
- `filepath.create(path);`
+ `fs.create(path);`
 
  Create creates the named file with mode 0666 (before umask),
  truncating it if it already exists. If successful, methods on the
@@ -97,7 +98,7 @@
 
  ## FS.CLOSE
  <a name="close"></a>
- `filepath.close(file);`
+ `fs.close(file);`
 
  Close closes the File, rendering it unusable for I/O. It returns an
  error, if any.
@@ -118,7 +119,7 @@
 
  ## FS.READ
  <a name="read"></a>
- `filepath.read(path);`
+ `fs.read(path);`
 
  Read the contents of the file at `path`.
 
@@ -134,7 +135,7 @@
 
  ## FS.BREAD
  <a name="bread"></a>
- `filepath.bread(path);`
+ `fs.bread(path);`
 
  Read the contents of the file at `path` and return an array of
  `[content, error]`, where `content` is an array of numbers.
@@ -151,7 +152,7 @@
 
  ## FS.WRITE
  <a name="write"></a>
- `filepath.write(path, contents, perms);`
+ `fs.write(path, contents, perms);`
 
  Write the contents of the file at `path`.
 
@@ -165,7 +166,7 @@
 
  ## FS.COPY
  <a name="copy"></a>
- `filepath.copy(src, dest, perms);`
+ `fs.copy(src, dest, perms);`
 
  Copy the file from `src` to `dest`.
 
@@ -179,7 +180,7 @@
 
  ## FS.CHDIR
  <a name="chdir"></a>
- `filepath.chdir(dir);`
+ `fs.chdir(dir);`
 
  Change working director to `dir`.
 
@@ -193,7 +194,7 @@
 
  ## FS.GETWD
  <a name="getwd"></a>
- `filepath.getwd();`
+ `fs.getwd();`
 
  Get the current working directory.
 
@@ -209,7 +210,7 @@
 
  ## FS.MKDIRALL
  <a name="mkdirAll"></a>
- `filepath.mkdirALL(path, perm);`
+ `fs.mkdirALL(path, perm);`
 
  MkdirAll creates a directory named path, along with any necessary
  parents, and returns nil, or else returns an error. The permission
@@ -226,7 +227,7 @@
 
  ## FS.REMOVE
  <a name="remove"></a>
- `filepath.remove(path);`
+ `fs.remove(path);`
 
  Remove the file at `path`.
 
@@ -240,7 +241,7 @@
 
  ## FS.REMOVEALL
  <a name="removeAll"></a>
- `filepath.removeAll(path);`
+ `fs.removeAll(path);`
 
  RemoveAll removes path and any children it contains. It removes
  everything it can but returns the first error it encounters. If the
@@ -256,7 +257,7 @@
 
  ## FS.RENAME
  <a name="rename"></a>
- `filepath.rename(oldname, newname);`
+ `fs.rename(oldname, newname);`
 
  Rename renames (moves) oldpath to newpath. If newpath already
  exists, Rename replaces it. OS-specific restrictions may apply when
@@ -273,7 +274,7 @@
 
  ## FS.CHOWN
  <a name="chown"></a>
- `filepath.chown(path, uid, gid);`
+ `fs.chown(path, uid, gid);`
 
  Chown changes the numeric uid and gid of the named file. If the
  file is a symbolic link,it changes the uid and gid of the link's
@@ -289,7 +290,7 @@
 
  ## FS.LCHOWN
  <a name="lchown"></a>
- `filepath.lChown(path, uid, gid);`
+ `fs.lChown(path, uid, gid);`
 
  Lchown changes the numeric uid and gid of the named file. If the
  file is a symbolic link, it changes the uid and gid of the link
@@ -305,7 +306,7 @@
 
  ## FS.CHMOD
  <a name="chmod"></a>
- `filepath.chmod(path, mode);`
+ `fs.chmod(path, mode);`
 
  Chmod changes the mode of the named file to mode. If the file is a
  symbolic link, it changes the mode of the link's target. If there
@@ -321,7 +322,7 @@
 
  ## FS.DIR
  <a name="dir"></a>
- `filepath.dir(path);`
+ `fs.dir(path);`
 
  Return the directory entries from `path`
 
@@ -337,10 +338,26 @@
 
  ## FS.STAT
  <a name="stat"></a>
- `filepath.stat(path);`
+ `fs.stat(path);`
 
  Stat returns the FileInfo structure describing file. If there is an
  error, it will be of type *PathError.
+
+ Example:
+
+ ```
+
+  var results = fs.stat("/tmp/foo");
+  var info = results[0];
+  var error = results[1];
+
+ ```
+
+ ## FS.TEMPDIR
+ <a name="tempdir"></a>
+ `fs.tempDir();`
+
+ Returns the default dirctory to use for temporary files.
 
  Example:
 

@@ -64,7 +64,7 @@ import (
 var Version = "1.0.0"
 var ModuleName = "exec"
 
-func run(cmd string, input *string, env *map[string]interface{}) (string, string, bool, int) {
+func Run(cmd string, input *string, env *map[string]interface{}) (string, string, bool, int) {
 	args := strings.Fields(cmd)
 	c := exec.Command(args[0], args[1:]...)
 
@@ -116,7 +116,7 @@ func init() {
 				env = x.(map[string]interface{})
 			}
 			f := core.Sanitizer(rt)
-			return f(run(cmd, &input, &env))
+			return f(Run(cmd, &input, &env))
 		})
 	})
 }

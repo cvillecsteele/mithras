@@ -52,7 +52,6 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/robertkrimen/otto"
@@ -85,72 +84,75 @@ func LoadScript(name string) (*bytes.Buffer, error) {
 	return buff, nil
 }
 
-func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, *bytes.Buffer) {
+func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, string, *bytes.Buffer) {
 
-	if regexp.MustCompile("^/").FindString(filename) != "" {
-		// Load absolute path
-		if buf, _ := LoadScript(filename); buf != nil {
-			return filename, buf
+	var parentPath otto.Value
+	var parentDir string
+	var err error
+	if parent != nil && !parent.IsUndefined() {
+		if parentPath, err = parent.Object().Get("filename"); err != nil {
+			log.Fatal(err)
+		}
+		if !parentPath.IsUndefined() && parentPath.IsString() {
+			parentDir, _ = filepath.Split(parentPath.String())
 		}
 	}
 
-	if regexp.MustCompile(`^\.`).FindString(filename) != "" {
-		// Load relative
-		parentfile := ""
-		var err error
-		var v otto.Value
-		if parent != nil {
-			if v, err = parent.Object().Get("filename"); err != nil {
-				log.Fatalf("Error getting parent file: %s", err)
-			}
-			parentfile = v.String()
-		}
-		path := filepath.Join(filepath.Dir(parentfile), filename)
-		if buf, _ := LoadScript(filename); buf != nil {
-			return path, buf
-		}
+	replaced := strings.Replace(filename, "-", "_", -1)
+	tryThese := []string{filename}
+	if replaced != filename {
+		tryThese = append(tryThese, replaced)
 	}
-
-	tryThese := []string{filename, strings.Replace(filename, "-", "_", -1)}
-
-	for _, dir := range []string{JsDir, ".", "js"} {
+	dirs := []string{"", JsDir, ".", "js"}
+	if parentDir != "" {
+		dirs = append(dirs, parentDir)
+	}
+	for _, dir := range dirs {
 		for _, p := range tryThese {
 
 			// Load source verbatim from dir
 			path := filepath.Join(dir, p)
 			if buf, _ := LoadScript(path); buf != nil {
-				return path, buf
+				return path, parentPath.String(), buf
 			}
 
 			// Load source with ".js"
 			path = filepath.Join(dir, p+".js")
 			if buf, _ := LoadScript(path); buf != nil {
-				return path, buf
+				return path, parentPath.String(), buf
 			}
 
 			// Look for package.json
-			info, err := os.Stat(filepath.Join(dir, p))
-			if err == nil && info.IsDir() {
-				path := filepath.Join(dir, p, "package.json")
-				_, err := os.Stat(path)
-				if err == nil {
-					// load package.json
-					pkg := loadPackage(rt, path)
-					path := filepath.Join(dir, p, pkg.Main)
-					if buf, _ := LoadScript(path); buf != nil {
-						return path, buf
-					} else {
-						log.Fatalf("Broken package '%s', main file '%s' not found.",
-							pkg.Name,
-							path)
+			if ext := filepath.Ext(p); ext != ".json" && ext != ".js" {
+				info, err := os.Stat(filepath.Join(dir, p))
+				if err == nil && info.IsDir() {
+					path := filepath.Join(dir, p, "package.json")
+					_, err := os.Stat(path)
+					if err == nil {
+						// load package.json, then try its 'Main'
+						pkg := loadPackage(rt, path)
+						main := pkg.Main
+						if main == "" {
+							main = "index.js"
+						}
+						path := filepath.Join(dir, p, main)
+						return loadSource(rt, parent, path)
 					}
 				}
 			}
+
+			// Is it a directory?
+			info, err := os.Stat(filepath.Join(dir, p))
+			if err == nil && info.IsDir() {
+				path := filepath.Join(dir, p, "index.js")
+				return loadSource(rt, parent, path)
+			}
+
 		}
 	}
 
 	log.Fatalf("Can't load '%s'", filename)
-	return "", nil
+	return "", "", nil
 
 }
 
@@ -174,13 +176,24 @@ func loadPackage(rt *otto.Otto, path string) *Package {
 	return &pkg
 }
 
-func require(rt *otto.Otto,
-	baseRequire otto.Value,
-	parent *otto.Value,
-	filename string) otto.Value {
+func require(rt *otto.Otto, baseRequire otto.Value, parent *otto.Value, filename string) otto.Value {
 
 	// Find it and load it
-	path, buf := loadSource(rt, parent, filename)
+	path, parentPath, buf := loadSource(rt, parent, filename)
+
+	// Handle JSON files
+	if ext := filepath.Ext(path); ext == ".json" {
+		js := fmt.Sprintf(`(function (src) {
+                         return JSON.parse(src);
+                     })`)
+
+		var val otto.Value
+		var err error
+		if val, err = rt.Call(js, nil, buf.String()); err != nil {
+			log.Fatal(err)
+		}
+		return val
+	}
 
 	// Set up a context for evaling the source
 	js := fmt.Sprintf(`(function (baseRequire, filename, parent) {
@@ -201,16 +214,16 @@ func require(rt *otto.Otto,
                        return theModule.exports;
                      })`, buf.String())
 
-	// Load fire it up
+	// Fire it up
 	var val otto.Value
 	var err error
 	if parent != nil {
 		if val, err = rt.Call(js, nil, baseRequire, path, *parent); err != nil {
-			log.Fatal(err)
+			log.Fatalf("Error loading '%s' from '%s': %s", path, parentPath, err)
 		}
 	} else {
 		if val, err = rt.Call(js, nil, baseRequire, path); err != nil {
-			log.Fatal(err)
+			log.Fatalf("Error loading '%s' from '%s': %s", path, parentPath, err)
 		}
 	}
 

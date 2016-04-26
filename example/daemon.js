@@ -1,5 +1,7 @@
 function watcher(input) {
-    log("watcher");
+    console.log(Object.keys(mithras));
+    var catalog = mithras.run();
+    console.log(Object.keys(catalog));
     return;
 }
 

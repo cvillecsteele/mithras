@@ -22,31 +22,32 @@
 <li><a href="#chmod">fs.chmod</a></li>
 <li><a href="#dir">fs.dir</a></li>
 <li><a href="#stat">fs.stat</a></li>
+<li><a href="#tempdir">fs.tempDir</a></li>
 </ul>
 </blockquote>
 <p> This API allows the caller to work with files.</p>
 <h2>FS.CHTIMES</h2><p> <a name="chtimes"></a>
- <code>filepath.chtimes(path);</code></p>
+ <code>fs.chtimes(path);</code></p>
 <p> Sets the file at <code>path</code> to have current atime and mtime.  TODO: rename this to <code>touch</code>.</p>
 <p> Example:</p>
 <pre><code>
   var err = fs.chtimes(&quot;/tmp/foo&quot;);
 </code></pre><h2>FS.LINK</h2><p> <a name="link"></a>
- <code>filepath.link(old, new);</code></p>
+ <code>fs.link(old, new);</code></p>
 <p> Link creates newname as a hard link to the oldname file. If there
  is an error, it will be of type LinkError.</p>
 <p> Example:</p>
 <pre><code>
   var err = fs.link(&quot;/tmp/old&quot; &quot;/tmp/new&quot;);
 </code></pre><h2>FS.SYMLINK</h2><p> <a name="symlink"></a>
- <code>filepath.symlink(old, new);</code></p>
+ <code>fs.symlink(old, new);</code></p>
 <p> Symlink creates newname as a symbolic link to oldname. If there is
  an error, it will be of type LinkError.</p>
 <p> Example:</p>
 <pre><code>
   var err = fs.symlink(&quot;/tmp/old&quot; &quot;/tmp/new&quot;);
 </code></pre><h2>FS.CREATE</h2><p> <a name="create"></a>
- <code>filepath.create(path);</code></p>
+ <code>fs.create(path);</code></p>
 <p> Create creates the named file with mode 0666 (before umask),
  truncating it if it already exists. If successful, methods on the
  returned File can be used for I/O; the associated file descriptor
@@ -58,7 +59,7 @@
   var file = results[0];
   var error = results[1];
 </code></pre><h2>FS.CLOSE</h2><p> <a name="close"></a>
- <code>filepath.close(file);</code></p>
+ <code>fs.close(file);</code></p>
 <p> Close closes the File, rendering it unusable for I/O. It returns an
  error, if any.</p>
 <p> Example:</p>
@@ -71,7 +72,7 @@
   }
   var error = fs.close(file);
 </code></pre><h2>FS.READ</h2><p> <a name="read"></a>
- <code>filepath.read(path);</code></p>
+ <code>fs.read(path);</code></p>
 <p> Read the contents of the file at <code>path</code>.</p>
 <p> Example:</p>
 <pre><code>
@@ -79,7 +80,7 @@
   var contents = results[0];
   var error = results[1];
 </code></pre><h2>FS.BREAD</h2><p> <a name="bread"></a>
- <code>filepath.bread(path);</code></p>
+ <code>fs.bread(path);</code></p>
 <p> Read the contents of the file at <code>path</code> and return an array of
  <code>[content, error]</code>, where <code>content</code> is an array of numbers.</p>
 <p> Example:</p>
@@ -88,25 +89,25 @@
   var contents = results[0];
   var error = results[1];
 </code></pre><h2>FS.WRITE</h2><p> <a name="write"></a>
- <code>filepath.write(path, contents, perms);</code></p>
+ <code>fs.write(path, contents, perms);</code></p>
 <p> Write the contents of the file at <code>path</code>.</p>
 <p> Example:</p>
 <pre><code>
   var error = fs.read(&quot;/tmp/foo&quot;, &quot;contents&quot;, 0644);
 </code></pre><h2>FS.COPY</h2><p> <a name="copy"></a>
- <code>filepath.copy(src, dest, perms);</code></p>
+ <code>fs.copy(src, dest, perms);</code></p>
 <p> Copy the file from <code>src</code> to <code>dest</code>.</p>
 <p> Example:</p>
 <pre><code>
   var error = fs.copy(&quot;/tmp/foo&quot;, &quot;/tmp/bar&quot;, 0644);
 </code></pre><h2>FS.CHDIR</h2><p> <a name="chdir"></a>
- <code>filepath.chdir(dir);</code></p>
+ <code>fs.chdir(dir);</code></p>
 <p> Change working director to <code>dir</code>.</p>
 <p> Example:</p>
 <pre><code>
   var error = fs.chdir(&quot;/tmp&quot;);
 </code></pre><h2>FS.GETWD</h2><p> <a name="getwd"></a>
- <code>filepath.getwd();</code></p>
+ <code>fs.getwd();</code></p>
 <p> Get the current working directory.</p>
 <p> Example:</p>
 <pre><code>
@@ -114,7 +115,7 @@
   var where = results[0];
   var err = results[1];
 </code></pre><h2>FS.MKDIRALL</h2><p> <a name="mkdirAll"></a>
- <code>filepath.mkdirALL(path, perm);</code></p>
+ <code>fs.mkdirALL(path, perm);</code></p>
 <p> MkdirAll creates a directory named path, along with any necessary
  parents, and returns nil, or else returns an error. The permission
  bits perm are used for all directories that MkdirAll creates. If
@@ -123,13 +124,13 @@
 <pre><code>
   var error = fs.mkdirAll(&quot;/tmp/a/b/c&quot;, 0777);
 </code></pre><h2>FS.REMOVE</h2><p> <a name="remove"></a>
- <code>filepath.remove(path);</code></p>
+ <code>fs.remove(path);</code></p>
 <p> Remove the file at <code>path</code>.</p>
 <p> Example:</p>
 <pre><code>
   var error = fs.remove(&quot;/tmp/a/b/c&quot;);
 </code></pre><h2>FS.REMOVEALL</h2><p> <a name="removeAll"></a>
- <code>filepath.removeAll(path);</code></p>
+ <code>fs.removeAll(path);</code></p>
 <p> RemoveAll removes path and any children it contains. It removes
  everything it can but returns the first error it encounters. If the
  path does not exist,</p>
@@ -137,7 +138,7 @@
 <pre><code>
   var error = fs.removeAll(&quot;/tmp/a/b/c&quot;);
 </code></pre><h2>FS.RENAME</h2><p> <a name="rename"></a>
- <code>filepath.rename(oldname, newname);</code></p>
+ <code>fs.rename(oldname, newname);</code></p>
 <p> Rename renames (moves) oldpath to newpath. If newpath already
  exists, Rename replaces it. OS-specific restrictions may apply when
  oldpath and newpath are in different directories. If there is an
@@ -146,7 +147,7 @@
 <pre><code>
   var error = fs.rename(&quot;/tmp/foo&quot;, &quot;/tmp/bar&quot;);
 </code></pre><h2>FS.CHOWN</h2><p> <a name="chown"></a>
- <code>filepath.chown(path, uid, gid);</code></p>
+ <code>fs.chown(path, uid, gid);</code></p>
 <p> Chown changes the numeric uid and gid of the named file. If the
  file is a symbolic link,it changes the uid and gid of the link&#39;s
  target. If there is an error, it will be of type *PathError.</p>
@@ -154,7 +155,7 @@
 <pre><code>
   var error = fs.chown(&quot;/tmp/foo&quot;, 12, 34);
 </code></pre><h2>FS.LCHOWN</h2><p> <a name="lchown"></a>
- <code>filepath.lChown(path, uid, gid);</code></p>
+ <code>fs.lChown(path, uid, gid);</code></p>
 <p> Lchown changes the numeric uid and gid of the named file. If the
  file is a symbolic link, it changes the uid and gid of the link
  itself. If there is an error, it will be of type *PathError.</p>
@@ -162,7 +163,7 @@
 <pre><code>
   var error = fs.lchown(&quot;/tmp/foo&quot;, 12, 34);
 </code></pre><h2>FS.CHMOD</h2><p> <a name="chmod"></a>
- <code>filepath.chmod(path, mode);</code></p>
+ <code>fs.chmod(path, mode);</code></p>
 <p> Chmod changes the mode of the named file to mode. If the file is a
  symbolic link, it changes the mode of the link&#39;s target. If there
  is an error, it will be of type *PathError.</p>
@@ -170,7 +171,7 @@
 <pre><code>
   var error = fs.chmod(&quot;/tmp/foo&quot;, 0777);
 </code></pre><h2>FS.DIR</h2><p> <a name="dir"></a>
- <code>filepath.dir(path);</code></p>
+ <code>fs.dir(path);</code></p>
 <p> Return the directory entries from <code>path</code></p>
 <p> Example:</p>
 <pre><code>
@@ -178,9 +179,17 @@
   var entries = results[0];
   var error = results[1];
 </code></pre><h2>FS.STAT</h2><p> <a name="stat"></a>
- <code>filepath.stat(path);</code></p>
+ <code>fs.stat(path);</code></p>
 <p> Stat returns the FileInfo structure describing file. If there is an
  error, it will be of type *PathError.</p>
+<p> Example:</p>
+<pre><code>
+  var results = fs.stat(&quot;/tmp/foo&quot;);
+  var info = results[0];
+  var error = results[1];
+</code></pre><h2>FS.TEMPDIR</h2><p> <a name="tempdir"></a>
+ <code>fs.tempDir();</code></p>
+<p> Returns the default dirctory to use for temporary files.</p>
 <p> Example:</p>
 <pre><code>
   var results = fs.stat(&quot;/tmp/foo&quot;);

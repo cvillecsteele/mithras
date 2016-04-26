@@ -82,9 +82,8 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* sqs
-* document workers better
 * ASG solution
+* document workers better
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * rework / robustify web core module
 

@@ -70,7 +70,7 @@ func Run(versions []script.ModuleVersion, version string) {
 			Aliases: []string{"r"},
 			Usage:   "Run a mithras script",
 			Action: func(c *cli.Context) {
-				script.RunJS(c, versions, version)
+				script.RunCli(c, versions, version)
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -90,7 +90,7 @@ func Run(versions []script.ModuleVersion, version string) {
 		{
 			Name:    "build",
 			Aliases: []string{"b"},
-			Usage:   "Build helpers",
+			Usage:   "Build Mithras remote helper binaries.  Run this first.",
 			Action:  buildIt,
 			Flags: []cli.Flag{
 				cli.StringSliceFlag{
@@ -106,24 +106,68 @@ func Run(versions []script.ModuleVersion, version string) {
 			},
 		},
 
+		// get
+		{
+			Name:    "get",
+			Aliases: []string{"install", "g"},
+			Usage:   "This command installs a package, and any packages that it depends on.",
+			Action: func(c *cli.Context) {
+				verbose := c.GlobalBool("verbose")
+				home := c.GlobalString("mithras")
+				jsfile := c.String("file")
+				jsdir := c.String("js")
+				destdir := c.String("dir")
+				if jsfile == "" {
+					if jsdir == "" {
+						jsfile = filepath.Join(home, "js", "fetch.js")
+					} else {
+						jsfile = filepath.Join(jsdir, "fetch.js")
+					}
+				}
+				args := []string(c.Args())
+				f := func(rt *otto.Otto) {
+					o, err := rt.Get("mithras")
+					if err != nil {
+						panic(err)
+					}
+					o.Object().Set("DESTDIR", destdir)
+				}
+				script.RunJS(jsfile, jsdir, home, verbose, args, versions, version, &f)
+			},
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "file, f",
+					Usage: "Run this fetch script",
+				},
+				cli.StringFlag{
+					Name:  "js, j",
+					Usage: "JS lib directory, defaults to $MITHRASHOME/js",
+				},
+				cli.StringFlag{
+					Name:  "dir, d",
+					Value: "./js",
+					Usage: "JS install directory, defaults to ./js",
+				},
+			},
+		},
+
 		// repl
 		{
 			Name:   "repl",
-			Usage:  "Run JS repl",
+			Usage:  "Run a Mithras JS repl",
 			Action: runRepl,
 		},
 
 		// daemon
 		{
-			Name:    "daemon",
-			Aliases: []string{"d", "demon"},
-			// Usage:       "Control the Mithras daemon",
-			// Description: "Start or stop the Mithras daemon",
+			Name:        "daemon",
+			Aliases:     []string{"d", "demon"},
+			Usage:       "Run a Mithras daemon",
+			Description: "Start or stop the Mithras daemon using 'mithras daemon start' and 'mithras daemon stop'",
 			Subcommands: []cli.Command{
 				{
-					Name: "start",
-					// Aliases: []string{""},
-					// Usage:       "sends a greeting in english",
+					Name:  "start",
+					Usage: "Start the Mithras daemon",
 					// Description: "greets someone in english",
 					Flags: []cli.Flag{
 						cli.StringFlag{
@@ -144,7 +188,7 @@ func Run(versions []script.ModuleVersion, version string) {
 				{
 					Name: "stop",
 					// Aliases: []string{""},
-					// Usage:       "sends a greeting in english",
+					Usage: "Stop the Mithras daemon gracefully",
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
 					Action: func(c *cli.Context) {
@@ -154,7 +198,7 @@ func Run(versions []script.ModuleVersion, version string) {
 				{
 					Name:    "quit",
 					Aliases: []string{"q"},
-					// Usage:       "sends a greeting in english",
+					Usage:   "Stop the Mithras daemon immediately",
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
 					Action: func(c *cli.Context) {

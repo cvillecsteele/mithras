@@ -80,7 +80,7 @@ func Run(c *cli.Context, versions []script.ModuleVersion, version string) {
 	}
 	defer cntxt.Release()
 
-	rt := script.RunJS(c, versions, version)
+	rt := script.RunCli(c, versions, version)
 
 	daemon.SetSigHandler(makeTermHandler(rt), syscall.SIGQUIT)
 	daemon.SetSigHandler(makeTermHandler(rt), syscall.SIGTERM)
