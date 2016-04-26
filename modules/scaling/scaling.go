@@ -462,8 +462,8 @@ func init() {
 			awsObj = a.Object()
 		}
 
-		if b, err := awsObj.Get("scaling"); err != nil || b.IsUndefined() {
-			o1, _ = rt.Object(`aws.scaling = {}`)
+		if b, err := awsObj.Get("autoscaling"); err != nil || b.IsUndefined() {
+			o1, _ = rt.Object(`aws.autoscaling = {}`)
 		} else {
 			o1 = b.Object()
 		}
@@ -474,8 +474,9 @@ func init() {
 		} else {
 			o2 = c.Object()
 		}
-		o2.Set("scan", func(region string) otto.Value {
+		o2.Set("scan", func(call otto.FunctionCall) otto.Value {
 			f := mcore.Sanitizer(rt)
+			region := call.Argument(0).String()
 			return f(scanLaunchConfigurations(region))
 		})
 		o2.Set("delete", deleteLaunchConfiguration)
@@ -585,8 +586,9 @@ func init() {
 		} else {
 			o2 = c.Object()
 		}
-		o2.Set("scan", func(region string) otto.Value {
+		o2.Set("scan", func(call otto.FunctionCall) otto.Value {
 			f := mcore.Sanitizer(rt)
+			region := call.Argument(0).String()
 			return f(scanAutoScalingGroups(region))
 		})
 		o2.Set("delete", deleteAutoScalingGroup)
