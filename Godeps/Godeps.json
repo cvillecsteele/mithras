@@ -114,6 +114,11 @@
 			"Rev": "0bd49bf38f0396818638e27de5c73eee6e66012d"
 		},
 		{
+			"ImportPath": "github.com/aws/aws-sdk-go/service/autoscaling",
+			"Comment": "v1.1.6-3-g0bd49bf",
+			"Rev": "0bd49bf38f0396818638e27de5c73eee6e66012d"
+		},
+		{
 			"ImportPath": "github.com/aws/aws-sdk-go/service/ec2",
 			"Comment": "v1.1.6-3-g0bd49bf",
 			"Rev": "0bd49bf38f0396818638e27de5c73eee6e66012d"
@@ -232,10 +237,6 @@
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/token",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
-		},
-		{
-			"ImportPath": "github.com/robertkrimen/otto/underscore",
 			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
 		},
 		{

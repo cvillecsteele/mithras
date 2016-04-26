@@ -43,6 +43,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/os"
 	"github.com/cvillecsteele/mithras/modules/routetables"
 	"github.com/cvillecsteele/mithras/modules/s3"
+	"github.com/cvillecsteele/mithras/modules/scaling"
 	"github.com/cvillecsteele/mithras/modules/sns"
 	"github.com/cvillecsteele/mithras/modules/sqs"
 	"github.com/cvillecsteele/mithras/modules/tag"
@@ -56,6 +57,7 @@ var Version = "0.1.0"
 
 func main() {
 	vers := []script.ModuleVersion{
+		script.ModuleVersion{Version: scaling.Version, Module: scaling.ModuleName},
 		script.ModuleVersion{Version: sqs.Version, Module: sqs.ModuleName},
 		script.ModuleVersion{Version: sns.Version, Module: sns.ModuleName},
 		script.ModuleVersion{Version: keypairs.Version, Module: keypairs.ModuleName},
