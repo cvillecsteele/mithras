@@ -83,7 +83,6 @@ TODO
 ###############################################################################
 
 * document ASG solution
-* document format of instance, etc
 * combine scp, file copy
 * parallelize with workers?
 * explainer videos
