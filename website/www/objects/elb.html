@@ -1,0 +1,70 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h2>Object Format: ELB</h2><pre><code>{
+  &quot;AvailabilityZones&quot;: [
+    &quot;us-east-1b&quot;,
+    &quot;us-east-1d&quot;
+  ],
+  &quot;BackendServerDescriptions&quot;: null,
+  &quot;CanonicalHostedZoneName&quot;: &quot;cr-ws-elb-staging-1835873414.us-east-1.elb.amazonaws.com&quot;,
+  &quot;CanonicalHostedZoneNameID&quot;: &quot;Z3DZXE0Q79N41H&quot;,
+  &quot;CreatedTime&quot;: &quot;2016-02-18T16:40:01.9Z&quot;,
+  &quot;DNSName&quot;: &quot;cr-ws-elb-staging-1835873414.us-east-1.elb.amazonaws.com&quot;,
+  &quot;HealthCheck&quot;: {
+    &quot;HealthyThreshold&quot;: 10,
+    &quot;Interval&quot;: 30,
+    &quot;Target&quot;: &quot;HTTP:80/hc&quot;,
+    &quot;Timeout&quot;: 5,
+    &quot;UnhealthyThreshold&quot;: 2
+  },
+  &quot;Instances&quot;: [
+    {
+      &quot;InstanceId&quot;: &quot;i-6c7f79f4&quot;
+    }
+  ],
+  &quot;ListenerDescriptions&quot;: [
+    {
+      &quot;Listener&quot;: {
+        &quot;InstancePort&quot;: 80,
+        &quot;InstanceProtocol&quot;: &quot;HTTP&quot;,
+        &quot;LoadBalancerPort&quot;: 443,
+        &quot;Protocol&quot;: &quot;HTTPS&quot;,
+        &quot;SSLCertificateId&quot;: &quot;arn:aws:acm:us-east-1:286536233385:certificate/7ec23cde-ea82-4740-b44f-91302b48f9f9&quot;
+      },
+      &quot;PolicyNames&quot;: [
+        &quot;ELBSecurityPolicy-2015-05&quot;
+      ]
+    },
+    {
+      &quot;Listener&quot;: {
+        &quot;InstancePort&quot;: 80,
+        &quot;InstanceProtocol&quot;: &quot;HTTP&quot;,
+        &quot;LoadBalancerPort&quot;: 80,
+        &quot;Protocol&quot;: &quot;HTTP&quot;,
+        &quot;SSLCertificateId&quot;: null
+      },
+      &quot;PolicyNames&quot;: null
+    }
+  ],
+  &quot;LoadBalancerName&quot;: &quot;cr-ws-elb-staging&quot;,
+  &quot;Policies&quot;: {
+    &quot;AppCookieStickinessPolicies&quot;: null,
+    &quot;LBCookieStickinessPolicies&quot;: null,
+    &quot;OtherPolicies&quot;: [
+      &quot;ELBSecurityPolicy-2015-05&quot;
+    ]
+  },
+  &quot;Scheme&quot;: &quot;internet-facing&quot;,
+  &quot;SecurityGroups&quot;: [
+    &quot;sg-f9b17281&quot;
+  ],
+  &quot;SourceSecurityGroup&quot;: {
+    &quot;GroupName&quot;: &quot;cr-elb-sg-staging&quot;,
+    &quot;OwnerAlias&quot;: &quot;286536233385&quot;
+  },
+  &quot;Subnets&quot;: [
+    &quot;subnet-bf6cedc9&quot;,
+    &quot;subnet-e88d56b0&quot;
+  ],
+  &quot;VPCId&quot;: &quot;vpc-f6732c92&quot;
+}
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

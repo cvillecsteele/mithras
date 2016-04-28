@@ -141,7 +141,31 @@ function run() {
 	} // params
     };
 
-    mithras.apply(catalog, [ security, rKey, rInstance ], reverse);
+    catalog = mithras.apply(catalog, [ security, rKey, rInstance ], reverse);
+
+    if (mithras.ARGS[0] === "doc") { 
+	var sprintf = require("sprintf").sprintf;
+	_.each(Object.keys(catalog), function(key) {
+	    key = key.toString();
+	    key = key.substring(0, key.length - 1);
+	    var file;
+	    var title;
+	    if (catalog[key+"s"]) {
+		if (key === "rr") {
+		    file = "website/objects/rrs.md";
+		    title = "RRS";
+		} else {
+		    file = "website/objects/"+key+".md";
+		    title = key.toUpperCase();
+		}
+		var contents = sprintf("\n## Object Format: %s\n\n%s\n", title,
+				       ("\n" + JSON.stringify(catalog[key+"s"][0], null, 2)).replace(/\n([^\n])/g, "\n    $1"));
+		fs.write(file, contents, 0644);
+	    } else {
+		console.log(JSON.stringify(key));
+	    }
+	});
+    }
 
     return true;
 }

@@ -13,6 +13,43 @@ function run() {
     var handlers = [];
     var mod = [];
     var example = [];
+    var object = [];
+
+    // Deal with object doc first
+    var where = filepath.join(mithras.HOME, "website", "objects");
+    var result = fs.dir(where);
+    if (result[1]) {
+	log(sprintf("Can't read dir '%s'", where));
+	os.exit(1);
+    }
+    var files = result[0];
+    _.each(files, function(f) {
+	var ext = filepath.ext(f);
+	if (ext === ".md") {
+	    var result = filepath.split(f);
+	    var dir = result[0];
+	    var file = result[1];
+	    object.push(file);
+	}
+    });
+    var n = object.length / 3;
+    var contents = "div.container-fluid\n  div.row\n";
+    var lists = _.chain(object).groupBy(function(element, index) {
+	return Math.floor(index/n);
+    }).toArray().value();
+    _.each(lists, function(l) {
+	contents = contents + "    div.col-md-4\n      ul.list-unstyled\n";
+	_.each(l, function(file) {
+	    var results = filepath.split(file);
+	    var text = results[1].replace(/(.*).md/, '$1');
+	    var file = results[1].replace(/(.*).md/, 'objects/$1');
+	    contents = contents + 
+		sprintf("        li: a(href='%s.html') %s\n", file, text);
+	});
+    });
+    fs.write("website/objects.jade", contents, 0644);
+
+    
     filepath.walk(".", function(path, info, err) {
         if (info.IsDir || (!re.exec(path))) {
 	    return;

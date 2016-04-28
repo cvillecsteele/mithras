@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h2>Object Format: DB</h2><pre><code>{
+  &quot;AllocatedStorage&quot;: 10,
+  &quot;AutoMinorVersionUpgrade&quot;: true,
+  &quot;AvailabilityZone&quot;: &quot;us-east-1d&quot;,
+  &quot;BackupRetentionPeriod&quot;: 1,
+  &quot;CACertificateIdentifier&quot;: &quot;rds-ca-2015&quot;,
+  &quot;CharacterSetName&quot;: null,
+  &quot;CopyTagsToSnapshot&quot;: false,
+  &quot;DBClusterIdentifier&quot;: null,
+  &quot;DBInstanceClass&quot;: &quot;db.m1.small&quot;,
+  &quot;DBInstanceIdentifier&quot;: &quot;cr-staging&quot;,
+  &quot;DBInstanceStatus&quot;: &quot;available&quot;,
+  &quot;DBName&quot;: &quot;cr&quot;,
+  &quot;DBParameterGroups&quot;: [
+    {
+      &quot;DBParameterGroupName&quot;: &quot;default.postgres9.4&quot;,
+      &quot;ParameterApplyStatus&quot;: &quot;in-sync&quot;
+    }
+  ],
+  &quot;DBSecurityGroups&quot;: null,
+  &quot;DBSubnetGroup&quot;: {
+    &quot;DBSubnetGroupDescription&quot;: &quot;postgres cache subnet group&quot;,
+    &quot;DBSubnetGroupName&quot;: &quot;cr-postgres-subnet-group-staging&quot;,
+    &quot;SubnetGroupStatus&quot;: &quot;Complete&quot;,
+    &quot;Subnets&quot;: [
+      {
+        &quot;SubnetAvailabilityZone&quot;: {
+          &quot;Name&quot;: &quot;us-east-1b&quot;
+        },
+        &quot;SubnetIdentifier&quot;: &quot;subnet-bf6cedc9&quot;,
+        &quot;SubnetStatus&quot;: &quot;Active&quot;
+      },
+      {
+        &quot;SubnetAvailabilityZone&quot;: {
+          &quot;Name&quot;: &quot;us-east-1d&quot;
+        },
+        &quot;SubnetIdentifier&quot;: &quot;subnet-e88d56b0&quot;,
+        &quot;SubnetStatus&quot;: &quot;Active&quot;
+      }
+    ],
+    &quot;VpcId&quot;: &quot;vpc-f6732c92&quot;
+  },
+  &quot;DbInstancePort&quot;: 0,
+  &quot;DbiResourceId&quot;: &quot;db-D22VWSG5EQGTKCLC74VVHMZ75Y&quot;,
+  &quot;Endpoint&quot;: {
+    &quot;Address&quot;: &quot;cr-staging.cpxl92pgez22.us-east-1.rds.amazonaws.com&quot;,
+    &quot;HostedZoneId&quot;: null,
+    &quot;Port&quot;: 5432
+  },
+  &quot;Engine&quot;: &quot;postgres&quot;,
+  &quot;EngineVersion&quot;: &quot;9.4.5&quot;,
+  &quot;EnhancedMonitoringResourceArn&quot;: null,
+  &quot;InstanceCreateTime&quot;: &quot;2016-02-18T16:33:41.001Z&quot;,
+  &quot;Iops&quot;: null,
+  &quot;KmsKeyId&quot;: null,
+  &quot;LatestRestorableTime&quot;: &quot;2016-04-28T19:02:20Z&quot;,
+  &quot;LicenseModel&quot;: &quot;postgresql-license&quot;,
+  &quot;MasterUsername&quot;: &quot;cr_user&quot;,
+  &quot;MonitoringInterval&quot;: 0,
+  &quot;MonitoringRoleArn&quot;: null,
+  &quot;MultiAZ&quot;: false,
+  &quot;OptionGroupMemberships&quot;: [
+    {
+      &quot;OptionGroupName&quot;: &quot;default:postgres-9-4&quot;,
+      &quot;Status&quot;: &quot;in-sync&quot;
+    }
+  ],
+  &quot;PendingModifiedValues&quot;: {
+    &quot;AllocatedStorage&quot;: null,
+    &quot;BackupRetentionPeriod&quot;: null,
+    &quot;CACertificateIdentifier&quot;: null,
+    &quot;DBInstanceClass&quot;: null,
+    &quot;DBInstanceIdentifier&quot;: null,
+    &quot;EngineVersion&quot;: null,
+    &quot;Iops&quot;: null,
+    &quot;MasterUserPassword&quot;: null,
+    &quot;MultiAZ&quot;: null,
+    &quot;Port&quot;: null,
+    &quot;StorageType&quot;: null
+  },
+  &quot;PreferredBackupWindow&quot;: &quot;06:44-07:14&quot;,
+  &quot;PreferredMaintenanceWindow&quot;: &quot;thu:03:41-thu:04:11&quot;,
+  &quot;PubliclyAccessible&quot;: false,
+  &quot;ReadReplicaDBInstanceIdentifiers&quot;: null,
+  &quot;ReadReplicaSourceDBInstanceIdentifier&quot;: null,
+  &quot;SecondaryAvailabilityZone&quot;: null,
+  &quot;StatusInfos&quot;: null,
+  &quot;StorageEncrypted&quot;: false,
+  &quot;StorageType&quot;: &quot;standard&quot;,
+  &quot;TdeCredentialArn&quot;: null,
+  &quot;VpcSecurityGroups&quot;: [
+    {
+      &quot;Status&quot;: &quot;active&quot;,
+      &quot;VpcSecurityGroupId&quot;: &quot;sg-02b1727a&quot;
+    }
+  ]
+}
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h2>Object Format: INSTANCE</h2><pre><code>{
+  &quot;AmiLaunchIndex&quot;: 0,
+  &quot;Architecture&quot;: &quot;x86_64&quot;,
+  &quot;BlockDeviceMappings&quot;: [
+    {
+      &quot;DeviceName&quot;: &quot;/dev/xvda&quot;,
+      &quot;Ebs&quot;: {
+        &quot;AttachTime&quot;: &quot;2016-02-29T18:24:32Z&quot;,
+        &quot;DeleteOnTermination&quot;: true,
+        &quot;Status&quot;: &quot;attached&quot;,
+        &quot;VolumeId&quot;: &quot;vol-57df9cf4&quot;
+      }
+    }
+  ],
+  &quot;ClientToken&quot;: &quot;&quot;,
+  &quot;EbsOptimized&quot;: false,
+  &quot;Hypervisor&quot;: &quot;xen&quot;,
+  &quot;IamInstanceProfile&quot;: {
+    &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:instance-profile/cr-webserver&quot;,
+    &quot;Id&quot;: &quot;AIPAIOOUMBIRCV2QCTIYA&quot;
+  },
+  &quot;ImageId&quot;: &quot;ami-60b6c60a&quot;,
+  &quot;InstanceId&quot;: &quot;i-6c7f79f4&quot;,
+  &quot;InstanceLifecycle&quot;: null,
+  &quot;InstanceType&quot;: &quot;t2.small&quot;,
+  &quot;KernelId&quot;: null,
+  &quot;KeyName&quot;: &quot;cr&quot;,
+  &quot;LaunchTime&quot;: &quot;2016-02-29T18:24:30Z&quot;,
+  &quot;Monitoring&quot;: {
+    &quot;State&quot;: &quot;disabled&quot;
+  },
+  &quot;NetworkInterfaces&quot;: [
+    {
+      &quot;Association&quot;: {
+        &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+        &quot;PublicDnsName&quot;: &quot;ec2-54-210-146-169.compute-1.amazonaws.com&quot;,
+        &quot;PublicIp&quot;: &quot;54.210.146.169&quot;
+      },
+      &quot;Attachment&quot;: {
+        &quot;AttachTime&quot;: &quot;2016-02-29T18:24:30Z&quot;,
+        &quot;AttachmentId&quot;: &quot;eni-attach-b3c5455c&quot;,
+        &quot;DeleteOnTermination&quot;: true,
+        &quot;DeviceIndex&quot;: 0,
+        &quot;Status&quot;: &quot;attached&quot;
+      },
+      &quot;Description&quot;: &quot;&quot;,
+      &quot;Groups&quot;: [
+        {
+          &quot;GroupId&quot;: &quot;sg-15b1726d&quot;,
+          &quot;GroupName&quot;: &quot;cr-webserver-sg-staging&quot;
+        }
+      ],
+      &quot;MacAddress&quot;: &quot;0e:e3:1d:63:2f:29&quot;,
+      &quot;NetworkInterfaceId&quot;: &quot;eni-040cc555&quot;,
+      &quot;OwnerId&quot;: &quot;286536233385&quot;,
+      &quot;PrivateDnsName&quot;: &quot;ip-172-22-1-116.ec2.internal&quot;,
+      &quot;PrivateIpAddress&quot;: &quot;172.22.1.116&quot;,
+      &quot;PrivateIpAddresses&quot;: [
+        {
+          &quot;Association&quot;: {
+            &quot;IpOwnerId&quot;: &quot;amazon&quot;,
+            &quot;PublicDnsName&quot;: &quot;ec2-54-210-146-169.compute-1.amazonaws.com&quot;,
+            &quot;PublicIp&quot;: &quot;54.210.146.169&quot;
+          },
+          &quot;Primary&quot;: true,
+          &quot;PrivateDnsName&quot;: &quot;ip-172-22-1-116.ec2.internal&quot;,
+          &quot;PrivateIpAddress&quot;: &quot;172.22.1.116&quot;
+        }
+      ],
+      &quot;SourceDestCheck&quot;: true,
+      &quot;Status&quot;: &quot;in-use&quot;,
+      &quot;SubnetId&quot;: &quot;subnet-e88d56b0&quot;,
+      &quot;VpcId&quot;: &quot;vpc-f6732c92&quot;
+    }
+  ],
+  &quot;Placement&quot;: {
+    &quot;Affinity&quot;: null,
+    &quot;AvailabilityZone&quot;: &quot;us-east-1d&quot;,
+    &quot;GroupName&quot;: &quot;&quot;,
+    &quot;HostId&quot;: null,
+    &quot;Tenancy&quot;: &quot;default&quot;
+  },
+  &quot;Platform&quot;: null,
+  &quot;PrivateDnsName&quot;: &quot;ip-172-22-1-116.ec2.internal&quot;,
+  &quot;PrivateIpAddress&quot;: &quot;172.22.1.116&quot;,
+  &quot;ProductCodes&quot;: null,
+  &quot;PublicDnsName&quot;: &quot;ec2-54-210-146-169.compute-1.amazonaws.com&quot;,
+  &quot;PublicIpAddress&quot;: &quot;54.210.146.169&quot;,
+  &quot;RamdiskId&quot;: null,
+  &quot;RootDeviceName&quot;: &quot;/dev/xvda&quot;,
+  &quot;RootDeviceType&quot;: &quot;ebs&quot;,
+  &quot;SecurityGroups&quot;: [
+    {
+      &quot;GroupId&quot;: &quot;sg-15b1726d&quot;,
+      &quot;GroupName&quot;: &quot;cr-webserver-sg-staging&quot;
+    }
+  ],
+  &quot;SourceDestCheck&quot;: true,
+  &quot;SpotInstanceRequestId&quot;: null,
+  &quot;SriovNetSupport&quot;: null,
+  &quot;State&quot;: {
+    &quot;Code&quot;: 16,
+    &quot;Name&quot;: &quot;running&quot;
+  },
+  &quot;StateReason&quot;: null,
+  &quot;StateTransitionReason&quot;: &quot;&quot;,
+  &quot;SubnetId&quot;: &quot;subnet-e88d56b0&quot;,
+  &quot;Tags&quot;: [
+    {
+      &quot;Key&quot;: &quot;Env&quot;,
+      &quot;Value&quot;: &quot;staging&quot;
+    },
+    {
+      &quot;Key&quot;: &quot;API-SHA&quot;,
+      &quot;Value&quot;: &quot;0e2cd4f&quot;
+    },
+    {
+      &quot;Key&quot;: &quot;Name&quot;,
+      &quot;Value&quot;: &quot;cr-webserver-staging&quot;
+    },
+    {
+      &quot;Key&quot;: &quot;CRUI-SHA&quot;,
+      &quot;Value&quot;: &quot;be0408a&quot;
+    }
+  ],
+  &quot;VirtualizationType&quot;: &quot;hvm&quot;,
+  &quot;VpcId&quot;: &quot;vpc-f6732c92&quot;
+}
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
