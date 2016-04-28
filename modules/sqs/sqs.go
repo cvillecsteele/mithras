@@ -31,6 +31,7 @@ package sqs
 // > * [aws.sqs.create](#create)
 // > * [aws.sqs.delete](#delete)
 // > * [aws.sqs.describe](#describe)
+// > * [aws.sqs.attributes](#attributes)
 // > * [aws.sqs.messages.send](#msend)
 // > * [aws.sqs.messages.receive](#mreceive)
 // > * [aws.sqs.messages.delete](#mdelete)
@@ -132,6 +133,20 @@ package sqs
 //
 // ```
 //
+// ## AWS.SQS.ATTRIBUTES
+// <a name="attributes"></a>
+// `aws.sqs.attributes(region, sqsUrl);`
+//
+// Get info from AWS about an SQS queue.
+//
+// Example:
+//
+// ```
+//
+//  var queue = aws.sqs.attributes("us-east-1", "queueUrl");
+//
+// ```
+//
 // ## AWS.SQS.MESSAGES.RECEIVE
 // <a name="mreceive"></a>
 // `aws.sqs.messages.receive(region, input);`
@@ -182,6 +197,7 @@ import (
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/awserr"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/sqs"
 	"github.com/robertkrimen/otto"
@@ -243,6 +259,12 @@ func describeQueue(region string, name string) *string {
 	}
 	resp, err := svc.ListQueues(params)
 	if err != nil {
+		if awsErr, ok := err.(awserr.Error); ok {
+			if "400" == awsErr.Code() {
+				log.Println(awsErr.Error())
+				return nil
+			}
+		}
 		log.Fatal(err)
 	}
 
@@ -250,6 +272,24 @@ func describeQueue(region string, name string) *string {
 		return resp.QueueUrls[0]
 	}
 	return nil
+}
+
+func attributesQueue(region string, url string) map[string]*string {
+	svc := sqs.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	params := &sqs.GetQueueAttributesInput{
+		QueueUrl: aws.String(url),
+		AttributeNames: []*string{
+			aws.String("All"),
+		},
+	}
+	resp, err := svc.GetQueueAttributes(params)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return resp.Attributes
 }
 
 func scanQueues(region string) []string {
@@ -360,6 +400,12 @@ func init() {
 			sqsId := call.Argument(1).String()
 			f := mcore.Sanitizer(rt)
 			return f(describeQueue(region, sqsId))
+		})
+		o1.Set("attributes", func(call otto.FunctionCall) otto.Value {
+			region := call.Argument(0).String()
+			sqsId := call.Argument(1).String()
+			f := mcore.Sanitizer(rt)
+			return f(attributesQueue(region, sqsId))
 		})
 
 		// Messages

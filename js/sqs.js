@@ -47,28 +47,28 @@
 //        }
 //     }
 // };
-// var rSub = {
-//     name: "sqsSub"
-//     module: "sqs"
-//     dependsOn: [rTopic.name]
-//     params: {
-//         region: defaultRegion
-//         ensure: ensure
-//         sub: {
-//           Protocol: "..."
-//           TopicArn: "..."
-//           Endpoint: "..."
-//         }
-//     }
-// };
 // var rPub = {
 //     name: "sqsPub"
 //     module: "sqs"
 //     dependsOn: [rTopic.name]
 //     params: {
-//         region: defaultRegion
 //         ensure: ensure
-//         sub: {...}
+//         message: {
+//            MessageBody:  "body"
+//            QueueUrl:     "url"
+//            DelaySeconds: 1
+//            MessageAttributes: {
+//              "Key": {
+//                DataType: "type"
+//                BinaryListValues: [
+//                  "PAYLOAD"
+//                ]
+//                BinaryValue: "PAYLOAD"
+//                StringListValues: [ "String" ]
+//                StringValue: "String"
+//              }
+//            }
+//         }
 //     }
 // };
 // ```
@@ -148,7 +148,7 @@
             }
 
             // Sanity
-            if (!resource.params.queue && !resource.params.sub) {
+            if (!resource.params.queue && !resource.params.queue) {
                 console.log("Invalid sqs params")
                 os.exit(1);
             }
@@ -161,7 +161,7 @@
             case "absent":
 		if (queue && params.queue) {
                     if (mithras.verbose) {
-			log(sprintf("Deleting queue '%s'", queue));
+			log(sprintf("Deleting queue '%s'", params.queue.QueueName));
                     }
                     aws.sqs.delete(params.region, queue);
                     catalog.queues = _.reject(catalog.queues,

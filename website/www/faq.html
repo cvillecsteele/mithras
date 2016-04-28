@@ -7,4 +7,29 @@ easier to understand, and easier to maintain.
 </p><p>See <a href="guide4.html">Part Four</a> of the <a href="guide1.html">Guide</a> for an example of how to use Mithras in
 a way that JSON can't match.
 </p><h3>How can I help?</h3><p>See the <a href="community.html">Community</a> page.
-</p><h3>How is Mithras licensed?</h3><p>GPL V.3.  See <a href="https://github.com/cvillecsteele/mithras/blob/master/LICENSE.txt">LICENSE.txt</a>.</p><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
+</p><h3>How is Mithras licensed?</h3><p>GPL V.3.  See <a href="https://github.com/cvillecsteele/mithras/blob/master/LICENSE.txt">LICENSE.txt</a>.
+</p><h3>What about Autoscaling Groups?</h3><p>Good question.  Mithras is a push-based system, with no agent on
+your instances.  So how the heck do you set up an instance when it's
+been created by an AWS Autoscaling Group (ASG)?  The problem here is
+that without an agent running on the newly-created instance, it
+can't "phone home" to Mithras to get configured.  Somehow Mithras
+needs to discover it is there, and then go configure it.
+</p><p>The Mithras solution involves using ASG lifecycle hooks.  First you
+need an SQS queue and an IAM role that your ASG can assume, with the
+right privileges to post to the queue.  Then, when you create the
+ASG, create a lifecycle hook for it, so that it sends notifications
+of instance launch to the queue.  Then, in a Mithas daemon, you poll
+the queue, and look for the notifications.  When you get one, pull
+the <pre>Body</pre> attribute out of the message object, use
+<pre>JSON.parse()</pre> to read the JSON, and in it you find:
+</p><pre>{
+  "AccountId": "286536233385",
+  "AutoScalingGroupName": "name",
+  "EC2InstanceId": "i-3fd0c6a4",
+  "LifecycleActionToken": "982c71f5-04e4-493f-8d40-637493e5dabb",
+  "LifecycleHookName": "hookName",
+  "LifecycleTransition": "autoscaling:EC2_INSTANCE_LAUNCHING",
+  "RequestId": "abe5dd0b-54af-4d4d-acdb-8a0624de0ca4",
+  "Service": "AWS Auto Scaling",
+  "Time": "2016-04-27T20:46:15.094Z"
+}</pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

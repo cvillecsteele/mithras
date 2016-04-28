@@ -82,14 +82,21 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* ASG solution
+* test ASG solution
+* document ASG solution
+* document format of instance, etc
+* combine scp, file copy
+* parallelize with workers?
+* explainer videos
+* concepts doc
 * document workers better
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * rework / robustify web core module
 
+* standardize exit codes
+* signals?
+* nodjs-like 'process' object?
 * more s3 configuration support for buckets
-* test goroutines interaction with otto runtime
-* select for writes
 * repl should have mithras env loaded
 * copy - localFile so we don't read it into memory??
 * test base config in nginx

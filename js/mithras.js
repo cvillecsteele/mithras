@@ -762,10 +762,13 @@
         //
         run: function (targets) {
             if (mithras.verbose) {
-                log(sprintf("MITHRAS v %s", mithras.VERSION));
+                log0(sprintf("--- MITHRAS v %s --- ###", mithras.VERSION));
             }
 
 	    var scanners = {
+		autoscalingGroups: aws.autoscaling.groups.scan,
+		autoscalingLaunchConfigs: aws.autoscaling.launchConfigs.scan,
+		autoscalingHooks: aws.autoscaling.hooks.scan,
 		caches: aws.elasticache.scan,
 		dbs: aws.rds.scan,
 		instances: aws.instances.scan,
@@ -800,7 +803,7 @@
 
 	    var regions = aws.regions.scan();
 	    cat.regions = regions;
-	    _.each(mithras.activeRegions(regions), function(region) {
+	    _.each(mithras.activeRegions(cat), function(region) {
                 if (mithras.verbose) {
                     log(sprintf("Scanning ec2 region: %s", region));
                 }
@@ -857,5 +860,6 @@
     var keypairs = require("keypairs").init();
     var sns = require("sns").init();
     var sqs = require("sqs").init();
+    var autoscaling = require("autoscaling").init();
 
 }());

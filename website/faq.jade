@@ -28,3 +28,41 @@ h3 How is Mithras licensed?
 p.
   GPL V.3.  See <a href="https://github.com/cvillecsteele/mithras/blob/master/LICENSE.txt">LICENSE.txt</a>.
 
+h3 What about Autoscaling Groups?
+
+p.
+  Good question.  Mithras is a push-based system, with no agent on
+  your instances.  So how the heck do you set up an instance when it's
+  been created by an AWS Autoscaling Group (ASG)?  The problem here is
+  that without an agent running on the newly-created instance, it
+  can't "phone home" to Mithras to get configured.  Somehow Mithras
+  needs to discover it is there, and then go configure it.
+
+p.
+  The Mithras solution involves using ASG lifecycle hooks.  First you
+  need an SQS queue and an IAM role that your ASG can assume, with the
+  right privileges to post to the queue.  Then, when you create the
+  ASG, create a lifecycle hook for it, so that it sends notifications
+  of instance launch to the queue.  Then, in a Mithas daemon, you poll
+  the queue, and look for the notifications.  When you get one, pull
+  the <code>Body</code> attribute out of the message object, use
+  <code>JSON.parse()</code> to read the JSON, and in it you find:
+
+pre.
+  {
+    "AccountId": "286536233385",
+    "AutoScalingGroupName": "name",
+    "EC2InstanceId": "i-3fd0c6a4",
+    "LifecycleActionToken": "982c71f5-04e4-493f-8d40-637493e5dabb",
+    "LifecycleHookName": "hookName",
+    "LifecycleTransition": "autoscaling:EC2_INSTANCE_LAUNCHING",
+    "RequestId": "abe5dd0b-54af-4d4d-acdb-8a0624de0ca4",
+    "Service": "AWS Auto Scaling",
+    "Time": "2016-04-27T20:46:15.094Z"
+  }
+
+p.
+  There you go.  Now you can use the instance id to go off and
+  configure it, using <code>aws.instances.describe()</code>.  You can
+  find an example of all of this in the <code>example/asg.js</code>
+  and <code>example/asg_daemon.js</code> files.

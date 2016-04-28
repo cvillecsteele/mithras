@@ -167,7 +167,7 @@ package autoscaling
 //
 // ```
 //
-//  var scaling =  aws.autoscaling.hooks.create(
+//  var hook =  aws.autoscaling.hooks.create(
 //    "us-east-1",
 // {
 //   AutoScalingGroupName:  "groupName"
@@ -267,7 +267,7 @@ package autoscaling
 //
 // ## AWS.AUTOSCALING.LAUNCHCONFIGS.CREATE
 // <a name="lcreate"></a>
-// `aws.autoscaling.launchconfigs.create(region, config);`
+// `aws.autoscaling.launchConfigs.create(region, config);`
 //
 // Create an autoscaling launchconfig.
 //
@@ -275,7 +275,7 @@ package autoscaling
 //
 // ```
 //
-//  var scaling =  aws.autoscaling.launchconfigs.create(
+//  var config =  aws.autoscaling.launchConfigs.create(
 //    "us-east-1",
 // {
 //     LaunchConfigurationName:  "lcName"
@@ -318,7 +318,7 @@ package autoscaling
 //
 // ## AWS.AUTOSCALING.LAUNCHCONFIGS.DELETE
 // <a name="ldelete"></a>
-// `aws.autoscaling.launchconfigs.delete(region, launchconfigName);`
+// `aws.autoscaling.launchConfigs.delete(region, launchconfigName);`
 //
 // Delete an autoscaling launchconfig.
 //
@@ -326,7 +326,7 @@ package autoscaling
 //
 // ```
 //
-//  aws.autoscaling.launchconfigs.delete("us-east-1", "launchconfigName");
+//  aws.autoscaling.launchConfigs.delete("us-east-1", "launchconfigName");
 //
 // ```
 //
@@ -423,7 +423,10 @@ func scanLaunchConfigurations(region string) []*autoscaling.LaunchConfiguration 
 		log.Fatal(err)
 	}
 
-	return resp.LaunchConfigurations
+	if len(resp.LaunchConfigurations) > 0 {
+		return resp.LaunchConfigurations
+	}
+	return []*autoscaling.LaunchConfiguration{}
 }
 
 func createLifecycleHook(region string, params *autoscaling.PutLifecycleHookInput) {
@@ -490,20 +493,28 @@ func describeLifecycleHook(region string, groupName string, hookName string) *au
 	return nil
 }
 
-func scanLifecycleHooks(region string, groupName string) []*autoscaling.LifecycleHook {
+func scanLifecycleHooks(region string) []*autoscaling.LifecycleHook {
 	svc := autoscaling.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
 
-	params := &autoscaling.DescribeLifecycleHooksInput{
-		AutoScalingGroupName: aws.String(groupName),
-		LifecycleHookNames:   []*string{},
-	}
-	resp, err := svc.DescribeLifecycleHooks(params)
-	if err != nil {
-		log.Fatal(err)
+	groups := scanAutoScalingGroups(region)
+
+	hooks := []*autoscaling.LifecycleHook{}
+	for _, g := range groups {
+		params := &autoscaling.DescribeLifecycleHooksInput{
+			AutoScalingGroupName: aws.String(*g.AutoScalingGroupName),
+			LifecycleHookNames:   []*string{},
+		}
+		resp, err := svc.DescribeLifecycleHooks(params)
+		if err != nil {
+			log.Fatal(err)
+		}
+		for _, h := range resp.LifecycleHooks {
+			hooks = append(hooks, h)
+		}
 	}
 
-	return resp.LifecycleHooks
+	return hooks
 }
 
 func completeLifecycleAction(region string, params *autoscaling.CompleteLifecycleActionInput) {
@@ -603,7 +614,10 @@ func scanAutoScalingGroups(region string) []*autoscaling.Group {
 		log.Fatal(err)
 	}
 
-	return resp.AutoScalingGroups
+	if len(resp.AutoScalingGroups) > 0 {
+		return resp.AutoScalingGroups
+	}
+	return []*autoscaling.Group{}
 }
 
 func init() {
@@ -669,8 +683,7 @@ func init() {
 		o2.Set("scan", func(call otto.FunctionCall) otto.Value {
 			f := mcore.Sanitizer(rt)
 			region := call.Argument(0).String()
-			group := call.Argument(1).String()
-			return f(scanLifecycleHooks(region, group))
+			return f(scanLifecycleHooks(region))
 		})
 		o2.Set("delete", deleteLifecycleHook)
 		o2.Set("create", func(call otto.FunctionCall) otto.Value {
