@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>Autoscaling</h1><p> Autoscaling is resource handler for managing AWS autoscaling groups.</p>
+<p> This module exports:</p>
+<blockquote>
+<ul>
+<li><code>init</code> Initialization function, registers itself as a resource
+handler with <code>mithras.modules.handlers</code> for resources with a
+module value of <code>&quot;autoscaling&quot;</code></li>
+</ul>
+</blockquote>
+<p> Usage:</p>
+<p> <code>var autoscaling = require(&quot;autoscaling&quot;).init();</code></p>
+<h2>Example Resource</h2><pre><code class="language-javascript"> var asg = {
+      name: &quot;asg&quot;
+      module: &quot;autoscaling&quot;
+      dependsOn: [resource.name]
+      params: {
+          region: &quot;us-east-1&quot;
+          ensure: &quot;present&quot;
+          group: {
+            AutoScalingGroupName: &quot;name&quot;
+            MaxSize:              2
+            MinSize:              1
+            AvailabilityZones: [ &quot;us-east-1&quot; ]
+            DefaultCooldown:         100
+            DesiredCapacity:         1
+            HealthCheckGracePeriod:  100
+            LaunchConfigurationName: &quot;lcName&quot;
+            NewInstancesProtectedFromScaleIn: true
+            Tags: [
+                {
+                    Key:               &quot;Name&quot;
+                    PropagateAtLaunch: true
+                    ResourceId:        &quot;name&quot;
+                    ResourceType:      &quot;auto-scaling-group&quot;
+                    Value:             &quot;test&quot;
+                },
+            ]
+          }
+          hook: {
+           AutoScalingGroupName:  &quot;name&quot;
+           LifecycleHookName:     &quot;hookName&quot;
+           DefaultResult:         &quot;CONTINUE&quot;
+           HeartbeatTimeout:      100
+           LifecycleTransition:   &quot;autoscaling:EC2_INSTANCE_LAUNCHING&quot;
+           NotificationTargetARN: sqsArn // Like &quot;arn:aws:sqs:us-east-1:286536233385:myqueue&quot;
+           RoleARN:               roleArn // Like &quot;arn:aws:iam::286536233385:role/asg&quot;
+         }
+          launchConfig: {
+            LaunchConfigurationName:  &quot;lcName&quot;
+            EbsOptimized:       false
+            ImageId:            ami
+            InstanceMonitoring: {
+                Enabled: false
+            }
+            InstanceType:     instanceType
+          }
+      } // params
+ };
+</code></pre>
+<h2>Parameter Properties</h2><h3><code>ensure</code></h3><ul>
+<li>Required: true</li>
+<li><p>Allowed Values: &quot;present&quot; or &quot;absent&quot;</p>
+<p>If <code>&quot;present&quot;</code>, the db specified by <code>db</code> will be created, and
+if <code>&quot;absent&quot;</code>, it will be removed using the <code>delete</code> property.</p>
+<h3><code>region</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: string, any valid AWS region; eg &quot;us-east-1&quot;</p>
+<p>The region for calls to the AWS API.</p>
+<h3><code>group</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/scaling.html#type-CreateAutoScalingGroupInput">here</a></p>
+<p>Parameters for resource creation.  If present, an autoscaling group is created/deleted.</p>
+<h3><code>launchConfig</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/scaling.html#type-CreateLaunchConfigurationInput">here</a></p>
+<p>Parameters for resource creation.  If present, an autoscaling launch configuration is created/deleted.</p>
+<h3><code>hook</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: JSON corresponding to the structure found <a href="https://docs.aws.amazon.com/sdk-for-go/api/service/scaling.html#type-PutLifecycleHookInput">here</a></p>
+<p>Parameters for resource creation.  If present, an autoscaling lifecycle hook is created/deleted.</p>
+<h3><code>on_find</code></h3></li>
+<li><p>Required: true</p>
+</li>
+<li><p>Allowed Values: A function taking two parameters: <code>catalog</code> and <code>resource</code></p>
+<p>If defined in the resource&#39;s <code>params</code> object, the <code>on_find</code>
+function provides a way for a matching resource to be identified
+using a user-defined way.  The function is called with the current
+<code>catalog</code>, as well as the <code>resource</code> object itself.  The function
+can look through the catalog, find a matching object using whatever
+logic you want, and return it.  If the function returns <code>undefined</code>
+or a n empty Javascript array, (<code>[]</code>), the function is indicating
+that no matching resource was found in the <code>catalog</code>.</p>
+<h3><code>tags</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: A map of tags to be applied to created instances</p>
+<p>A map of tags to be applied to created instances</p>
+</li>
+</ul><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

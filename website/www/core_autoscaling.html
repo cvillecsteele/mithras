@@ -92,7 +92,7 @@
 <p> Create an autoscaling hook.</p>
 <p> Example:</p>
 <pre><code>
-  var scaling =  aws.autoscaling.hooks.create(
+  var hook =  aws.autoscaling.hooks.create(
     &quot;us-east-1&quot;,
  {
    AutoScalingGroupName:  &quot;groupName&quot;
@@ -148,11 +148,11 @@
 <pre><code>
   var launchconfig = aws.autoscaling.launchconfigs.describe(&quot;us-east-1&quot;, &quot;launchconfigName&quot;);
 </code></pre><h2>AWS.AUTOSCALING.LAUNCHCONFIGS.CREATE</h2><p> <a name="lcreate"></a>
- <code>aws.autoscaling.launchconfigs.create(region, config);</code></p>
+ <code>aws.autoscaling.launchConfigs.create(region, config);</code></p>
 <p> Create an autoscaling launchconfig.</p>
 <p> Example:</p>
 <pre><code>
-  var scaling =  aws.autoscaling.launchconfigs.create(
+  var config =  aws.autoscaling.launchConfigs.create(
     &quot;us-east-1&quot;,
  {
      LaunchConfigurationName:  &quot;lcName&quot;
@@ -191,9 +191,9 @@
      UserData:  &quot;StringUserData&quot;
  });
 </code></pre><h2>AWS.AUTOSCALING.LAUNCHCONFIGS.DELETE</h2><p> <a name="ldelete"></a>
- <code>aws.autoscaling.launchconfigs.delete(region, launchconfigName);</code></p>
+ <code>aws.autoscaling.launchConfigs.delete(region, launchconfigName);</code></p>
 <p> Delete an autoscaling launchconfig.</p>
 <p> Example:</p>
 <pre><code>
-  aws.autoscaling.launchconfigs.delete(&quot;us-east-1&quot;, &quot;launchconfigName&quot;);
+  aws.autoscaling.launchConfigs.delete(&quot;us-east-1&quot;, &quot;launchconfigName&quot;);
 </code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

@@ -24,28 +24,28 @@ module value of <code>&quot;sqs&quot;</code></li>
         }
      }
  };
- var rSub = {
-     name: &quot;sqsSub&quot;
-     module: &quot;sqs&quot;
-     dependsOn: [rTopic.name]
-     params: {
-         region: defaultRegion
-         ensure: ensure
-         sub: {
-           Protocol: &quot;...&quot;
-           TopicArn: &quot;...&quot;
-           Endpoint: &quot;...&quot;
-         }
-     }
- };
  var rPub = {
      name: &quot;sqsPub&quot;
      module: &quot;sqs&quot;
      dependsOn: [rTopic.name]
      params: {
-         region: defaultRegion
          ensure: ensure
-         sub: {...}
+         message: {
+            MessageBody:  &quot;body&quot;
+            QueueUrl:     &quot;url&quot;
+            DelaySeconds: 1
+            MessageAttributes: {
+              &quot;Key&quot;: {
+                DataType: &quot;type&quot;
+                BinaryListValues: [
+                  &quot;PAYLOAD&quot;
+                ]
+                BinaryValue: &quot;PAYLOAD&quot;
+                StringListValues: [ &quot;String&quot; ]
+                StringValue: &quot;String&quot;
+              }
+            }
+         }
      }
  };
 </code></pre>

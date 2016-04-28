@@ -13,6 +13,7 @@
  > * [aws.sqs.create](#create)
  > * [aws.sqs.delete](#delete)
  > * [aws.sqs.describe](#describe)
+ > * [aws.sqs.attributes](#attributes)
  > * [aws.sqs.messages.send](#msend)
  > * [aws.sqs.messages.receive](#mreceive)
  > * [aws.sqs.messages.delete](#mdelete)
@@ -111,6 +112,20 @@
  ```
 
   var queue = aws.sqs.describe("us-east-1", "queueName");
+
+ ```
+
+ ## AWS.SQS.ATTRIBUTES
+ <a name="attributes"></a>
+ `aws.sqs.attributes(region, sqsUrl);`
+
+ Get info from AWS about an SQS queue.
+
+ Example:
+
+ ```
+
+  var queue = aws.sqs.attributes("us-east-1", "queueUrl");
 
  ```
 

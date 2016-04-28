@@ -149,7 +149,7 @@
 
  ```
 
-  var scaling =  aws.autoscaling.hooks.create(
+  var hook =  aws.autoscaling.hooks.create(
     "us-east-1",
  {
    AutoScalingGroupName:  "groupName"
@@ -249,7 +249,7 @@
 
  ## AWS.AUTOSCALING.LAUNCHCONFIGS.CREATE
  <a name="lcreate"></a>
- `aws.autoscaling.launchconfigs.create(region, config);`
+ `aws.autoscaling.launchConfigs.create(region, config);`
 
  Create an autoscaling launchconfig.
 
@@ -257,7 +257,7 @@
 
  ```
 
-  var scaling =  aws.autoscaling.launchconfigs.create(
+  var config =  aws.autoscaling.launchConfigs.create(
     "us-east-1",
  {
      LaunchConfigurationName:  "lcName"
@@ -300,7 +300,7 @@
 
  ## AWS.AUTOSCALING.LAUNCHCONFIGS.DELETE
  <a name="ldelete"></a>
- `aws.autoscaling.launchconfigs.delete(region, launchconfigName);`
+ `aws.autoscaling.launchConfigs.delete(region, launchconfigName);`
 
  Delete an autoscaling launchconfig.
 
@@ -308,7 +308,7 @@
 
  ```
 
-  aws.autoscaling.launchconfigs.delete("us-east-1", "launchconfigName");
+  aws.autoscaling.launchConfigs.delete("us-east-1", "launchconfigName");
 
  ```
 

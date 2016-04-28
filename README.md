@@ -82,7 +82,6 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* test ASG solution
 * document ASG solution
 * document format of instance, etc
 * combine scp, file copy

@@ -7,6 +7,7 @@
 <li><a href="#create">aws.sqs.create</a></li>
 <li><a href="#delete">aws.sqs.delete</a></li>
 <li><a href="#describe">aws.sqs.describe</a></li>
+<li><a href="#attributes">aws.sqs.attributes</a></li>
 <li><a href="#msend">aws.sqs.messages.send</a></li>
 <li><a href="#mreceive">aws.sqs.messages.receive</a></li>
 <li><a href="#mdelete">aws.sqs.messages.delete</a></li>
@@ -68,6 +69,12 @@
 <p> Example:</p>
 <pre><code>
   var queue = aws.sqs.describe(&quot;us-east-1&quot;, &quot;queueName&quot;);
+</code></pre><h2>AWS.SQS.ATTRIBUTES</h2><p> <a name="attributes"></a>
+ <code>aws.sqs.attributes(region, sqsUrl);</code></p>
+<p> Get info from AWS about an SQS queue.</p>
+<p> Example:</p>
+<pre><code>
+  var queue = aws.sqs.attributes(&quot;us-east-1&quot;, &quot;queueUrl&quot;);
 </code></pre><h2>AWS.SQS.MESSAGES.RECEIVE</h2><p> <a name="mreceive"></a>
  <code>aws.sqs.messages.receive(region, input);</code></p>
 <p> Get a message from a queue</p>

@@ -16,6 +16,13 @@ function watcher(input) {
 	    //
 	    // Code to run Mithas against the new instance goes here
 	    //
+	    // Maybe like:
+	    //
+	    //    var stack = require("my-stack");
+	    //    mithras.activeRegions = function (catalog) { return ["us-east-1"]; };
+	    //    var catalog = mithras.run();
+	    //    catalog = mithras.apply(catalog, [ stack ], false);
+	    //
 	}
 	aws.sqs.messages.delete("us-east-1", 
 				{

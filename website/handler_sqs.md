@@ -31,28 +31,28 @@
         }
      }
  };
- var rSub = {
-     name: "sqsSub"
-     module: "sqs"
-     dependsOn: [rTopic.name]
-     params: {
-         region: defaultRegion
-         ensure: ensure
-         sub: {
-           Protocol: "..."
-           TopicArn: "..."
-           Endpoint: "..."
-         }
-     }
- };
  var rPub = {
      name: "sqsPub"
      module: "sqs"
      dependsOn: [rTopic.name]
      params: {
-         region: defaultRegion
          ensure: ensure
-         sub: {...}
+         message: {
+            MessageBody:  "body"
+            QueueUrl:     "url"
+            DelaySeconds: 1
+            MessageAttributes: {
+              "Key": {
+                DataType: "type"
+                BinaryListValues: [
+                  "PAYLOAD"
+                ]
+                BinaryValue: "PAYLOAD"
+                StringListValues: [ "String" ]
+                StringValue: "String"
+              }
+            }
+         }
      }
  };
  ```

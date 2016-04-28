@@ -19,7 +19,32 @@
 </ul>
 </blockquote>
 <p> This API allows the caller to work with IAM profiles.</p>
-<h2>AWS.IAM.PROFILES.SCAN</h2><p> <a name="scan"></a>
+<h2>Example IAM profile object:</h2><pre><code> {
+   &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:instance-profile/test-asg&quot;,
+   &quot;CreateDate&quot;: &quot;2016-04-28T00:40:02Z&quot;,
+   &quot;InstanceProfileId&quot;: &quot;AIPAJUL735A4OGDEGHT7A&quot;,
+   &quot;InstanceProfileName&quot;: &quot;test-asg&quot;,
+   &quot;Path&quot;: &quot;/&quot;,
+   &quot;Roles&quot;: [
+     {
+       &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:role/test-asg-iam-role&quot;,
+       &quot;AssumeRolePolicyDocument&quot;: &quot;%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Principal%22%3A%7B%22Service%22%3A%22autoscaling.amazonaws.com%22%7D%2C%22Action%22%3A%22sts%3AAssumeRole%22%7D%5D%7D&quot;,
+       &quot;CreateDate&quot;: &quot;2016-04-28T00:41:44Z&quot;,
+       &quot;Path&quot;: &quot;/&quot;,
+       &quot;RoleId&quot;: &quot;AROAJDBO5Q76N5ARECM64&quot;,
+       &quot;RoleName&quot;: &quot;test-asg-iam-role&quot;
+     }
+   ]
+ }
+</code></pre><h2>Example IAM role object:</h2><pre><code> {
+   &quot;Arn&quot;: &quot;arn:aws:iam::286536233385:role/test-asg-iam-role&quot;,
+   &quot;AssumeRolePolicyDocument&quot;: &quot;%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Principal%22%3A%7B%22Service%22%3A%22autoscaling.amazonaws.com%22%7D%2C%22Action%22%3A%22sts%3AAssumeRole%22%7D%5D%7D&quot;,
+   &quot;CreateDate&quot;: &quot;2016-04-28T00:41:44Z&quot;,
+   &quot;Path&quot;: &quot;/&quot;,
+   &quot;RoleId&quot;: &quot;AROAJDBO5Q76N5ARECM64&quot;,
+   &quot;RoleName&quot;: &quot;test-asg-iam-role&quot;
+ }
+</code></pre><h2>AWS.IAM.PROFILES.SCAN</h2><p> <a name="scan"></a>
  <code>aws.iam.profiles.scan(region);</code></p>
 <p> Scan AWS for IAM profiles</p>
 <p> Example:</p>

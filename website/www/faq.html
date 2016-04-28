@@ -20,8 +20,8 @@ right privileges to post to the queue.  Then, when you create the
 ASG, create a lifecycle hook for it, so that it sends notifications
 of instance launch to the queue.  Then, in a Mithas daemon, you poll
 the queue, and look for the notifications.  When you get one, pull
-the <pre>Body</pre> attribute out of the message object, use
-<pre>JSON.parse()</pre> to read the JSON, and in it you find:
+the <code>Body</code> attribute out of the message object, use
+<code>JSON.parse()</code> to read the JSON, and in it you find:
 </p><pre>{
   "AccountId": "286536233385",
   "AutoScalingGroupName": "name",
@@ -32,4 +32,8 @@ the <pre>Body</pre> attribute out of the message object, use
   "RequestId": "abe5dd0b-54af-4d4d-acdb-8a0624de0ca4",
   "Service": "AWS Auto Scaling",
   "Time": "2016-04-27T20:46:15.094Z"
-}</pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
+}
+</pre><p>There you go.  Now you can use the instance id to go off and
+configure it, using <code>aws.instances.describe()</code>.  You can
+find an example of all of this in the <code><a href="https://github.com/cvillecsteele/mithras/blob/master/example/asg.js">example/asg.js</a></code>
+and <code><a href="https://github.com/cvillecsteele/mithras/blob/master/example/asg_daemon.js">example/asg_daemon.js</a></code> files.</p><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

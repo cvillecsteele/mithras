@@ -1,4 +1,45 @@
+// MITHRAS: Javascript configuration management tool for AWS.
+// Copyright (C) 2016, Colin Steele
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation, either version 3 of the License, or
+//                  (at your option) any later version.
+//
+//    This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//              GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+// @public @example
+// 
+// # Autoscaling Groups Example
+// 
+// This is a more advanced example, demonstrating how to work with
+// Mithras, which is an agentless system, in the context of AWS's
+// Autoscaling Groups, which present an interesting context and
+// challenge.
+// 
+// If you're not using ASGs, then don't worry about this example.
+// 
+// Usage:
+// 
+//     mithras -v run -f example/asg.js
+// 
+// This example works with Mithas daemon mode.  After you've set up
+// the ASG, using the above script, you'll run:
+// 
+// 
+//     mithras -v daemon start -f example/asg_daemon.js
+// 
+// 
 function run() {
+
+    // Requires
+    var sprintf = require("sprintf").sprintf;
 
     // Filter regions
     mithras.activeRegions = function (catalog) { return ["us-east-1"]; };
@@ -136,8 +177,10 @@ function run() {
     };
     
     catalog = mithras.apply(catalog, [ rQueue, rIAM, rKey, rASG ], reverse);
-
-    console.log(rQueue._target);
+    
+    if (rQueue._target) {
+	console.log(sprintf("Queue ARN: %s", rQueue._target));
+    }
 
     return true;
 }

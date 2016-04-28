@@ -24,6 +24,41 @@
 
  This API allows the caller to work with IAM profiles.
 
+ ## Example IAM profile object:
+
+ ```
+ {
+   "Arn": "arn:aws:iam::286536233385:instance-profile/test-asg",
+   "CreateDate": "2016-04-28T00:40:02Z",
+   "InstanceProfileId": "AIPAJUL735A4OGDEGHT7A",
+   "InstanceProfileName": "test-asg",
+   "Path": "/",
+   "Roles": [
+     {
+       "Arn": "arn:aws:iam::286536233385:role/test-asg-iam-role",
+       "AssumeRolePolicyDocument": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Principal%22%3A%7B%22Service%22%3A%22autoscaling.amazonaws.com%22%7D%2C%22Action%22%3A%22sts%3AAssumeRole%22%7D%5D%7D",
+       "CreateDate": "2016-04-28T00:41:44Z",
+       "Path": "/",
+       "RoleId": "AROAJDBO5Q76N5ARECM64",
+       "RoleName": "test-asg-iam-role"
+     }
+   ]
+ }
+ ```
+
+ ## Example IAM role object:
+
+ ```
+ {
+   "Arn": "arn:aws:iam::286536233385:role/test-asg-iam-role",
+   "AssumeRolePolicyDocument": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Principal%22%3A%7B%22Service%22%3A%22autoscaling.amazonaws.com%22%7D%2C%22Action%22%3A%22sts%3AAssumeRole%22%7D%5D%7D",
+   "CreateDate": "2016-04-28T00:41:44Z",
+   "Path": "/",
+   "RoleId": "AROAJDBO5Q76N5ARECM64",
+   "RoleName": "test-asg-iam-role"
+ }
+ ```
+
  ## AWS.IAM.PROFILES.SCAN
  <a name="scan"></a>
  `aws.iam.profiles.scan(region);`

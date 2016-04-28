@@ -4,6 +4,7 @@ function run() {
 
     var publicRE = new RegExp("@public", 'm');
     var modRE = new RegExp("@module", 'm');
+    var exRE = new RegExp("@example", 'm');
     var commentRE= new RegExp("^[ \t]*//");
 
     var re = new RegExp("go|js$");
@@ -11,6 +12,7 @@ function run() {
     var core = [];
     var handlers = [];
     var mod = [];
+    var example = [];
     filepath.walk(".", function(path, info, err) {
         if (info.IsDir || (!re.exec(path))) {
 	    return;
@@ -50,6 +52,10 @@ function run() {
 				var f = "mod_" + file.replace(extRE, ".md");
 				path = filepath.join("website", f);
 				mod.push(path);
+			    } else if (current.match(exRE)) {
+				var f = "example_" + file.replace(extRE, ".md");
+				path = filepath.join("website", f);
+				example.push(path);
 			    } else if (ext === ".go") {
 				var f = "core_" + file.replace(extRE, ".md");
 				path = filepath.join("website", f);
@@ -64,6 +70,10 @@ function run() {
 			    comments.
 				push(current.replace(publicRE, "").
 				     replace(modRE, ""));
+			} else if (current.match(exRE)) {
+			    comments.
+				push(current.replace(publicRE, "").
+				     replace(exRE, ""));
 			} else if (ext === ".go") {
 			    comments.push(current.replace(publicRE, ""));
 			} else if (ext === ".js") {
@@ -137,6 +147,24 @@ function run() {
 	});
     });
     fs.write("website/modules.jade", contents, 0644);
+
+    // EXAMPLES
+    var n = example.length / 3;
+    var contents = "div.container-fluid\n  div.row\n";
+    var lists = _.chain(example).groupBy(function(element, index) {
+	return Math.floor(index/n);
+    }).toArray().value();
+    _.each(lists, function(l) {
+	contents = contents + "    div.col-md-4\n      ul.list-unstyled\n";
+	_.each(l, function(file) {
+	    var results = filepath.split(file);
+	    var text = results[1].replace(/example_(.*).md/, '$1');
+	    var file = results[1].replace(/(example_.*).md/, '$1');
+	    contents = contents + 
+		sprintf("        li: a(href='%s.html') %s\n", file, text);
+	});
+    });
+    fs.write("website/examples.jade", contents, 0644);
 
     // BUILD
 
