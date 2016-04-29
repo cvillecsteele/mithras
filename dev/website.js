@@ -42,7 +42,7 @@ function run() {
 	_.each(l, function(file) {
 	    var results = filepath.split(file);
 	    var text = results[1].replace(/(.*).md/, '$1');
-	    var file = results[1].replace(/(.*).md/, 'objects/$1');
+	    var file = results[1].replace(/(.*).md/, 'objects/$1').toLowerCase();
 	    contents = contents + 
 		sprintf("        li: a(href='%s.html') %s\n", file, text);
 	});

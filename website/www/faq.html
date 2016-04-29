@@ -5,7 +5,7 @@ Mithras, you can have actual <i>logic</i> in your resource
 definitions.  It makes your configurations waaaay more flexible,
 easier to understand, and easier to maintain.
 </p><p>See <a href="guide4.html">Part Four</a> of the <a href="guide1.html">Guide</a> for an example of how to use Mithras in
-a way that JSON can't match.
+a way that JSON (let alone YAML) can't match.
 </p><h3>How can I help?</h3><p>See the <a href="community.html">Community</a> page.
 </p><h3>How is Mithras licensed?</h3><p>GPL V.3.  See <a href="https://github.com/cvillecsteele/mithras/blob/master/LICENSE.txt">LICENSE.txt</a>.
 </p><h3>What about Autoscaling Groups?</h3><p>Good question.  Mithras is a push-based system, with no agent on
@@ -36,4 +36,6 @@ the <code>Body</code> attribute out of the message object, use
 </pre><p>There you go.  Now you can use the instance id to go off and
 configure it, using <code>aws.instances.describe()</code>.  You can
 find an example of all of this in the <code><a href="https://github.com/cvillecsteele/mithras/blob/master/example/asg.js">example/asg.js</a></code>
-and <code><a href="https://github.com/cvillecsteele/mithras/blob/master/example/asg_daemon.js">example/asg_daemon.js</a></code> files.</p><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>
+and <code><a href="https://github.com/cvillecsteele/mithras/blob/master/example/asg_daemon.js">example/asg_daemon.js</a></code> files.
+</p><h3>How does Mithras handle runtime values for resources?</h3><p>See <a href="design.html">Concepts and Design</a>.
+</p><h3>How is the _target property set on resources?</h3><p>See <a href="design.html">Concepts and Design</a>.</p><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

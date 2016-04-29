@@ -1,0 +1,191 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>Mithras Design and Concepts</h1><h2>System Metaphors</h2><p>Mithras uses two basic <a href="http://c2.com/cgi/wiki?SystemMetaphor">system
+metaphors</a>: the catalog, and
+resources.  The catalog is a JS object with an array for every
+resource type that it scans on AWS, such as instances and VPCs.</p>
+<p>The format of the objects found in these arrays can be found
+<a href="api.html#objects">here</a>.  Have a look through it, and you&#39;ll see that
+the format of the objects corresponds to the structures in the <a href="https://github.com/aws/aws-sdk-go">AWS Go
+SDK</a>, only translated directly into
+JSON.</p>
+<h2>Resources</h2><p>In Mithras, the &quot;stuff&quot; that you need to either be present, absent, or
+in some particular state is known as a resource.  A resource might be
+a file, an instance itself, an installed package, an AWS subnet, or a
+DNS entry.  All the &quot;moving pieces&quot; of a running system are resources.</p>
+<p>These resources are expressed as Javascript objects in Mithras.  Your
+script file.  For example:</p>
+<pre><code>var rVpc = {
+    name: &quot;VPC&quot;
+    module: &quot;vpc&quot;
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        vpc: {
+            CidrBlock:       &quot;172.33.0.0/16&quot;
+        }
+        gateway: true
+        tags: {
+            Name: &quot;my-vpc&quot;
+        }
+    }
+};
+</code></pre><p>Resources have a few pieces in common.  They all have a <code>name</code>
+property.  The name is for you - it&#39;s a way to identify a resource
+during Mithras execution, and to let one resource depend on another
+(but more on that later).  With rare exceptions, they also have a
+<code>module</code> property.  This property identies which <em>resource</em> <em>handler</em>
+will take care of translating your declaration into actions.</p>
+<p>Generally, resources have a <code>params</code> property.  Params are
+module-specific bits of configuration.  In the example above, the
+<code>params.vpc</code> property holds an object used to identify and create VPCs
+by the &quot;vpc&quot; resource handler.</p>
+<p>The <code>params.ensure</code> property is common to almost all resource types.
+Nearly all allow the values <code>&quot;present&quot;</code> and <code>&quot;absent&quot;</code>.  If
+<code>&quot;present&quot;</code>, the handler will ensure that either the identified
+resource already exists, or it is created. If <code>&quot;absent&quot;</code>, it will make
+sure it&#39;s deleted.  In some cases, the <code>ensure</code> property can take
+other values, and each resource handler module documents its accepted
+values and their meanings.</p>
+<p>Handlers that talk to AWS use the The <code>params.region</code> property to
+identify how to communicate with the AWS API.  There are two
+additional &quot;special&quot; properties for resources:</p>
+<h3>Dependencies</h3><p>When creating a resource, you may set the <code>dependsOn</code> property.  You
+sent it to a Javascript array of strings.  Each string in the array
+corresponds to the <code>name</code> property of another resource upon which this
+one depends.  For example:</p>
+<pre><code>var rSubnetA = {
+    name: &quot;subnetA&quot;
+    module: &quot;subnet&quot;
+    dependsOn: [rVpc.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+    // more params properties here...
+    }
+}
+</code></pre><p>The resource in the <code>rSubnetA</code> variable depends on the <code>rVPC</code> resource
+we defined above.  Therefore, the <code>dependsOn</code> property is set to an
+array with the value of <code>rVPC.name</code>.</p>
+<p>When you call <a href="handler_mithras.html#apply"><code>mithras.apply(...)</code></a>, Mithras will build a dependency
+graph of your resources, and then resolve things based on that
+dependency ordering.</p>
+<p>One problem I find particularly prominent when working with AWS is
+that of resources that depend on other resources.  For example, you
+can&#39;t delete a subnet until all of the instances in it are gone.</p>
+<p>Mithras helps with this issue by letting you invert the dependency
+graph easily, when you are tearing down resources.  The last argument
+to the <a href="handler_mithras.html#apply"><code>mithras.apply(...)</code></a> call is
+boolean.  If it&#39;s true, the graph is inverted.</p>
+<p>So, you always express dependency relationships in the <code>dependsOn</code>
+property in <em>forward</em> order.</p>
+<h3>Included Resources</h3><p>One resource can include others.  By setting the <code>includes</code> property
+of a resource to an array whose elements are other resources, you
+instruct Mithras to operate on all of them.  This inclusion is
+recursive, so A can include B which includes C, and so on.</p>
+<p>Using included resources enables some abstraction that makes reasoning
+about your system easier.  For example, the <a href="mod_nginx.html">nginx</a>
+module uses this feature of Mithras to package up many complex
+sub-resources into one umbrella resource, which it returns to the
+caller.</p>
+<h2>The Catalog</h2><p>When you call <code>mithras.run(...)</code>, Mithras goes off and talks to AWS,
+asking it, &quot;What&#39;s out there?&quot;  It assembles all of the things it
+finds on AWS into a Javascript object for you.  This is the
+<code>catalog</code>.  Resource handler modules interrogate the catalog to
+determine if the resource needs to be created or deleted, according to
+the <code>ensure</code> property on the resource.</p>
+<p>The catalog is keyed by entity type: VPCs, instances, etc.  Each value
+is an array of the corresponding objects, which are documented
+<a href="api.html#objects">here</a>.</p>
+<p>If you want to restrict the regions that <code>mithras.run(...)</code> operates on,
+see <a href="handler_mithras.html#active"><code>mithras.activeRegions()</code></a>.</p>
+<p>During a run of <code>mithras.apply(...)</code>, resource handler modules will
+manipulate the catalog, adding (or removing) entries from it as their
+corresponding entities are added or removed in AWS.</p>
+<p>The catalog isn&#39;t anything fancy, and can be serialized with
+<code>JSON.stringify</code>, saved to disk, etc.</p>
+<h2>Applying Resources to the Catalog</h2><p>When you call <code>mithras.apply(...)</code>, here&#39;s what happens:</p>
+<p>First, Mithras pulls in all the resources that have been included in
+other resources, via their <code>includes</code> property.</p>
+<p>Then, Mithras builds and dependency graph of your resource set, in
+forward order.  It also figures out what the inverted graph looks
+like, in case you&#39;re tearing down resources.</p>
+<h3>Preflight Phase</h3><p>Next, Mithras <em>preflights</em> every resource in <em>forward</em> dependency
+order.  During the preflight phase, every resource is given an
+opportunity to find the corresponding entities in the catalog, and
+grab a reference.  That reference is stored (by convention) on the
+<code>_target</code> property of the resource.  So after preflighting, the <code>rVPC</code>
+object above will have a (new) property set: <code>_target</code> will have the
+corresponding VPC object stored in it.</p>
+<h4>Runtime Values: the <code>_target</code> Resource Property</h4><p>During preflight, each resource is first recursively traversed, and
+each property found is examined to see if it&#39;s a function.  If it is,
+it&#39;s called with two arguments: the catalog, and a dictionary of all
+of the resource set, indexed by resource name.</p>
+<p>Here&#39;s an example snippet of a resource using a runtime-captured
+value:</p>
+<pre><code>var rSubnetA = {
+    name: &quot;subnetA&quot;
+    module: &quot;subnet&quot;
+    dependsOn: [rVpc.name]
+    params: {
+        region: defaultRegion
+        ensure: ensure
+
+        subnet: {
+            CidrBlock:        &quot;172.33.1.0/24&quot;
+            VpcId:            mithras.watch(&quot;VPC._target.VpcId&quot;)
+            AvailabilityZone: defaultZone
+        }
+        tags: {
+            Name: &quot;primary-subnet&quot;
+        }
+        routes: [
+            {
+                DestinationCidrBlock: &quot;0.0.0.0/0&quot;
+                GatewayId:            mithras.watch(&quot;VPC._target.VpcId&quot;, mithras.findGWByVpcId)
+            }
+        ]
+    }
+};
+</code></pre><p>Using a parameter property that is a function, your resource can look
+into other resources, grab their <code>_target</code> property, and pull values
+out of the AWS objects they&#39;ve identified.  The
+<a href="handler_mithras.html#watch"><code>mithras.watch()</code></a> higher-order function
+(that is, a function that returns a function) gives you an easy way to
+do this.</p>
+<p>If the params function returns any non-undefined value, the property
+is replaced with that value.  If it returns undefined, the property is
+left unchanged, as a function.</p>
+<p>Why?</p>
+<p>Resources depend on values in other resources.  Generally, those
+values are not known until runtime.  For example, to create a VPC
+subnet, you need the id of the VPC.  That id isn&#39;t known when you&#39;re
+building your resource script; it has to be determined at runtime.</p>
+<p>After this recursive traversal, each preflight handler function
+registered with <code>mithras.preflight.register</code> is called, giving it an
+opportunity to handle the resource.  (See
+<a href="handler_mithras#modules.preflight.register"><code>mithras.preflight.register</code></a> and 
+<a href="handler_mithras#modules.preflight.run"><code>mithras.preflight.run</code></a>.) </p>
+<h3>Execution Phase</h3><p>Next, in either forward or inverted dependency order (depending on how
+<code>apply</code> was called), Mithras will a) again recursively traverse the
+resource object, calling property functions (as above), and then b)
+give each resource handler module registered with
+<code>mithras.handlers.register()</code> a chance to handle execution of the
+resource.</p>
+<p>In turn, every registered handler function is called with three
+arguments: <code>catalog</code>, <code>resources</code> and <code>targetResource</code>.  The catalog
+is the current value of the AWS resources gathered by <code>mithras.run()</code>,
+which may have been modified by previous resource execution.  The
+<code>resources</code> argument is the set of resources that was passed into
+<code>mithras.apply()</code>.  The final argument is the resource object
+currently being evaluated.</p>
+<p>Handler functions return a Javascript array.  The second element is a
+boolean. If <code>true</code>, it indicates that the handler function &quot;owns&quot; the
+resource and has handled it.  If so, and the first element of the
+return value is defined, the value of the first element is set as the
+<code>_target</code> property of the resource object being evaluated.</p>
+<p>Finally, if the resource being evaluated has a <code>delay</code> property set,
+resource evaluation will stop as Mithas calls <code>os.sleep</code> with the
+value of the <code>delay</code> property, effectively pausing evaluation for a
+number of seconds.  Sometimes this is necessary to anticipate
+propagation of information in AWS.</p><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

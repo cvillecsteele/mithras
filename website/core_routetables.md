@@ -18,7 +18,7 @@
  > * [aws.routetables.disassociate](#disassociate)
  > * [aws.routetables.deleteAssociation](#deleteAssociation)
 
- This API allows resource handlers to manipulate DNS records in Route53.
+ This API allows resource handlers to manipulate routing tables for subnets.
 
  ## AWS.ROUTETABLES.SCAN
  <a name="scan"></a>

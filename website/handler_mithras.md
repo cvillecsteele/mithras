@@ -8,32 +8,32 @@
  
  The `mithras` object has the following properties:
 
- > * [remote](#remote)
- > * [traverse](#traverse)
- > * [objectPath](#objectPath)
- > * [depGraph](#depGraph)
- > * [resourceMap](#resourceMap)
+ > * [ARGS](#args)
+ > * [GOPATH](#gopath)
+ > * [MODULES](#modules)
+ > * [VERSION](#version)
+ > * [activeRegions](#active)
+ > * [apply](#apply)
  > * [become](#become)
+ > * [bootstrap](#bootstrap)
+ > * [buildDeps](#buildDeps)
+ > * [depGraph](#depGraph)
+ > * [doIncludes](#doIncludes)
+ > * [findGWByVpcId](#findGWByVpcId)
  > * [modules.handlers.register](#modules.handlers.register)
  > * [modules.handlers.run](#modules.handlers.run)
  > * [modules.preflight.register](#modules.preflight.register)
  > * [modules.preflight.run](#modules.preflight.run)
- > * [bootstrap](#bootstrap)
- > * [apply](#apply)
- > * [buildDeps](#buildDeps)
- > * [updateResource](#updateResource)
- > * [doIncludes](#doIncludes)
+ > * [objectPath](#objectPath)
+ > * [remote](#remote)
+ > * [resourceMap](#resourceMap)
+ > * [run](#run) 
  > * [sshKeyPathForInstance](#sshKeyPathForInstance)
  > * [sshUserForInstance](#sshUserForInstance)
- > * [watch](#watch)
- > * [findGWByVpcId](#findGWByVpcId)
- > * [run](#run) 
- > * [activeRegions](#active)
- > * [MODULES](#modules)
- > * [VERSION](#version)
- > * [GOPATH](#gopath)
- > * [ARGS](#args)
+ > * [traverse](#traverse)
+ > * [updateResource](#updateResource)
  > * [verbose](#verbose)
+ > * [watch](#watch)
  
  ## Properties
  
@@ -65,17 +65,86 @@
 
  Register a resource handler function.
  
+ A resource handler function takes three arguments:
+ 
+ > * `catalog`: the current value of the AWS resources found by `mithras.run()`, possibly modified by other resource execution.
+ > * `resources`: the set of resources passed into `mithras.apply()`
+ > * `targetResource`: the resource object being evaluated for execution.
+ 
+ Handler functions return a Javascript array.  The second element is
+ a boolean. If `true`, it indicates that the handler function "owns"
+ the resource and has handled it.  If so, and the first element of
+ the return value is defined, the value of the first element is set
+ as the `_target` property of the resource object being evaluated.
+ 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how this all works.
+ 
  ### `modules.handlers.run(catalog, resources, targetResource, dict) {...}` <a name="modules.handlers.run"></a>
 
  Run a resource through handler functions.
+
+ In turn, every registered handler function is called with three
+ arguments: `catalog`, `resources` and `targetResource`.  The
+ catalog is the current value of the AWS resources gathered by
+ `mithras.run()`, which may have been modified by previous resource
+ execution.  The `resources` argument is the set of resources that
+ was passed into `mithras.apply()`.  The final argument is the
+ resource object currently being evaluated.
+
+ Handler functions return a Javascript array.  The second element is
+ a boolean. If `true`, it indicates that the handler function "owns"
+ the resource and has handled it.  If so, and the first element of
+ the return value is defined, the value of the first element is set
+ as the `_target` property of the resource object being evaluated.
+ 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how this all works.
  
  ### `modules.preflight.register(name, cb) {...}` <a name="modules.preflight.register"></a>
 
  Register a resource handler preflight function.
  
+ A resource handler preflight function takes three arguments:
+ 
+ > * `catalog`: the current value of the AWS resources found by `mithras.run()`, possibly modified by other resource execution.
+ > * `resources`: the set of resources passed into `mithras.apply()`
+ > * `targetResource`: the resource object being evaluated for preflight.
+ 
+ Preflight functions return a Javascript array.  The second element
+ is a boolean. If `true`, it indicates that the function "owns" the
+ resource and has handled it.  If so, and the first element of the
+ return value is defined, the value of the first element is set as
+ the `_target` property of the resource object being evaluated.
+ 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how this all works.
+ 
  ### `modules.preflight.run(catalog, resources, order) {...}` <a name="modules.preflight.run"></a>
 
  Run preflight functions on resources.
+ 
+ For each resource, first the resource is recursively traversed by
+ [`updateResource`](#updateResource), and given an opportunity to
+ access runtime values in other resources.
+ 
+ Next, every registered preflight function is called with three
+ arguments: `catalog`, `resources` and `targetResource`.  The
+ catalog is the current value of the AWS resources gathered by
+ `mithras.run()`, which may have been modified by previous resource
+ execution.  The `resources` argument is the set of resources that
+ was passed into `mithras.apply()`.  The final argument is the
+ resource object currently being evaluated.
+
+ Handler functions return a Javascript array.  The second element is
+ a boolean. If `true`, it indicates that the handler function "owns"
+ the resource and has succesfully preflighted it.  If so, and the
+ first element of the return value is defined, the value of the
+ first element is set as the `_target` property of the resource
+ object being evaluated.
+ 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how this all works.
  
  ### `MODULES` <a name="modules"></a>
 
@@ -120,6 +189,7 @@
  ```
 
  
+ <a name="apply"></a>
  
  ### `apply(catalog, resources, reverse) {...}`
 
@@ -136,6 +206,9 @@
 
  The catalog, after update by handlers, is returned.
 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how this all works.
+ 
 
  
  
@@ -269,6 +342,10 @@
  will be returned by the watch function during preflight,
  and follows the same rules outlined above.
 
+ See [Design and Concepts](design.html) for a more detailed
+ explanation of how the `_target` property gets set on
+ resource objects.
+ 
 
  
  <a name="findGWByVpcId"></a>

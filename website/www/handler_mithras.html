@@ -5,32 +5,32 @@
 <p> The <code>mithras</code> object has the following properties:</p>
 <blockquote>
 <ul>
-<li><a href="#remote">remote</a></li>
-<li><a href="#traverse">traverse</a></li>
-<li><a href="#objectPath">objectPath</a></li>
-<li><a href="#depGraph">depGraph</a></li>
-<li><a href="#resourceMap">resourceMap</a></li>
+<li><a href="#args">ARGS</a></li>
+<li><a href="#gopath">GOPATH</a></li>
+<li><a href="#modules">MODULES</a></li>
+<li><a href="#version">VERSION</a></li>
+<li><a href="#active">activeRegions</a></li>
+<li><a href="#apply">apply</a></li>
 <li><a href="#become">become</a></li>
+<li><a href="#bootstrap">bootstrap</a></li>
+<li><a href="#buildDeps">buildDeps</a></li>
+<li><a href="#depGraph">depGraph</a></li>
+<li><a href="#doIncludes">doIncludes</a></li>
+<li><a href="#findGWByVpcId">findGWByVpcId</a></li>
 <li><a href="#modules.handlers.register">modules.handlers.register</a></li>
 <li><a href="#modules.handlers.run">modules.handlers.run</a></li>
 <li><a href="#modules.preflight.register">modules.preflight.register</a></li>
 <li><a href="#modules.preflight.run">modules.preflight.run</a></li>
-<li><a href="#bootstrap">bootstrap</a></li>
-<li><a href="#apply">apply</a></li>
-<li><a href="#buildDeps">buildDeps</a></li>
-<li><a href="#updateResource">updateResource</a></li>
-<li><a href="#doIncludes">doIncludes</a></li>
+<li><a href="#objectPath">objectPath</a></li>
+<li><a href="#remote">remote</a></li>
+<li><a href="#resourceMap">resourceMap</a></li>
+<li><a href="#run">run</a> </li>
 <li><a href="#sshKeyPathForInstance">sshKeyPathForInstance</a></li>
 <li><a href="#sshUserForInstance">sshUserForInstance</a></li>
-<li><a href="#watch">watch</a></li>
-<li><a href="#findGWByVpcId">findGWByVpcId</a></li>
-<li><a href="#run">run</a> </li>
-<li><a href="#active">activeRegions</a></li>
-<li><a href="#modules">MODULES</a></li>
-<li><a href="#version">VERSION</a></li>
-<li><a href="#gopath">GOPATH</a></li>
-<li><a href="#args">ARGS</a></li>
+<li><a href="#traverse">traverse</a></li>
+<li><a href="#updateResource">updateResource</a></li>
 <li><a href="#verbose">verbose</a></li>
+<li><a href="#watch">watch</a></li>
 </ul>
 </blockquote>
 <h2>Properties</h2><h3><code>remote</code></h3><p> See the documentation for the <a href="core_remote.html">remote</a> core.</p>
@@ -40,9 +40,71 @@
 <h3><code>resourceMap(resources) {...}</code> <a name="resourceMap"></a></h3><p> Helper function.  Returns a map of resources by their names.</p>
 <h3><code>become(command, become, becomeUser, becomeMethod) {...}</code> <a name="become"></a></h3><p> Helper function.  Returns a string with the command wrapped in a privilege escalation.</p>
 <h3><code>modules.handlers.register(name, cb) {...}</code> <a name="modules.handlers.register"></a></h3><p> Register a resource handler function.</p>
+<p> A resource handler function takes three arguments:</p>
+<blockquote>
+<ul>
+<li><code>catalog</code>: the current value of the AWS resources found by <code>mithras.run()</code>, possibly modified by other resource execution.</li>
+<li><code>resources</code>: the set of resources passed into <code>mithras.apply()</code></li>
+<li><code>targetResource</code>: the resource object being evaluated for execution.</li>
+</ul>
+</blockquote>
+<p> Handler functions return a Javascript array.  The second element is
+ a boolean. If <code>true</code>, it indicates that the handler function &quot;owns&quot;
+ the resource and has handled it.  If so, and the first element of
+ the return value is defined, the value of the first element is set
+ as the <code>_target</code> property of the resource object being evaluated.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how this all works.</p>
 <h3><code>modules.handlers.run(catalog, resources, targetResource, dict) {...}</code> <a name="modules.handlers.run"></a></h3><p> Run a resource through handler functions.</p>
+<p> In turn, every registered handler function is called with three
+ arguments: <code>catalog</code>, <code>resources</code> and <code>targetResource</code>.  The
+ catalog is the current value of the AWS resources gathered by
+ <code>mithras.run()</code>, which may have been modified by previous resource
+ execution.  The <code>resources</code> argument is the set of resources that
+ was passed into <code>mithras.apply()</code>.  The final argument is the
+ resource object currently being evaluated.</p>
+<p> Handler functions return a Javascript array.  The second element is
+ a boolean. If <code>true</code>, it indicates that the handler function &quot;owns&quot;
+ the resource and has handled it.  If so, and the first element of
+ the return value is defined, the value of the first element is set
+ as the <code>_target</code> property of the resource object being evaluated.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how this all works.</p>
 <h3><code>modules.preflight.register(name, cb) {...}</code> <a name="modules.preflight.register"></a></h3><p> Register a resource handler preflight function.</p>
+<p> A resource handler preflight function takes three arguments:</p>
+<blockquote>
+<ul>
+<li><code>catalog</code>: the current value of the AWS resources found by <code>mithras.run()</code>, possibly modified by other resource execution.</li>
+<li><code>resources</code>: the set of resources passed into <code>mithras.apply()</code></li>
+<li><code>targetResource</code>: the resource object being evaluated for preflight.</li>
+</ul>
+</blockquote>
+<p> Preflight functions return a Javascript array.  The second element
+ is a boolean. If <code>true</code>, it indicates that the function &quot;owns&quot; the
+ resource and has handled it.  If so, and the first element of the
+ return value is defined, the value of the first element is set as
+ the <code>_target</code> property of the resource object being evaluated.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how this all works.</p>
 <h3><code>modules.preflight.run(catalog, resources, order) {...}</code> <a name="modules.preflight.run"></a></h3><p> Run preflight functions on resources.</p>
+<p> For each resource, first the resource is recursively traversed by
+ <a href="#updateResource"><code>updateResource</code></a>, and given an opportunity to
+ access runtime values in other resources.</p>
+<p> Next, every registered preflight function is called with three
+ arguments: <code>catalog</code>, <code>resources</code> and <code>targetResource</code>.  The
+ catalog is the current value of the AWS resources gathered by
+ <code>mithras.run()</code>, which may have been modified by previous resource
+ execution.  The <code>resources</code> argument is the set of resources that
+ was passed into <code>mithras.apply()</code>.  The final argument is the
+ resource object currently being evaluated.</p>
+<p> Handler functions return a Javascript array.  The second element is
+ a boolean. If <code>true</code>, it indicates that the handler function &quot;owns&quot;
+ the resource and has succesfully preflighted it.  If so, and the
+ first element of the return value is defined, the value of the
+ first element is set as the <code>_target</code> property of the resource
+ object being evaluated.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how this all works.</p>
 <h3><code>MODULES</code> <a name="modules"></a></h3><p> A map of loaded core module names to their version strings.</p>
 <h3><code>GOPATH</code> <a name="gopath"></a></h3><p> The current GOPATH when mithras is invoked (if set).</p>
 <h3><code>ARGS</code> <a name="args"></a></h3><p> When <code>mithras run</code> is invoked at the command line, any additional
@@ -64,7 +126,8 @@
          hosts: mithras.watch(&quot;webserver._target&quot;)
   }
  }
-</code></pre><h3><code>apply(catalog, resources, reverse) {...}</code></h3><p> The &quot;core&quot; function of Mithras.  Given a <code>catalog</code>, an
+</code></pre><p> <a name="apply"></a></p>
+<h3><code>apply(catalog, resources, reverse) {...}</code></h3><p> The &quot;core&quot; function of Mithras.  Given a <code>catalog</code>, an
  array of resource objects in <code>resources</code>, and a boolean
  (<code>reverse</code>), apply the resources to the catalog.</p>
 <p> First a dependency graph is built.  In forward order, all
@@ -73,6 +136,8 @@
  <code>true</code>), the resources are run through their handlers in
  dependency order.</p>
 <p> The catalog, after update by handlers, is returned.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how this all works.</p>
 <h3><code>buildDeps(resources, add_node, add_dep) {...}</code></h3><p> Helper function.  Loop through resources, calling the
  <code>add_node</code> and <code>add_dep</code> functions supplied by the caller
  to create adependency graph.</p>
@@ -156,6 +221,9 @@
  resources, value_at_path)</code> The return value of the callback
  will be returned by the watch function during preflight,
  and follows the same rules outlined above.</p>
+<p> See <a href="design.html">Design and Concepts</a> for a more detailed
+ explanation of how the <code>_target</code> property gets set on
+ resource objects.</p>
 <p> <a name="findGWByVpcId"></a></p>
 <h3><code>findGWByVpcId(cat, resources, vpcId) {...}</code></h3><p> Given a <code>vpcId</code>, look through the <code>catalog</code> and find a
  matching internet gateway.  If one is found, return its

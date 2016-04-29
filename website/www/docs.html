@@ -5,6 +5,7 @@ your system.</p>
 <p>For a more in-depth walkthrough, see <a href="guide1.html">The Guide</a></p>
 <p>Read the API <a href="api.html">Reference</a> to learn more.</p>
 <p>Or, check out the <a href="faq.html">FAQ</a>.</p>
+<p>If you want the &quot;big picture&quot; behind how Mithras works, read <a href="design.html">Design and Concepts</a>.</p>
 <h2>Running Mithras</h2><p>You can run Mithras with a variety of sub-commands, including:</p>
 <ul>
 <li><a href="#build">build</a></li>
@@ -31,7 +32,8 @@ for remote instances.</p>
 get Mithras property set up to run, first.</p>
 <h3>Daemon <a name="daemon"></a></h3><p>Run a Mithras script in the background.</p>
 <p>Example usage:</p>
-<pre><code>mithras -v daemon -f example/asg_daemon.js
+<pre><code>mithras -v daemon start -f example/asg_daemon.js
+mithras -v daemon stop
 </code></pre><p>Make sure that you&#39;ve followed <a href="usage.html">Installation &amp; Usage</a> to
 get Mithras property set up to run, first.</p>
 <h3>Repl <a name="repl"></a></h3><p>Sometimes you need to mess around with some Javascript.  The Mithras

@@ -29,7 +29,7 @@ package tag
 //
 // > * [aws.tags.create](#create)
 //
-// This API allows resource handlers to manipulate DNS records in Route53.
+// This API allows resource handlers to manipulate tags on AWS resources.
 //
 // ## AWS.TAGS.CREATE
 // <a name="create"></a>

@@ -11,6 +11,8 @@ Read the API [Reference](api.html) to learn more.
 
 Or, check out the [FAQ](faq.html).
 
+If you want the "big picture" behind how Mithras works, read [Design and Concepts](design.html).
+
 ## Running Mithras
 
 You can run Mithras with a variety of sub-commands, including:
@@ -58,7 +60,8 @@ Run a Mithras script in the background.
 
 Example usage:
 
-    mithras -v daemon -f example/asg_daemon.js
+    mithras -v daemon start -f example/asg_daemon.js
+    mithras -v daemon stop
 
 Make sure that you've followed [Installation & Usage](usage.html) to
 get Mithras property set up to run, first.

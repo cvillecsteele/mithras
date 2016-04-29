@@ -37,7 +37,7 @@ package s3
 // > * [aws.s3.objects.create](#Ocreate)
 // > * [aws.s3.objects.describe](#Odescribe)
 //
-// This API allows resource handlers to manipulate DNS records in Route53.
+// This API allows resource handlers to manipulate S3 buckets and objects.
 //
 // ## AWS.S3.BUCKETS.DESCRIBE
 // <a name="describe"></a>
