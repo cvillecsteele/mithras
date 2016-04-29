@@ -263,7 +263,7 @@ package filepath
 //
 import (
 	"errors"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os"
 	"path/filepath"
 	"time"

@@ -121,7 +121,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os/exec"
 	"strings"
 	"syscall"

@@ -7,6 +7,15 @@
 <li><a href="#log0">log0</a></li>
 <li><a href="#log1">log1</a></li>
 <li><a href="#log2">log2</a></li>
+<li><a href="#debug">debug</a></li>
+<li><a href="#info">debug</a></li>
+<li><a href="#warning">warning</a></li>
+<li><a href="#error">error</a></li>
+<li><a href="#fatal">fatal</a></li>
+<li><a href="#panic">panic</a></li>
+<li><a href="#withFields">withFields</a></li>
+<li><a href="#setLevel">setLevel</a></li>
+<li><a href="#jsonFormatter">jsonFormatter</a></li>
 </ul>
 </blockquote>
 <p> This API allows resource handlers to log.</p>
@@ -40,4 +49,44 @@
 <p> Example:</p>
 <pre><code>
   log2(&quot;hello&quot;);
+</code></pre><h2>setLevel</h2><p> <a name="setLevel"></a>
+ <code>setLevel(logLevel);</code></p>
+<p> Only log messages at this severity or above.  Values may be:</p>
+<blockquote>
+<ul>
+<li>&quot;debug&quot;</li>
+<li>&quot;info&quot;</li>
+<li>&quot;warning&quot;</li>
+<li>&quot;error&quot;</li>
+<li>&quot;fatal&quot;</li>
+<li>&quot;panic&quot;</li>
+</ul>
+</blockquote>
+<h2>jsonFormatter</h2><p> <a name="jsonFormatter"></a>
+ <code>log.jsonFormatter(format);</code></p>
+<p> The <code>format</code> argument may be omitted, but if set, should be a string as documented <a href="https://github.com/Sirupsen/logrus">here</a></p>
+<h2>debug</h2><p> <a name="debug"></a>
+ <code>log.debug(message);</code></p>
+<p> Log a message at debug level.</p>
+<h2>info</h2><p> <a name="info"></a>
+ <code>log.info(message);</code></p>
+<p> Log a message at info level.</p>
+<h2>warn</h2><p> <a name="warn"></a>
+ <code>log.warn(message);</code></p>
+<p> Log a message at warning level.</p>
+<h2>error</h2><p> <a name="error"></a>
+ <code>log.error(message);</code></p>
+<p> Log a message at error level.</p>
+<h2>fatal</h2><p> <a name="fatal"></a>
+ <code>log.fatal(message);</code></p>
+<p> Log a message at fatal level.</p>
+<h2>panic</h2><p> <a name="panic"></a>
+ <code>log.panic(message);</code></p>
+<p> Log a message at panic level.</p>
+<h2>withFields</h2><p> <a name="withFields"></a>
+ <code>log.withFields(fieldObj);</code></p>
+<p> Create a set of fields to be logged with a message.  Returns an
+ object with <code>.debug()</code>, <code>.info()</code>, etc, function properties.</p>
+<p> For example:</p>
+<pre><code>log.withFields({omg: &quot;Yeah!&quot;}).info(&quot;this is awesome&quot;);
 </code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

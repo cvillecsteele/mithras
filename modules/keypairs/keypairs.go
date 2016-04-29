@@ -89,7 +89,7 @@ package keypairs
 //
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"

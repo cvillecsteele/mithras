@@ -90,7 +90,7 @@ package workers
 
 import (
 	"errors"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"time"
 
 	"github.com/robertkrimen/otto"

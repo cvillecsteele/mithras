@@ -86,7 +86,6 @@ TODO
 * combine scp, file copy
 * parallelize with workers?
 * explainer videos
-* concepts doc
 * document workers better
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * rework / robustify web core module

@@ -17,7 +17,7 @@
 package script
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os"
 	"path/filepath"
 

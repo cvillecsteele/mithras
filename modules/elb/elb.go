@@ -439,7 +439,7 @@ package elb
 //
 import (
 	"encoding/json"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"

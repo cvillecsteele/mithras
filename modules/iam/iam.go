@@ -257,7 +257,7 @@ package iam
 //
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"

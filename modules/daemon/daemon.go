@@ -17,7 +17,7 @@
 package daemon
 
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os"
 	"syscall"
 

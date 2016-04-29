@@ -152,7 +152,7 @@ package s3
 import (
 	"bytes"
 	"encoding/json"
-	"log"
+	log "github.com/Sirupsen/logrus"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"

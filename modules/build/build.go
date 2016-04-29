@@ -18,7 +18,7 @@ package build
 import (
 	"bytes"
 	"fmt"
-	"log"
+	log "github.com/Sirupsen/logrus"
 	"os"
 	"os/exec"
 	"path/filepath"

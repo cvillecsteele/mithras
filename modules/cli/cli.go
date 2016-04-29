@@ -43,6 +43,7 @@ func runRepl(c *cli.Context) {
 }
 
 func Run(versions []script.ModuleVersion, version string) {
+
 	cli.VersionFlag.Name = "version, V"
 
 	linux := cli.StringSlice{"linux"}

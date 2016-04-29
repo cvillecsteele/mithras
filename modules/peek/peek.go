@@ -42,7 +42,7 @@ package peek
 // ```
 //
 import (
-	"log"
+	log "github.com/Sirupsen/logrus"
 
 	"github.com/robertkrimen/otto"
 
