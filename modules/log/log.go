@@ -183,6 +183,8 @@ func init() {
 		// <a name="jsonFormatter"></a>
 		// `log.jsonFormatter(format);`
 		//
+		// Instead of strings, the log will emit... JSON!
+		//
 		// The `format` argument may be omitted, but if set, should be a string as documented [here](https://github.com/Sirupsen/logrus)
 		//
 		o1.Set("jsonFormatter", func(call otto.FunctionCall) otto.Value {
@@ -289,6 +291,8 @@ func init() {
 		// For example:
 		//
 		//    log.withFields({omg: "Yeah!"}).info("this is awesome");
+		//
+		// For more information see the [logrus](https://github.com/Sirupsen/logrus) docs.
 		//
 		o1.Set("withFields", func(call otto.FunctionCall) otto.Value {
 			var l log.FieldLogger
