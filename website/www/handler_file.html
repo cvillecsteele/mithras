@@ -16,8 +16,9 @@ module value of <code>&quot;file&quot;</code></li>
    dependsOn: [otherResource.name]
    params: {
      dest: &quot;/etc/foo/bar&quot;
-     ensure: &quot;directory&quot;
-     mode: 0777
+     src: scp://localhost/file.txt
+     ensure: &quot;file&quot;
+     mode: 0644
      hosts: [&lt;array of ec2 instance objects&gt;]
    }
  };
@@ -60,7 +61,7 @@ specified in the properties <code>becomeMethod</code> and <code>becomeUser</code
 </li>
 <li><p>Allowed Values: octal number specifying a valid permission mask</p>
 <p>This property specifies the path to the file/link/directory to be manipulated</p>
-<h3><code>chown</code></h3></li>
+<h3><code>owner</code></h3></li>
 <li><p>Required: false</p>
 </li>
 <li><p>Allowed Values: username of the user to which the file will be <code>chown</code>&#39;ed</p>
@@ -74,8 +75,21 @@ specified in the properties <code>becomeMethod</code> and <code>becomeUser</code
 <li><p>Required: false</p>
 </li>
 <li><p>Allowed Values: a valid path on the target host</p>
-<p>The path of the file to link to (applies only to
-ensure=<code>&quot;link&quot;</code>). Will accept absolute, relative and nonexisting
-paths. Relative paths are not expanded.</p>
+<p>If ensure=<code>&quot;file&quot;</code> or <code>&quot;directory&quot;</code>, the value of thie property may
+take one of three forms.  If of the form
+<code>&quot;scp://localhost/foo/bar&quot;</code>, then the <em>local</em> file specified by the
+<code>src</code> is SCP&#39;d to the remote host, to the value of <code>dest</code>.  If of
+the form <code>&quot;http://www.someplace.com/foo/bar&quot;</code>, then from the remote
+instance, an HTTP GET request is performed to the value of <code>src</code>,
+and the contents of the response are written to <code>dest</code>.</p>
+<p>If ensure=<code>&quot;link&quot;</code>, specifies the path of the file to link to.
+Will accept absolute, relative and nonexisting paths. Relative
+paths are not expanded.</p>
+<h3><code>content</code></h3></li>
+<li><p>Required: false</p>
+</li>
+<li><p>Allowed Values: a string of file contents to be written</p>
+<p>If ensure=<code>&quot;file&quot;</code>, the value of this property (presumably a
+string) will be written to <code>dest</code>.</p>
 </li>
 </ul><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

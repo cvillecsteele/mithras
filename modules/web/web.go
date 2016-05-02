@@ -81,7 +81,10 @@ import (
 	"bytes"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"io/ioutil"
 	"net/http"
+	"net/url"
+	"os"
 	"time"
 
 	"github.com/facebookgo/httpdown"
@@ -125,24 +128,82 @@ func run(addr string) (httpdown.Server, error) {
 
 func init() {
 	core.RegisterInit(func(rt *otto.Otto) {
-		obj, _ := rt.Object(`web = {}`)
-		obj.Set("run", run)
-		obj.Set("stop", stop)
 
-		obj.Set("get", func(call otto.FunctionCall) otto.Value {
+		var o1 *otto.Object
+		var webObj *otto.Object
+		if a, err := rt.Get("web"); err != nil || a.IsUndefined() {
+			webObj, _ = rt.Object(`web = {}`)
+		} else {
+			webObj = a.Object()
+		}
+
+		webObj.Set("run", run)
+		webObj.Set("stop", stop)
+		webObj.Set("get", func(call otto.FunctionCall) otto.Value {
 			var b bytes.Buffer
+
 			url := call.Argument(0).String()
-			_, err := gorilla.Get(&b, url)
+
+			var file string
+			if !call.Argument(1).IsUndefined() {
+				file = call.Argument(1).String()
+			}
+
+			var perm int64 = 0644
+			var err error
+			if !call.Argument(2).IsUndefined() {
+				perm, err = call.Argument(2).ToInteger()
+			}
 			if err != nil {
 				log.Fatalf("Can't fetch '%s': %s", url, err)
+			}
+
+			_, err = gorilla.Get(&b, url)
+			if err != nil {
+				log.Fatalf("Can't fetch '%s': %s", url, err)
+			}
+			if file != "" {
+				err = ioutil.WriteFile(file, b.Bytes(), os.FileMode(perm))
 			}
 			v, err := rt.ToValue(b.String())
 			return v
 		})
-
-		obj.Set("handler", func(call otto.FunctionCall) otto.Value {
+		webObj.Set("handler", func(call otto.FunctionCall) otto.Value {
 			setHandler(call.Argument(0))
 			return otto.Value{}
 		})
+
+		if b, err := webObj.Get("web"); err != nil || b.IsUndefined() {
+			o1, _ = rt.Object(`web.url = {}`)
+		} else {
+			o1 = b.Object()
+		}
+		o1.Set("parse", func(call otto.FunctionCall) otto.Value {
+			raw := call.Argument(0).String()
+			url, err := url.Parse(raw)
+			if err != nil {
+				log.Fatalf("Can't parse url '%s': %s", raw, err)
+			}
+			f := core.Sanitizer(rt)
+			obj := f(url)
+			js := `(function (o) {
+               var lower = {};
+               var traverse = require("traverse");
+               traverse(o).map(function (node) {
+                if (this.key) {
+                    val = this.key.toString().toLowerCase();
+                    lower[val] = node;
+                }
+               });
+               return lower;
+             })`
+			fixed, err := rt.Call(js, obj, obj)
+			if err != nil {
+				log.Fatalf("Can't traverse url '%s'", raw, err)
+			}
+
+			return fixed
+		})
+
 	})
 }

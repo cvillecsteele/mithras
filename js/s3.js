@@ -230,7 +230,7 @@
                 return;
             }
             var params = resource.params;
-            if (params.hosts) {
+            if (Array.isArray(params.hosts)) {
                 var js = sprintf("var run = function() {\n (%s)(%s); };\n", 
                                  handler.runObject.toString(),
                                  JSON.stringify(_.omit(params, 'hosts')));

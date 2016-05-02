@@ -82,8 +82,8 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* combine scp, file & copy
 * document ASG solution
-* combine scp, file copy
 * parallelize with workers?
 * explainer videos
 * document workers better

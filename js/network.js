@@ -89,7 +89,7 @@
 	    }
 	    
 	    // Loop over hosts
-	    if (typeof(p.hosts) != "object") {
+	    if (!Array.isArray(p.hosts)) {
 		return [null, true];
 	    }
 	    var target = resource._target = {};

@@ -273,6 +273,7 @@
                                     return r.name === name; 
                                 });
                                 r.params = updated.params;
+				log.debug("  --- Setting _target")
                                 r._target = target;
                             }
                         });
@@ -303,10 +304,11 @@
         // }
         // ```
         bootstrap: function(template) {
+	    var ensure = template.params.ensure
             var ssh = _.extend({}, template, {
                 name: "mithrasSshAvailable"
                 module: "network"
-                skip: (template.params.ensure === "absent")
+                skip: (ensure === "absent")
             });
             ssh.params = _.extend({}, template.params, {
                 timeout: 120
@@ -335,23 +337,27 @@
 
             var skipper = function(resourceName) {
                 var path = resourceName + "._currentHost.PublicIpAddress";
-                return mithras.watch("mithrasBinDir._target",
-                                     function(catalog, resources, binDirResults) {
+                return mithras.watch(resourceName + "._target",
+                                     function(catalog, resources, results) {
                                          var ip = objectPath.get(resources, path);
                                          if (ip) {
-                                             return (binDirResults[ip].trim() === "exists");
+					     var found = results[ip] ? results[ip].trim() : "";
+                                             return (found === "found");
                                          }
                                      });
             };
-            
+
+            // Mithras dir
             var cmd = mkdirCmd(".mithras");
             dir.dependsOn = (dir.dependsOn || []).concat([ssh.name]);
             dir.params = _.extend({}, 
                                   paramsWithoutBecome,
                                   {
+				      skip: skipper("mithrasDir")
                                       command: cmd
                                   });
 
+	    // Binaries
             var binDir = _.extend({}, template, {
                 name: "mithrasBinDir"
                 module: "shell"
@@ -361,9 +367,11 @@
             binDir.params = _.extend({},
                                      paramsWithoutBecome,
                                      {
+					 skip: (ensure === "absent") ? ensure : skipper(binDir.name)
                                          command: cmd
                                      });
 
+	    // Scripts
             var scriptsDir = _.extend({}, template, {
                 name: "mithrasScriptsDir"
                 module: "shell"
@@ -373,17 +381,18 @@
             scriptsDir.params = _.extend({}, 
                                          paramsWithoutBecome, 
                                          {
+					     skip: (ensure === "absent") ? true : skipper(scriptsDir.name)
                                              command: cmd
                                          });
 
             var jsDir = _.extend({}, template, {
                 name: "mithrasJsDir"
-                module: "scp"
+                module: "file"
             });
             jsDir.dependsOn = (jsDir.dependsOn || []).concat([binDir.name, dir.name]);
             jsDir.params = _.extend({}, template.params, {
-                skip: skipper("mithrasJsDir")
-                src: mithras.JSDIR
+                skip: (ensure === "absent") ? true : skipper(jsDir.name)
+                src: "scp://localhost"+mithras.JSDIR
                 dest: ".mithras/js"
             });
 
@@ -426,14 +435,15 @@
                 return [theOS, arch];
             }
 
+	    // Wrapper binary
             var wrapper = _.extend({}, template, {
                 name: "mithrasWrapper"
-                module: "scp"
+                module: "file"
             });
             wrapper.dependsOn = (wrapper.dependsOn || []).concat([uname.name, binDir.name]);
             wrapper.params = _.extend({}, template.params, {
                 dest: ".mithras/bin/wrapper"
-                skip: skipper("mithrasWrapper")
+                skip: (ensure === "absent") ? true : skipper(wrapper.name)
                 src: mithras.watch("mithrasWrapper._currentHost", 
                                    function(catalog, resources, inst) {
                                        var u = objectPath.get(resources, 
@@ -450,20 +460,22 @@
                                        }
                                        var theOS = result[0];
                                        var arch = result[1];
-                                       return sprintf("cache/wrapper_%s_%s", 
+                                       return sprintf("scp://localhost/%s/cache/wrapper_%s_%s", 
+						      mithras.HOME,
                                                       theOS, 
                                                       arch);
                                    })
             });
 
+	    // Runner binary
             var runner = _.extend({}, template, {
                 name: "mithrasRunner"
-                module: "scp"
+                module: "file"
             });
-            runner.dependsOn = (runner.dependsOn || []).concat([uname.name, binDir.name]);
+            runner.dependsOn = (runner.dependsOn || []).concat([uname.name, binDir.name, wrapper.name]);
             runner.params = _.extend({}, template.params, {
                 dest: ".mithras/bin/runner"
-                skip: skipper("mithrasRunner")
+                skip: (ensure === "absent") ? true : skipper(runner.name)
                 src: mithras.watch("mithrasWrapper._currentHost", 
                                    function(catalog, resources, inst) {
                                        var u = objectPath.get(resources, "mithrasUname._target");
@@ -477,7 +489,8 @@
                                        }
                                        var os = result[0];
                                        var arch = result[1];
-                                       return sprintf("cache/runner_%s_%s", 
+                                       return sprintf("scp://localhost/%s/cache/runner_%s_%s", 
+						      mithras.HOME,
                                                       os, 
                                                       arch);
                                    })
@@ -687,7 +700,7 @@
             if (resource.params &&
                 typeof(resource.params.sshKeyPathForInstance) === 'function') {
                 return resource.params.sshKeyPathForInstance(instance);
-            } else {
+            } else if (instance && instance.KeyName) {
                 return "~/.ssh/" + instance.KeyName + ".pem";
             }
         }
@@ -916,7 +929,7 @@
 
 
     // Load handlers
-    var copy = require("copy").init();
+
     var elasticache = require("elasticache").init();
     var elb = require("elb").init();
     var file = require("file").init();
@@ -933,7 +946,6 @@
     var vpc = require("vpc").init();
     var iam = require("iam").init();
     var network = require("network").init();
-    var scp = require("scp").init();
     var keypairs = require("keypairs").init();
     var sns = require("sns").init();
     var sqs = require("sqs").init();

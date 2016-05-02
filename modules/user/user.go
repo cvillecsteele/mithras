@@ -63,6 +63,10 @@ func lookup(username string) (*user.User, error) {
 func init() {
 	core.RegisterInit(func(rt *otto.Otto) {
 		obj, _ := rt.Object(`user = {}`)
-		obj.Set("lookup", lookup)
+		obj.Set("lookup", func(call otto.FunctionCall) otto.Value {
+			f := core.Sanitizer(rt)
+			user := call.Argument(0).String()
+			return f(lookup(user))
+		})
 	})
 }

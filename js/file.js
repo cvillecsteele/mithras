@@ -39,8 +39,9 @@
 //   dependsOn: [otherResource.name]
 //   params: {
 //     dest: "/etc/foo/bar"
-//     ensure: "directory"
-//     mode: 0777
+//     src: scp://localhost/file.txt
+//     ensure: "file"
+//     mode: 0644
 //     hosts: [<array of ec2 instance objects>]
 //   }
 // };
@@ -98,7 +99,7 @@
 //
 // This property specifies the path to the file/link/directory to be manipulated
 //
-// ### `chown`
+// ### `owner`
 //
 // * Required: false
 // * Allowed Values: username of the user to which the file will be `chown`'ed
@@ -117,9 +118,25 @@
 // * Required: false
 // * Allowed Values: a valid path on the target host
 //
-// The path of the file to link to (applies only to
-// ensure=`"link"`). Will accept absolute, relative and nonexisting
-// paths. Relative paths are not expanded.
+// If ensure=`"file"` or `"directory"`, the value of thie property may
+// take one of three forms.  If of the form
+// `"scp://localhost/foo/bar"`, then the *local* file specified by the
+// `src` is SCP'd to the remote host, to the value of `dest`.  If of
+// the form `"http://www.someplace.com/foo/bar"`, then from the remote
+// instance, an HTTP GET request is performed to the value of `src`,
+// and the contents of the response are written to `dest`.
+//
+// If ensure=`"link"`, specifies the path of the file to link to.
+// Will accept absolute, relative and nonexisting paths. Relative
+// paths are not expanded.
+//
+// ### `content`
+//
+// * Required: false
+// * Allowed Values: a string of file contents to be written
+//
+// If ensure=`"file"`, the value of this property (presumably a
+// string) will be written to `dest`.
 //
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -131,6 +148,65 @@
 
     var handler = {
 	moduleName: "file"
+
+        preflight: function(catalog, resources, resource) {
+	    if (resource.module != handler.moduleName) {
+		return [null, false];
+	    }
+
+            var p = resource.params;
+            var ensure = p.ensure;
+
+            // Sanity
+            if (!p || !p.dest) {
+                console.log(sprintf("Invalid resource params: %s", 
+                                    JSON.stringify(p)));
+                os.exit(1);
+            }
+
+            // Any hosts?
+            if (!Array.isArray(p.hosts)) {
+                log("No hosts.");
+                return [null, true];
+            }
+
+            // Loop over hosts
+            var target = resource._target = {};
+            _.each(p.hosts, function(host) {
+                var key = mithras.sshKeyPathForInstance(resource, host);
+                var user = mithras.sshUserForInstance(resource, host);
+
+                // update for by-host variance
+                _.find(resources, function(r) {
+                    return r.name === resource.name;
+                })._currentHost = host;
+                resource._currentHost = host;
+                var updated = mithras.updateResource(resource, 
+                                                     catalog, 
+                                                     resources,
+                                                     resource.name);
+                var updatedParams = updated.params;
+
+                cmd = sprintf("test -e '%s' && echo 'found'", updatedParams.dest);
+                var result = mithras.remote.shell(host.PublicIpAddress, 
+                                                  user, 
+                                                  key, 
+                                                  "",
+                                                  cmd, 
+                                                  {});
+                var out = result[0] ? result[0].trim() : "";
+                var err = result[1] ? result[1].trim() : "";
+                if (result[3] == 0) {
+                    log(sprintf("File '%s': %s.", 
+                                updatedParams.dest,
+                                out != "" ? out : "success"));
+                    target[host.PublicIpAddress] = out;
+                    target[host.InstanceId] = out;
+                }
+            });
+            return [target, true];
+        }
+   
 	run: function (params) {
 	    var sprintf = require("sprintf.js").sprintf;
 
@@ -167,11 +243,35 @@
 	    var dest = params.dest;
 
 	    var stat = fs.stat(dest);
+	    var uid;
+	    var gid;
 	    if (chown) {
-		var u = user.lookup(chown)[0];
+		var result = user.lookup(chown);
+		var u = result[0];
+		var e = result[1];
 		if (!u) {
-		    console.log(sprintf("User '%s' does not exist", chown));
-		    os.exit(1);
+		    // Ugly hack alert.  Apparently cross-compiled go
+		    // binaries for linux don't have a robust (read:
+		    // working) way to do user lookup.  We fall back
+		    // to exec'ing 'id'...
+		    var result = exec.run(sprintf("id %s", chown));
+		    if (result[3] == 0) {
+			out = result[0].trim();
+			var match = out.match(/^uid=([0-9]+)/);
+			if (match) {
+			    uid = parseInt(match[1], 10);
+			}
+			var match = out.match(/gid=([0-9]+)/);
+			if (match) {
+			    gid = parseInt(match[1], 10);
+			}
+		    } else {
+			console.log(sprintf("User '%s' does not exist", chown));
+			os.exit(1);
+		    }
+		} else {
+		    uid = user.Uid;
+		    gid = user.Gid;
 		}
 	    }
 	    var present = !stat.Err;
@@ -201,22 +301,47 @@
 		break;
 	    case "file":
 	    case "touch":
-		if (present) {
-		    break;
-		}
-		result = fs.create(dest);
-		f = result[0];
-		error = result[1];
-		if (error) {
-		    console.log("Create file error", 
-				JSON.stringify(error, null, 2));
-		    os.exit(3);
-		}
-		error = fs.close(f);
-		if (error) {
-		    console.log("Create file close error", 
-				JSON.stringify(error, null, 2));
-		    os.exit(3);
+		if (!present) {
+                    if (params.content) {
+                        error = fs.write(params.dest, params.content, params.mode);
+                        if (error) {
+                            console.log("File write error", JSON.stringify(error, null, 2));
+                            os.exit(2);
+                        }
+                    } else if (params.src) {
+			var url = web.url.parse(params.src);
+			var scheme = url.scheme;
+			switch (scheme) {
+			case "scp":
+			    break;
+			case "http":
+			case "https":
+			    web.get(params.src, params.dest, params.mode);
+			    break;
+			default:
+                            error = fs.copy(params.src, params.dest, params.mode);
+                            if (error) {
+				console.log("File copy error", JSON.stringify(error, null, 2));
+				os.exit(3);
+                            }
+			    break;
+			}
+		    } else {
+			result = fs.create(dest);
+			f = result[0];
+			error = result[1];
+			if (error) {
+			    console.log("Create file error", 
+					JSON.stringify(error, null, 2));
+			    os.exit(3);
+			}
+			error = fs.close(f);
+			if (error) {
+			    console.log("Create file close error", 
+					JSON.stringify(error, null, 2));
+			    os.exit(3);
+			}
+		    }
 		}
 
 		// Check it.
@@ -228,17 +353,9 @@
 
 		// Chown it.
 		if (chown) {
-		    result = user.lookup(chown);
-		    user = result[0];
-		    error = result[1];
+		    error = fs.chown(dest, uid, gid);
 		    if (error) {
-			console.log("Copy error user lookupg", 
-				    JSON.stringify(error, null, 2));
-			os.exit(5);
-		    }
-		    error = fs.chown(dest, user.Uid);
-		    if (error) {
-			console.log("Copy error chown", 
+			console.log("File error chown", 
 				    JSON.stringify(error, null, 2));
 			os.exit(5);
 		    }
@@ -246,9 +363,9 @@
 
 		// Chmod it.
 		if (mode) {
-		    error = user.chown(dest, u.Uid);
+		    error = fs.chmod(dest, mode);
 		    if (error) {
-			console.log("Create file error", JSON.stringify(error, null, 2));
+			console.log("Chmod file error", JSON.stringify(error, null, 2));
 			os.exit(6);
 		    }
 		}
@@ -262,7 +379,7 @@
 		    }
 		}
 
-		console.log(sprintf("Created '%s'", dest));
+		console.log("Success");
 		break;
 	    case "link":
 		error = fs.symlink(src, dest);
@@ -298,43 +415,153 @@
 		os.exit(11);
 	    }
 	}
+
+	scp: function(path, resource, updatedParams, host) {
+            var pre = resource._target || {};
+            var key = mithras.sshKeyPathForInstance(resource, host);
+            var user = mithras.sshUserForInstance(resource, host);
+
+            if (updatedParams.skip == true) {
+                log("Skipped.");
+            } else if ((updatedParams.ensure === 'absent')  &&
+                       (pre[host.PublicIpAddress] != "found")) {
+                log("Ensure: absent; skipping.")
+	    } else if (updatedParams.ensure === 'absent') {
+                log("Ensure: absent but scp handler does not remove files.")
+	    } else if ((updatedParams.ensure === 'present') &&
+                       (pre[host.PublicIpAddress] != "found")) {
+                var result = mithras.remote.scp(host.PublicIpAddress, 
+                                                user, 
+                                                key, 
+                                                path,
+                                                updatedParams.dest);
+                
+                var out = result[0];
+                var err = result[1];
+                var ok = result[2];
+                var status = result[3];
+                if (ok) {
+                    if (mithras.verbose) {
+                        log(sprintf("SCP to '%s' success.", updatedParams.dest));
+                    }
+                } else if (status == 255) {
+                    log(sprintf("SCP error remote system '%s', dest '%s': %s %s",
+                                host.PublicIpAddress, 
+                                updatedParams.dest, 
+                                err ? err.trim() : "", 
+                                out ? out.trim() : ""));
+                    os.exit(2);
+                } else if (status == 1) {
+                    if (mithras.verbose) {
+                        log(sprintf("SCP dest '%s' error: %s\n%s", updatedParams.dest, err, out));
+                    }
+                    os.exit(3);
+                } else {
+                    if (mithras.verbose) {
+                        log(sprintf("SCP dest '%s': status %d; out %s", 
+                                    updatedParams.dest, 
+                                    status, 
+                                    out));
+                    }
+                }
+            } else if (updatedParams.ensure === 'present') {
+		log("Ensure: present but destination already exists.")
+	    } 
+	}
+
+	remote: function(catalog, resources, resource, host) {
+	    var updatedParams = resource.params;
+            var key = mithras.sshKeyPathForInstance(resource, host);
+            var user = mithras.sshUserForInstance(resource, host);
+	    var js = sprintf("var run = function() {\n (%s)(%s); };\n", 
+			     handler.run.toString(),
+			     JSON.stringify(_.omit(updatedParams, 'hosts')));
+	    var result = mithras.remote.mithras(host,
+						user,
+						key,
+						js,
+						updatedParams.become,
+						updatedParams.becomeUser,
+						updatedParams.becomeMethod);
+	    var out = result[0] ? result[0].trim() : "";
+            var err = result[1] ? result[1].trim() : "";
+	    if (result[3] == 0) {
+		log(sprintf("File '%s' %s: %s.", 
+			    updatedParams.dest,
+			    updatedParams.ensure,
+			    out != "" ? out : "success"));
+	    } else {
+                log(sprintf("File handler '%s' %s error: %s %s", 
+                            updatedParams.dest,
+                            updatedParams.ensure,
+			    out,
+                            err));
+		os.exit(1);
+	    }
+	}
+
+	action: function(catalog, resources, resource, host) {
+	    var updatedParams = resource.params;
+
+	    var src = updatedParams.src;
+	    var chown = updatedParams.owner;
+	    var mode = updatedParams.mode;
+	    if (src) {
+		var url = web.url.parse(src);
+		var scheme = url.scheme;
+		if (scheme === "scp") {
+		    return function() {
+			handler.scp(url.path, resource, updatedParams, host);
+			if (chown || mode) {
+			    handler.remote(catalog, resources, resource, host);
+			}
+		    };
+		}
+	    }
+	    return function() {
+		handler.remote(catalog, resources, resource, host);
+	    };
+	}
+
 	handle: function(catalog, resources, resource) {
 	    if (resource.module != handler.moduleName) {
 		return [null, false];
 	    }
 	    var params = resource.params;
-	    if (params.hosts) {
-		var js = sprintf("var run = function() {\n (%s)(%s); };\n", 
-				 handler.run.toString(),
-				 JSON.stringify(_.omit(params, 'hosts')));
-		for (var i in resource.params.hosts) {
-		    var instance = resource.params.hosts[i];
-		    var result = mithras.remote.mithras(instance, 
-							mithras.sshUserForInstance(resource, 
-										   instance), 
-							mithras.sshKeyPathForInstance(resource, 
-										      instance), 
-							js,
-							resource.params.become,
-							resource.params.becomeUser,
-							resource.params.becomeMethod);
-		    if (result[3] == 0) {
-			var out = result[0].trim();
-			log(sprintf("File '%s' %s: %s.", 
-				    resource.params.dest,
-				    resource.params.ensure,
-				    out != "" ? out : "success"));
+	    if (Array.isArray(params.hosts)) {
+		// Loop over hosts
+		_.each(params.hosts, function(host) {
+
+                    // update for by-host variance
+                    _.find(resources, function(r) {
+			return r.name === resource.name;
+                    })._currentHost = host;
+                    resource._currentHost = host;
+                    var updated = mithras.updateResource(resource, 
+							 catalog, 
+							 resources,
+							 resource.name);
+                    if (mithras.verbose) {
+			log(sprintf("Host: '%s' (%s)", host.PublicIpAddress, 
+                                    host.InstanceId));
+                    }
+		    if (updated.params.skip == true) {
+			if (mithras.verbose) {
+			    log("Skipped.");
+			}
+			return;
 		    }
-		}
-	    } else {
-		handler.run(params);
+		    var action = handler.action(catalog, resources, updated, host);
+		    action();
+		});
 	    }
 	    return [null, true];
 	}
     };
     
     handler.init = function () {
-	mithras.modules.handlers.register("file", handler.handle);
+        mithras.modules.preflight.register(handler.moduleName, handler.preflight);
+	mithras.modules.handlers.register(handler.moduleName, handler.handle);
     };
     
     return handler;

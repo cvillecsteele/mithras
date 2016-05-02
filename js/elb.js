@@ -263,6 +263,7 @@
                 break;
             case "elbMembership":
                 var elb = handler.findInCatalog(catalog, 
+						resource,
                                                 params.membership.LoadBalancerName);
 
                 if (ensure === "present") {

@@ -164,7 +164,7 @@
             }
             
             // Loop over hosts
-            if (typeof(params.hosts) != "object") {
+            if (!Array.isArray(params.hosts)) {
                 return [null, true];
             }
             _.each(params.hosts, function(host) {

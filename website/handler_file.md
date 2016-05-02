@@ -23,8 +23,9 @@
    dependsOn: [otherResource.name]
    params: {
      dest: "/etc/foo/bar"
-     ensure: "directory"
-     mode: 0777
+     src: scp://localhost/file.txt
+     ensure: "file"
+     mode: 0644
      hosts: [<array of ec2 instance objects>]
    }
  };
@@ -82,7 +83,7 @@
 
  This property specifies the path to the file/link/directory to be manipulated
 
- ### `chown`
+ ### `owner`
 
  * Required: false
  * Allowed Values: username of the user to which the file will be `chown`'ed
@@ -101,8 +102,24 @@
  * Required: false
  * Allowed Values: a valid path on the target host
 
- The path of the file to link to (applies only to
- ensure=`"link"`). Will accept absolute, relative and nonexisting
- paths. Relative paths are not expanded.
+ If ensure=`"file"` or `"directory"`, the value of thie property may
+ take one of three forms.  If of the form
+ `"scp://localhost/foo/bar"`, then the *local* file specified by the
+ `src` is SCP'd to the remote host, to the value of `dest`.  If of
+ the form `"http://www.someplace.com/foo/bar"`, then from the remote
+ instance, an HTTP GET request is performed to the value of `src`,
+ and the contents of the response are written to `dest`.
+
+ If ensure=`"link"`, specifies the path of the file to link to.
+ Will accept absolute, relative and nonexisting paths. Relative
+ paths are not expanded.
+
+ ### `content`
+
+ * Required: false
+ * Allowed Values: a string of file contents to be written
+
+ If ensure=`"file"`, the value of this property (presumably a
+ string) will be written to `dest`.
 
 

@@ -98,17 +98,25 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, str
 		}
 	}
 
+	ext := filepath.Ext(filename)
 	replaced := strings.Replace(filename, "-", "_", -1)
-	tryThese := []string{filename}
+	tryThese := []string{}
 	if replaced != filename {
 		tryThese = append(tryThese, replaced)
 	}
+	if ext != ".js" {
+		tryThese = append(tryThese, filename+".js")
+		if replaced != filename {
+			tryThese = append(tryThese, replaced+".js")
+		}
+	}
+	tryThese = append(tryThese, filename)
 	dirs := []string{"", JsDir, ".", "js"}
 	if parentDir != "" {
 		dirs = append(dirs, parentDir)
 	}
-	for _, dir := range dirs {
-		for _, p := range tryThese {
+	for _, p := range tryThese {
+		for _, dir := range dirs {
 
 			// Load source verbatim from dir
 			path := filepath.Join(dir, p)
@@ -116,14 +124,9 @@ func loadSource(rt *otto.Otto, parent *otto.Value, filename string) (string, str
 				return path, parentPath.String(), buf
 			}
 
-			// Load source with ".js"
-			path = filepath.Join(dir, p+".js")
-			if buf, _ := LoadScript(path); buf != nil {
-				return path, parentPath.String(), buf
-			}
-
 			// Look for package.json
-			if ext := filepath.Ext(p); ext != ".json" && ext != ".js" {
+			ext := filepath.Ext(p)
+			if ext != ".json" && ext != ".js" {
 				info, err := os.Stat(filepath.Join(dir, p))
 				if err == nil && info.IsDir() {
 					path := filepath.Join(dir, p, "package.json")

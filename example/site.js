@@ -43,6 +43,9 @@
 //   * Nginx Setup
 // 
 function run() {
+    
+    // Log level
+    log.setLevel("debug");
 
     // Filter regions
     mithras.activeRegions = function (catalog) { return ["us-east-1"]; };
@@ -522,19 +525,16 @@ function run() {
 
     var rFile = {
         name: "someFile"
-        module: "copy"
+        module: "file"
         dependsOn: [rBootstrap.name]
         params: {
-            ensure: ensure // present, absent
+            ensure: (ensure === "absent") ? ensure : "file"
             become: true
             becomeMethod: "sudo"
             becomeUser: "root"
             dest: "/tmp/foo"
-            src: "/etc/hosts"
-            content: "example content"
-            // not supported yet:
-            //   owner: "root"
-            //   group: "wheel"
+            src: "http://google.com"
+	    owner: "ec2-user"
             mode: 0644
             hosts: mithras.watch(rWebServer.name+"._target")
         }
@@ -634,9 +634,9 @@ function run() {
                             [
                                 rStack,
                                 rWSTier,
-                                rRdsA,
-                                rCache,
-                                rS3
+                                // rRdsA,
+                                //rCache,
+                                // rS3
                             ], 
                             reverse);
     

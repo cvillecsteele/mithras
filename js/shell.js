@@ -91,7 +91,7 @@
 	    }
 	    
 	    // Loop over hosts
-	    if (typeof(p.hosts) != "object") {
+	    if (!Array.isArray(p.hosts)) {
 		return [null, true];
 	    }
 	    var target = resource._target = {};
@@ -114,6 +114,11 @@
 						     resources,
 						     resource.name);
 		var updatedParams = updated.params;
+
+		if (updatedParams.skip == true) {
+                    log("Skipped.");
+		    return;
+		}
 		
 		var cmd = become(updatedParams.become, 
 				 updatedParams.becomeUser, 

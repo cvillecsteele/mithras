@@ -122,7 +122,7 @@
     
     var proxy = {
         name: "nginxProxyConf"
-        module: "copy"
+        module: "file"
         dependsOn: [confDir]
         params: {
             dest: filepath.join(confDir, "proxy.conf")
@@ -133,7 +133,7 @@
     
     var otherConfig = {
         name: "nginxOtherConfig"
-        module: "copy"
+        module: "file"
         dependsOn: [confDir]
         params: {
             mode: 0644
@@ -154,7 +154,7 @@
     
     var siteConfig = {
         name: "nginxSiteConfig"
-        module: "copy"
+        module: "file"
         dependsOn: [availDir]
         params: {
             mode: 0644
@@ -162,8 +162,8 @@
     };
     
     var base = {
-        name: "nginxBaseConf"
-        module: "copy"
+        name: "nginxConfFile"
+        module: "file"
         dependsOn: ["nginxPkg"]
         params: {
             dest: filepath.join(baseDir, "nginx.conf")
@@ -177,7 +177,7 @@
         name: "nginxSvc"
         module: "service"
         dependsOn: [
-            "nginxPkg", "nginxBaseConf", "nginxProxyConf"
+            "nginxPkg", "nginxConfFile", "nginxProxyConf"
         ].concat(_.map(dirs,
                        function(dir, idx) {
                            return dir.name;
@@ -208,6 +208,8 @@
         if (baseConf) {
             base.params.content = baseConf;
         }
+	base.params.ensure = (base.params.ensure === "present") ? "file" : base.params.ensure
+	proxy.params.ensure = (proxy.params.ensure === "present") ? "file" : proxy.params.ensure
 
         // For each confg, add a resource to base and make svc depend on it
         for (var key in configs) {
@@ -219,11 +221,14 @@
                                      params: _.extend({}, otherConfig.params, template.params)
                                  });
                 r.params.dest = filepath.join(confDir, key);
+		r.params.ensure = (template.ensure === "present") ? "file" : template.ensure
                 r.params.content = configs[key];
                 all.includes.push(r);
                 svc.dependsOn.push(name);
             }
         }
+
+	var ensure = template.params.ensure;
         
         // For each site, add a resource to base and make svc depend on it
         for (var key in sites) {
@@ -235,6 +240,7 @@
                                      params: _.extend({}, siteConfig.params, template.params)
                                  });
                 r.params.dest = filepath.join(availDir, key);
+		r.params.ensure = (ensure === "present") ? "file" : ensure
                 r.params.content = sites[key];
                 all.includes.push(r);
                 svc.dependsOn.push(name);
@@ -248,7 +254,7 @@
                                  });
                 r.params.src = filepath.join(availDir, key);
                 r.params.dest = filepath.join(enabledDir, key);
-                r.params.ensure = (template.params.ensure === 'present') ? "link" : "absent"
+                r.params.ensure = (ensure === 'present') ? "link" : "absent"
                 all.includes.push(r);
                 svc.dependsOn.push(name);
             }
