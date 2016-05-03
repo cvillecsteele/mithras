@@ -257,8 +257,17 @@
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
-            handler.handleBucket(catalog, resource);
-            handler.handleObject(catalog, resource);
+            var updated = mithras.updateResource(resource, 
+                                                 catalog, 
+                                                 resources,
+                                                 resource.name);
+            var updatedParams = updated.params;
+	    
+            if (updatedParams.skip == true) {
+                log("Skipped.");
+            }            
+	    handler.handleBucket(catalog, updated);
+            handler.handleObject(catalog, updated);
             return [null, true];
         }
     };
