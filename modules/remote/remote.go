@@ -122,14 +122,18 @@ import (
 	"encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+	"sync"
 	"syscall"
 
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"github.com/robertkrimen/otto"
 
 	mcore "github.com/cvillecsteele/mithras/modules/core"
+	"github.com/cvillecsteele/mithras/modules/script"
 )
 
 // Wrapper runs programs and captures the results in this structure.
@@ -145,6 +149,10 @@ type JobSpec struct {
 	Cmd []string
 	Env map[string]string
 }
+
+// A map of SSH masters
+var Masters map[string]chan struct{} = map[string]chan struct{}{}
+var Mutex = &sync.Mutex{}
 
 // Called to add the appropriate "su" preable for remote tasks that
 // require privilege escalation.
@@ -259,6 +267,9 @@ func CopyToRemote(ip string, user string, keypath string, src string, dest strin
 	args := []string{
 		"-p", // preserve
 		"-r", // recursive
+		"-o", "ControlPersist=10m",
+		"-o", "ControlMaster=no",
+		"-o", "ControlPath=" + ctlPath(),
 		"-o", "IdentityFile=" + keypath,
 		"-o", "KbdInteractiveAuthentication=no",
 		"-o", "StrictHostKeyChecking=no",
@@ -272,6 +283,79 @@ func CopyToRemote(ip string, user string, keypath string, src string, dest strin
 	return Exec("scp", args, nil, nil)
 }
 
+func ctlPath() string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Can't get working directory: %s", err)
+	}
+	ctlPath, err := filepath.Rel(cwd, script.Home+"/ssh/ctl/%r@%h:%p")
+	if err != nil {
+		log.Fatalf("Can't get relative path: %s", err)
+	}
+	return ctlPath
+}
+
+func startMaster(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) {
+	args := []string{
+		"ssh",
+		"-C",
+		"-Tn",
+		"-o", "ControlPersist=10m",
+		"-o", "ControlMaster=yes",
+		"-o", "ControlPath=" + ctlPath(),
+		"-o", "ForwardAgent=yes",
+		"-o", "IdentityFile=" + keypath,
+		"-o", "KbdInteractiveAuthentication=no",
+		"-o", "StrictHostKeyChecking=no",
+		"-o", "PasswordAuthentication=no",
+		"-o", "User=" + user,
+		"-o", "ConnectTimeout=10",
+		"-o", "PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey",
+	}
+	args = append(args, ip)
+
+	master := make(chan struct{})
+	go func(c chan struct{}) {
+		log.Println("about to start master")
+		cmd, err := Start("ssh-agent", args, nil, env)
+		if err != nil {
+			log.Fatalf("SSH control master error: %s", err)
+		}
+		c <- struct{}{}
+		go func() {
+			err := cmd.Wait()
+			if err != nil {
+				log.Fatalf("SSH control master error: %s", err)
+			}
+		}()
+	}(master)
+	<-master
+}
+
+func checkMaster(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) bool {
+	args := []string{
+		"ssh",
+		"-C",
+		"-Tn",
+		"-o", "ControlPersist=10m",
+		"-o", "ControlMaster=no",
+		"-o", "ControlPath=" + ctlPath(),
+		"-o", "ForwardAgent=yes",
+		"-o", "IdentityFile=" + keypath,
+		"-o", "KbdInteractiveAuthentication=no",
+		"-o", "StrictHostKeyChecking=no",
+		"-o", "PasswordAuthentication=no",
+		"-o", "User=" + user,
+		"-o", "ConnectTimeout=10",
+		"-o", "PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey",
+		"-O", "check",
+	}
+	args = append(args, ip)
+
+	_, _, _, status := Exec("ssh-agent", args, nil, env)
+	return status == 0
+}
+
 // `RemoteShell` provides the facility to execute command in a shell
 // on a remote system.  The caller provides an ip address (or
 // hostname) in string form, the appropriate remote user and a path to
@@ -279,9 +363,16 @@ func CopyToRemote(ip string, user string, keypath string, src string, dest strin
 //
 // `RemoteShell` runs the local `ssh` command under `ssh-agent`.
 func RemoteShell(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) (*string, *string, bool, int) {
+	if running := checkMaster(ip, user, keypath, input, cmd, env); running == false {
+		startMaster(ip, user, keypath, input, cmd, env)
+	}
+
 	args := []string{
 		"ssh",
 		"-C",
+		"-o", "ControlPersist=10m",
+		"-o", "ControlMaster=no",
+		"-o", "ControlPath=" + ctlPath(),
 		"-o", "ForwardAgent=yes",
 		"-o", "IdentityFile=" + keypath,
 		"-o", "KbdInteractiveAuthentication=no",
@@ -295,6 +386,9 @@ func RemoteShell(ip string, user string, keypath string, input *string, cmd stri
 	}
 	args = append(args, ip)
 	args = append(args, cmd)
+
+	// For debugging:
+	// log.Println(strings.Join(args, " "))
 
 	return Exec("ssh-agent", args, input, env)
 }
@@ -323,7 +417,6 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 
 	e := c.Run()
 
-	// Ssh exits with the exit status of the remote command or with 255 if an error occurred
 	var status int
 	if e1, ok := e.(*exec.ExitError); ok {
 		status = e1.Sys().(syscall.WaitStatus).ExitStatus()
@@ -332,11 +425,35 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 	resultErr := err.String()
 	resultOut := out.String()
 	ok := true
-	if e != nil || !c.ProcessState.Success() || (status == 255) {
+	if e != nil || !c.ProcessState.Success() {
 		ok = false
 	}
 
 	return &resultOut, &resultErr, ok, status
+}
+
+func Start(cmd string, args []string, input *string, env *map[string]string) (*exec.Cmd, error) {
+	c := exec.Command(cmd, args...)
+
+	var out bytes.Buffer
+	var err bytes.Buffer
+	c.Stdout = &out
+	c.Stderr = &err
+	if input != nil {
+		c.Stdin = bufio.NewReader(bytes.NewBufferString(*input))
+	}
+
+	// Create an environment
+	if env != nil {
+		newEnv := []string{}
+		for k, v := range *env {
+			newEnv = append(newEnv, fmt.Sprintf("%s=%s", k, v))
+		}
+		c.Env = newEnv
+	}
+
+	e := c.Start()
+	return c, e
 }
 
 // We hook the Go language facility to register an initilization

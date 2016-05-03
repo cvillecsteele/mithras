@@ -119,7 +119,7 @@
             
             if (!params.ensure || !params.key || !params.savePath || !params.region) {
                 console.log("Invalid key params")
-                os.exit(1);
+                os.exit(3);
             }
             var found = resource._target;
 

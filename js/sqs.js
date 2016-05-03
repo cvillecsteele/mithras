@@ -150,7 +150,7 @@
             // Sanity
             if (!resource.params.queue && !resource.params.queue) {
                 console.log("Invalid sqs params")
-                os.exit(1);
+                os.exit(3);
             }
 
             var ensure = resource.params.ensure;

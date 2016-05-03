@@ -170,7 +170,7 @@
             // Sanity
             if (!resource.params.topic && !resource.params.sub) {
                 console.log("Invalid sns params")
-                os.exit(1);
+                os.exit(3);
             }
 
             var ensure = resource.params.ensure;

@@ -135,7 +135,7 @@
             // Sanity
             if (!resource.params.vpc) {
                 console.log("Invalid vpc params")
-                os.exit(1);
+                os.exit(3);
             }
 
             var params = resource.params;

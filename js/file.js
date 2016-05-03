@@ -161,7 +161,7 @@
             if (!p || !p.dest) {
                 console.log(sprintf("Invalid resource params: %s", 
                                     JSON.stringify(p)));
-                os.exit(1);
+                os.exit(3);
             }
 
             // Any hosts?
@@ -267,7 +267,7 @@
 			}
 		    } else {
 			console.log(sprintf("User '%s' does not exist", chown));
-			os.exit(1);
+			os.exit(3);
 		    }
 		} else {
 		    uid = user.Uid;
@@ -306,7 +306,7 @@
                         error = fs.write(params.dest, params.content, params.mode);
                         if (error) {
                             console.log("File write error", JSON.stringify(error, null, 2));
-                            os.exit(2);
+                            os.exit(3);
                         }
                     } else if (params.src) {
 			var url = web.url.parse(params.src);
@@ -450,7 +450,7 @@
                                 updatedParams.dest, 
                                 err ? err.trim() : "", 
                                 out ? out.trim() : ""));
-                    os.exit(2);
+                    os.exit(3);
                 } else if (status == 1) {
                     if (mithras.verbose) {
                         log(sprintf("SCP dest '%s' error: %s\n%s", updatedParams.dest, err, out));
@@ -496,7 +496,7 @@
                             updatedParams.ensure,
 			    out,
                             err));
-		os.exit(1);
+		os.exit(3);
 	    }
 	}
 

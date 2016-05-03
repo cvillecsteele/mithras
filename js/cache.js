@@ -70,7 +70,7 @@
 	    var error = fs.mkdirAll(this.path, 0777);
 	    if (error) {
 		log(sprintf("Error creating cache dir '%s'", this.path));
-		os.exit(1);
+		os.exit(3);
 	    }
 
 	    this.metaPath = filepath.join(this.path, ".meta");
@@ -79,7 +79,7 @@
 		var result = fs.create(this.metaPath);
 		if (result[1]) {
 		    log(sprintf("Error creating cache: %s", result[1]));
-		    os.exit(1);
+		    os.exit(3);
 		}
 		fs.close(result[0]);
 	    }
@@ -88,7 +88,7 @@
 	    var error = result[1];
 	    if (error) {
 		log("Error reading cache metadata");
-		os.exit(1);
+		os.exit(3);
 	    }
 	    this.exMap = {};
 	    if (result[0]) {
@@ -140,7 +140,7 @@
 		}
 		log(sprintf("Error reading cached file: %s", 
 			    JSON.stringify(error)));
-		os.exit(1);
+		os.exit(3);
 	    }
 	    return JSON.parse(result[0]);
 	}
@@ -149,7 +149,7 @@
 	    error = fs.write(this.metaPath, JSON.stringify(this.exMap, null, 2), 0644);
 	    if (error) {
 		log(sprintf("Cache metadata write file error: %s", error));
-		os.exit(1);
+		os.exit(3);
 	    }
 	}
 
@@ -176,14 +176,14 @@
 	    var error = fs.mkdirAll(path, 0777)
 	    if (error) {
 		log("Cache create dir error: %s", error);
-		os.exit(1);
+		os.exit(3);
 	    }
 	    path = filepath.join(path, "value");
 	    var result = fs.create(path)
 	    var error = result[1];
 	    if (error) {
 		log(sprintf("Cache create file error: %s", error));
-		os.exit(1);
+		os.exit(3);
 	    }
 	    fs.close(result[0]);
 
@@ -191,7 +191,7 @@
 	    error = fs.write(path, JSON.stringify(value), 0644);
 	    if (error) {
 		log(sprintf("Cache write file error: %s", error));
-		os.exit(1);
+		os.exit(3);
 	    }
 
 	    // Write the expiration.

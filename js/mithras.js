@@ -25,6 +25,8 @@
 // The `mithras` object has the following properties:
 //
 // > * [ARGS](#args)
+// > * [HOMe](#home)
+// > * [CWD](#cwd)
 // > * [GOPATH](#gopath)
 // > * [MODULES](#modules)
 // > * [VERSION](#version)
@@ -170,6 +172,14 @@
 //
 // The current GOPATH when mithras is invoked (if set).
 // 
+// ### `HOME` <a name="home"></a>
+//
+// The value of $MITHRASHOME or -m if set on the command line.
+// 
+// ### `CWD` <a name="cwd"></a>
+//
+// The current working directory of Mithras.
+// 
 // ### `ARGS` <a name="args"></a>
 //
 // When `mithras run` is invoked at the command line, any additional
@@ -244,7 +254,7 @@
                         log0(sprintf("Resource '%s': module '%s' not handled.", 
                                      targetResource.name,
                                      targetResource.module));
-                        os.exit(1);
+                        os.exit(3);
                     }
                 }
             }
@@ -404,7 +414,7 @@
                 var u = objectPath.get(resources, "mithrasUname._target");
                 if (!u || !u[ip] || typeof(u[ip]) != "string") {
                     console.log(sprintf("No uname for '%s'", ip));
-                    os.exit(1);
+                    os.exit(3);
                 }
 
                 // Instance os
@@ -418,7 +428,7 @@
                     break;
                 default:
                     console.log(sprintf("Unknown os '%s'", u[ip]));
-                    os.exit(1);
+                    os.exit(3);
                 }
                 
                 // Instance architecture
@@ -429,7 +439,7 @@
                     break;
                 default:
                     console.log(sprintf("Unknown architecture '%s'", instance.Architecture));
-                    os.exit(1);
+                    os.exit(3);
                 }
                 
                 return [theOS, arch];

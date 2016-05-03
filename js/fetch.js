@@ -10,7 +10,7 @@ function unpack(dir, file, name) {
     if (results[3] != 0) {
 	log(results[1].trim());
 	log(results[3]);
-	os.exit(1);
+	os.exit(3);
     }
 }
 
@@ -32,7 +32,7 @@ function download(url, tempDir) {
     if (results[3] != 0) {
 	log(results[1].trim());
 	log(results[3]);
-	os.exit(1);
+	os.exit(3);
     }
     return dest;
 }
@@ -42,7 +42,7 @@ function getTags(package) {
 	return JSON.parse(results);
     } else {
 	log(sprintf("Error getting tags for package '%s'", package));
-	os.exit(1);
+	os.exit(3);
     }
 }
 function depTree(package, versionOrTag) {
@@ -52,7 +52,7 @@ function depTree(package, versionOrTag) {
 	info = JSON.parse(results);
     } else {
 	log(sprintf("Error getting info for package '%s'", package));
-	os.exit(1);
+	os.exit(3);
     }
 
     var tags = getTags(package);
@@ -69,7 +69,7 @@ function depTree(package, versionOrTag) {
     // Does it exist?    
     if (!info.versions[targetVersion]) {
 	log(sprintf("Invalid version '%s' for package '%s'", targetVersion, package));
-	os.exit(1);
+	os.exit(3);
     }
 
     var deps = info.versions[targetVersion].dependencies;
@@ -88,7 +88,7 @@ function run() {
     var source = mithras.ARGS[0];
     if (!source) {
 	log("No source repository specified.");
-	os.exit(1);
+	os.exit(3);
     }
 
     var re = new RegExp("([^@]+)(@?([^@]+))?$")

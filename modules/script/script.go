@@ -31,6 +31,8 @@ import (
 
 type ModuleVersion struct{ Version, Module string }
 
+var Home string
+
 func initModules(rt *otto.Otto) {
 	for idx, _ := range core.InitFuncs {
 		core.InitFuncs[idx](rt)
@@ -41,6 +43,7 @@ func RunCli(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto
 	jsfile := c.String("file")
 	jsdir := c.String("js")
 	home := c.GlobalString("mithras")
+	Home = home
 	verbose := c.GlobalBool("verbose")
 	args := []string(c.Args())
 	return RunJS(jsfile, jsdir, home, verbose, args, versions, version, nil)
@@ -148,11 +151,16 @@ func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 	}
 
 	// Pass along some info to JS-land
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
 	o.Object().Set("VERSION", version)
 	o.Object().Set("VERBOSE", verbose)
 	o.Object().Set("verbose", verbose)
 	o.Object().Set("GOPATH", os.Getenv("GOPATH"))
 	o.Object().Set("HOME", home)
+	o.Object().Set("CWD", cwd)
 	o.Object().Set("JSDIR", require.JsDir)
 
 	a, err := rt.Object(`([])`)

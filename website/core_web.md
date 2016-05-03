@@ -9,10 +9,11 @@
  This package exports several entry points into the JS environment,
  including:
 
- > * [user.run](#run)
- > * [user.stop](#stop)
- > * [user.get](#get)
- > * [user.handler](#handler)
+ > * [web.run](#run)
+ > * [web.stop](#stop)
+ > * [web.get](#get)
+ > * [web.handler](#handler)
+ > * [web.url.parse](#uparse)
 
  This API allows JS to fetch from the web and to create a web server.
 
@@ -56,6 +57,19 @@
  ```
 
  var html = web.get("http://www.cnn.com");
+ ```
+
+ ## WEB.URL.PARSE
+ <a name="uparse"></a>
+ `web.url.parse(url);`
+
+ Parse and url and return its component parts.
+
+ Example:
+
+ ```
+
+ var url = web.url.parse("http://www.cnn.com");
 
  ```
 

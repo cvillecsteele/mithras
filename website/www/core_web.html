@@ -3,10 +3,11 @@
  including:</p>
 <blockquote>
 <ul>
-<li><a href="#run">user.run</a></li>
-<li><a href="#stop">user.stop</a></li>
-<li><a href="#get">user.get</a></li>
-<li><a href="#handler">user.handler</a></li>
+<li><a href="#run">web.run</a></li>
+<li><a href="#stop">web.stop</a></li>
+<li><a href="#get">web.get</a></li>
+<li><a href="#handler">web.handler</a></li>
+<li><a href="#uparse">web.url.parse</a></li>
 </ul>
 </blockquote>
 <p> This API allows JS to fetch from the web and to create a web server.</p>
@@ -29,4 +30,10 @@
 <p> Example:</p>
 <pre><code>
  var html = web.get(&quot;http://www.cnn.com&quot;);
+</code></pre><h2>WEB.URL.PARSE</h2><p> <a name="uparse"></a>
+ <code>web.url.parse(url);</code></p>
+<p> Parse and url and return its component parts.</p>
+<p> Example:</p>
+<pre><code>
+ var url = web.url.parse(&quot;http://www.cnn.com&quot;);
 </code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

@@ -138,7 +138,7 @@
             } else if (status == 255) {
                 log(sprintf("Error communiating with remote system, package '%s': %s",
                             p.name, err.trim()));
-                os.exit(1);
+                os.exit(3);
             } else if (status == 1 && mithras.verbose) {
                 log(sprintf("Package '%s' not found", p.name));
             } else if (mithras.verbose) {
@@ -176,7 +176,7 @@
             } else if (status == 255) {
                 log(sprintf("Error communiating with remote system, package '%s': %s",
                             p.name, err.trim()));
-                os.exit(2);
+                os.exit(3);
             } else if (status == 1) {
                 if (mithras.verbose) {
                     log(sprintf("Package '%s' error: %s", p.name, err));
@@ -205,7 +205,7 @@
             // Sanity
             if (!params || !(typeof(params.name) === 'string')) {
                 console.log("Invalid packager params", JSON.stringify(params, null, 2));
-                os.exit(1);
+                os.exit(3);
             }
             
             // Loop over hosts

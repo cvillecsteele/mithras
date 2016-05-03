@@ -95,7 +95,7 @@
             } else if (status == 255) {
                 log(sprintf("Error communicating with remote system '%s', svc '%s': %s",
                             instance.PublicIpAddress, p.name, err.trim()));
-                os.exit(1);
+                os.exit(3);
             } else if (status == 1 && mithras.verbose) {
                 log(sprintf("Service '%s', ok: %t, status: %d %s %s", 
                             p.name, ok, status, out, err));
@@ -127,7 +127,7 @@
             } else if (status == 255) {
                 log(sprintf("SSH error communicating with remote system '%s', service '%s': %s %s",
                             inst.PublicIpAddress, p.name, err, out));
-                os.exit(2);
+                os.exit(3);
             } else if (status == 1) {
                 if (action === 'stop') {
                     if (out === sprintf("%s: unrecognized service", p.name)) {
@@ -160,7 +160,7 @@
             // Sanity
             if (!params || !params.name) {
                 console.log("Invalid service resource params")
-                os.exit(1);
+                os.exit(3);
             }
             
             // Loop over hosts

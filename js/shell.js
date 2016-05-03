@@ -87,7 +87,7 @@
 	    if (!p || !p.command) {
 		console.log(sprintf("Invalid shell resource params: %s", 
 				    JSON.stringify(p)));
-		os.exit(1);
+		os.exit(3);
 	    }
 	    
 	    // Loop over hosts
@@ -147,7 +147,7 @@
 				updatedParams.command, 
 				err.trim(), 
 				out.trim()));
-		    os.exit(2);
+		    os.exit(3);
 		} else if (status == 1) {
 		    if (mithras.verbose) {
 			log(sprintf("Shell '%s' error: %s\n%s", updatedParams.command, err, out));

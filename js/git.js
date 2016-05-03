@@ -131,7 +131,7 @@
 	    } else if (status == 255) {
 		log(sprintf("Error communicating with remote system '%s', repo '%s', dest '%s': %s",
 			    instance.PublicIpAddress, p.repo, p.dest, err.trim()));
-		os.exit(1);
+		os.exit(3);
 	    } else if (status == 1 && mithras.verbose) {
 		log(sprintf("Git '%s', dest '%s' not found. Status %d; out %s; err %s", p.repo, p.dest, status, out, err));
 	    } else if (mithras.verbose) {
@@ -170,7 +170,7 @@
 	    } else if (status == 255) {
 		log(sprintf("SSH error communicating with remote system '%s', repo '%s': %s %s",
 			    inst.PublicIpAddress, p.repo, err.trim(), out.trim()));
-		os.exit(2);
+		os.exit(3);
 	    } else if (status == 1) {
 		if (mithras.verbose) {
 		    log(sprintf("Git '%s' error: %s\n%s", p.repo, err, out));
@@ -240,7 +240,7 @@
 		    break;
 		case "latest":
 		    console.log("Git resource: ensure 'latest' not supported yet.")
-		    os.exit(1);
+		    os.exit(3);
 		    break;
 		}
 	    });

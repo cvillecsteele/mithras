@@ -85,7 +85,7 @@
 	    // Sanity
 	    if (!p) {
 		console.log("Invalid network resource");
-		os.exit(1);
+		os.exit(3);
 	    }
 	    
 	    // Loop over hosts
@@ -123,14 +123,14 @@
 			target[host.InstanceId] = ok;
 		    } else if (ensure === "absent") {
 			log("Error: network connection still alive.");
-			os.exit(1);
+			os.exit(3);
 		    }
 		} else {
 		    if (ensure === "present") {
 			log(sprintf("Network error remote system '%s', port %d",
 				    host.PublicIpAddress, 
 				    port));
-			os.exit(2);
+			os.exit(3);
 		    } else if (ensure === "absent") {
 			if (mithras.verbose) {
 			    log(sprintf("Success."));

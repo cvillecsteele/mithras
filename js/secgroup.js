@@ -152,7 +152,7 @@
             // Sanity
             if (!resource.params.secgroup) {
                 console.log("Invalid secgroup params")
-                os.exit(1);
+                os.exit(3);
             }
 
             var ensure = resource.params.ensure;

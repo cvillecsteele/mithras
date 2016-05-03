@@ -198,7 +198,7 @@
             
             if (!resource.params.group) {
                 console.log("Invalid autoscaling resource params")
-                os.exit(1);
+                os.exit(3);
             }
             var found = resource._target || {};
 	    var group = found.group;

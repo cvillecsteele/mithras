@@ -156,7 +156,7 @@
                         console.log(sprintf("Can't find zone for domain '%s'", 
                                             params.domain));
                     }
-                    os.exit(2);
+                    os.exit(3);
                 }
                 var zoneId = zone.Id;
                 aws.route53.rrs.delete(params.region, zoneId, params.resource);
@@ -178,7 +178,7 @@
                 if (!zone) {
                     log(sprintf("Can't find zone for domain '%s'", 
                                 params.domain));
-                    os.exit(2);
+                    os.exit(3);
                 }
                 var zoneId = zone.Id;
                 created = aws.route53.rrs.create(params.region, zoneId, params.resource);

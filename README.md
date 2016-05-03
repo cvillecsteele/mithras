@@ -82,7 +82,6 @@ To run a JS repl:
 TODO
 ###############################################################################
 
-* combine scp, file & copy
 * document ASG solution
 * parallelize with workers?
 * explainer videos
@@ -90,7 +89,7 @@ TODO
 * make sure no handlers are interacting with AWS outside the catalog (s3)
 * rework / robustify web core module
 
-* standardize exit codes
+* thow, not os.exit()??
 * signals?
 * nodjs-like 'process' object?
 * more s3 configuration support for buckets

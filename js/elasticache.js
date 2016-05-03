@@ -156,7 +156,7 @@
             // Sanity
             if (!p || !p.cache || !p.delete) {
                 console.log(sprintf("Invalid elasticache resource '%s'", resource.name));
-                os.exit(1);
+                os.exit(3);
             }
 
             switch(ensure) {

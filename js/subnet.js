@@ -135,7 +135,7 @@
             // Sanity
             if (!resource.params.subnet) {
                 console.log("Invalid subnet params")
-                os.exit(1);
+                os.exit(3);
             }
 
             var ensure = resource.params.ensure;
@@ -246,7 +246,7 @@
                     if (typeof(r.GatewayId) != 'string') {
                         console.log(JSON.stringify(resource, null, 2));
                         console.log(JSON.stringify(catalog.gateways, null, 2));
-                        os.exit(1);
+                        os.exit(3);
                     }
                     aws.subnets.routes.create(params.region, r);
                 }

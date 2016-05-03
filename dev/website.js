@@ -2,6 +2,10 @@ function run() {
 
     var sprintf = require("sprintf").sprintf;
 
+    function lowercaseFirstLetter(string) {
+	return string.charAt(0).toLowerCase() + string.slice(1);
+    }
+
     var publicRE = new RegExp("@public", 'm');
     var modRE = new RegExp("@module", 'm');
     var exRE = new RegExp("@example", 'm');
@@ -42,7 +46,10 @@ function run() {
 	_.each(l, function(file) {
 	    var results = filepath.split(file);
 	    var text = results[1].replace(/(.*).md/, '$1');
-	    var file = results[1].replace(/(.*).md/, 'objects/$1').toLowerCase();
+	    var file = results[1].replace(/(.*).md/, 
+					  function (match, p1, offset, string) {
+					      return "objects/" + p1
+					  });
 	    contents = contents + 
 		sprintf("        li: a(href='%s.html') %s\n", file, text);
 	});

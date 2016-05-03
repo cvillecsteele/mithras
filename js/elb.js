@@ -270,7 +270,7 @@
                     if (!elb) { 
                         console.log(sprintf("Can't find elb '%s' in catalog", 
                                             params.membership.LoadBalancerName));
-                        os.exit(1);
+                        os.exit(3);
                     }
                 } else if (ensure === "absent") {
                     if (!elb) {

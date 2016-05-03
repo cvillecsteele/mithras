@@ -559,6 +559,6 @@
 
 	"svg": "image/svg+xml"
     };
-    
+
     return handler;
 });

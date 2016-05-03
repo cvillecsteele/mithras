@@ -161,7 +161,7 @@
             
             if (!resource.params.instance) {
                 console.log("Invalid instance params")
-                os.exit(1);
+                os.exit(3);
             }
             var found = resource._target || [];
             var matchingCount = found.length;
