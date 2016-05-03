@@ -82,6 +82,7 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* throw instead of os.exit?
 * document ASG solution
 * parallelize with workers?
 * explainer videos
@@ -96,7 +97,6 @@ TODO
 * repl should have mithras env loaded
 * copy - localFile so we don't read it into memory??
 * test base config in nginx
-* ssh pipelines
 * versioned js modules
 * better nodejs package support
 
