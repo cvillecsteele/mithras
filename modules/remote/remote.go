@@ -133,7 +133,6 @@ import (
 	"github.com/robertkrimen/otto"
 
 	mcore "github.com/cvillecsteele/mithras/modules/core"
-	"github.com/cvillecsteele/mithras/modules/script"
 )
 
 // Wrapper runs programs and captures the results in this structure.
@@ -283,12 +282,20 @@ func CopyToRemote(ip string, user string, keypath string, src string, dest strin
 	return Exec("scp", args, nil, nil)
 }
 
+func ctlDir() string {
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Can't get working directory: %s", err)
+	}
+	return filepath.Join(cwd, "ssh", "ctl")
+}
+
 func ctlPath() string {
 	cwd, err := os.Getwd()
 	if err != nil {
 		log.Fatalf("Can't get working directory: %s", err)
 	}
-	ctlPath, err := filepath.Rel(cwd, script.Home+"/ssh/ctl/%r@%h:%p")
+	ctlPath, err := filepath.Rel(cwd, filepath.Join(ctlDir(), "%r@%h:%p"))
 	if err != nil {
 		log.Fatalf("Can't get relative path: %s", err)
 	}
@@ -296,6 +303,11 @@ func ctlPath() string {
 }
 
 func startMaster(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) {
+	err := os.MkdirAll(ctlDir(), 0777)
+	if err != nil {
+		log.Fatalf("Can't create ssh control master directory: %s", err)
+	}
+
 	args := []string{
 		"ssh",
 		"-C",
@@ -316,16 +328,18 @@ func startMaster(ip string, user string, keypath string, input *string, cmd stri
 
 	master := make(chan struct{})
 	go func(c chan struct{}) {
+		var out bytes.Buffer
+		var err bytes.Buffer
 		log.Println("about to start master")
-		cmd, err := Start("ssh-agent", args, nil, env)
-		if err != nil {
-			log.Fatalf("SSH control master error: %s", err)
+		cmd, _, _, e := Start("ssh-agent", args, nil, env, &out, &err)
+		if e != nil {
+			log.Fatalf("SSH control master start error: %s %s %s", e, out.String(), err.String())
 		}
 		c <- struct{}{}
 		go func() {
-			err := cmd.Wait()
-			if err != nil {
-				log.Fatalf("SSH control master error: %s", err)
+			e := cmd.Wait()
+			if e != nil {
+				log.Fatalf("SSH control master wait error: %s %s %s", e, out.String(), err.String())
 			}
 		}()
 	}(master)
@@ -432,13 +446,10 @@ func Exec(cmd string, args []string, input *string, env *map[string]string) (*st
 	return &resultOut, &resultErr, ok, status
 }
 
-func Start(cmd string, args []string, input *string, env *map[string]string) (*exec.Cmd, error) {
+func Start(cmd string, args []string, input *string, env *map[string]string, out *bytes.Buffer, err *bytes.Buffer) (*exec.Cmd, *bytes.Buffer, *bytes.Buffer, error) {
 	c := exec.Command(cmd, args...)
-
-	var out bytes.Buffer
-	var err bytes.Buffer
-	c.Stdout = &out
-	c.Stderr = &err
+	c.Stdout = out
+	c.Stderr = err
 	if input != nil {
 		c.Stdin = bufio.NewReader(bytes.NewBufferString(*input))
 	}
@@ -453,7 +464,7 @@ func Start(cmd string, args []string, input *string, env *map[string]string) (*e
 	}
 
 	e := c.Start()
-	return c, e
+	return c, out, err, e
 }
 
 // We hook the Go language facility to register an initilization
