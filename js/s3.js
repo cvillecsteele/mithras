@@ -303,9 +303,10 @@
 	    
             if (updatedParams.skip == true) {
                 log("Skipped.");
-            }            
-	    handler.handleBucket(catalog, updated);
-            handler.handleObject(catalog, updated);
+            } else {            
+		handler.handleBucket(catalog, updated);
+		handler.handleObject(catalog, updated);
+	    }
             return [null, true];
         }
     };
