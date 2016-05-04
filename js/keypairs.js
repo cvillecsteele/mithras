@@ -156,7 +156,14 @@
                 if (mithras.verbose) {
                     log(sprintf("Writing key '%s' to '%s'", params.key.KeyName, params.savePath));
                 }
-                fs.write(params.savePath, raw, 0400);
+                var err = fs.write(params.savePath, raw, 0400);
+		if (err) {
+                    log(sprintf("Error writing key '%s' to '%s': %s", 
+				params.key.KeyName, 
+				params.savePath,
+				err));
+		    os.exit(3);
+		}
 
                 var key = aws.keypairs.describe(params.region, params.key.KeyName);
                 do {
