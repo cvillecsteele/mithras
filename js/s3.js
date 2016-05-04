@@ -44,6 +44,35 @@
 //             ACL:    "public-read"
 //             LocationConstraint: defaultRegion
 //         }
+//         acls: [ 								 
+// 	       {								 
+// 	   	Bucket: bucketName
+// 	   	ACL:    "BucketCannedACL"
+// 	   	AccessControlPolicy: {
+// 	               Grants: [
+// 	   		{
+// 	                       Grantee: {
+// 	   			Type:         "Type"
+// 	   			DisplayName:  "DisplayName"
+// 	   			EmailAddress: "EmailAddress"
+// 	   			ID:           "ID"			 
+// 	   			URI:          "URI"		 
+// 	                       }						 
+// 	                       Permission: "Permission"
+// 	   		}							 
+// 	               ]
+// 	               Owner: {					 
+// 	   		DisplayName: "DisplayName"
+// 	   		ID:          "ID"
+// 	               }
+// 	   	}
+// 	   	GrantFullControl: "GrantFullControl"
+// 	   	GrantRead:        "GrantRead"
+// 	   	GrantReadACP:     "GrantReadACP"
+// 	   	GrantWrite:       "GrantWrite"
+// 	   	GrantWriteACP:    "GrantWriteACP"
+// 	       }								 
+// 	   ]                                                                     
 //         website: {
 //             Bucket: bucketName
 //             WebsiteConfiguration: {
@@ -147,12 +176,12 @@
                 return;
             }
             var buckets = aws.s3.buckets.describe(resource.params.region, "*");
-            var bucket = _.findWhere(buckets, 
+            var bucket = _.findWhere(buckets,
                                      {"Name": resource.params.bucket.Bucket});
             if (bucket) {
                 if (resource.params.ensure === 'absent') {
                     if (mithras.verbose) {
-                        log(sprintf("Deleting bucket '%s'", 
+                        log(sprintf("Deleting bucket '%s'",
                                     resource.params.bucket.Bucket));
                     }
                     aws.s3.buckets.delete(resource.params.region,
@@ -161,18 +190,27 @@
             } else {
                 if (resource.params.ensure === 'present') {
                     if (mithras.verbose) {
-                        log(sprintf("Creating bucket '%s'", 
+                        log(sprintf("Creating bucket '%s'",
                                     resource.params.bucket.Bucket));
                     }
                     var res = aws.s3.buckets.create(resource.params.region,
 						    resource.params.bucket);
                     if (resource.params.website) {
                         if (mithras.verbose) {
-                            log(sprintf("Adding website config to bucket '%s'", 
+                            log(sprintf("Adding website config to bucket '%s'",
                                         resource.params.bucket.Bucket));
                         }
                         aws.s3.buckets.website(resource.params.region,
                                                resource.params.website);
+                    }
+                    if (resource.params.acls) {
+			_.each(resource.params.acls, function(acl) {
+                            if (mithras.verbose) {
+				log(sprintf("Adding ACL to bucket '%s'",
+                                            resource.params.bucket.Bucket));
+                            }
+                            aws.s3.buckets.putACL(resource.params.region, acl);
+			});
                     }
                 }
             }
@@ -180,16 +218,16 @@
         runObject: function (params) {
             var sprintf = require("sprintf.js").sprintf;
         
-            var objects = aws.s3.objects.describe(params.region, 
+            var objects = aws.s3.objects.describe(params.region,
                                                   params.object.Bucket,
                                                   params.object.Key);
 
-            var obj = _.findWhere(objects, 
+            var obj = _.findWhere(objects,
                                   {"Key": params.object.Key});
             if (obj) {
                 if (params.ensure === 'absent') {
                     if (mithras.verbose) {
-                        log(sprintf("Deleting object '%s'", 
+                        log(sprintf("Deleting object '%s'",
                                     params.object.Key));
                     }
                     aws.s3.objects.delete(params.region,
@@ -202,7 +240,7 @@
                     var m2 = moment(params.stat.ModTime);
                     if (m2.isAfter(m1)) {
                         if (mithras.verbose) {
-                            log(sprintf("Updating object '%s'", 
+                            log(sprintf("Updating object '%s'",
                                         params.object.Key));
                         }
                         var res = aws.s3.objects.create(params.region,
@@ -217,7 +255,7 @@
                 if ((params.ensure === 'present') ||
                     (params.ensure === 'latest')) {
                     if (mithras.verbose) {
-                        log(sprintf("Creating object '%s'", 
+                        log(sprintf("Creating object '%s'",
                                     params.object.Key));
                     }
                     var res = aws.s3.objects.create(params.region,
@@ -231,21 +269,21 @@
             }
             var params = resource.params;
             if (Array.isArray(params.hosts)) {
-                var js = sprintf("var run = function() {\n (%s)(%s); };\n", 
+                var js = sprintf("var run = function() {\n (%s)(%s); };\n",
                                  handler.runObject.toString(),
                                  JSON.stringify(_.omit(params, 'hosts')));
                 for (var i in params.hosts) {
                     var instance = params.hosts[i];
-                    var result = mithras.remote.mithras(instance, 
-                                                        mithras.sshUserForInstance(resource, instance), 
-                                                        mithras.sshKeyPathForInstance(resource, instance), 
+                    var result = mithras.remote.mithras(instance,
+                                                        mithras.sshUserForInstance(resource, instance),
+                                                        mithras.sshKeyPathForInstance(resource, instance),
                                                         js,
                                                         params.become,
                                                         params.becomeUser,
                                                         params.becomeMethod);
                     if (result[3] == 0) {
-                        log(sprintf("S3 object '%s' %s", 
-                                    params.object.Key, 
+                        log(sprintf("S3 object '%s' %s",
+                                    params.object.Key,
                                     params.ensure));
                     }
                 }
@@ -257,8 +295,8 @@
             if (resource.module != handler.moduleName) {
                 return [null, false];
             }
-            var updated = mithras.updateResource(resource, 
-                                                 catalog, 
+            var updated = mithras.updateResource(resource,
+                                                 catalog,
                                                  resources,
                                                  resource.name);
             var updatedParams = updated.params;

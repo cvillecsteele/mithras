@@ -32,6 +32,7 @@ package s3
 // > * [aws.s3.buckets.describe](#describe)
 // > * [aws.s3.buckets.create](#create)
 // > * [aws.s3.buckets.website](#website)
+// > * [aws.s3.buckets.putACL](#putACL)
 //
 // > * [aws.s3.objects.delete](#Odelete)
 // > * [aws.s3.objects.create](#Ocreate)
@@ -97,6 +98,72 @@ package s3
 // ```
 //
 // aws.s3.buckets.get("us-east-1", "my-bucket", "index.html");
+//
+// ```
+//
+// ## AWS.S3.BUCKETS.WEBSITE
+// <a name="website"></a>
+// `aws.s3.buckets.website(region, config);
+//
+// Set up a bucket to serve a static website.
+//
+// Example:
+//
+// ```
+//
+// aws.s3.buckets.website("us-east-1",
+//         website: {
+//             Bucket: bucketName
+//             WebsiteConfiguration: {
+//                 ErrorDocument: {
+//                     Key: "error.html"
+//                 }
+//                 IndexDocument: {
+//                     Suffix: "index.html"
+//                 }
+//              }
+//          });
+//
+// ```
+//
+// ## AWS.S3.BUCKETS.PUTACL
+// <a name="putACL"></a>
+// `aws.s3.buckets.putACL(region, config);
+//
+// Set up bucket access control config.
+//
+// Example:
+//
+// ```
+//
+// aws.s3.buckets.putACL("us-east-1",
+// {
+// 	   	Bucket: bucketName
+// 	   	ACL:    "BucketCannedACL"
+// 	   	AccessControlPolicy: {
+// 	               Grants: [
+// 	   		{
+// 	                       Grantee: {
+// 	   			Type:         "Type"
+// 	   			DisplayName:  "DisplayName"
+// 	   			EmailAddress: "EmailAddress"
+// 	   			ID:           "ID"
+// 	   			URI:          "URI"
+// 	                       }
+// 	                       Permission: "Permission"
+// 	   		}
+// 	               ]
+// 	               Owner: {
+// 	   		DisplayName: "DisplayName"
+// 	   		ID:          "ID"
+// 	               }
+// 	   	}
+// 	   	GrantFullControl: "GrantFullControl"
+// 	   	GrantRead:        "GrantRead"
+// 	   	GrantReadACP:     "GrantReadACP"
+// 	   	GrantWrite:       "GrantWrite"
+// 	   	GrantWriteACP:    "GrantWriteACP"
+// 	});
 //
 // ```
 //
@@ -242,6 +309,16 @@ func describeBucket(region string, bucket string) []*s3.Bucket {
 	return resp.Buckets
 }
 
+func putACL(region string, params s3.PutBucketAclInput) {
+	svc := s3.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	_, err := svc.PutBucketAcl(&params)
+	if err != nil {
+		log.Fatalf("Error putting bucket acl: %s", err)
+	}
+}
+
 func createBucket(region string, params s3.CreateBucketInput) string {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
@@ -334,6 +411,22 @@ func init() {
 			}
 			region := call.Argument(0).String()
 			return mcore.Sanitize(rt, createBucket(region, input))
+		})
+		o2.Set("putACL", func(call otto.FunctionCall) otto.Value {
+			// Translate target into a struct
+			var input s3.PutBucketAclInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for S3 putACL input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall s3 putACL json: %s", err)
+			}
+			region := call.Argument(0).String()
+			putACL(region, input)
+			return otto.Value{}
 		})
 		o2.Set("get", func(call otto.FunctionCall) otto.Value {
 			region := call.Argument(0).String()
