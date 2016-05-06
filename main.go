@@ -35,6 +35,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/vpc"
 
 	"github.com/cvillecsteele/mithras/modules/autoscaling"
+	"github.com/cvillecsteele/mithras/modules/beanstalk"
 	"github.com/cvillecsteele/mithras/modules/exec"
 	"github.com/cvillecsteele/mithras/modules/filepath"
 	"github.com/cvillecsteele/mithras/modules/fs"
@@ -57,6 +58,7 @@ var Version = "0.1.0"
 
 func main() {
 	vers := []script.ModuleVersion{
+		script.ModuleVersion{Version: beanstalk.Version, Module: beanstalk.ModuleName},
 		script.ModuleVersion{Version: autoscaling.Version, Module: autoscaling.ModuleName},
 		script.ModuleVersion{Version: sqs.Version, Module: sqs.ModuleName},
 		script.ModuleVersion{Version: sns.Version, Module: sns.ModuleName},

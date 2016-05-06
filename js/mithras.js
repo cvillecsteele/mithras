@@ -866,6 +866,10 @@
             }
 
 	    var scanners = {
+		beanstalkApps: aws.beanstalk.apps.scan,
+		beanstalkVersions: aws.beanstalk.versions.scan,
+		beanstalkEnvironments: aws.beanstalk.environments.scan,
+		beanstalkConfigs: aws.beanstalk.configs.scan,
 		autoscalingGroups: aws.autoscaling.groups.scan,
 		autoscalingLaunchConfigs: aws.autoscaling.launchConfigs.scan,
 		autoscalingHooks: aws.autoscaling.hooks.scan,

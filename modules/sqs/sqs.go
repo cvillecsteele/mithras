@@ -261,7 +261,6 @@ func describeQueue(region string, name string) *string {
 	if err != nil {
 		if awsErr, ok := err.(awserr.Error); ok {
 			if "400" == awsErr.Code() {
-				log.Println(awsErr.Error())
 				return nil
 			}
 		}
