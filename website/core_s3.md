@@ -10,7 +10,6 @@
  including:
 
  > * [aws.s3.buckets.delete](#delete)
- > * [aws.s3.buckets.get](#get)
  > * [aws.s3.buckets.describe](#describe)
  > * [aws.s3.buckets.create](#create)
  > * [aws.s3.buckets.website](#website)
@@ -19,6 +18,9 @@
  > * [aws.s3.objects.delete](#Odelete)
  > * [aws.s3.objects.create](#Ocreate)
  > * [aws.s3.objects.describe](#Odescribe)
+ > * [aws.s3.objects.get](#Oget)
+ > * [aws.s3.objects.read](#Oread)
+ > * [aws.s3.objects.writeInto](#OwriteInto)
 
  This API allows resource handlers to manipulate S3 buckets and objects.
 
@@ -66,20 +68,6 @@
  ```
 
  aws.s3.buckets.delete("us-east-1", "my-bucket");
-
- ```
-
- ## AWS.S3.BUCKETS.GET
- <a name="get"></a>
- `aws.s3.buckets.get(region, bucket, key);`
-
- Get an object in a bucket.
-
- Example:
-
- ```
-
- aws.s3.buckets.get("us-east-1", "my-bucket", "index.html");
 
  ```
 
@@ -195,6 +183,48 @@
  ```
 
  aws.s3.objects.create("us-east-1", "my-bucket", "index.html");
+
+ ```
+
+ ## AWS.S3.OBJECTS.GET
+ <a name="Oget"></a>
+ `aws.s3.objects.get(region, bucket, key);`
+
+ Get an object in a bucket.
+
+ Example:
+
+ ```
+
+ aws.s3.objects.get("us-east-1", "my-bucket", "index.html");
+
+ ```
+
+ ## AWS.S3.OBJECTS.READ
+ <a name="Oread"></a>
+ `aws.s3.objects.read(region, bucket, key);`
+
+ Get object content.
+
+ Example:
+
+ ```
+
+ var bytes = aws.s3.objects.read("us-east-1", "my-bucket", "index.html");
+
+ ```
+
+ ## AWS.S3.OBJECTS.WRITEINTO
+ <a name="OwriteInto"></a>
+ `aws.s3.objects.writeInto(region, bucket, key, path, mode);`
+
+ Get object content and write it into a file at `path`, with permissions `mode`.
+
+ Example:
+
+ ```
+
+ aws.s3.objects.writeInto("us-east-1", "my-bucket", "index.html", "/tmp/foo", 0644);
 
  ```
 

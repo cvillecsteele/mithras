@@ -167,7 +167,7 @@
         dependsOn: ["nginxPkg"]
         params: {
             dest: filepath.join(baseDir, "nginx.conf")
-            overwrite: true
+            force: true
             content: fs.read(packageFile("nginx.conf"))[0]
             mode: 0644
         }

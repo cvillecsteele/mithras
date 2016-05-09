@@ -4,7 +4,6 @@
 <blockquote>
 <ul>
 <li><a href="#delete">aws.s3.buckets.delete</a></li>
-<li><a href="#get">aws.s3.buckets.get</a></li>
 <li><a href="#describe">aws.s3.buckets.describe</a></li>
 <li><a href="#create">aws.s3.buckets.create</a></li>
 <li><a href="#website">aws.s3.buckets.website</a></li>
@@ -14,6 +13,9 @@
 </li>
 <li><a href="#Ocreate">aws.s3.objects.create</a></li>
 <li><a href="#Odescribe">aws.s3.objects.describe</a></li>
+<li><a href="#Oget">aws.s3.objects.get</a></li>
+<li><a href="#Oread">aws.s3.objects.read</a></li>
+<li><a href="#OwriteInto">aws.s3.objects.writeInto</a></li>
 </ul>
 </blockquote>
 <p> This API allows resource handlers to manipulate S3 buckets and objects.</p>
@@ -40,12 +42,6 @@
 <p> Example:</p>
 <pre><code>
  aws.s3.buckets.delete(&quot;us-east-1&quot;, &quot;my-bucket&quot;);
-</code></pre><h2>AWS.S3.BUCKETS.GET</h2><p> <a name="get"></a>
- <code>aws.s3.buckets.get(region, bucket, key);</code></p>
-<p> Get an object in a bucket.</p>
-<p> Example:</p>
-<pre><code>
- aws.s3.buckets.get(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;);
 </code></pre><h2>AWS.S3.BUCKETS.WEBSITE</h2><p> <a name="website"></a>
  `aws.s3.buckets.website(region, config);</p>
 <p> Set up a bucket to serve a static website.</p>
@@ -121,4 +117,22 @@
 <p> Example:</p>
 <pre><code>
  aws.s3.objects.create(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;);
+</code></pre><h2>AWS.S3.OBJECTS.GET</h2><p> <a name="Oget"></a>
+ <code>aws.s3.objects.get(region, bucket, key);</code></p>
+<p> Get an object in a bucket.</p>
+<p> Example:</p>
+<pre><code>
+ aws.s3.objects.get(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;);
+</code></pre><h2>AWS.S3.OBJECTS.READ</h2><p> <a name="Oread"></a>
+ <code>aws.s3.objects.read(region, bucket, key);</code></p>
+<p> Get object content.</p>
+<p> Example:</p>
+<pre><code>
+ var bytes = aws.s3.objects.read(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;);
+</code></pre><h2>AWS.S3.OBJECTS.WRITEINTO</h2><p> <a name="OwriteInto"></a>
+ <code>aws.s3.objects.writeInto(region, bucket, key, path, mode);</code></p>
+<p> Get object content and write it into a file at <code>path</code>, with permissions <code>mode</code>.</p>
+<p> Example:</p>
+<pre><code>
+ aws.s3.objects.writeInto(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;, &quot;/tmp/foo&quot;, 0644);
 </code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

@@ -28,7 +28,6 @@ package s3
 // including:
 //
 // > * [aws.s3.buckets.delete](#delete)
-// > * [aws.s3.buckets.get](#get)
 // > * [aws.s3.buckets.describe](#describe)
 // > * [aws.s3.buckets.create](#create)
 // > * [aws.s3.buckets.website](#website)
@@ -37,6 +36,9 @@ package s3
 // > * [aws.s3.objects.delete](#Odelete)
 // > * [aws.s3.objects.create](#Ocreate)
 // > * [aws.s3.objects.describe](#Odescribe)
+// > * [aws.s3.objects.get](#Oget)
+// > * [aws.s3.objects.read](#Oread)
+// > * [aws.s3.objects.writeInto](#OwriteInto)
 //
 // This API allows resource handlers to manipulate S3 buckets and objects.
 //
@@ -84,20 +86,6 @@ package s3
 // ```
 //
 // aws.s3.buckets.delete("us-east-1", "my-bucket");
-//
-// ```
-//
-// ## AWS.S3.BUCKETS.GET
-// <a name="get"></a>
-// `aws.s3.buckets.get(region, bucket, key);`
-//
-// Get an object in a bucket.
-//
-// Example:
-//
-// ```
-//
-// aws.s3.buckets.get("us-east-1", "my-bucket", "index.html");
 //
 // ```
 //
@@ -216,10 +204,56 @@ package s3
 //
 // ```
 //
+// ## AWS.S3.OBJECTS.GET
+// <a name="Oget"></a>
+// `aws.s3.objects.get(region, bucket, key);`
+//
+// Get an object in a bucket.
+//
+// Example:
+//
+// ```
+//
+// aws.s3.objects.get("us-east-1", "my-bucket", "index.html");
+//
+// ```
+//
+// ## AWS.S3.OBJECTS.READ
+// <a name="Oread"></a>
+// `aws.s3.objects.read(region, bucket, key);`
+//
+// Get object content.
+//
+// Example:
+//
+// ```
+//
+// var bytes = aws.s3.objects.read("us-east-1", "my-bucket", "index.html");
+//
+// ```
+//
+// ## AWS.S3.OBJECTS.WRITEINTO
+// <a name="OwriteInto"></a>
+// `aws.s3.objects.writeInto(region, bucket, key, path, mode);`
+//
+// Get object content and write it into a file at `path`, with permissions `mode`.
+//
+// Example:
+//
+// ```
+//
+// aws.s3.objects.writeInto("us-east-1", "my-bucket", "index.html", "/tmp/foo", 0644);
+//
+// ```
+//
+
 import (
 	"bytes"
 	"encoding/json"
 	log "github.com/Sirupsen/logrus"
+	"io"
+	"io/ioutil"
+	"os"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/awserr"
@@ -253,6 +287,38 @@ func getObject(region string, bucket string, key string) s3.GetObjectOutput {
 	}
 
 	return *resp
+}
+
+func readObject(region string, bucket string, key string) []byte {
+	svc := s3.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	params := &s3.GetObjectInput{
+		Bucket: aws.String(bucket),
+		Key:    aws.String(key),
+	}
+	resp, err := svc.GetObject(params)
+
+	if err != nil {
+		if awsErr, ok := err.(awserr.Error); ok {
+			if "NoSuchBucket" == awsErr.Code() {
+				return []byte{}
+			}
+		}
+		log.Fatalf("Error getting object: %s", err)
+	}
+
+	buf := make([]byte, *resp.ContentLength)
+	if _, err := io.ReadFull(resp.Body, buf); err != nil {
+		log.Fatalf("Error reading object: %s", err)
+	}
+
+	return buf
+}
+
+func writeInto(region, bucket, key, path string, perm uint64) error {
+	buf := readObject(region, bucket, key)
+	return ioutil.WriteFile(path, buf, os.FileMode(perm))
 }
 
 func describeObject(region string, bucket string, prefix string) []*s3.Object {
@@ -428,12 +494,6 @@ func init() {
 			putACL(region, input)
 			return otto.Value{}
 		})
-		o2.Set("get", func(call otto.FunctionCall) otto.Value {
-			region := call.Argument(0).String()
-			bucket := call.Argument(1).String()
-			key := call.Argument(2).String()
-			return mcore.Sanitize(rt, getObject(region, bucket, key))
-		})
 		o2.Set("describe", describeBucket)
 		o2.Set("website", func(call otto.FunctionCall) otto.Value {
 			// Translate target into a struct
@@ -481,5 +541,20 @@ func init() {
 			return mcore.Sanitize(rt, createObject(region, input))
 		})
 		o3.Set("describe", describeObject)
+		o3.Set("get", func(call otto.FunctionCall) otto.Value {
+			region := call.Argument(0).String()
+			bucket := call.Argument(1).String()
+			key := call.Argument(2).String()
+			return mcore.Sanitize(rt, getObject(region, bucket, key))
+		})
+		o3.Set("read", func(call otto.FunctionCall) otto.Value {
+			region := call.Argument(0).String()
+			bucket := call.Argument(1).String()
+			key := call.Argument(2).String()
+			return mcore.Sanitize(rt, readObject(region, bucket, key))
+		})
+		o3.Set("writeInto", func(region, bucket, key, path string, perm uint64) otto.Value {
+			return mcore.Sanitize(rt, writeInto(region, bucket, key, path, perm))
+		})
 	})
 }

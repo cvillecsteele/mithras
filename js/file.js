@@ -138,6 +138,13 @@
 // If ensure=`"file"`, the value of this property (presumably a
 // string) will be written to `dest`.
 //
+// ### `force`
+//
+// * Required: false
+// * Allowed Values: boolean
+//
+// If `true`, any `file` will be overwritten, even if it already exists.
+//
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
 	module.exports = factory();
@@ -242,6 +249,9 @@
 	    // Target
 	    var dest = params.dest;
 
+            // Overwrite
+            var force = params.force;
+
 	    var stat = fs.stat(dest);
 	    var uid;
 	    var gid;
@@ -301,7 +311,7 @@
 		break;
 	    case "file":
 	    case "touch":
-		if (!present) {
+		if (!present || force) {
                     if (params.content) {
                         error = fs.write(params.dest, params.content, params.mode);
                         if (error) {
@@ -314,6 +324,11 @@
 			switch (scheme) {
 			case "scp":
 			    break;
+                        case "s3":
+                            var bucket = url.host;
+                            var path = url.path;
+                            aws.s3.objects.writeInto(params.region, bucket, path, params.dest, params.mode);
+                            break;
 			case "http":
 			case "https":
 			    web.get(params.src, params.dest, params.mode);
@@ -423,6 +438,10 @@
 
             if (updatedParams.skip == true) {
                 log("Skipped.");
+            } else if ((updatedParams.ensure != 'absent') &&
+                       (updatedParams.ensure != 'present')) {
+                console.log(sprintf("Invalid 'file' param property ensure: %s", updatedParams.ensure));
+                os.exit(3);
             } else if ((updatedParams.ensure === 'absent')  &&
                        (pre[host.PublicIpAddress] != "found")) {
                 log("Ensure: absent; skipping.")

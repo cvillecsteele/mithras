@@ -1,0 +1,572 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h2>Object Format: Beanstalk Configuration</h2><pre><code>{
+  &quot;ApplicationName&quot;: &quot;test&quot;,
+  &quot;DateCreated&quot;: &quot;2016-05-09T04:17:47Z&quot;,
+  &quot;DateUpdated&quot;: &quot;2016-05-09T04:17:47Z&quot;,
+  &quot;DeploymentStatus&quot;: &quot;deployed&quot;,
+  &quot;Description&quot;: &quot;test&quot;,
+  &quot;EnvironmentName&quot;: &quot;test&quot;,
+  &quot;OptionSettings&quot;: [
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:asg&quot;,
+      &quot;OptionName&quot;: &quot;Availability Zones&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;Any&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:asg&quot;,
+      &quot;OptionName&quot;: &quot;Cooldown&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;360&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:asg&quot;,
+      &quot;OptionName&quot;: &quot;Custom Availability Zones&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:asg&quot;,
+      &quot;OptionName&quot;: &quot;MaxSize&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;4&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:asg&quot;,
+      &quot;OptionName&quot;: &quot;MinSize&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;1&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;BlockDeviceMappings&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;EC2KeyName&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;IamInstanceProfile&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;ImageId&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: &quot;ami-7bbbb011&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;InstanceType&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;t1.micro&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;MonitoringInterval&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: &quot;5 minute&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;RootVolumeIOPS&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;RootVolumeSize&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;RootVolumeType&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;SSHSourceRestriction&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;tcp,22,22,0.0.0.0/0&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:launchconfiguration&quot;,
+      &quot;OptionName&quot;: &quot;SecurityGroups&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: &quot;awseb-e-9zv3vythg2-stack-AWSEBSecurityGroup-UT80P94G03C2&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;BreachDuration&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;5&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;EvaluationPeriods&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;1&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;LowerBreachScaleIncrement&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingScaleDownPolicy&quot;,
+      &quot;Value&quot;: &quot;-1&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;LowerThreshold&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;2000000&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;MeasureName&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;NetworkOut&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;Period&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;5&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;Statistic&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;Average&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;Unit&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmLow&quot;,
+      &quot;Value&quot;: &quot;Bytes&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;UpperBreachScaleIncrement&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingScaleUpPolicy&quot;,
+      &quot;Value&quot;: &quot;1&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:trigger&quot;,
+      &quot;OptionName&quot;: &quot;UpperThreshold&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBCloudwatchAlarmHigh&quot;,
+      &quot;Value&quot;: &quot;6000000&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;MaxBatchSize&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;MinInstancesInService&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;PauseTime&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;RollingUpdateEnabled&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;RollingUpdateType&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;Time&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:autoscaling:updatepolicy:rollingupdate&quot;,
+      &quot;OptionName&quot;: &quot;Timeout&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: &quot;PT30M&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:cloudformation:template:parameter&quot;,
+      &quot;OptionName&quot;: &quot;AppSource&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;https://elasticbeanstalk-samples-us-east-1.s3.amazonaws.com/elasticbeanstalk-golang-sampleapp.zip&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:cloudformation:template:parameter&quot;,
+      &quot;OptionName&quot;: &quot;EnvironmentVariables&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;PATH=/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/go/bin:/var/app/current,APP_STAGING_DIR=/var/app/staging,APP_DEPLOY_DIR=/var/app/current,GOPATH=/var/app/current&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:cloudformation:template:parameter&quot;,
+      &quot;OptionName&quot;: &quot;HooksPkgUrl&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;https://s3.amazonaws.com/elasticbeanstalk-env-resources-us-east-1/stalks/eb_golang_1.0.19.1/lib/hooks.tar.gz&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:cloudformation:template:parameter&quot;,
+      &quot;OptionName&quot;: &quot;InstancePort&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;80&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:cloudformation:template:parameter&quot;,
+      &quot;OptionName&quot;: &quot;StaticFiles&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:ec2:vpc&quot;,
+      &quot;OptionName&quot;: &quot;AssociatePublicIpAddress&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingLaunchConfiguration&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:ec2:vpc&quot;,
+      &quot;OptionName&quot;: &quot;ELBScheme&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;public&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:ec2:vpc&quot;,
+      &quot;OptionName&quot;: &quot;ELBSubnets&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:ec2:vpc&quot;,
+      &quot;OptionName&quot;: &quot;Subnets&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBAutoScalingGroup&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:ec2:vpc&quot;,
+      &quot;OptionName&quot;: &quot;VPCId&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBSecurityGroup&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:application&quot;,
+      &quot;OptionName&quot;: &quot;Application Healthcheck URL&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:application:environment&quot;,
+      &quot;OptionName&quot;: &quot;APP_DEPLOY_DIR&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;/var/app/current&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:application:environment&quot;,
+      &quot;OptionName&quot;: &quot;APP_STAGING_DIR&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;/var/app/staging&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:application:environment&quot;,
+      &quot;OptionName&quot;: &quot;GOPATH&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;/var/app/current&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:application:environment&quot;,
+      &quot;OptionName&quot;: &quot;PATH&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;/bin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/go/bin:/var/app/current&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:command&quot;,
+      &quot;OptionName&quot;: &quot;BatchSize&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;100&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:command&quot;,
+      &quot;OptionName&quot;: &quot;BatchSizeType&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;Percentage&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:command&quot;,
+      &quot;OptionName&quot;: &quot;IgnoreHealthCheck&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:command&quot;,
+      &quot;OptionName&quot;: &quot;Timeout&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;600&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:control&quot;,
+      &quot;OptionName&quot;: &quot;DefaultSSHPort&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;22&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:control&quot;,
+      &quot;OptionName&quot;: &quot;LaunchTimeout&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;0&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:control&quot;,
+      &quot;OptionName&quot;: &quot;LaunchType&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;Migration&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:control&quot;,
+      &quot;OptionName&quot;: &quot;RollbackLaunchOnFailure&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:environment&quot;,
+      &quot;OptionName&quot;: &quot;EnvironmentType&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;LoadBalanced&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:environment&quot;,
+      &quot;OptionName&quot;: &quot;ExternalExtensionsS3Bucket&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:environment&quot;,
+      &quot;OptionName&quot;: &quot;ExternalExtensionsS3Key&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:environment&quot;,
+      &quot;OptionName&quot;: &quot;ServiceRole&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:healthreporting:system&quot;,
+      &quot;OptionName&quot;: &quot;ConfigDocument&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;{\&quot;Version\&quot;:1,\&quot;CloudWatchMetrics\&quot;:{\&quot;Instance\&quot;:{\&quot;CPUIrq\&quot;:null,\&quot;LoadAverage5min\&quot;:null,\&quot;ApplicationRequests5xx\&quot;:null,\&quot;ApplicationRequests4xx\&quot;:null,\&quot;CPUUser\&quot;:null,\&quot;LoadAverage1min\&quot;:null,\&quot;ApplicationLatencyP50\&quot;:null,\&quot;CPUIdle\&quot;:null,\&quot;InstanceHealth\&quot;:null,\&quot;ApplicationLatencyP95\&quot;:null,\&quot;ApplicationLatencyP85\&quot;:null,\&quot;RootFilesystemUtil\&quot;:null,\&quot;ApplicationLatencyP90\&quot;:null,\&quot;CPUSystem\&quot;:null,\&quot;ApplicationLatencyP75\&quot;:null,\&quot;CPUSoftirq\&quot;:null,\&quot;ApplicationLatencyP10\&quot;:null,\&quot;ApplicationLatencyP99\&quot;:null,\&quot;ApplicationRequestsTotal\&quot;:null,\&quot;ApplicationLatencyP99.9\&quot;:null,\&quot;ApplicationRequests3xx\&quot;:null,\&quot;ApplicationRequests2xx\&quot;:null,\&quot;CPUIowait\&quot;:null,\&quot;CPUNice\&quot;:null},\&quot;Environment\&quot;:{\&quot;InstancesSevere\&quot;:null,\&quot;InstancesDegraded\&quot;:null,\&quot;ApplicationRequests5xx\&quot;:null,\&quot;ApplicationRequests4xx\&quot;:null,\&quot;ApplicationLatencyP50\&quot;:null,\&quot;ApplicationLatencyP95\&quot;:null,\&quot;ApplicationLatencyP85\&quot;:null,\&quot;InstancesUnknown\&quot;:null,\&quot;ApplicationLatencyP90\&quot;:null,\&quot;InstancesInfo\&quot;:null,\&quot;InstancesPending\&quot;:null,\&quot;ApplicationLatencyP75\&quot;:null,\&quot;ApplicationLatencyP10\&quot;:null,\&quot;ApplicationLatencyP99\&quot;:null,\&quot;ApplicationRequestsTotal\&quot;:null,\&quot;InstancesNoData\&quot;:null,\&quot;ApplicationLatencyP99.9\&quot;:null,\&quot;ApplicationRequests3xx\&quot;:null,\&quot;ApplicationRequests2xx\&quot;:null,\&quot;InstancesOk\&quot;:null,\&quot;InstancesWarning\&quot;:null}}}&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:healthreporting:system&quot;,
+      &quot;OptionName&quot;: &quot;HealthCheckSuccessThreshold&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;Ok&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:healthreporting:system&quot;,
+      &quot;OptionName&quot;: &quot;SystemType&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;basic&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:hostmanager&quot;,
+      &quot;OptionName&quot;: &quot;LogPublicationControl&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:managedactions&quot;,
+      &quot;OptionName&quot;: &quot;ManagedActionsEnabled&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:managedactions&quot;,
+      &quot;OptionName&quot;: &quot;PreferredStartTime&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:managedactions:platformupdate&quot;,
+      &quot;OptionName&quot;: &quot;InstanceRefreshEnabled&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:managedactions:platformupdate&quot;,
+      &quot;OptionName&quot;: &quot;UpdateLevel&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:monitoring&quot;,
+      &quot;OptionName&quot;: &quot;Automatically Terminate Unhealthy Instances&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;true&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:sns:topics&quot;,
+      &quot;OptionName&quot;: &quot;Notification Endpoint&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:sns:topics&quot;,
+      &quot;OptionName&quot;: &quot;Notification Protocol&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: &quot;email&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:sns:topics&quot;,
+      &quot;OptionName&quot;: &quot;Notification Topic ARN&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elasticbeanstalk:sns:topics&quot;,
+      &quot;OptionName&quot;: &quot;Notification Topic Name&quot;,
+      &quot;ResourceName&quot;: null,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:healthcheck&quot;,
+      &quot;OptionName&quot;: &quot;HealthyThreshold&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;3&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:healthcheck&quot;,
+      &quot;OptionName&quot;: &quot;Interval&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;10&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:healthcheck&quot;,
+      &quot;OptionName&quot;: &quot;Target&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;TCP:80&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:healthcheck&quot;,
+      &quot;OptionName&quot;: &quot;Timeout&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;5&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:healthcheck&quot;,
+      &quot;OptionName&quot;: &quot;UnhealthyThreshold&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;5&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;InstancePort&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;80&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;InstanceProtocol&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;HTTP&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;ListenerEnabled&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;true&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;ListenerProtocol&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;HTTP&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;PolicyNames&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:listener:80&quot;,
+      &quot;OptionName&quot;: &quot;SSLCertificateId&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;CrossZone&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;LoadBalancerHTTPPort&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;80&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;LoadBalancerHTTPSPort&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;OFF&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;LoadBalancerPortProtocol&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;HTTP&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;LoadBalancerSSLPortProtocol&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;HTTPS&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;SSLCertificateId&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: null
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:loadbalancer&quot;,
+      &quot;OptionName&quot;: &quot;SecurityGroups&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;{\&quot;Fn::GetAtt\&quot;:[\&quot;AWSEBLoadBalancerSecurityGroup\&quot;,\&quot;GroupId\&quot;]},{\&quot;Ref\&quot;:\&quot;AWSEBLoadBalancerSecurityGroup\&quot;}&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:policies&quot;,
+      &quot;OptionName&quot;: &quot;ConnectionDrainingEnabled&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;false&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:policies&quot;,
+      &quot;OptionName&quot;: &quot;ConnectionDrainingTimeout&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;20&quot;
+    },
+    {
+      &quot;Namespace&quot;: &quot;aws:elb:policies&quot;,
+      &quot;OptionName&quot;: &quot;ConnectionSettingIdleTimeout&quot;,
+      &quot;ResourceName&quot;: &quot;AWSEBLoadBalancer&quot;,
+      &quot;Value&quot;: &quot;60&quot;
+    }
+  ],
+  &quot;SolutionStackName&quot;: &quot;64bit Amazon Linux 2016.03 v2.1.0 running Go 1.4&quot;,
+  &quot;TemplateName&quot;: null
+}
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

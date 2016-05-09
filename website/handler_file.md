@@ -122,4 +122,11 @@
  If ensure=`"file"`, the value of this property (presumably a
  string) will be written to `dest`.
 
+ ### `force`
+
+ * Required: false
+ * Allowed Values: boolean
+
+ If `true`, any `file` will be overwritten, even if it already exists.
+
 

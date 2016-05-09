@@ -330,7 +330,6 @@ func startMaster(ip string, user string, keypath string, input *string, cmd stri
 	go func(c chan struct{}) {
 		var out bytes.Buffer
 		var err bytes.Buffer
-		log.Println("about to start master")
 		cmd, _, _, e := Start("ssh-agent", args, nil, env, &out, &err)
 		if e != nil {
 			log.Fatalf("SSH control master start error: %s %s %s", e, out.String(), err.String())
