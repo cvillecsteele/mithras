@@ -9,6 +9,8 @@
  The `mithras` object has the following properties:
 
  > * [ARGS](#args)
+ > * [HOMe](#home)
+ > * [CWD](#cwd)
  > * [GOPATH](#gopath)
  > * [MODULES](#modules)
  > * [VERSION](#version)
@@ -153,6 +155,14 @@
  ### `GOPATH` <a name="gopath"></a>
 
  The current GOPATH when mithras is invoked (if set).
+ 
+ ### `HOME` <a name="home"></a>
+
+ The value of $MITHRASHOME or -m if set on the command line.
+ 
+ ### `CWD` <a name="cwd"></a>
+
+ The current working directory of Mithras.
  
  ### `ARGS` <a name="args"></a>
 

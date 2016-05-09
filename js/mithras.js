@@ -868,7 +868,7 @@
 	    var scanners = {
 		beanstalkApps: aws.beanstalk.apps.scan,
 		beanstalkVersions: aws.beanstalk.versions.scan,
-		beanstalkEnvironments: aws.beanstalk.environments.scan,
+	        beanstalkEnvironments: aws.beanstalk.environments.scan,
 		beanstalkConfigs: aws.beanstalk.configs.scan,
 		autoscalingGroups: aws.autoscaling.groups.scan,
 		autoscalingLaunchConfigs: aws.autoscaling.launchConfigs.scan,
@@ -913,7 +913,10 @@
                 }
                 // This concat nonsense is because scan functions return array-LIKE things, but we want real arrays.
 		_.each(targets, function(f, target) {
-		    cat[target] = cat[target].concat(f(region));
+                    var scanned = f(region);
+                    if (scanned) {
+		        cat[target] = cat[target].concat(scanned);
+                    }
 		});
 	    });
 
@@ -964,5 +967,6 @@
     var sns = require("sns").init();
     var sqs = require("sqs").init();
     var autoscaling = require("autoscaling").init();
+    var beanstalk = require("beanstalk").init();
 
 }());

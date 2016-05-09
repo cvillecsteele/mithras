@@ -28,6 +28,35 @@
              ACL:    "public-read"
              LocationConstraint: defaultRegion
          }
+         acls: [ 								 
+ 	       {								 
+ 	   	Bucket: bucketName
+ 	   	ACL:    "BucketCannedACL"
+ 	   	AccessControlPolicy: {
+ 	               Grants: [
+ 	   		{
+ 	                       Grantee: {
+ 	   			Type:         "Type"
+ 	   			DisplayName:  "DisplayName"
+ 	   			EmailAddress: "EmailAddress"
+ 	   			ID:           "ID"			 
+ 	   			URI:          "URI"		 
+ 	                       }						 
+ 	                       Permission: "Permission"
+ 	   		}							 
+ 	               ]
+ 	               Owner: {					 
+ 	   		DisplayName: "DisplayName"
+ 	   		ID:          "ID"
+ 	               }
+ 	   	}
+ 	   	GrantFullControl: "GrantFullControl"
+ 	   	GrantRead:        "GrantRead"
+ 	   	GrantReadACP:     "GrantReadACP"
+ 	   	GrantWrite:       "GrantWrite"
+ 	   	GrantWriteACP:    "GrantWriteACP"
+ 	       }								 
+ 	   ]                                                                     
          website: {
              Bucket: bucketName
              WebsiteConfiguration: {

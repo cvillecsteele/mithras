@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en"><head><title></title><meta charset="utf-8"><script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script><link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous"><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/default.min.css"><script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script><script type="text/javascript">hljs.initHighlightingOnLoad();
+</script><link type="text/css" rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"></head><body><div class="wrapper"><div class="main"></div><div class="container-fluid"><div class="row"><div class="col-md-2 col-xs-4"><a href="/"><img src="/logo-word.svg" width="100%"></a></div></div><div class="row"><div class="col-md-4 col-xs-8"><lead class="text-center">AWS Config management for Javascripters</lead></div><div class="col-md-8 col-xs-12 text-right"><ul class="list-inline"><li> <a href="community.html">Community</a></li><li><a href="docs.html">Documentation</a></li><li><a href="https://github.com/cvillecsteele/mithras">GitHub</a></li></ul></div></div><hr></div><h1>CORE FUNCTIONS: BEANSTALK</h1><p> This package exports several entry points into the JS environment,
+ including:</p>
+<blockquote>
+<ul>
+<li><a href="#app_create">aws.beanstalk.apps.create</a></li>
+<li><a href="#app_delete">aws.beanstalk.apps.delete</a></li>
+<li><a href="#app_describe">aws.beanstalk.apps.describe</a></li>
+<li><p><a href="#app_scan">aws.beanstalk.apps.scan</a></p>
+</li>
+<li><p><a href="#version_create">aws.beanstalk.versions.create</a></p>
+</li>
+<li><a href="#version_delete">aws.beanstalk.versions.delete</a></li>
+<li><a href="#version_describe">aws.beanstalk.versions.describe</a></li>
+<li><p><a href="#version_scan">aws.beanstalk.versions.scan</a></p>
+</li>
+<li><p><a href="#environment_create">aws.beanstalk.environments.create</a></p>
+</li>
+<li><a href="#environment_terminate">aws.beanstalk.environments.terminate</a></li>
+<li><a href="#environment_describe">aws.beanstalk.environments.describe</a></li>
+<li><p><a href="#environment_scan">aws.beanstalk.environments.scan</a></p>
+</li>
+<li><p><a href="#config_create">aws.beanstalk.configs.create</a></p>
+</li>
+<li><a href="#config_terminate">aws.beanstalk.configs.terminate</a></li>
+<li><a href="#config_describe">aws.beanstalk.configs.describe</a></li>
+<li><p><a href="#config_scan">aws.beanstalk.configs.scan</a></p>
+</li>
+<li><p><a href="#storage_create">aws.beanstalk.storage.create</a></p>
+</li>
+<li><p><a href="#check">aws.beanstalk.check</a></p>
+</li>
+<li><a href="#swap">aws.beanstalk.swapCNAMEs</a></li>
+</ul>
+</blockquote>
+<p> This API exposes functions to manage AWS Elastic Beanstalk.</p>
+<h2>AWS.BEANSTALK.APPS.CREATE</h2><p> <a name="app_create"></a>
+ <code>aws.beanstalk.apps.create(region, config);</code></p>
+<p> Create an application.</p>
+<p> Example:</p>
+<pre><code>
+ var app = aws.beanstalk.apps.create(defaultRegion,
+            {
+              ApplicationName: &quot;appName&quot;
+              Description:     &quot;Description&quot;
+            });
+</code></pre><h2>AWS.BEANSTALK.APPS.DELETE</h2><p> <a name="app_delete"></a>
+ <code>aws.beanstalk.apps.delete(region, appName, force);</code></p>
+<p> Delete an application.</p>
+<p> Example:</p>
+<pre><code>
+ aws.beanstalk.apps.delete(&quot;us-east-1&quot;, &quot;appName&quot;, true);
+</code></pre><h2>AWS.BEANSTALK.APPS.DESCRIBE</h2><p> <a name="app_describe"></a>
+ <code>aws.beanstalk.apps.describe(region, appName);</code></p>
+<p> Get information about a beanstalk app.</p>
+<p> Example:</p>
+<pre><code>
+  var app = aws.beanstalk.apps.describe(&quot;us-east-1&quot;, &quot;appName&quot;);
+</code></pre><h2>AWS.BEANSTALK.APPS.SCAN</h2><p> <a name="app_scan"></a>
+ <code>aws.beanstalk.apps.scan(region, cache_id);</code></p>
+<p> Get information about all beanstalk apps.</p>
+<p> Example:</p>
+<pre><code>
+  var apps = aws.beanstalk.apps.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.BEANSTALK.VERSIONS.CREATE</h2><p> <a name="version_create"></a>
+ <code>aws.beanstalk.versions.create(region, config);</code></p>
+<p> Create an application version.</p>
+<p> Example:</p>
+<pre><code>
+ var ver = aws.beanstalk.versions.create(defaultRegion,
+                            {
+                                ApplicationName:       &quot;appName&quot;
+                                VersionLabel:          &quot;VersionLabel&quot;
+                                AutoCreateApplication: false
+                                Description:           &quot;Description&quot;
+                                Process:               true
+                                SourceBundle: {
+                                    S3Bucket: &quot;sourceBucket&quot;
+                                    S3Key:    &quot;api/v0.1.1-1-g5b33818.zip&quot;
+                                }
+                            });
+</code></pre><h2>AWS.BEANSTALK.VERSIONS.DELETE</h2><p> <a name="version_delete"></a>
+ <code>aws.beanstalk.versions.delete(region, config);</code></p>
+<p> Delete an application version.</p>
+<p> Example:</p>
+<pre><code>
+ aws.beanstalk.versions.delete(&quot;us-east-1&quot;,
+ {
+   ApplicationName:    &quot;appName&quot;
+   VersionLabel:       &quot;VersionLabel&quot;
+   DeleteSourceBundle: true
+ });
+</code></pre><h2>AWS.BEANSTALK.VERSIONS.DESCRIBE</h2><p> <a name="version_describe"></a>
+ <code>aws.beanstalk.versions.describe(region, appName, versionLabel);</code></p>
+<p> Get information about a beanstalk application version.</p>
+<p> Example:</p>
+<pre><code>
+  var ver = aws.beanstalk.versions.describe(&quot;us-east-1&quot;, &quot;appName&quot;, &quot;VersionLabel&quot;);
+</code></pre><h2>AWS.BEANSTALK.VERSIONS.SCAN</h2><p> <a name="version_scan"></a>
+ <code>aws.beanstalk.versions.scan(region);</code></p>
+<p> Get information about all beanstalk versions.</p>
+<p> Example:</p>
+<pre><code>
+  var versions = aws.beanstalk.versions.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.BEANSTALK.ENVIRONMENTS.CREATE</h2><p> <a name="environment_create"></a>
+ <code>aws.beanstalk.environments.create(region, config);</code></p>
+<p> Create an application environment.</p>
+<p> Example:</p>
+<pre><code>
+ var env = aws.beanstalk.environments.create(defaultRegion,
+ {
+     ApplicationName: appName
+     CNAMEPrefix:     cname
+     Description:     &quot;test&quot;
+     EnvironmentName: &quot;test&quot;
+     Tags: [
+         {
+             Key:   &quot;TagKey&quot;
+             Value: &quot;TagValue&quot;
+         }
+     ]
+     SolutionStackName: &quot;64bit Amazon Linux 2016.03 v2.1.0 running Go 1.4&quot;
+     VersionLabel: &quot;VersionLabel&quot;
+ });
+</code></pre><h2>AWS.BEANSTALK.ENVIRONMENTS.TERMINATE</h2><p> <a name="environment_terminate"></a>
+ <code>aws.beanstalk.environments.terminate(region, config);</code></p>
+<p> Terminate an application environment.</p>
+<p> Example:</p>
+<pre><code>
+ aws.beanstalk.environments.terminate(&quot;us-east-1&quot;,
+                                   {
+                                       EnvironmentName:    &quot;test&quot;
+                                       ForceTerminate:     true
+                                       TerminateResources: true
+                                   });
+</code></pre><h2>AWS.BEANSTALK.ENVIRONMENTS.DESCRIBE</h2><p> <a name="environment_describe"></a>
+ <code>aws.beanstalk.environments.describe(region, appName, envName);</code></p>
+<p> Get information about a beanstalk application environment.</p>
+<p> Example:</p>
+<pre><code>
+  var ver = aws.beanstalk.environments.describe(&quot;us-east-1&quot;, &quot;appName&quot;, &quot;EnvironmentLabel&quot;);
+</code></pre><h2>AWS.BEANSTALK.ENVIRONMENTS.SCAN</h2><p> <a name="environment_scan"></a>
+ <code>aws.beanstalk.environments.scan(region);</code></p>
+<p> Get information about all beanstalk environments.</p>
+<p> Example:</p>
+<pre><code>
+  var apps = aws.beanstalk.environments.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.BEANSTALK.CONFIGS.CREATE</h2><p> <a name="config_create"></a>
+ <code>aws.beanstalk.configs.create(region, config);</code></p>
+<p> Create an application config.</p>
+<p> Example:</p>
+<pre><code>
+ var c = aws.beanstalk.configs.create(defaultRegion,
+                           {
+                               ApplicationName: appName
+                               TemplateName:    &quot;ConfigurationTemplateName&quot;
+                               Description:     &quot;Description&quot;
+                               SolutionStackName: &quot;64bit Amazon Linux 2016.03 v2.1.0 running Go 1.4&quot;
+                               // See: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general.html
+                               // OptionSettings: [
+                               //          {
+                               //              Namespace:    &quot;aws:elasticbeanstalk:application&quot;
+                               //              OptionName:   &quot;Application Healthcheck URL&quot;
+                               //              Value:        &quot;/hc&quot;
+                               //          }
+                               // ]
+                           });
+</code></pre><h2>AWS.BEANSTALK.CONFIGS.DELETE</h2><p> <a name="config_delete"></a>
+ <code>aws.beanstalk.configs.delete(region, appName, templateName);</code></p>
+<p> Delete an application config.</p>
+<p> Example:</p>
+<pre><code>
+ aws.beanstalk.configs.delete(&quot;us-east-1&quot;, &quot;appName&quot;, &quot;ConfigurationTemplateName&quot;)
+</code></pre><h2>AWS.BEANSTALK.CONFIGS.DESCRIBE</h2><p> <a name="config_describe"></a>
+ <code>aws.beanstalk.configs.describe(region, appName, templateName);</code></p>
+<p> Get information about a beanstalk application config.</p>
+<p> Example:</p>
+<pre><code>
+  var cfg = aws.beanstalk.configs.describe(&quot;us-east-1&quot;, &quot;appName&quot;, &quot;ConfigurationTemplateName&quot;);
+</code></pre><h2>AWS.BEANSTALK.CONFIGS.SCAN</h2><p> <a name="config_scan"></a>
+ <code>aws.beanstalk.configs.scan(region);</code></p>
+<p> Get information about all beanstalk configs.</p>
+<p> Example:</p>
+<pre><code>
+  var apps = aws.beanstalk.configs.scan(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.BEANSTALK.STORAGE.CREATE</h2><p> <a name="storate_create"></a>
+ <code>aws.beanstalk.storage.create(region);</code></p>
+<p> Create a storage location for logs.</p>
+<p> Example:</p>
+<pre><code>
+  aws.beanstalk.storage.create(&quot;us-east-1&quot;);
+</code></pre><h2>AWS.BEANSTALK.SWAPCNAMES</h2><p> <a name="swapCNAMEs"></a>
+ <code>aws.beanstalk.swapCNAMEs(region, config);</code></p>
+<p> Exchange CNAMES to enable red/blue pattern.</p>
+<p> Example:</p>
+<pre><code>
+  aws.beanstalk.swapCNAMEs(&quot;us-east-1&quot;,
+ {
+     DestinationEnvironmentId:   &quot;Environment1Id&quot;
+     DestinationEnvironmentName: &quot;Environment1Name&quot;
+     SourceEnvironmentId:        &quot;Environment2Id&quot;
+     SourceEnvironmentName:      &quot;Environment2Name&quot;
+ });
+</code></pre><h2>AWS.BEANSTALK.CHECK</h2><p> <a name="check"></a>
+ <code>aws.beanstalk.check(region, cname);</code></p>
+<p> Checks to see if a beanstalk CNAME is available.</p>
+<p> Example:</p>
+<pre><code>
+  var avail = aws.beanstalk.check(&quot;us-east-1&quot;, &quot;my-beanstalk&quot;);
+</code></pre><hr><div class="container-fluid"><div class="row"><div class="col-md-2 col-md-offset-5 col-xs-2 col-xs-offset-5 text-center"><img src="/logo.svg" width="100%"/></div></div></div></div><script src="/js/main.js"></script></body></html>

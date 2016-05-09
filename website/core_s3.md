@@ -14,6 +14,7 @@
  > * [aws.s3.buckets.describe](#describe)
  > * [aws.s3.buckets.create](#create)
  > * [aws.s3.buckets.website](#website)
+ > * [aws.s3.buckets.putACL](#putACL)
 
  > * [aws.s3.objects.delete](#Odelete)
  > * [aws.s3.objects.create](#Ocreate)
@@ -79,6 +80,72 @@
  ```
 
  aws.s3.buckets.get("us-east-1", "my-bucket", "index.html");
+
+ ```
+
+ ## AWS.S3.BUCKETS.WEBSITE
+ <a name="website"></a>
+ `aws.s3.buckets.website(region, config);
+
+ Set up a bucket to serve a static website.
+
+ Example:
+
+ ```
+
+ aws.s3.buckets.website("us-east-1",
+         website: {
+             Bucket: bucketName
+             WebsiteConfiguration: {
+                 ErrorDocument: {
+                     Key: "error.html"
+                 }
+                 IndexDocument: {
+                     Suffix: "index.html"
+                 }
+              }
+          });
+
+ ```
+
+ ## AWS.S3.BUCKETS.PUTACL
+ <a name="putACL"></a>
+ `aws.s3.buckets.putACL(region, config);
+
+ Set up bucket access control config.
+
+ Example:
+
+ ```
+
+ aws.s3.buckets.putACL("us-east-1",
+ {
+ 	   	Bucket: bucketName
+ 	   	ACL:    "BucketCannedACL"
+ 	   	AccessControlPolicy: {
+ 	               Grants: [
+ 	   		{
+ 	                       Grantee: {
+ 	   			Type:         "Type"
+ 	   			DisplayName:  "DisplayName"
+ 	   			EmailAddress: "EmailAddress"
+ 	   			ID:           "ID"
+ 	   			URI:          "URI"
+ 	                       }
+ 	                       Permission: "Permission"
+ 	   		}
+ 	               ]
+ 	               Owner: {
+ 	   		DisplayName: "DisplayName"
+ 	   		ID:          "ID"
+ 	               }
+ 	   	}
+ 	   	GrantFullControl: "GrantFullControl"
+ 	   	GrantRead:        "GrantRead"
+ 	   	GrantReadACP:     "GrantReadACP"
+ 	   	GrantWrite:       "GrantWrite"
+ 	   	GrantWriteACP:    "GrantWriteACP"
+ 	});
 
  ```
 

@@ -138,7 +138,9 @@ func Sanitizer(rt *otto.Otto) func(objs ...interface{}) otto.Value {
 			marshalled = append(marshalled, string(j))
 		}
 		js := `(function (things) {
-           var parsed = _.map(things, function(thing){ return JSON.parse(thing); });
+           var parsed = _.map(things, function(thing){ 
+              return JSON.parse(thing);
+            });
            if (parsed.length == 1) {
              return parsed[0];
            } else {

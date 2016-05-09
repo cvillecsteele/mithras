@@ -7,7 +7,8 @@
 <li><a href="#get">aws.s3.buckets.get</a></li>
 <li><a href="#describe">aws.s3.buckets.describe</a></li>
 <li><a href="#create">aws.s3.buckets.create</a></li>
-<li><p><a href="#website">aws.s3.buckets.website</a></p>
+<li><a href="#website">aws.s3.buckets.website</a></li>
+<li><p><a href="#putACL">aws.s3.buckets.putACL</a></p>
 </li>
 <li><p><a href="#Odelete">aws.s3.objects.delete</a></p>
 </li>
@@ -45,6 +46,56 @@
 <p> Example:</p>
 <pre><code>
  aws.s3.buckets.get(&quot;us-east-1&quot;, &quot;my-bucket&quot;, &quot;index.html&quot;);
+</code></pre><h2>AWS.S3.BUCKETS.WEBSITE</h2><p> <a name="website"></a>
+ `aws.s3.buckets.website(region, config);</p>
+<p> Set up a bucket to serve a static website.</p>
+<p> Example:</p>
+<pre><code>
+ aws.s3.buckets.website(&quot;us-east-1&quot;,
+         website: {
+             Bucket: bucketName
+             WebsiteConfiguration: {
+                 ErrorDocument: {
+                     Key: &quot;error.html&quot;
+                 }
+                 IndexDocument: {
+                     Suffix: &quot;index.html&quot;
+                 }
+              }
+          });
+</code></pre><h2>AWS.S3.BUCKETS.PUTACL</h2><p> <a name="putACL"></a>
+ `aws.s3.buckets.putACL(region, config);</p>
+<p> Set up bucket access control config.</p>
+<p> Example:</p>
+<pre><code>
+ aws.s3.buckets.putACL(&quot;us-east-1&quot;,
+ {
+            Bucket: bucketName
+            ACL:    &quot;BucketCannedACL&quot;
+            AccessControlPolicy: {
+                    Grants: [
+                {
+                            Grantee: {
+                    Type:         &quot;Type&quot;
+                    DisplayName:  &quot;DisplayName&quot;
+                    EmailAddress: &quot;EmailAddress&quot;
+                    ID:           &quot;ID&quot;
+                    URI:          &quot;URI&quot;
+                            }
+                            Permission: &quot;Permission&quot;
+                }
+                    ]
+                    Owner: {
+                DisplayName: &quot;DisplayName&quot;
+                ID:          &quot;ID&quot;
+                    }
+            }
+            GrantFullControl: &quot;GrantFullControl&quot;
+            GrantRead:        &quot;GrantRead&quot;
+            GrantReadACP:     &quot;GrantReadACP&quot;
+            GrantWrite:       &quot;GrantWrite&quot;
+            GrantWriteACP:    &quot;GrantWriteACP&quot;
+     });
 </code></pre><h2>AWS.S3.OBJECTS.DELETE</h2><p> <a name="Odelete"></a>
  <code>aws.s3.objects.delete(region, bucket, key);</code></p>
 <p> Delete an object in a bucket.</p>

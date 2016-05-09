@@ -186,7 +186,7 @@ package beanstalk
 //
 // ```
 //
-//  var apps = aws.beanstalk.versions.scan("us-east-1");
+//  var versions = aws.beanstalk.versions.scan("us-east-1");
 //
 // ```
 //
@@ -200,7 +200,7 @@ package beanstalk
 //
 // ```
 //
-// var ver = aws.beanstalk.environments.create(defaultRegion,
+// var env = aws.beanstalk.environments.create(defaultRegion,
 // {
 //     ApplicationName: appName
 //     CNAMEPrefix:     cname
@@ -782,7 +782,9 @@ func scanConfigTemplates(region string) []*eb.ConfigurationSettingsDescription {
 			}
 			if resp != nil {
 				for _, c := range resp.ConfigurationSettings {
-					all = append(all, c)
+					if c != nil {
+						all = append(all, c)
+					}
 				}
 			}
 		}

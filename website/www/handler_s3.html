@@ -21,6 +21,35 @@ module value of <code>&quot;s3&quot;</code></li>
              ACL:    &quot;public-read&quot;
              LocationConstraint: defaultRegion
          }
+         acls: [                                  
+            {                                 
+            Bucket: bucketName
+            ACL:    &quot;BucketCannedACL&quot;
+            AccessControlPolicy: {
+                    Grants: [
+                {
+                            Grantee: {
+                    Type:         &quot;Type&quot;
+                    DisplayName:  &quot;DisplayName&quot;
+                    EmailAddress: &quot;EmailAddress&quot;
+                    ID:           &quot;ID&quot;             
+                    URI:          &quot;URI&quot;         
+                            }                         
+                            Permission: &quot;Permission&quot;
+                }                             
+                    ]
+                    Owner: {                     
+                DisplayName: &quot;DisplayName&quot;
+                ID:          &quot;ID&quot;
+                    }
+            }
+            GrantFullControl: &quot;GrantFullControl&quot;
+            GrantRead:        &quot;GrantRead&quot;
+            GrantReadACP:     &quot;GrantReadACP&quot;
+            GrantWrite:       &quot;GrantWrite&quot;
+            GrantWriteACP:    &quot;GrantWriteACP&quot;
+            }                                 
+        ]                                                                     
          website: {
              Bucket: bucketName
              WebsiteConfiguration: {
