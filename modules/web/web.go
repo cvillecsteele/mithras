@@ -75,6 +75,11 @@ package web
 // ```
 //
 // var html = web.get("http://www.cnn.com");
+//
+// // To write the contents to a file:
+//
+// web.get("http://www.cnn.com", "/tmp/cnn", 0644);
+//
 // ```
 //
 // ## WEB.URL.PARSE
@@ -92,19 +97,19 @@ package web
 // ```
 //
 import (
-	"bytes"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/facebookgo/httpdown"
 	"github.com/robertkrimen/otto"
 
-	gorilla "github.com/gorilla/http"
+	httpclient "github.com/ddliu/go-httpclient"
 
 	"github.com/cvillecsteele/mithras/modules/core"
 )
@@ -153,33 +158,100 @@ func init() {
 
 		webObj.Set("run", run)
 		webObj.Set("stop", stop)
-		webObj.Set("get", func(call otto.FunctionCall) otto.Value {
-			var b bytes.Buffer
+		webObj.Set("post", func(call otto.FunctionCall) otto.Value {
+			theUrl := call.Argument(0).String()
+			body := call.Argument(1).String()
 
-			url := call.Argument(0).String()
+			headers := map[string]string{}
+			if !call.Argument(1).IsUndefined() {
+				js := `(function (o, cb) {
+                 _.each(o, function(v, k) {
+                   cb(k,v);
+                 });
+               })`
+				_, err := rt.Call(js, nil, call.Argument(2), func(k, v string) otto.Value {
+					headers[k] = v
+					return otto.Value{}
+				})
+				if err != nil {
+					log.Fatalf("Can't load url.post() headers: '%s'", err)
+				}
+			}
 
 			var file string
-			if !call.Argument(1).IsUndefined() {
-				file = call.Argument(1).String()
+			if !call.Argument(3).IsUndefined() {
+				file = call.Argument(3).String()
 			}
 
 			var perm int64 = 0644
 			var err error
-			if !call.Argument(2).IsUndefined() {
-				perm, err = call.Argument(2).ToInteger()
+			if !call.Argument(4).IsUndefined() {
+				perm, err = call.Argument(4).ToInteger()
 			}
 			if err != nil {
-				log.Fatalf("Can't fetch '%s': %s", url, err)
+				log.Fatalf("Can't fetch '%s': %s", theUrl, err)
 			}
 
-			_, err = gorilla.Get(&b, url)
+			httpclient.Defaults(httpclient.Map{
+				httpclient.OPT_USERAGENT: "mithras",
+			})
+
+			res, err := httpclient.Do("POST", theUrl, headers, strings.NewReader(body))
+			bodyBytes, err := res.ReadAll()
 			if err != nil {
-				log.Fatalf("Can't fetch '%s': %s", url, err)
+				log.Fatalf("Error in post: '%s'", err)
 			}
+
 			if file != "" {
-				err = ioutil.WriteFile(file, b.Bytes(), os.FileMode(perm))
+				err = ioutil.WriteFile(file, bodyBytes, os.FileMode(perm))
 			}
-			v, err := rt.ToValue(b.String())
+			v, err := rt.ToValue(string(bodyBytes))
+			return v
+		})
+		webObj.Set("get", func(call otto.FunctionCall) otto.Value {
+			theUrl := call.Argument(0).String()
+
+			qp := map[string]string{}
+			if !call.Argument(1).IsUndefined() {
+				js := `(function (o, cb) {
+                 _.each(o, function(v, k) {
+                   cb(k, v);
+                 });
+               })`
+				_, err := rt.Call(js, nil, call.Argument(1), func(k, v string) otto.Value {
+					qp[k] = v
+					return otto.Value{}
+				})
+				if err != nil {
+					log.Fatalf("Can't load url.get() query parameters: '%s'", err)
+				}
+			}
+
+			var file string
+			if !call.Argument(2).IsUndefined() {
+				file = call.Argument(2).String()
+			}
+
+			var perm int64 = 0644
+			var err error
+			if !call.Argument(3).IsUndefined() {
+				perm, err = call.Argument(3).ToInteger()
+			}
+			if err != nil {
+				log.Fatalf("Can't fetch '%s': %s", theUrl, err)
+			}
+
+			httpclient.Defaults(httpclient.Map{
+				httpclient.OPT_USERAGENT: "mithras",
+			})
+
+			res, err := httpclient.Get(theUrl, qp)
+			bodyBytes, err := res.ReadAll()
+
+			if file != "" {
+				err = ioutil.WriteFile(file, bodyBytes, os.FileMode(perm))
+			}
+			v, err := rt.ToValue(string(bodyBytes))
 			return v
 		})
 		webObj.Set("handler", func(call otto.FunctionCall) otto.Value {

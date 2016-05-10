@@ -184,6 +184,11 @@
 			"Rev": "a2943485b110df8842045ae0600047f88a3a56a1"
 		},
 		{
+			"ImportPath": "github.com/ddliu/go-httpclient",
+			"Comment": "v0.5.1",
+			"Rev": "52a7afc73c57c5b898b5514a5467f8d38decd3ed"
+		},
+		{
 			"ImportPath": "github.com/facebookgo/clock",
 			"Rev": "600d898af40aa09a7a93ecb9265d87b0504b6f03"
 		},
@@ -199,14 +204,6 @@
 			"ImportPath": "github.com/go-ini/ini",
 			"Comment": "v1.11.0",
 			"Rev": "12f418cc7edc5a618a51407b7ac1f1f512139df3"
-		},
-		{
-			"ImportPath": "github.com/gorilla/http",
-			"Rev": "5dff1c014197bd33cbefc3ff9de164ada759b81b"
-		},
-		{
-			"ImportPath": "github.com/gorilla/http/client",
-			"Rev": "5dff1c014197bd33cbefc3ff9de164ada759b81b"
 		},
 		{
 			"ImportPath": "github.com/jmespath/go-jmespath",

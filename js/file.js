@@ -331,7 +331,7 @@
                             break;
 			case "http":
 			case "https":
-			    web.get(params.src, params.dest, params.mode);
+			    web.get(params.src, nil, params.dest, params.mode);
 			    break;
 			default:
                             error = fs.copy(params.src, params.dest, params.mode);

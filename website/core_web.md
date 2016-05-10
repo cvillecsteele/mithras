@@ -57,6 +57,11 @@
  ```
 
  var html = web.get("http://www.cnn.com");
+
+ // To write the contents to a file:
+
+ web.get("http://www.cnn.com", "/tmp/cnn", 0644);
+
  ```
 
  ## WEB.URL.PARSE

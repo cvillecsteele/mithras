@@ -30,6 +30,10 @@
 <p> Example:</p>
 <pre><code>
  var html = web.get(&quot;http://www.cnn.com&quot;);
+
+ // To write the contents to a file:
+
+ web.get(&quot;http://www.cnn.com&quot;, &quot;/tmp/cnn&quot;, 0644);
 </code></pre><h2>WEB.URL.PARSE</h2><p> <a name="uparse"></a>
  <code>web.url.parse(url);</code></p>
 <p> Parse and url and return its component parts.</p>
