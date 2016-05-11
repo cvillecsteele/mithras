@@ -32,6 +32,7 @@ up correctly.
 
 To get rolling:
 
+    cd ~ && mkdir mysite
     cp -r $MITHRASHOME/example ~/mysite
 
 Then fire up your favorite editor and load `~/mysite/example/simple.js`
