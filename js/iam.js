@@ -236,29 +236,33 @@
                     
                     break;
                 case "present":
+                    var profileName = params.profile.InstanceProfileName;
                     if (p) {
                         log(sprintf("IAM profile found, no action taken."));
-                        break;
+                    } else {
+                        // create 
+                        if (mithras.verbose) {
+                            log(sprintf("Creating IAM instance profile '%s'", 
+                                        profileName));
+                        }
+                        created = aws.iam.profiles.create(params.region, profileName);
                     }
-                    
-                    // create 
-                    var profileName = params.profile.InstanceProfileName;
-                    if (mithras.verbose) {
-                        log(sprintf("Creating IAM instance profile '%s'", 
-                                    profileName));
-                    }
-                    created = aws.iam.profiles.create(params.region, profileName);
                     
                     // create role
                     var roleName = params.role.RoleName;
+                    var role = handler.findRole(catalog, roleName);
                     var trust = params.role.AssumeRolePolicyDocument;
-                    if (mithras.verbose) {
-                        log(sprintf("Creating IAM role '%s'", 
-                                    roleName));
+                    if (!role) {
+                        if (mithras.verbose) {
+                            log(sprintf("Creating IAM role '%s'", 
+                                        roleName));
+                        }
+                        role = aws.iam.roles.create(params.region, 
+                                                    roleName,
+                                                    trust);
+                    } else {
+                        log(sprintf("IAM profile role found, no action taken."));
                     }
-                    role = aws.iam.roles.create(params.region, 
-                                                roleName,
-                                                trust);
                     
                     // add policy to role
                     _.each(params.policies, function(policy, name) {
