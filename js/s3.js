@@ -73,6 +73,30 @@
 // 	   	GrantWriteACP:    "GrantWriteACP"
 // 	       }								 
 // 	   ]                                                                     
+//         notification: {
+//                  Bucket: bucketName                                  
+//                  NotificationConfiguration: {                          
+//                      QueueConfigurations: [                            
+//                          {                                             
+//                              Events: [                                 
+//                                  "Event"                               
+//                              ]                                         
+//                              QueueArn: "QueueArn"                      
+//                              Filter: {                                 
+//                                  Key: {                                
+//                                      FilterRules: [                    
+//                                          {                             
+//                                              Name:  "FilterRuleName"   
+//                                              Value: "FilterRuleValue"  
+//                                          }                             
+//                                      ]                                 
+//                                  }                                     
+//                              }                                         
+//                              Id: "NotificationId"                      
+//                          }                                             
+//                      ]                                                 
+//                  }                                                     
+//              }                                                         
 //         website: {
 //             Bucket: bucketName
 //             WebsiteConfiguration: {
@@ -152,7 +176,12 @@
 // * Required: false
 // * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketWebsiteInput)
 //
-// If you want to serve a static website from S3, specify this property along with `bucket`.
+// ### `notification`
+//
+// * Required: false
+// * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketNotificationConfigurationInput)
+//
+// Configure the bucket to send notification events.
 //
 (function (root, factory){
     if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -164,9 +193,11 @@
     var moment = require('moment');
 
     var handler = {
-        moduleName: "s3"
+        moduleNames: ["s3"]
         preflight: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
             return [null, true];
@@ -202,8 +233,16 @@
                         }
                         aws.s3.buckets.website(resource.params.region,
                                                resource.params.website);
-                    }
-                    if (resource.params.acls) {
+                    } 
+                    if (resource.params.notification) {
+                        if (mithras.verbose) {
+                            log(sprintf("Adding notification config to bucket '%s'",
+                                        resource.params.bucket.Bucket));
+                        }
+                        aws.s3.buckets.notification(resource.params.region,
+                                                    resource.params.notification);
+                    } 
+                   if (resource.params.acls) {
 			_.each(resource.params.acls, function(acl) {
                             if (mithras.verbose) {
 				log(sprintf("Adding ACL to bucket '%s'",
@@ -292,7 +331,9 @@
             }
         }
         handle: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
             var updated = mithras.updateResource(resource,
@@ -312,7 +353,9 @@
     };
     
     handler.init = function () {
-        mithras.modules.handlers.register("s3", handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.handlers.register(name, handler.handle);
+        });
     };
 
     handler.contentTypeMap = {

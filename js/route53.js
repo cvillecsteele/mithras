@@ -93,7 +93,7 @@
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-        moduleName: "route53"
+        moduleNames: ["route53"]
         findInCatalog: function(catalog, resource, set) {
             if (typeof(resource.params.on_find) === 'function') {
 		result = resource.params.on_find(catalog, resource);
@@ -124,7 +124,9 @@
             });
         }
         handle: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
 
@@ -192,7 +194,9 @@
             return [null, true];
         }
         preflight: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
             var params = resource.params;
@@ -206,8 +210,10 @@
     };
     
     handler.init = function () {
-        mithras.modules.preflight.register(handler.moduleName, handler.preflight);
-        mithras.modules.handlers.register(handler.moduleName, handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.preflight.register(name, handler.preflight);
+            mithras.modules.handlers.register(name, handler.handle);
+        });
         return handler;
     };
     

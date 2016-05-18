@@ -154,12 +154,14 @@
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-	moduleName: "file"
+	moduleNames: ["file"]
 
         preflight: function(catalog, resources, resource) {
-	    if (resource.module != handler.moduleName) {
-		return [null, false];
-	    }
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
 
             var p = resource.params;
             var ensure = p.ensure;
@@ -313,6 +315,10 @@
 	    case "touch":
 		if (!present || force) {
                     if (params.content) {
+                        if (!_.isString(params.content)) {
+                            console.log("File write error: params.content is not a string");
+                            os.exit(3);
+                        }
                         error = fs.write(params.dest, params.content, params.mode);
                         if (error) {
                             console.log("File write error", JSON.stringify(error, null, 2));
@@ -543,9 +549,11 @@
 	}
 
 	handle: function(catalog, resources, resource) {
-	    if (resource.module != handler.moduleName) {
-		return [null, false];
-	    }
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
+                return [null, false];
+            }
 	    var params = resource.params;
 	    if (Array.isArray(params.hosts)) {
 		// Loop over hosts
@@ -579,8 +587,10 @@
     };
     
     handler.init = function () {
-        mithras.modules.preflight.register(handler.moduleName, handler.preflight);
-	mithras.modules.handlers.register(handler.moduleName, handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.preflight.register(name, handler.preflight);
+            mithras.modules.handlers.register(name, handler.handle);
+        });
     };
     
     return handler;

@@ -123,7 +123,7 @@
     var sprintf = require("sprintf.js").sprintf;
 
     var handler = {
-        moduleName: "sqs"
+        moduleNames: ["sqs"]
         findInCatalog: function(catalog, resource) {
             if (typeof(resource.params.on_find) === 'function') {
 		result = resource.params.on_find(catalog, resource);
@@ -134,21 +134,29 @@
 		return result;
 	    }
 	    var queue = null;
+            var queueName;
 	    if (resource.params.queue) {
-		var re = new RegExp("/"+resource.params.queue.QueueName+"$");
-		queue = _.find(catalog.queues, function(t) { 
-                    return re.exec(t);
-		});
+                queueName = resource.params.queue.QueueName;
 	    }
+            if (queueName) {
+	        var re = new RegExp("/"+queueName+"$");
+	        queue = _.find(catalog.queues, function(t) { 
+                    return re.exec(t);
+	        });
+            }
 	    return queue;
         }
         handle: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
 
             // Sanity
-            if (!resource.params.queue && !resource.params.queue) {
+            if (!resource.params.queue && 
+                !resource.params.message && 
+                !resource.params.attributes) {
                 console.log("Invalid sqs params")
                 os.exit(3);
             }
@@ -175,18 +183,31 @@
 		}
                 break;
             case "present":
+                var queueName;
+	        if (resource.params.queue) {
+                    queueName = resource.params.queue.QueueName;
+	        }
 		if (params.queue) {
 		    if (!queue) {
 			if (mithras.verbose) {
-			    log(sprintf("Creating queue '%s'", params.queue.QueueName));
+			    log(sprintf("Creating queue '%s'", queueName));
 			}
 			queue = aws.sqs.create(params.region, params.queue);
 			catalog.queues.push(queue);
 		    } else {
 			log(sprintf("Queue '%s' found, no action taken.", 
-				    params.queue.QueueName));
+				    queueName));
 		    }
 		}
+		if (params.attributes) {
+                    var url = params.attributes.QueueUrl;
+                    var attrs = aws.sqs.attributes(params.region, url);
+                    var queueName = attrs.QueueArn;
+		    if (mithras.verbose) {
+			log(sprintf("Setting attributes for queue '%s'", queueName));
+		    }
+                    aws.sqs.setAttributes(params.region, params.attributes);
+                }
 		if (params.message) {
 		    if (mithras.verbose) {
 			log(sprintf("Sending message"))
@@ -199,10 +220,11 @@
             return [null, true];
         }
         preflight: function(catalog, resources, resource) {
-            if (resource.module != handler.moduleName) {
+            if (!_.find(handler.moduleNames, function(m) { 
+                return resource.module === m; 
+            })) {
                 return [null, false];
             }
-            var params = resource.params;
             var s = handler.findInCatalog(catalog, resource);
             if (s) {
                 return [s, true];
@@ -212,8 +234,10 @@
     };
     
     handler.init = function () {
-        mithras.modules.preflight.register(handler.moduleName, handler.preflight);
-        mithras.modules.handlers.register(handler.moduleName, handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.preflight.register(name, handler.preflight);
+            mithras.modules.handlers.register(name, handler.handle);
+        });
         return handler;
     };
     

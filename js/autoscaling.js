@@ -340,8 +340,10 @@
     };
     
     handler.init = function () {
-        mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
-        mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.preflight.register(name, handler.preflight);
+            mithras.modules.handlers.register(name, handler.handle);
+        });
         return handler;
     };
     

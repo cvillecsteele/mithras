@@ -32,6 +32,7 @@ package sqs
 // > * [aws.sqs.delete](#delete)
 // > * [aws.sqs.describe](#describe)
 // > * [aws.sqs.attributes](#attributes)
+// > * [aws.sqs.setAttributes](#setAttributes)
 // > * [aws.sqs.messages.send](#msend)
 // > * [aws.sqs.messages.receive](#mreceive)
 // > * [aws.sqs.messages.delete](#mdelete)
@@ -144,6 +145,25 @@ package sqs
 // ```
 //
 //  var queue = aws.sqs.attributes("us-east-1", "queueUrl");
+//
+// ```
+//
+// ## AWS.SQS.SETATTRIBUTES
+// <a name="setAttributes"></a>
+// `aws.sqs.setAttributes(region, attrs);`
+//
+// Put queue attributes.
+//
+// Example:
+//
+// ```
+//
+// aws.sqs.setAttributes(region, {
+//     Attributes: {
+//       "Policy": "..."
+//     }
+//     QueueUrl: "..."
+// });
 //
 // ```
 //
@@ -291,6 +311,17 @@ func attributesQueue(region string, url string) map[string]*string {
 	return resp.Attributes
 }
 
+func setAttributesQueue(region string, params *sqs.SetQueueAttributesInput) {
+	svc := sqs.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	_, err := svc.SetQueueAttributes(params)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+}
+
 func scanQueues(region string) []string {
 	svc := sqs.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
@@ -405,6 +436,24 @@ func init() {
 			sqsId := call.Argument(1).String()
 			f := mcore.Sanitizer(rt)
 			return f(attributesQueue(region, sqsId))
+		})
+		o1.Set("setAttributes", func(call otto.FunctionCall) otto.Value {
+			// Translate params input into a struct
+			var input sqs.SetQueueAttributesInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for SQS queue attributes input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall SQS setAttributes json: %s", err)
+			}
+
+			region := call.Argument(0).String()
+
+			setAttributesQueue(region, &input)
+			return otto.Value{}
 		})
 
 		// Messages

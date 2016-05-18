@@ -43,6 +43,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/keypairs"
 	"github.com/cvillecsteele/mithras/modules/network"
 	"github.com/cvillecsteele/mithras/modules/os"
+	"github.com/cvillecsteele/mithras/modules/rand"
 	"github.com/cvillecsteele/mithras/modules/routetables"
 	"github.com/cvillecsteele/mithras/modules/s3"
 	"github.com/cvillecsteele/mithras/modules/sns"
@@ -58,6 +59,7 @@ var Version = "0.1.0"
 
 func main() {
 	vers := []script.ModuleVersion{
+		script.ModuleVersion{Version: rand.Version, Module: rand.ModuleName},
 		script.ModuleVersion{Version: beanstalk.Version, Module: beanstalk.ModuleName},
 		script.ModuleVersion{Version: autoscaling.Version, Module: autoscaling.ModuleName},
 		script.ModuleVersion{Version: sqs.Version, Module: sqs.ModuleName},

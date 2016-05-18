@@ -260,33 +260,35 @@
                         role = aws.iam.roles.create(params.region, 
                                                     roleName,
                                                     trust);
+
+                        // add policy to role
+                        _.each(params.policies, function(policy, name) {
+                            if (mithras.verbose) {
+                                log(sprintf("Putting policy '%s' to IAM role '%s'", 
+                                            name,
+                                            roleName));
+                            }
+                            aws.iam.roles.putRolePolicy(params.region,
+                                                        roleName,
+                                                        name,
+                                                        JSON.stringify(policy));
+                        });
+                        
+                        // stick the role to the profile
+                        if (mithras.verbose) {
+                            log(sprintf("Adding role '%s' to IAM profile '%s'", 
+                                        roleName,
+                                        profileName));
+                        }
+                        aws.iam.roles.addRoleToProfile(params.region,
+                                                       profileName,
+                                                       roleName);
+
+
                     } else {
                         log(sprintf("IAM profile role found, no action taken."));
                     }
                     
-                    // add policy to role
-                    _.each(params.policies, function(policy, name) {
-                        if (mithras.verbose) {
-                            log(sprintf("Putting policy '%s' to IAM role '%s'", 
-                                        name,
-                                        roleName));
-                        }
-                        aws.iam.roles.putRolePolicy(params.region,
-                                                    roleName,
-                                                    name,
-                                                    JSON.stringify(policy));
-                    });
-
-                    // stick the role to the profile
-                    if (mithras.verbose) {
-                        log(sprintf("Adding role '%s' to IAM profile '%s'", 
-                                    roleName,
-                                    profileName));
-                    }
-                    aws.iam.roles.addRoleToProfile(params.region,
-                                                   profileName,
-                                                   roleName);
-
                     // Wait for association between profile and role
                     var profile = aws.iam.profiles.describe(params.region, profileName);
                     do {
@@ -331,8 +333,10 @@
     };
     
     handler.init = function () {
-        mithras.modules.preflight.register(handler.moduleNames[0], handler.preflight);
-        mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.preflight.register(name, handler.preflight);
+            mithras.modules.handlers.register(name, handler.handle);
+        });
         return handler;
     };
     

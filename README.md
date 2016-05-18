@@ -82,6 +82,9 @@ To run a JS repl:
 TODO
 ###############################################################################
 
+* IAM: check policies is an object with string keys
+* IAM: let role.AssumeRolePolicyDocument be an object
+
 * throw instead of os.exit?
 * document ASG solution
 * parallelize with workers?

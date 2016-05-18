@@ -237,19 +237,27 @@
                 run: function(catalog, resources, targetResource, dict) {
                     var name = targetResource.name;
                     var handled = false;
-                    _.each(mithras.modules.handlers.funcs, function(f, fname) {
-                        var result = f(catalog, resources, targetResource);
-                        var target = result[0];
-                        if (!handled) {
-                            handled = result[1];
-                            if (handled && target) {
-                                var r = _.find(resources, function(r){ 
-                                    return r.name === name; 
-                                });
-                                r._target = target;
-                            }
+                    var f = mithras.modules.handlers.funcs[targetResource.module];
+                    if (f) {
+                        var result;
+                        if ((typeof(targetResource.on_handle) == "function")) {
+                            result = targetResource.on_handle(catalog, 
+                                                              resources, 
+                                                              targetResource, 
+                                                              f);
+                        } else {
+                            result = f(catalog, resources, targetResource);
                         }
-                    });
+                        var target = result[0];
+                        handled = result[1];
+                        if (handled && target) {
+                            var r = _.find(resources, function(r){ 
+                                return r.name === name; 
+                            });
+			    log.debug("  --- Setting _target")
+                            r._target = target;
+                        }
+                    }
                     if (!handled && targetResource.module) {
                         log0(sprintf("Resource '%s': module '%s' not handled.", 
                                      targetResource.name,
@@ -259,9 +267,9 @@
                 }
             }
             preflight: {
-                funcs: []
+                funcs: {}
                 register: function(name, cb) {
-                    mithras.modules.preflight.funcs.push(cb);
+                    mithras.modules.preflight.funcs[name] = cb;
                 }
                 run: function(catalog, resources, order) {
                     var dict = resourceMap(resources);
@@ -272,12 +280,15 @@
                                                              catalog, 
                                                              resources, 
                                                              name);
+                        name = updated.name;
                         dict[name] = updated;
 
-                        _.each(mithras.modules.preflight.funcs, function(f) {
+                        var handled = false;
+                        var f = mithras.modules.preflight.funcs[updated.module];
+                        if (f) {
                             var result = f(catalog, resources, updated);
                             var target = result[0];
-                            var handled = result[1];
+                            handled = result[1];
                             if (handled && target) {
                                 var r = _.find(resources, function(r){ 
                                     return r.name === name; 
@@ -286,7 +297,13 @@
 				log.debug("  --- Setting _target")
                                 r._target = target;
                             }
-                        });
+                        }
+                        if (f && !handled && updated.module) {
+                            log0(sprintf("Resource '%s': module '%s' not handled.", 
+                                         name,
+                                         updated.module));
+                            os.exit(3);
+                        }
                     });
                 }
             }

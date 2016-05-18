@@ -287,7 +287,7 @@ func ctlDir() string {
 	if err != nil {
 		log.Fatalf("Can't get working directory: %s", err)
 	}
-	return filepath.Join(cwd, "ssh", "ctl")
+	return filepath.Join(cwd, ".ssh", "ctl")
 }
 
 func ctlPath() string {

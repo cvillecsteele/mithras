@@ -45,7 +45,7 @@
     // ```
     // 
     var Cache = function Cache(path) {
-	this.path = path || "cache";
+	this.path = path || ".cache";
     };
 
     Cache.prototype = {

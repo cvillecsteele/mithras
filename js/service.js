@@ -211,7 +211,9 @@
     }
 
     handler.init = function () {
-        mithras.modules.handlers.register(handler.moduleNames[0], handler.handle);
+        _.each(handler.moduleNames, function(name) {
+            mithras.modules.handlers.register(name, handler.handle);
+        });
         return handler;
     };
     

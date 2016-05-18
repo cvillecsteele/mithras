@@ -31,6 +31,7 @@ package s3
 // > * [aws.s3.buckets.describe](#describe)
 // > * [aws.s3.buckets.create](#create)
 // > * [aws.s3.buckets.website](#website)
+// > * [aws.s3.buckets.notification](#notification)
 // > * [aws.s3.buckets.putACL](#putACL)
 //
 // > * [aws.s3.objects.delete](#Odelete)
@@ -100,7 +101,7 @@ package s3
 // ```
 //
 // aws.s3.buckets.website("us-east-1",
-//         website: {
+//         {
 //             Bucket: bucketName
 //             WebsiteConfiguration: {
 //                 ErrorDocument: {
@@ -111,6 +112,44 @@ package s3
 //                 }
 //              }
 //          });
+//
+// ```
+//
+// ## AWS.S3.BUCKETS.NOTIFICATION
+// <a name="notification"></a>
+// `aws.s3.buckets.notification(region, config);
+//
+// Set up a bucket to send notification events.
+//
+// Example:
+//
+// ```
+//
+// aws.s3.buckets.website("us-east-1",
+// {
+//     Bucket: "BucketName"
+//     NotificationConfiguration: {
+//         QueueConfigurations: [
+//             {
+//                 Events: [
+//                     "Event"
+//                 ]
+//                 QueueArn: "QueueArn"
+//                 Filter: {
+//                     Key: {
+//                         FilterRules: [
+//                             {
+//                                 Name:  "FilterRuleName"
+//                                 Value: "FilterRuleValue"
+//                             }
+//                         ]
+//                     }
+//                 }
+//                 Id: "NotificationId"
+//             }
+//         ]
+//     }
+// });
 //
 // ```
 //
@@ -452,6 +491,17 @@ func putWebsite(region string, params s3.PutBucketWebsiteInput) {
 	}
 }
 
+func putNotification(region string, params s3.PutBucketNotificationConfigurationInput) {
+	svc := s3.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	_, err := svc.PutBucketNotificationConfiguration(&params)
+
+	if err != nil {
+		log.Fatalf("Error putting bucket notification configuration: %s", err)
+	}
+}
+
 func init() {
 	mcore.RegisterInit(func(rt *otto.Otto) {
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {
@@ -509,6 +559,22 @@ func init() {
 			}
 			region := call.Argument(0).String()
 			putWebsite(region, input)
+			return otto.Value{}
+		})
+		o2.Set("notification", func(call otto.FunctionCall) otto.Value {
+			// Translate target into a struct
+			var input s3.PutBucketNotificationConfigurationInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for S3 notification input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall s3 notification json: %s", err)
+			}
+			region := call.Argument(0).String()
+			putNotification(region, input)
 			return otto.Value{}
 		})
 
