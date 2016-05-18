@@ -14,6 +14,7 @@
  > * [aws.sqs.delete](#delete)
  > * [aws.sqs.describe](#describe)
  > * [aws.sqs.attributes](#attributes)
+ > * [aws.sqs.setAttributes](#setAttributes)
  > * [aws.sqs.messages.send](#msend)
  > * [aws.sqs.messages.receive](#mreceive)
  > * [aws.sqs.messages.delete](#mdelete)
@@ -126,6 +127,25 @@
  ```
 
   var queue = aws.sqs.attributes("us-east-1", "queueUrl");
+
+ ```
+
+ ## AWS.SQS.SETATTRIBUTES
+ <a name="setAttributes"></a>
+ `aws.sqs.setAttributes(region, attrs);`
+
+ Put queue attributes.
+
+ Example:
+
+ ```
+
+ aws.sqs.setAttributes(region, {
+     Attributes: {
+       "Policy": "..."
+     }
+     QueueUrl: "..."
+ });
 
  ```
 

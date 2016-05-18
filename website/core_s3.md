@@ -13,6 +13,7 @@
  > * [aws.s3.buckets.describe](#describe)
  > * [aws.s3.buckets.create](#create)
  > * [aws.s3.buckets.website](#website)
+ > * [aws.s3.buckets.notification](#notification)
  > * [aws.s3.buckets.putACL](#putACL)
 
  > * [aws.s3.objects.delete](#Odelete)
@@ -82,7 +83,7 @@
  ```
 
  aws.s3.buckets.website("us-east-1",
-         website: {
+         {
              Bucket: bucketName
              WebsiteConfiguration: {
                  ErrorDocument: {
@@ -93,6 +94,44 @@
                  }
               }
           });
+
+ ```
+
+ ## AWS.S3.BUCKETS.NOTIFICATION
+ <a name="notification"></a>
+ `aws.s3.buckets.notification(region, config);
+
+ Set up a bucket to send notification events.
+
+ Example:
+
+ ```
+
+ aws.s3.buckets.website("us-east-1",
+ {
+     Bucket: "BucketName"
+     NotificationConfiguration: {
+         QueueConfigurations: [
+             {
+                 Events: [
+                     "Event"
+                 ]
+                 QueueArn: "QueueArn"
+                 Filter: {
+                     Key: {
+                         FilterRules: [
+                             {
+                                 Name:  "FilterRuleName"
+                                 Value: "FilterRuleValue"
+                             }
+                         ]
+                     }
+                 }
+                 Id: "NotificationId"
+             }
+         ]
+     }
+ });
 
  ```
 

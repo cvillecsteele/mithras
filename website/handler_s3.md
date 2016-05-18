@@ -57,6 +57,30 @@
  	   	GrantWriteACP:    "GrantWriteACP"
  	       }								 
  	   ]                                                                     
+         notification: {
+                  Bucket: bucketName                                  
+                  NotificationConfiguration: {                          
+                      QueueConfigurations: [                            
+                          {                                             
+                              Events: [                                 
+                                  "Event"                               
+                              ]                                         
+                              QueueArn: "QueueArn"                      
+                              Filter: {                                 
+                                  Key: {                                
+                                      FilterRules: [                    
+                                          {                             
+                                              Name:  "FilterRuleName"   
+                                              Value: "FilterRuleValue"  
+                                          }                             
+                                      ]                                 
+                                  }                                     
+                              }                                         
+                              Id: "NotificationId"                      
+                          }                                             
+                      ]                                                 
+                  }                                                     
+              }                                                         
          website: {
              Bucket: bucketName
              WebsiteConfiguration: {
@@ -136,6 +160,11 @@
  * Required: false
  * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketWebsiteInput)
 
- If you want to serve a static website from S3, specify this property along with `bucket`.
+ ### `notification`
+
+ * Required: false
+ * Allowed Values: JSON corresponding to the structure found [here](https://docs.aws.amazon.com/sdk-for-go/api/service/s3.html#type-PutBucketNotificationConfigurationInput)
+
+ Configure the bucket to send notification events.
 
 
