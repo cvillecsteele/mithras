@@ -181,7 +181,9 @@ func (worker *Worker) receive() string {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o1 *otto.Object
 		if a, err := rt.Get("workers"); err != nil || a.IsUndefined() {
 			o1, _ = rt.Object(`workers = {}`)

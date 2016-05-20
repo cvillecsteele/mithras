@@ -26,6 +26,7 @@ import (
 	"github.com/robertkrimen/otto/repl"
 
 	"github.com/cvillecsteele/mithras/modules/build"
+	"github.com/cvillecsteele/mithras/modules/core"
 	"github.com/cvillecsteele/mithras/modules/daemon"
 	"github.com/cvillecsteele/mithras/modules/script"
 )
@@ -43,7 +44,7 @@ func runRepl(c *cli.Context) {
 	repl.Run(otto.New())
 }
 
-func run(c *cli.Context, versions []script.ModuleVersion) *otto.Otto {
+func run(c *cli.Context, versions []core.ModuleVersion) *otto.Otto {
 	jsfile := c.String("file")
 	jsdir := c.String("js")
 	home := c.GlobalString("mithras")
@@ -83,7 +84,7 @@ func run(c *cli.Context, versions []script.ModuleVersion) *otto.Otto {
 	return runtime
 }
 
-func Run(versions []script.ModuleVersion, version string) {
+func Run(versions []core.ModuleVersion, version string) {
 	cli.VersionFlag.Name = "version, V"
 
 	linux := cli.StringSlice{"linux"}

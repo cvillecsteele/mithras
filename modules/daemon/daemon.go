@@ -25,6 +25,7 @@ import (
 	"github.com/robertkrimen/otto"
 	"github.com/sevlyar/go-daemon"
 
+	"github.com/cvillecsteele/mithras/modules/core"
 	"github.com/cvillecsteele/mithras/modules/script"
 )
 
@@ -68,7 +69,7 @@ func Quit() {
 }
 
 // Start the daemon
-func Run(c *cli.Context, versions []script.ModuleVersion, version string) {
+func Run(c *cli.Context, versions []core.ModuleVersion, version string) {
 	cntxt := &Context
 
 	d, err := cntxt.Reborn()

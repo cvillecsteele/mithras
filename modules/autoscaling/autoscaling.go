@@ -621,7 +621,9 @@ func scanAutoScalingGroups(region string) []*autoscaling.Group {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o1 *otto.Object
 		var o2 *otto.Object
 		var awsObj *otto.Object

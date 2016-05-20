@@ -74,7 +74,9 @@ func scan(rt *otto.Otto) otto.Value {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		rt.Object(`aws = aws || {}`)
 		o2, _ := rt.Object(`aws.regions = {}`)
 		o2.Set("scan", func() otto.Value {

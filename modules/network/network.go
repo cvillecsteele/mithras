@@ -72,7 +72,9 @@ func check(host string, port int, timeout int, verbose bool) bool {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var nobj *otto.Object
 		if a, err := rt.Get("network"); err != nil || a.IsUndefined() {
 			nobj, _ = rt.Object(`network = {}`)

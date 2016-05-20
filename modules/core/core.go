@@ -58,9 +58,21 @@ import (
 	"github.com/robertkrimen/otto"
 )
 
-var InitFuncs []func(*otto.Otto)
+type ModuleVersion struct{ Version, Module string }
 
-func RegisterInit(f func(*otto.Otto)) {
+type Context struct {
+	Runtime *otto.Otto
+	JsDir   string
+	Home    string
+	Verbose bool
+	Args    []string
+	Modules []ModuleVersion
+	Version string
+}
+
+var InitFuncs []func(*Context)
+
+func RegisterInit(f func(*Context)) {
 	InitFuncs = append(InitFuncs, f)
 }
 
@@ -157,7 +169,8 @@ func Sanitizer(rt *otto.Otto) func(objs ...interface{}) otto.Value {
 }
 
 func init() {
-	RegisterInit(func(rt *otto.Otto) {
+	RegisterInit(func(context *Context) {
+		rt := context.Runtime
 		rt.Set("sanitize", func(call otto.FunctionCall) otto.Value {
 			val, err := call.Argument(0).Export()
 			if err != nil {

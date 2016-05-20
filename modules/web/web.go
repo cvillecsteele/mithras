@@ -146,7 +146,8 @@ func run(addr string) (httpdown.Server, error) {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
 
 		var o1 *otto.Object
 		var webObj *otto.Object

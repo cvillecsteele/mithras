@@ -56,7 +56,7 @@ import (
 
 	"github.com/robertkrimen/otto"
 
-	"github.com/cvillecsteele/mithras/modules/core"
+	mcore "github.com/cvillecsteele/mithras/modules/core"
 )
 
 var Version = "1.0.0"
@@ -235,7 +235,8 @@ func require(rt *otto.Otto, baseRequire otto.Value, parent *otto.Value, filename
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
 		rt.Set("require", func(call otto.FunctionCall) otto.Value {
 			base, _ := rt.Get("require")
 			filename := call.Argument(0).String()

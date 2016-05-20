@@ -279,8 +279,14 @@
                 }
 
                 // intersection of input and LB
-                lbInstanceIds = _.pluck(elb.Instances, "InstanceId");
-                inInstanceIds = _.pluck(params.membership.Instances, "InstanceId");
+                lbInstanceIds = elb.Instances ? _.pluck(elb.Instances, "InstanceId") : [];
+                inInstanceIds = [];
+                if (_.isObject(params.membership.Instances) &&
+                    !_.isFunction(params.membership.Instances) &&
+                    _.isArray(params.membership.Instances)) {
+                    inInstanceIds = _.pluck(params.membership.Instances, "InstanceId");
+                }
+
                 var inBoth = _.intersection(lbInstanceIds, inInstanceIds);
                 // What's in the LB minus what's in input
                 var inLB = _.difference(lbInstanceIds, inInstanceIds);
@@ -288,12 +294,14 @@
                 var inInput = _.difference(inInstanceIds, lbInstanceIds);
 
                 // build map id -> instance
-                var byIds = _.reduce(elb.Instances, function(memo, i) { 
+                var byIds = _.reduce(elb.Instances ? elb.Instances : [], function(memo, i) { 
                     memo[i.InstanceId] = i;
                     return memo;
                 }, {});
-                byIds = _.reduce(params.membership.Instances, function(memo, i) { 
-                    memo[i.InstanceId] = i;
+                byIds = _.reduce(params.membership.Instances ? params.membership.Instances : [], function(memo, i) { 
+                    if (i && i.InstanceId) {
+                        memo[i.InstanceId] = i;
+                    }
                     return memo;
                 }, byIds);
 
@@ -314,6 +322,7 @@
                             log(sprintf("Deregistering %d instances", 
                                         inInput.length));
                         }
+                        console.log(JSON.stringify(inInput, null, 2));
                         aws.elbs.deRegister(params.region, 
                                             params.membership.LoadBalancerName, 
                                             inInput);

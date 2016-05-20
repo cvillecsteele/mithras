@@ -469,7 +469,9 @@ func Start(cmd string, args []string, input *string, env *map[string]string, out
 // We hook the Go language facility to register an initilization
 // handler, which exposes our core functions to JS-land.
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o1 *otto.Object
 		if a, err := rt.Get("mithras"); err != nil || a.IsUndefined() {
 			rt.Object(`mithras = {}`)

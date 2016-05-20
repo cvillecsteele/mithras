@@ -321,7 +321,9 @@ func join(elem ...string) string {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		obj, _ := rt.Object(`filepath = {}`)
 		obj.Set("walk", func(call otto.FunctionCall) otto.Value {
 			cb := call.Argument(1)

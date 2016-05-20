@@ -18,10 +18,11 @@ package main
 
 import (
 	"github.com/cvillecsteele/mithras/modules/cli"
-	"github.com/cvillecsteele/mithras/modules/script"
+	"github.com/cvillecsteele/mithras/modules/core"
 
 	"github.com/cvillecsteele/mithras/modules/log"
 	"github.com/cvillecsteele/mithras/modules/peek"
+	"github.com/cvillecsteele/mithras/modules/process"
 
 	"github.com/cvillecsteele/mithras/modules/elasticache"
 	"github.com/cvillecsteele/mithras/modules/elb"
@@ -44,6 +45,7 @@ import (
 	"github.com/cvillecsteele/mithras/modules/network"
 	"github.com/cvillecsteele/mithras/modules/os"
 	"github.com/cvillecsteele/mithras/modules/rand"
+	"github.com/cvillecsteele/mithras/modules/readline"
 	"github.com/cvillecsteele/mithras/modules/routetables"
 	"github.com/cvillecsteele/mithras/modules/s3"
 	"github.com/cvillecsteele/mithras/modules/sns"
@@ -58,38 +60,40 @@ import (
 var Version = "0.1.0"
 
 func main() {
-	vers := []script.ModuleVersion{
-		script.ModuleVersion{Version: rand.Version, Module: rand.ModuleName},
-		script.ModuleVersion{Version: beanstalk.Version, Module: beanstalk.ModuleName},
-		script.ModuleVersion{Version: autoscaling.Version, Module: autoscaling.ModuleName},
-		script.ModuleVersion{Version: sqs.Version, Module: sqs.ModuleName},
-		script.ModuleVersion{Version: sns.Version, Module: sns.ModuleName},
-		script.ModuleVersion{Version: keypairs.Version, Module: keypairs.ModuleName},
-		script.ModuleVersion{Version: workers.Version, Module: workers.ModuleName},
-		script.ModuleVersion{Version: iam.Version, Module: iam.ModuleName},
-		script.ModuleVersion{Version: tag.Version, Module: tag.ModuleName},
-		script.ModuleVersion{Version: routetables.Version, Module: routetables.ModuleName},
-		script.ModuleVersion{Version: filepath.Version, Module: filepath.ModuleName},
-		script.ModuleVersion{Version: s3.Version, Module: s3.ModuleName},
-		script.ModuleVersion{Version: user.Version, Module: user.ModuleName},
-		script.ModuleVersion{Version: os.Version, Module: os.ModuleName},
-		script.ModuleVersion{Version: time.Version, Module: time.ModuleName},
-		script.ModuleVersion{Version: web.Version, Module: web.ModuleName},
-		script.ModuleVersion{Version: exec.Version, Module: exec.ModuleName},
-		script.ModuleVersion{Version: fs.Version, Module: fs.ModuleName},
-		script.ModuleVersion{Version: network.Version, Module: network.ModuleName},
-		script.ModuleVersion{Version: route53.Version, Module: route53.ModuleName},
-		script.ModuleVersion{Version: elasticache.Version, Module: elasticache.ModuleName},
-		script.ModuleVersion{Version: rds.Version, Module: rds.ModuleName},
-		script.ModuleVersion{Version: elb.Version, Module: elb.ModuleName},
-		script.ModuleVersion{Version: secgroup.Version, Module: secgroup.ModuleName},
-		script.ModuleVersion{Version: require.Version, Module: require.ModuleName},
-		script.ModuleVersion{Version: log.Version, Module: log.ModuleName},
-		script.ModuleVersion{Version: vpc.Version, Module: vpc.ModuleName},
-		script.ModuleVersion{Version: instance.Version, Module: instance.ModuleName},
-		script.ModuleVersion{Version: region.Version, Module: region.ModuleName},
-		script.ModuleVersion{Version: peek.Version, Module: peek.ModuleName},
-		script.ModuleVersion{Version: subnet.Version, Module: subnet.ModuleName},
+	vers := []core.ModuleVersion{
+		core.ModuleVersion{Version: process.Version, Module: process.ModuleName},
+		core.ModuleVersion{Version: readline.Version, Module: readline.ModuleName},
+		core.ModuleVersion{Version: rand.Version, Module: rand.ModuleName},
+		core.ModuleVersion{Version: beanstalk.Version, Module: beanstalk.ModuleName},
+		core.ModuleVersion{Version: autoscaling.Version, Module: autoscaling.ModuleName},
+		core.ModuleVersion{Version: sqs.Version, Module: sqs.ModuleName},
+		core.ModuleVersion{Version: sns.Version, Module: sns.ModuleName},
+		core.ModuleVersion{Version: keypairs.Version, Module: keypairs.ModuleName},
+		core.ModuleVersion{Version: workers.Version, Module: workers.ModuleName},
+		core.ModuleVersion{Version: iam.Version, Module: iam.ModuleName},
+		core.ModuleVersion{Version: tag.Version, Module: tag.ModuleName},
+		core.ModuleVersion{Version: routetables.Version, Module: routetables.ModuleName},
+		core.ModuleVersion{Version: filepath.Version, Module: filepath.ModuleName},
+		core.ModuleVersion{Version: s3.Version, Module: s3.ModuleName},
+		core.ModuleVersion{Version: user.Version, Module: user.ModuleName},
+		core.ModuleVersion{Version: os.Version, Module: os.ModuleName},
+		core.ModuleVersion{Version: time.Version, Module: time.ModuleName},
+		core.ModuleVersion{Version: web.Version, Module: web.ModuleName},
+		core.ModuleVersion{Version: exec.Version, Module: exec.ModuleName},
+		core.ModuleVersion{Version: fs.Version, Module: fs.ModuleName},
+		core.ModuleVersion{Version: network.Version, Module: network.ModuleName},
+		core.ModuleVersion{Version: route53.Version, Module: route53.ModuleName},
+		core.ModuleVersion{Version: elasticache.Version, Module: elasticache.ModuleName},
+		core.ModuleVersion{Version: rds.Version, Module: rds.ModuleName},
+		core.ModuleVersion{Version: elb.Version, Module: elb.ModuleName},
+		core.ModuleVersion{Version: secgroup.Version, Module: secgroup.ModuleName},
+		core.ModuleVersion{Version: require.Version, Module: require.ModuleName},
+		core.ModuleVersion{Version: log.Version, Module: log.ModuleName},
+		core.ModuleVersion{Version: vpc.Version, Module: vpc.ModuleName},
+		core.ModuleVersion{Version: instance.Version, Module: instance.ModuleName},
+		core.ModuleVersion{Version: region.Version, Module: region.ModuleName},
+		core.ModuleVersion{Version: peek.Version, Module: peek.ModuleName},
+		core.ModuleVersion{Version: subnet.Version, Module: subnet.ModuleName},
 	}
 	cli.Run(vers, Version)
 }

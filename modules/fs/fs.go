@@ -543,7 +543,9 @@ func chtimes(name string) error {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		fsObj, _ := rt.Object(`fs = {}`)
 		fsObj.Set("tempDir", os.TempDir)
 		fsObj.Set("chtimes", func(call otto.FunctionCall) otto.Value {

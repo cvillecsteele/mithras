@@ -33,6 +33,7 @@ package s3
 // > * [aws.s3.buckets.website](#website)
 // > * [aws.s3.buckets.notification](#notification)
 // > * [aws.s3.buckets.putACL](#putACL)
+// > * [aws.s3.buckets.list](#list)
 //
 // > * [aws.s3.objects.delete](#Odelete)
 // > * [aws.s3.objects.create](#Ocreate)
@@ -191,6 +192,28 @@ package s3
 // 	   	GrantWrite:       "GrantWrite"
 // 	   	GrantWriteACP:    "GrantWriteACP"
 // 	});
+//
+// ```
+//
+// ## AWS.S3.BUCKETS.LIST
+// <a name="list"></a>
+// `aws.s3.buckets.list(region, config);
+//
+// List objects in a bucket.
+//
+// Example:
+//
+// ```
+//
+// var objects = aws.s3.buckets.list("us-east-1",
+//{
+//  Bucket:       "BucketName"
+//  Delimiter:    "Delimiter"
+//  EncodingType: "EncodingType"
+//  Marker:       "Marker"
+//  MaxKeys:      1
+//  Prefix:       "Prefix"
+//});
 //
 // ```
 //
@@ -414,6 +437,19 @@ func describeBucket(region string, bucket string) []*s3.Bucket {
 	return resp.Buckets
 }
 
+func listObjects(region string, params *s3.ListObjectsInput) []*s3.Object {
+	svc := s3.New(session.New(),
+		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
+
+	resp, err := svc.ListObjects(params)
+
+	if err != nil {
+		log.Fatalf("Error listing objects: %s", err)
+	}
+
+	return resp.Contents
+}
+
 func putACL(region string, params s3.PutBucketAclInput) {
 	svc := s3.New(session.New(),
 		aws.NewConfig().WithRegion(region).WithMaxRetries(5))
@@ -503,7 +539,9 @@ func putNotification(region string, params s3.PutBucketNotificationConfiguration
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {
 			rt.Object(`aws = {}`)
 		}
@@ -576,6 +614,22 @@ func init() {
 			region := call.Argument(0).String()
 			putNotification(region, input)
 			return otto.Value{}
+		})
+		o2.Set("list", func(call otto.FunctionCall) otto.Value {
+			// Translate target into a struct
+			var input s3.ListObjectsInput
+			js := `(function (o) { return JSON.stringify(o); })`
+			s, err := rt.Call(js, nil, call.Argument(1))
+			if err != nil {
+				log.Fatalf("Can't create json for S3 list objects input: %s", err)
+			}
+			err = json.Unmarshal([]byte(s.String()), &input)
+			if err != nil {
+				log.Fatalf("Can't unmarshall S3 list objects json: %s", err)
+			}
+			region := call.Argument(0).String()
+			f := mcore.Sanitizer(rt)
+			return f(listObjects(region, &input))
 		})
 
 		// Objects

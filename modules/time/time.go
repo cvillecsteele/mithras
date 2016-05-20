@@ -48,8 +48,6 @@ package time
 import (
 	"time"
 
-	"github.com/robertkrimen/otto"
-
 	"github.com/cvillecsteele/mithras/modules/core"
 )
 
@@ -61,7 +59,9 @@ func sleep(seconds int) {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		fsObj, _ := rt.Object(`time = {}`)
 		fsObj.Set("sleep", sleep)
 	})

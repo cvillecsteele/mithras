@@ -61,7 +61,9 @@ func lookup(username string) (*user.User, error) {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		obj, _ := rt.Object(`user = {}`)
 		obj.Set("lookup", func(call otto.FunctionCall) otto.Value {
 			f := core.Sanitizer(rt)

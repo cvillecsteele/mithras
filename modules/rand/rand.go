@@ -59,7 +59,9 @@ var Version = "1.0.0"
 var ModuleName = "rand"
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		obj, _ := rt.Object(`rand = {}`)
 		obj.Set("intN", func(n int) otto.Value {
 			f := mcore.Sanitizer(rt)

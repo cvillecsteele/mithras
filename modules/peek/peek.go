@@ -73,7 +73,9 @@ func peek(rt *otto.Otto, ip string, user string, key string, cb otto.Value) {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		rt.Set("peek", func(call otto.FunctionCall) otto.Value {
 			ip, _ := call.Argument(0).ToString()
 			key, _ := call.Argument(1).ToString()

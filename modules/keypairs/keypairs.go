@@ -166,7 +166,9 @@ func scan(region string) []*ec2.KeyPairInfo {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {
 			rt.Object(`aws = {}`)
 		}

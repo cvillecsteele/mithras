@@ -153,13 +153,13 @@
             var cmd = "";
             switch (p.ensure) {
             case "present":
-                cmd = sprintf("yum -y install %s", p.name);
+                cmd = sprintf("yum -q -y install %s", p.name);
                 break;
             case "absent":
-                cmd = sprintf("yum -y remove %s", p.name);
+                cmd = sprintf("yum -q -y remove %s", p.name);
                 break;
             case "latest":
-                cmd = sprintf("yum -y update %s", p.name);
+                cmd = sprintf("yum -q -y update %s", p.name);
                 break;
             }
             cmd = become(p.become, p.becomeUser, p.becomeMethod, cmd).trim().split(/[ \t]+/);

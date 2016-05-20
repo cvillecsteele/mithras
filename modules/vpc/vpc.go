@@ -332,7 +332,9 @@ func scanGateways(rt *otto.Otto, region string) otto.Value {
 }
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o1 *otto.Object
 		var awsObj *otto.Object
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {

@@ -29,17 +29,24 @@ import (
 	"github.com/cvillecsteele/mithras/modules/require"
 )
 
-type ModuleVersion struct{ Version, Module string }
-
 var Home string
 
-func initModules(rt *otto.Otto) {
+func initModules(rt *otto.Otto, jsdir string, home string, verbose bool, args []string, modules []core.ModuleVersion, version string) {
+	context := core.Context{
+		Runtime: rt,
+		JsDir:   jsdir,
+		Home:    home,
+		Verbose: verbose,
+		Args:    args,
+		Modules: modules,
+		Version: version,
+	}
 	for idx, _ := range core.InitFuncs {
-		core.InitFuncs[idx](rt)
+		core.InitFuncs[idx](&context)
 	}
 }
 
-func RunCli(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto {
+func RunCli(c *cli.Context, versions []core.ModuleVersion, version string) *otto.Otto {
 	jsfile := c.String("file")
 	jsdir := c.String("js")
 	home := c.GlobalString("mithras")
@@ -49,7 +56,7 @@ func RunCli(c *cli.Context, versions []ModuleVersion, version string) *otto.Otto
 	return RunJS(jsfile, jsdir, home, verbose, args, versions, version, nil)
 }
 
-func RunJS(jsfile, jsdir, home string, verbose bool, args []string, versions []ModuleVersion, version string, initFn *func(*otto.Otto)) *otto.Otto {
+func RunJS(jsfile, jsdir, home string, verbose bool, args []string, versions []core.ModuleVersion, version string, initFn *func(*otto.Otto)) *otto.Otto {
 
 	build.CachePath = filepath.Join(home, "cache")
 
@@ -90,7 +97,7 @@ func RunJS(jsfile, jsdir, home string, verbose bool, args []string, versions []M
 	return runtime
 }
 
-func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, args []string, modules []ModuleVersion, version string) *otto.Otto {
+func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, args []string, modules []core.ModuleVersion, version string) *otto.Otto {
 
 	// Set path
 	if jsdir != "" {
@@ -120,7 +127,7 @@ func LoadScriptRuntime(name string, jsdir string, home string, verbose bool, arg
 	rt.Object(`mithras = {}`)
 
 	// Initialize modules
-	initModules(rt)
+	initModules(rt, require.JsDir, home, verbose, args, modules, version)
 
 	// Load underscore
 	if _, err := rt.Run(underBuff.String()); err != nil {

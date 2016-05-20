@@ -249,7 +249,9 @@ func scanSubnets(rt *otto.Otto, region string) otto.Value {
 
 func init() {
 	// mcore.RegisterHandler(handle)
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o0 *otto.Object
 		var o1 *otto.Object
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {

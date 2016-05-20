@@ -118,7 +118,9 @@ func hostname() (string, error) {
 }
 
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		obj, _ := rt.Object(`os = {}`)
 		obj.Set("exit", exit)
 		obj.Set("hostname", hostname)

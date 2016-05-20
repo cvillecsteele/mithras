@@ -55,7 +55,9 @@ var Version = "1.0.0"
 var ModuleName = "tag"
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		var o1 *otto.Object
 		if a, err := rt.Get("aws"); err != nil || a.IsUndefined() {
 			rt.Object(`aws = {}`)

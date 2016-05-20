@@ -102,7 +102,9 @@ func Run(cmd string, input *string, env *map[string]interface{}) (string, string
 	return resultOut, resultErr, ok, status
 }
 func init() {
-	core.RegisterInit(func(rt *otto.Otto) {
+	core.RegisterInit(func(context *core.Context) {
+		rt := context.Runtime
+
 		obj, _ := rt.Object(`exec = {}`)
 		obj.Set("run", func(call otto.FunctionCall) otto.Value {
 			cmd := call.Argument(0).String()

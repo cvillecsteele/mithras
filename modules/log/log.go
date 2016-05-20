@@ -126,7 +126,9 @@ var Version = "1.0.0"
 var ModuleName = "log"
 
 func init() {
-	mcore.RegisterInit(func(rt *otto.Otto) {
+	mcore.RegisterInit(func(context *mcore.Context) {
+		rt := context.Runtime
+
 		rt.Set("log", func(call otto.FunctionCall) otto.Value {
 			msg := call.Argument(0).String()
 			logMessage("  ---", msg)
