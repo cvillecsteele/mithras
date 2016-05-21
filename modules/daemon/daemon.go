@@ -42,8 +42,13 @@ var (
 )
 
 // Graceful shutdown
-func Term() {
+func Term(c *cli.Context) {
 	cntxt := &Context
+
+	Context.PidFileName = c.Parent().String("pidfile")
+	Context.LogFileName = c.Parent().String("logfile")
+	Context.WorkDir = c.Parent().String("workdir")
+
 	d, err := cntxt.Search()
 	if err != nil {
 		log.Fatalln("Unable send signal to the daemon:", err)
@@ -56,8 +61,13 @@ func Term() {
 }
 
 // BYE NOW
-func Quit() {
+func Quit(c *cli.Context) {
 	cntxt := &Context
+
+	Context.PidFileName = c.Parent().String("pidfile")
+	Context.LogFileName = c.Parent().String("logfile")
+	Context.WorkDir = c.Parent().String("workdir")
+
 	d, err := cntxt.Search()
 	if err != nil {
 		log.Fatalln("Unable send signal to the daemon:", err)
@@ -71,6 +81,10 @@ func Quit() {
 // Start the daemon
 func Run(c *cli.Context, versions []core.ModuleVersion, version string) {
 	cntxt := &Context
+
+	Context.PidFileName = c.Parent().String("pidfile")
+	Context.LogFileName = c.Parent().String("logfile")
+	Context.WorkDir = c.Parent().String("workdir")
 
 	d, err := cntxt.Reborn()
 	if err != nil {

@@ -166,6 +166,26 @@ func Run(versions []core.ModuleVersion, version string) {
 			Aliases:     []string{"d", "demon"},
 			Usage:       "Run a Mithras daemon",
 			Description: "Start or stop the Mithras daemon using 'mithras daemon start' and 'mithras daemon stop'",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:   "workdir",
+					Value:  "./",
+					Usage:  "Working dir",
+					EnvVar: "WORKDIR",
+				},
+				cli.StringFlag{
+					Name:   "pidfile",
+					Value:  "pid",
+					Usage:  "Name of PID file",
+					EnvVar: "PIDFILE",
+				},
+				cli.StringFlag{
+					Name:   "logfile",
+					Value:  "log",
+					Usage:  "Name of log file",
+					EnvVar: "LOGFILE",
+				},
+			},
 			Subcommands: []cli.Command{
 				{
 					Name:  "start",
@@ -194,7 +214,7 @@ func Run(versions []core.ModuleVersion, version string) {
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
 					Action: func(c *cli.Context) {
-						daemon.Term()
+						daemon.Term(c)
 					},
 				},
 				{
@@ -204,7 +224,7 @@ func Run(versions []core.ModuleVersion, version string) {
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
 					Action: func(c *cli.Context) {
-						daemon.Quit()
+						daemon.Quit(c)
 					},
 				},
 			},
