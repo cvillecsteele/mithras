@@ -30,17 +30,19 @@ import (
 	"github.com/cvillecsteele/mithras/modules/script"
 )
 
-func buildIt(c *cli.Context) {
+func buildIt(c *cli.Context) error {
 	build.CachePath = filepath.Join(c.GlobalString("home"), "cache")
 	for _, arch := range c.StringSlice("arch") {
 		for _, os := range c.StringSlice("os") {
 			build.BuildFor(os, arch)
 		}
 	}
+	return nil
 }
 
-func runRepl(c *cli.Context) {
+func runRepl(c *cli.Context) error {
 	repl.Run(otto.New())
+	return nil
 }
 
 func Run(versions []core.ModuleVersion, version string) {
@@ -71,8 +73,9 @@ func Run(versions []core.ModuleVersion, version string) {
 			Name:    "run",
 			Aliases: []string{"r"},
 			Usage:   "Run a mithras script",
-			Action: func(c *cli.Context) {
+			Action: func(c *cli.Context) error {
 				script.RunCli(c, versions, version)
+				return nil
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -113,7 +116,7 @@ func Run(versions []core.ModuleVersion, version string) {
 			Name:    "get",
 			Aliases: []string{"install", "g"},
 			Usage:   "This command installs a package, and any packages that it depends on.",
-			Action: func(c *cli.Context) {
+			Action: func(c *cli.Context) error {
 				verbose := c.GlobalBool("verbose")
 				home := c.GlobalString("mithras")
 				jsfile := c.String("file")
@@ -135,6 +138,7 @@ func Run(versions []core.ModuleVersion, version string) {
 					o.Object().Set("DESTDIR", destdir)
 				}
 				script.RunJS(jsfile, jsdir, home, verbose, args, versions, version, &f)
+				return nil
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{
@@ -203,8 +207,9 @@ func Run(versions []core.ModuleVersion, version string) {
 							Usage: "JS lib directory, defaults to $MITHRASHOME/js",
 						},
 					},
-					Action: func(c *cli.Context) {
+					Action: func(c *cli.Context) error {
 						daemon.Run(c, versions, version)
+						return nil
 					},
 				},
 				{
@@ -213,8 +218,9 @@ func Run(versions []core.ModuleVersion, version string) {
 					Usage: "Stop the Mithras daemon gracefully",
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
-					Action: func(c *cli.Context) {
+					Action: func(c *cli.Context) error {
 						daemon.Term(c)
+						return nil
 					},
 				},
 				{
@@ -223,8 +229,9 @@ func Run(versions []core.ModuleVersion, version string) {
 					Usage:   "Stop the Mithras daemon immediately",
 					// Description: "greets someone in english",
 					// Flags: []Flag{},
-					Action: func(c *cli.Context) {
+					Action: func(c *cli.Context) error {
 						daemon.Quit(c)
+						return nil
 					},
 				},
 			},
