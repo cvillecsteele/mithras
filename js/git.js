@@ -206,7 +206,7 @@
 	    var ensure = params.ensure;
 		    
 	    // Sanity
-	    if (!params || !params.repo) {
+	    if (!params || !params.repo || !params.version) {
 		console.log("Invalid git resource params")
 		exit(1);
 	    }
