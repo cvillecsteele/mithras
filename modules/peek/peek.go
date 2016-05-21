@@ -59,7 +59,8 @@ func peek(rt *otto.Otto, ip string, user string, key string, cb otto.Value) {
 		key,
 		nil,
 		"uname -a",
-		nil)
+		nil,
+		true)
 
 	// Need a context (this) for Call below
 	ctx, _ := rt.Get("mithras")

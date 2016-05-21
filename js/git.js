@@ -133,7 +133,7 @@
 			    instance.PublicIpAddress, p.repo, p.dest, err.trim()));
 		os.exit(3);
 	    } else if (status == 1 && mithras.verbose) {
-		log(sprintf("Git '%s', dest '%s' not found. Status %d; out %s; err %s", p.repo, p.dest, status, out, err));
+		log(sprintf("Git '%s', dest '%s' not found.", p.repo, p.dest));
 	    } else if (mithras.verbose) {
 		    log(sprintf("Git repo '%s': status %d; out %s", 
 				p.repo, status, out));
@@ -156,7 +156,8 @@
 
 	    cmd = become(p.become, p.becomeUser, p.becomeMethod, cmd);
 	    cmd = "GIT_SSH_COMMAND='ssh -o ForwardAgent=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' " + cmd;
-	    var result = mithras.remote.shell(inst.PublicIpAddress, user, key, null, cmd, null);
+
+	    var result = mithras.remote.shell(inst.PublicIpAddress, user, key, null, cmd, null, false);
 
 	    var out = result[0];
 	    var err = result[1];
@@ -168,21 +169,28 @@
 		}
 		return true;
 	    } else if (status == 255) {
-		log(sprintf("SSH error communicating with remote system '%s', repo '%s': %s %s",
-			    inst.PublicIpAddress, p.repo, err.trim(), out.trim()));
+		log(sprintf("Remote SSH error communicating with remote system '%s', repo '%s': %s %s",
+			    inst.PublicIpAddress, 
+                            p.repo, 
+                            err.trim(), 
+                            out.trim()));
 		os.exit(3);
 	    } else if (status == 1) {
 		if (mithras.verbose) {
-		    log(sprintf("Git '%s' error: %s\n%s", p.repo, err, out));
+		    log(sprintf("Remote Git host '%s' error: %s %s", 
+                                inst.PublicIpAddress,
+                                err, 
+                                out));
 		}
 		os.exit(3);
 	    } else {
 		if (mithras.verbose) {
-		    log(sprintf("Git '%s': status %d; out %s", 
-				p.repo, 
+		    log(sprintf("Remote Git host '%s': status %d out %s", 
+				inst.PublicIpAddress,
 				status, 
 				out));
 		}
+		os.exit(3);
 	    }
 	    return false;
 	}

@@ -177,7 +177,8 @@ func RemoteMithras(inst *ec2.Instance, user string, keypath string, js string, b
 		keypath,
 		&js,
 		`export foo=$(mktemp ./.mithras/scripts/runXXXXXX); dd of=$foo oflag=append conv=notrunc >/dev/null 2>&1 > /dev/null; echo $foo`,
-		nil)
+		nil,
+		true)
 	if !success {
 		log.Fatalf("Error moving script to remote system '%s': success: %t; %s %s",
 			*inst.PublicIpAddress, status, *o, *e)
@@ -190,7 +191,7 @@ func RemoteMithras(inst *ec2.Instance, user string, keypath string, js string, b
 
 	// Dump the temporary file
 	defer func() {
-		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, fmt.Sprintf(`rm %s`, remoteFile), nil)
+		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, fmt.Sprintf(`rm %s`, remoteFile), nil, true)
 		if !success {
 			log.Fatalf("Error removing script on remote system '%s': success: %t; %s %s",
 				*inst.PublicIpAddress, status, *o, *e)
@@ -226,7 +227,8 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 		keypath,
 		&specJSON,
 		`export foo=$(mktemp ./.mithras/scripts/wrapperXXXXXX); dd of=$foo oflag=append conv=notrunc >/dev/null 2>&1 > /dev/null; echo $foo`,
-		nil)
+		nil,
+		true)
 	if !success {
 		log.Fatalf("Error moving script to remote system '%s': success: %t; %s %s",
 			*inst.PublicIpAddress, status, *o, *e)
@@ -234,7 +236,7 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 	remoteFile := strings.TrimSpace(*o)
 
 	// Run it via ssh
-	o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, ".mithras/bin/wrapper < "+remoteFile, nil)
+	o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, ".mithras/bin/wrapper < "+remoteFile, nil, true)
 	if !success {
 		log.Fatalf("Error running wrapper '%s' on remote system '%s': success: %t; %s %s",
 			cmd, *inst.PublicIpAddress, status, *o, *e)
@@ -249,7 +251,7 @@ func RemoteWrapper(inst *ec2.Instance, user string, keypath string, cmd []string
 
 	// Dump the temporary file
 	defer func() {
-		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, fmt.Sprintf(`rm %s`, remoteFile), nil)
+		o, e, success, status = RemoteShell(*inst.PublicIpAddress, user, keypath, nil, fmt.Sprintf(`rm %s`, remoteFile), nil, true)
 		if !success {
 			log.Fatalf("Error removing script on remote system '%s': success: %t; %s %s",
 				*inst.PublicIpAddress, status, *o, *e)
@@ -375,7 +377,7 @@ func checkMaster(ip string, user string, keypath string, input *string, cmd stri
 // the SSH key, a shell command and an environment.
 //
 // `RemoteShell` runs the local `ssh` command under `ssh-agent`.
-func RemoteShell(ip string, user string, keypath string, input *string, cmd string, env *map[string]string) (*string, *string, bool, int) {
+func RemoteShell(ip string, user string, keypath string, input *string, cmd string, env *map[string]string, useControl bool) (*string, *string, bool, int) {
 	if running := checkMaster(ip, user, keypath, input, cmd, env); running == false {
 		startMaster(ip, user, keypath, input, cmd, env)
 	}
@@ -383,9 +385,6 @@ func RemoteShell(ip string, user string, keypath string, input *string, cmd stri
 	args := []string{
 		"ssh",
 		"-C",
-		"-o", "ControlPersist=10m",
-		"-o", "ControlMaster=no",
-		"-o", "ControlPath=" + ctlPath(),
 		"-o", "ForwardAgent=yes",
 		"-o", "IdentityFile=" + keypath,
 		"-o", "KbdInteractiveAuthentication=no",
@@ -396,6 +395,13 @@ func RemoteShell(ip string, user string, keypath string, input *string, cmd stri
 		"-o", "PreferredAuthentications=gssapi-with-mic,gssapi-keyex,hostbased,publickey"}
 	if input == nil {
 		args = append(args, "-tt")
+	}
+	if useControl {
+		args = append(args, []string{
+			"-o", "ControlPersist=10m",
+			"-o", "ControlMaster=no",
+			"-o", "ControlPath=" + ctlPath(),
+		}...)
 	}
 	args = append(args, ip)
 	args = append(args, cmd)
@@ -632,8 +638,13 @@ func init() {
 				}
 			}
 
+			control := true
+			if !call.Argument(6).IsUndefined() && !call.Argument(6).IsNull() {
+				control, _ = call.Argument(6).ToBoolean()
+			}
+
 			f := mcore.Sanitizer(rt)
-			return f(RemoteShell(ip, user, key, input, cmd, &env))
+			return f(RemoteShell(ip, user, key, input, cmd, &env, control))
 		}
 		o1.Set("shell", f)
 
