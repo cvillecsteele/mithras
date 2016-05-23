@@ -203,6 +203,10 @@
                         handler.startStop(updated, host, user, key, "start");
                     }
                     break;
+                default:
+                    console.log(sprintf("Invalid service resource param 'ensure' is '%s'", ensure));
+                    os.exit(3);
+                    break;
                 }
             });
             
