@@ -216,35 +216,35 @@
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/ast",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/dbg",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/file",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/parser",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/registry",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/repl",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/robertkrimen/otto/token",
-			"Rev": "53221230c215611a90762720c9042ac782ef74ee"
+			"Rev": "ef5bb303cc0d3c2f054779e30423becaf9996bb0"
 		},
 		{
 			"ImportPath": "github.com/sevlyar/go-daemon",
@@ -262,6 +262,16 @@
 			"ImportPath": "gopkg.in/readline.v1",
 			"Comment": "1.2",
 			"Rev": "14e9df7f3c68bca64f111bab38196975d4696e2f"
+		},
+		{
+			"ImportPath": "gopkg.in/sourcemap.v1",
+			"Comment": "v1.0.1",
+			"Rev": "dcbf482f1905a26c02d8d5cad7e65e9cb124f8eb"
+		},
+		{
+			"ImportPath": "gopkg.in/sourcemap.v1/base64vlq",
+			"Comment": "v1.0.1",
+			"Rev": "dcbf482f1905a26c02d8d5cad7e65e9cb124f8eb"
 		}
 	]
 }

@@ -566,9 +566,11 @@ func init() {
 			val, err := rt.ToValue(x)
 			return val, f(err)
 		})
-		fsObj.Set("close", func(f *os.File) otto.Value {
+		fsObj.Set("close", func(call otto.FunctionCall) otto.Value {
+			val, _ := call.Argument(0).Export()
+			fp := val.(*os.File)
 			x := mcore.Sanitizer(rt)
-			return x(close(f))
+			return x(close(fp))
 		})
 		fsObj.Set("read", func(fileName string) otto.Value {
 			f := mcore.Sanitizer(rt)
