@@ -282,8 +282,8 @@
 			os.exit(3);
 		    }
 		} else {
-		    uid = user.Uid;
-		    gid = user.Gid;
+                    uid = parseInt(u.Uid, 10);
+                    gid = parseInt(u.Gid, 10);
 		}
 	    }
 	    var present = !stat.Err;
