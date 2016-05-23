@@ -127,9 +127,10 @@
             case "absent":
                 if (!found) {
                     if (mithras.verbose) {
-                        log(sprintf("Key '%s' not found, no action taken.", params.key.KeyName));
-                        break;
+                        log(sprintf("Key '%s' not found, no action taken.", 
+                                    params.key.KeyName));
                     }
+                    break;
                 }
                 if (mithras.verbose) {
                     log(sprintf("Deleting key '%s'", params.key.KeyName));
@@ -144,9 +145,10 @@
             case "present":
                 if (found) {
                     if (mithras.verbose) {
-                        log(sprintf("Key '%s' found, no action taken.", params.key.KeyName));
-                        break;
+                        log(sprintf("Key '%s' found, no action taken.", 
+                                    params.key.KeyName));
                     }
+                    break;
                 }
 
                 if (mithras.verbose) {
@@ -154,7 +156,9 @@
                 }
                 var raw = aws.keypairs.create(params.region, params.key.KeyName);
                 if (mithras.verbose) {
-                    log(sprintf("Writing key '%s' to '%s'", params.key.KeyName, params.savePath));
+                    log(sprintf("Writing key '%s' to '%s'", 
+                                params.key.KeyName, 
+                                params.savePath));
                 }
                 var err = fs.write(params.savePath, raw, 0400);
 		if (err) {
