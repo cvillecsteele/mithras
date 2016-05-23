@@ -649,6 +649,7 @@
         "xss": "application/xml",
 
 	"svg": "image/svg+xml"
+        "json": "application/json",
     };
 
     return handler;
