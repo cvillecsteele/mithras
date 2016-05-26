@@ -1,6 +1,8 @@
 WHAT IS MITHRAS?
 ###############################################################################
 
+[![Build Status](https://travis-ci.org/cvillecsteele/mithras.svg?branch=master)](https://travis-ci.org/cvillecsteele/mithras)
+
 See the Mithras main site at [mithras.io](http://mithras.io) for more
 information.
 
