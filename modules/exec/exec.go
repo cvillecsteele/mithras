@@ -53,7 +53,6 @@ import (
 	"bytes"
 	"fmt"
 	"os/exec"
-	"strings"
 	"syscall"
 
 	"github.com/robertkrimen/otto"
@@ -65,8 +64,7 @@ var Version = "1.0.0"
 var ModuleName = "exec"
 
 func Run(cmd string, input *string, env *map[string]interface{}) (string, string, bool, int) {
-	args := strings.Fields(cmd)
-	c := exec.Command(args[0], args[1:]...)
+	c := exec.Command("sh", "-c", cmd)
 
 	var out bytes.Buffer
 	var err bytes.Buffer
