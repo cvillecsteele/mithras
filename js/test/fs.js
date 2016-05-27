@@ -107,6 +107,13 @@
                 assert(stat.IsDir === false);
                 assert(stat.Error === null);
             });
+            test('fs.mkdirAll() throws', function(){
+                assert.throws(function() {
+                    fs.mkdirAll("/tmp/foo");
+                }, function(e) {
+                    return e.name === "MithrasError";
+                })
+            });
             afterEach(function() {
                 fs.removeAll(dir);
             });

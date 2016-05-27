@@ -388,7 +388,6 @@ package fs
 // ```
 //
 import (
-	log "github.com/Sirupsen/logrus"
 	"io"
 	"io/ioutil"
 	"os"
@@ -586,9 +585,12 @@ func init() {
 		fsObj.Set("getwd", getwd)
 		fsObj.Set("mkdir", mkdir)
 		fsObj.Set("mkdirAll", func(call otto.FunctionCall) otto.Value {
+			if call.Argument(1).IsUndefined() {
+				context.Throwf("Invalid mode argument to 'mkdirAll'")
+			}
 			mode, err := call.Argument(1).ToInteger()
 			if err != nil {
-				log.Fatalf("Invalid argument to 'mkdirAll': %s", err)
+				context.Throwf("Invalid mode argument to 'mkdirAll': %s", err)
 			}
 			result := mkdirAll(call.Argument(0).String(), uint64(mode))
 			return mcore.Sanitize(rt, result)

@@ -50,6 +50,7 @@ package core
 
 import (
 	"encoding/json"
+	"fmt"
 	log "github.com/Sirupsen/logrus"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -71,6 +72,14 @@ type Context struct {
 }
 
 var InitFuncs []func(*Context)
+
+func (c *Context) Throw(str string) {
+	panic(c.Runtime.MakeCustomError("MithrasError", str))
+}
+
+func (c *Context) Throwf(format string, a ...interface{}) {
+	panic(c.Runtime.MakeCustomError("MithrasError", fmt.Sprintf(format, a...)))
+}
 
 func RegisterInit(f func(*Context)) {
 	InitFuncs = append(InitFuncs, f)

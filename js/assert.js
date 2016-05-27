@@ -32,6 +32,8 @@
         } catch (e) {
             if (!pred(e)) {
                 throw new AssertionError(message);
+            } else {
+                return;
             }
         }
         throw new AssertionError(message);
