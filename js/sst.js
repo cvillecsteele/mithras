@@ -93,6 +93,7 @@
                                         test.ok ? "ok" : "not ok",
                                         idx,
                                         testName));
+                    idx = idx + 1;
                 });
             });
         }
