@@ -9,7 +9,7 @@
                 fs.removeAll(dir);
                 fs.mkdirAll(dir, 0777);
             });
-            it('fs.create(), fs.close()', function(){
+            test('fs.create(), fs.close()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.create");
                     var created = fs.create(path);
@@ -22,7 +22,7 @@
                     assert(result[0].trim() === 'ok');
                 }, "threw an exception");
             });
-            it('fs.write()', function(){
+            test('fs.write()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.write");
                     var created = fs.write(path, "foo", 0644);
@@ -34,10 +34,10 @@
                     assert(result[0].trim() === 'foo');
                     cmd = sprintf("ls -l %s", path);
                     result = exec.run(cmd);
-                    assert(result[0].split(/\s+/)[0] === "-rw-r--r--");
+                    assert(result[0].spltest(/\s+/)[0] === "-rw-r--r--");
                 }, "threw an exception");
             });
-            it('fs.read()', function(){
+            test('fs.read()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.read");
                     var cmd = sprintf("echo bar > %s", path);
@@ -45,7 +45,7 @@
                     assert(fs.read(path)[0] === "bar\n");
                 }, "threw an exception");
             });
-            it('fs.copy()', function(){
+            test('fs.copy()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.copy");
                     var path2 = filepath.join(dir, "fs.copy.copy");
@@ -55,7 +55,7 @@
                     assert(fs.read(path2)[0] === "bar\n");
                 }, "threw an exception");
             });
-            it('fs.getwd()', function(){
+            test('fs.getwd()', function(){
                 assert.doesNotThrow(function() {
                     var cwd = fs.getwd()[0];
                     var cmd = sprintf("pwd");
@@ -63,7 +63,7 @@
                     assert(result[0].trim() === cwd);
                 }, "threw an exception");
             });
-            it('fs.chdir()', function(){
+            test('fs.chdir()', function(){
                 assert.doesNotThrow(function() {
                     var cwd = fs.getwd()[0];
                     fs.chdir("/");
@@ -71,7 +71,7 @@
                     fs.chdir(cwd);
                 }, "threw an exception");
             });
-            it('fs.rename()', function(){
+            test('fs.rename()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.rename");
                     var created = fs.create(path);
@@ -83,7 +83,7 @@
                     assert(result[0].trim() === 'ok');
                 }, "threw an exception");
             });
-            it('fs.symlink()', function(){
+            test('fs.symlink()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.symlink");
                     var created = fs.create(path);
@@ -95,7 +95,7 @@
                     assert(result[0].trim() === 'ok');
                 }, "threw an exception");
             });
-            it('fs.link()', function(){
+            test('fs.link()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.link");
                     var created = fs.create(path);
@@ -107,7 +107,7 @@
                     assert(result[0].trim() === 'ok');
                 }, "threw an exception");
             });
-            it('fs.dir()', function(){
+            test('fs.dir()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.dir");
                     var created = fs.create(path);
@@ -116,7 +116,7 @@
                     assert(contents[0] === "fs.dir");
                 }, "threw an exception");
             });
-            it('fs.stat()', function(){
+            test('fs.stat()', function(){
                 assert.doesNotThrow(function() {
                     var path = filepath.join(dir, "fs.stat");
                     var created = fs.create(path);

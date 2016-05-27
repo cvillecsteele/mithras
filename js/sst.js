@@ -26,7 +26,7 @@
         after: function(f) {
             this.suites[this.currentSuite].after = f;
         }
-        it: function(message, f) {
+        test: function(message, f) {
             this.suites[this.currentSuite].tests[message] = {
                 func: f
             };
