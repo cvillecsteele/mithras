@@ -93,6 +93,9 @@
                                         test.ok ? "ok" : "not ok",
                                         idx,
                                         testName));
+                    if (!test.ok) {
+                        console.log(sprintf("# %s", JSON.stringify(test.err)));
+                    }
                     idx = idx + 1;
                 });
             });
