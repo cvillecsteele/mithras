@@ -8,7 +8,8 @@
 <li><a href="#create">aws.s3.buckets.create</a></li>
 <li><a href="#website">aws.s3.buckets.website</a></li>
 <li><a href="#notification">aws.s3.buckets.notification</a></li>
-<li><p><a href="#putACL">aws.s3.buckets.putACL</a></p>
+<li><a href="#putACL">aws.s3.buckets.putACL</a></li>
+<li><p><a href="#list">aws.s3.buckets.list</a></p>
 </li>
 <li><p><a href="#Odelete">aws.s3.objects.delete</a></p>
 </li>
@@ -123,6 +124,20 @@
             GrantWrite:       &quot;GrantWrite&quot;
             GrantWriteACP:    &quot;GrantWriteACP&quot;
      });
+</code></pre><h2>AWS.S3.BUCKETS.LIST</h2><p> <a name="list"></a>
+ `aws.s3.buckets.list(region, config);</p>
+<p> List objects in a bucket.</p>
+<p> Example:</p>
+<pre><code>
+ var objects = aws.s3.buckets.list(&quot;us-east-1&quot;,
+{
+  Bucket:       &quot;BucketName&quot;
+  Delimiter:    &quot;Delimiter&quot;
+  EncodingType: &quot;EncodingType&quot;
+  Marker:       &quot;Marker&quot;
+  MaxKeys:      1
+  Prefix:       &quot;Prefix&quot;
+});
 </code></pre><h2>AWS.S3.OBJECTS.DELETE</h2><p> <a name="Odelete"></a>
  <code>aws.s3.objects.delete(region, bucket, key);</code></p>
 <p> Delete an object in a bucket.</p>

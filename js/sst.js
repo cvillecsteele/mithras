@@ -78,6 +78,8 @@
             if (suites && !(_.isArray(suites))) {
                 suites = [suites];
             }
+
+            // Count the tests
             var count = 0;
             _.each(this.suites, function(suite, suiteName) {
                 if (suites && suites.length > 0) {
@@ -90,6 +92,8 @@
                 count = count + Object.keys(suite.tests).length;
             });
             console.log(sprintf("1..%d", count));
+
+            // Spit out their resutls
             _.each(this.suites, function(suite, suiteName) {
                 if (suites && suites.length > 0) {
                     if (!_.find(suites, function(s) {

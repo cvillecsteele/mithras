@@ -13,6 +13,8 @@ Or, check out the [FAQ](faq.html).
 
 If you want the "big picture" behind how Mithras works, read [Design and Concepts](design.html).
 
+There are also a few words on [debugging](/debugging.html) your Mithras scripts.
+
 ## Running Mithras
 
 You can run Mithras with a variety of sub-commands, including:

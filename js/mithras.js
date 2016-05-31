@@ -234,6 +234,11 @@
                 register: function(name, cb) {
                     mithras.modules.handlers.funcs[name] = cb;
                 }
+                wrap: function(name, wrapper) {
+                    var f = _.partial(wrapper, 
+                                      mithras.modules.handlers.funcs[name]);
+                    mithras.modules.handlers.funcs[name] = f;
+                }
                 run: function(catalog, resources, targetResource, dict) {
                     var name = targetResource.name;
                     var handled = false;

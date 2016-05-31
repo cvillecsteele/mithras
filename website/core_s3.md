@@ -15,6 +15,7 @@
  > * [aws.s3.buckets.website](#website)
  > * [aws.s3.buckets.notification](#notification)
  > * [aws.s3.buckets.putACL](#putACL)
+ > * [aws.s3.buckets.list](#list)
 
  > * [aws.s3.objects.delete](#Odelete)
  > * [aws.s3.objects.create](#Ocreate)
@@ -173,6 +174,28 @@
  	   	GrantWrite:       "GrantWrite"
  	   	GrantWriteACP:    "GrantWriteACP"
  	});
+
+ ```
+
+ ## AWS.S3.BUCKETS.LIST
+ <a name="list"></a>
+ `aws.s3.buckets.list(region, config);
+
+ List objects in a bucket.
+
+ Example:
+
+ ```
+
+ var objects = aws.s3.buckets.list("us-east-1",
+{
+  Bucket:       "BucketName"
+  Delimiter:    "Delimiter"
+  EncodingType: "EncodingType"
+  Marker:       "Marker"
+  MaxKeys:      1
+  Prefix:       "Prefix"
+});
 
  ```
 
